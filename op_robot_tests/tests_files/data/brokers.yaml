@@ -65,7 +65,7 @@ Quinta:
         openeu:
             tender:  [1, 35]
         openua_defense:
-            tender:  [0, 30]
+            tender:  [0, 20]
         open_competitive_dialogue:
             accelerator: 1440
             tender:  [0, 30]
@@ -90,14 +90,27 @@ Quinta:
 Etender:
     intervals:
         default:
-            enquiry: [0, 5]
+            enquiry: [0, 7]
+            tender:  [0, 7]
+        belowThreshold:
+            enquiry: [0, 20]
+            tender:  [0, 20]
+            accelerator: 1440
+        openua:
+            tender:  [1, 17]
+        openeu:
+            tender:  [1, 35]
+        openua_defense:
+            tender:  [0, 38]
+        open_competitive_dialogue:
+            tender:  [0,  35]
     keywords_file: etender
     roles:
         provider:       Etender_Provider1
         provider1:      Etender_Provider2
         tender_owner:   Etender_Owner
         viewer:         Etender_Viewer
-    timeout_on_wait: 60
+    timeout_on_wait: 30
 DZO:
     intervals:
         default:
