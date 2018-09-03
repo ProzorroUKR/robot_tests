@@ -20,6 +20,7 @@ Resource           resource.robot
   ...      item_meat=${${ITEM_MEAT}}
   ...      api_host_url=${API_HOST_URL}
   ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      vat_included=${${VAT_INCLUDED}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
