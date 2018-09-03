@@ -16,6 +16,7 @@ ${TENDER_MEAT}      ${True}
 ${LOT_MEAT}         ${True}
 ${ITEM_MEAT}        ${True}
 ${MOZ_INTEGRATION}  ${False}
+${VAT_INCLUDED}     ${True}
 
 *** Test Cases ***
 Можливість оголосити тендер

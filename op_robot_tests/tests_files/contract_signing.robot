@@ -44,43 +44,145 @@ Suite Teardown  Test Suite Teardown
   Дочекатись дати  ${standstillEnd}
 
 
-Відображення вартості угоди
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+Відображення вартості угоди без урахування ПДВ
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${viewer_data.broker}: Відображення основних даних угоди
   ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
+  ...      ${viewer_data.broker}
   ...      contract_view
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
-  Отримати дані із поля awards[${award_index}].value.amount тендера для користувача ${viewer}
+  ${award}=  Get From List  ${viewer_data.tender_data.data.awards}  ${award_index}
+  ${award_amount}=  Get From Dictionary  ${award.value}  amount
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${amount_net_field}=  Set Variable  contracts[${contract_index}].value.amountNet
+  Звірити відображення поля ${amount_net_field} тендера із ${award_amount} для користувача ${viewer}
 
 
-Можливість редагувати вартість угоди
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
+Можливість редагувати вартість угоди без урахування ПДВ
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${tender_owner_data.broker}: Редагування угоди
   ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      ${tender_owner_data.broker}
   ...      modify_contract
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${amount_net}=  create_fake_amount_net  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${award_amount}=  Get From Dictionary  ${USERS.users['${viewer}'].tender_data.data.awards[${award_index}].value}  amount
-  ${amount}=  create_fake_amount  ${award_amount}
-  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
-  Run As  ${tender_owner}  Редагувати угоду  ${TENDER['TENDER_UAID']}  ${contract_index}  value.amount  ${amount}
+  Set to dictionary  ${tender_owner_data}  new_amount_net=${amount_net}
+  Run As  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amountNet
+  ...      ${amount_net}
 
 
-Відображення відредагованої вартості угоди
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+Відображення відредагованої вартості угоди без урахування ПДВ
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${viewer_data.broker}: Відображення основних даних угоди
   ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
+  ...      ${viewer_data.broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${amount_net}=  Get Variable Value  ${tender_owner_data.new_amount_net}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${amount_net_field}=  Set Variable  contracts[${contract_index}].value.amountNet
+  Звірити відображення поля ${amount_net_field} тендера із ${amount_net} для користувача ${viewer}
+
+
+Відображення вартості угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  [Tags]   ${viewer_data.broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${viewer_data.broker}
   ...      contract_view
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  Run Keyword And Ignore Error  Remove From Dictionary  ${USERS.users['${viewer}'].tender_data.data.contracts[${contract_index}].value}  amount
-  Звірити відображення поля contracts[${contract_index}].value.amount тендера із ${USERS.users['${tender_owner}'].new_amount} для користувача ${viewer}
+  ${amount_field}=  Set Variable  contracts[${contract_index}].value.amount
+  Отримати дані із поля ${amount_field} тендера для користувача ${viewer}
+
+
+Можливість редагувати вартість угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${tender_owner_data.broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${tender_owner_data.broker}
+  ...      modify_contract
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${amount}=  create_fake_amount  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Set to dictionary  ${tender_owner_data}  new_amount=${amount}
+  Run As  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amount
+  ...      ${amount}
+
+
+Відображення відредагованої вартості угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${viewer_data.broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${viewer_data.broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${amount}=  Get Variable Value  ${tender_owner_data.new_amount}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${amount_field}=  Set Variable  contracts[${contract_index}].value.amount
+  Звірити відображення поля ${amount_field} тендера із ${amount} для користувача ${viewer}
+
+
+Неможливість встановити вартість угоди без ПДВ більше ніж вартість угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${tender_owner_data.broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${tender_owner_data.broker}
+  ...      modify_contract
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${amount_net}=  Evaluate  ${award.value.amount} + 1
+  ${value}=  Require Failure  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amountNet
+  ...      ${amount_net}
+  Should Contain  ${value}  Value amountNet should be less or equal to amount
+
+
+Неможливість встановити вартість угоди без ПДВ нижче ніж вартість угоди більше ніж на 20 відсотків
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${tender_owner_data.broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${tender_owner_data.broker}
+  ...      modify_contract
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${value}=  Require Failure  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amountNet
+  ...      0
+  Should Contain  ${value}  for 20.0%
 
 
 Можливість встановити дату підписання угоди

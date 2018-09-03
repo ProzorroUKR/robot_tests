@@ -44,8 +44,23 @@ def get_fake_funder_scheme():
     return fake.funder_scheme()
 
 
-def create_fake_amount(award_amount):
-    return round(random.uniform(1, award_amount), 2)
+def create_fake_amount(award_amount, value_added_tax_included):
+    half_min_amount_net = award_amount - award_amount * 0.2
+    if value_added_tax_included:
+        return round(random.uniform(half_min_amount_net, award_amount), 2)
+    else:
+        min_amount_net = award_amount - award_amount * 0.2
+        range_amount_net = award_amount - min_amount_net
+        return round(random.uniform(award_amount, award_amount + range_amount_net / 2), 2)
+
+
+def create_fake_amount_net(award_amount, value_added_tax_included):
+    half_min_amount_net = award_amount - award_amount * 0.2
+    if value_added_tax_included:
+        min_amount_net = award_amount - award_amount * 0.2
+        return round(random.uniform(min_amount_net, half_min_amount_net), 2)
+    else:
+        return round(random.uniform(half_min_amount_net, award_amount), 2)
 
 
 def create_fake_number(min_number, max_number):
@@ -122,6 +137,7 @@ def test_tender_data(params,
         if submissionMethodDetails else "quick"
     now = get_now()
     value_amount = round(random.uniform(3000, 99999999.99), 2)  # max value equals to budget of Ukraine in hryvnias
+    vat_included = params.get('vat_included', True)
     data = {
         "mode": "test",
         "submissionMethodDetails": submissionMethodDetails,
@@ -135,7 +151,7 @@ def test_tender_data(params,
         "value": {
             "amount": value_amount,
             "currency": u"UAH",
-            "valueAddedTaxIncluded": True
+            "valueAddedTaxIncluded": vat_included
         },
         "minimalStep": {
             "amount": round(random.uniform(0.005, 0.03) * value_amount, 2),
@@ -169,7 +185,7 @@ def test_tender_data(params,
         data['lots'] = []
         for lot_number in range(params['number_of_lots']):
             lot_id = uuid4().hex
-            new_lot = test_lot_data(data['value']['amount'])
+            new_lot = test_lot_data(data['value']['amount'], vat_included)
             data['lots'].append(new_lot)
             data['lots'][lot_number]['id'] = lot_id
             for i in range(params['number_of_items']):
@@ -496,7 +512,7 @@ def test_invalid_features_data():
     ]
 
 
-def test_lot_data(max_value_amount):
+def test_lot_data(max_value_amount, vat_included=True):
     value_amount = round(random.uniform(1, max_value_amount), 2)
     return munchify(
         {
@@ -507,12 +523,12 @@ def test_lot_data(max_value_amount):
             "value": {
                 "currency": "UAH",
                 "amount": value_amount,
-                "valueAddedTaxIncluded": True
+                "valueAddedTaxIncluded": vat_included
             },
             "minimalStep": {
                 "currency": "UAH",
                 "amount": round(random.uniform(0.005, 0.03) * value_amount, 2),
-                "valueAddedTaxIncluded": True
+                "valueAddedTaxIncluded": vat_included
             },
             "status": "active"
         })
