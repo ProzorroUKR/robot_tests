@@ -44,7 +44,7 @@ def get_fake_funder_scheme():
     return fake.funder_scheme()
 
 
-def create_fake_amount(award_amount, value_added_tax_included):
+def create_fake_amount(award_amount, value_added_tax_included=False):
     half_min_amount_net = award_amount - award_amount * 0.2
     if value_added_tax_included:
         return round(random.uniform(half_min_amount_net, award_amount), 2)
@@ -54,7 +54,7 @@ def create_fake_amount(award_amount, value_added_tax_included):
         return round(random.uniform(award_amount, award_amount + range_amount_net / 2), 2)
 
 
-def create_fake_amount_net(award_amount, value_added_tax_included):
+def create_fake_amount_net(award_amount, value_added_tax_included=False):
     half_min_amount_net = award_amount - award_amount * 0.2
     if value_added_tax_included:
         min_amount_net = award_amount - award_amount * 0.2
