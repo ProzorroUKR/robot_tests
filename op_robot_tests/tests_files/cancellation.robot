@@ -6,6 +6,7 @@ Suite Teardown  Test Suite Teardown
 *** Variables ***
 @{USED_ROLES}       tender_owner  viewer
 ${MOZ_INTEGRATION}  ${False}
+${VAT_INCLUDED}     ${True}
 
 
 *** Test Cases ***
