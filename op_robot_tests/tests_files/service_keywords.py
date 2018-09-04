@@ -627,7 +627,7 @@ def generate_test_bid_data(tender_data):
             if tender_data.get('procurementMethodType', '') == 'esco':
                 value = test_bid_value_esco(tender_data)
             else:
-                value = test_bid_value(lot['value']['amount'])
+                value = test_bid_value(lot['value']['amount'], lot['value']['valueAddedTaxIncluded'])
             value['relatedLot'] = lot.get('id', '')
             bid.data.lotValues.append(value)
     else:
@@ -635,7 +635,7 @@ def generate_test_bid_data(tender_data):
             value = test_bid_value(tender_data)
             bid.data.update(value)
         else:
-            bid.data.update(test_bid_value(tender_data['value']['amount']))
+            bid.data.update(test_bid_value(tender_data['value']['amount'], tender_data['value']['valueAddedTaxIncluded']))
     if 'features' in tender_data:
         bid.data.parameters = []
         for feature in tender_data['features']:
