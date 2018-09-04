@@ -155,7 +155,8 @@ def test_tender_data(params,
         },
         "minimalStep": {
             "amount": round(random.uniform(0.005, 0.03) * value_amount, 2),
-            "currency": u"UAH"
+            "currency": u"UAH",
+            "valueAddedTaxIncluded": vat_included
         },
         "items": [],
         "features": []
@@ -449,12 +450,12 @@ def test_bid_data():
     return bid
 
 
-def test_bid_value(max_value_amount):
+def test_bid_value(max_value_amount, vat_included):
     return munchify({
         "value": {
             "currency": "UAH",
             "amount": round(random.uniform((0.95 * max_value_amount), max_value_amount), 2),
-            "valueAddedTaxIncluded": True
+            "valueAddedTaxIncluded": vat_included
         }
     })
 

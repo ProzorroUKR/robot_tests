@@ -157,7 +157,7 @@ Suite Teardown  Test Suite Teardown
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${amount_net}=  Evaluate  ${award.value.amount} + 1
+  ${amount_net}=  Evaluate  ${award.value.amount} * 2
   ${value}=  Require Failure  ${tender_owner}  Редагувати угоду
   ...      ${TENDER['TENDER_UAID']}
   ...      ${contract_index}
