@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -
 import operator
+import json
 from .local_time import get_now, TZ
 from copy import deepcopy
 from datetime import timedelta
@@ -8,7 +9,7 @@ from dpath.util import delete as xpathdelete, get as xpathget, new as xpathnew
 from haversine import haversine
 from json import load, loads
 from jsonpath_rw import parse as parse_path
-from munch import Munch, munchify
+from munch import Munch, munchify, unmunchify
 from robot.errors import ExecutionFailed
 from robot.libraries.BuiltIn import BuiltIn
 from robot.output import LOGGER
@@ -662,3 +663,9 @@ def dictionary_should_not_contain_path(dictionary, path):
     except KeyError:
         return
     raise RuntimeError("Dictionary contains path '%s'." % path)
+
+def from_unicode_to_json(unicode):
+    return json.dumps(unmunchify(unicode))
+
+def remove_protocol(addr):
+    return addr.replace('http://', '').replace('https://', '')

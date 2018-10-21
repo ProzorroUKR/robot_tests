@@ -11,6 +11,7 @@ from faker.providers.company.ru_RU import Provider as CompanyProviderRuRu
 from munch import munchify
 from op_faker import OP_Provider
 from .local_time import get_now, TZ
+import ast
 
 
 fake_en = Factory.create(locale='en_US')
@@ -20,7 +21,7 @@ fake_uk.add_provider(OP_Provider)
 fake = fake_uk
 used_identifier_id = []
 mode_open =     ["belowThreshold", "aboveThresholdUA", "aboveThresholdEU",
-                "aboveThresholdUA.defense", "competitiveDialogueUA", "competitiveDialogueEU", "esco"]
+                "aboveThresholdUA.defense", "competitiveDialogueUA", "competitiveDialogueEU", "esco", "closeFrameworkAgreementUA"]
 mode_limited =  ["reporting", "negotiation.quick", "negotiation"]
 violationType = ["corruptionDescription", "corruptionProcurementMethodType", "corruptionChanges",
                 "corruptionPublicDisclosure", "corruptionBiddingDocuments", "documentsForm",
@@ -258,6 +259,30 @@ def test_tender_data_planning(params):
         data['items'].append(item_data)
     if params['mode'] in mode_open:
         data["tender"]["procurementMethod"] = "open"
+        if params['mode'] == 'belowThreshold':
+            if 'years' in params.keys():
+                if params['years'] == 'wrong_period':
+                    data['budget']['period'] = {"startDate": "2019-12-31T23:59:59.999999",
+                                                "endDate": "2023-01-01T00:00:00.000001"}
+        if params['mode'] == 'closeFrameworkAgreementUA':
+            if 'years' in params.keys():
+                if params['years'] == '0':
+                    date = create_fake_date()
+                    data['budget']['period'] = {'startDate': date,
+                                                'endDate': date}
+                elif params['years'] == '5':
+                    data['budget']['period'] = {"startDate": "2019-12-31T23:59:59.999999",
+                                                "endDate": "2023-01-01T00:00:00.000001"}
+
+                elif params['years'] == '6':
+                    data['budget']['period'] = {"startDate": "2019-12-31T23:59:59.999999",
+                                                "endDate": "2024-01-01T00:00:00.000001"}
+                elif params['years'] == 'wrong_order':
+                    data['budget']['period'] = {"startDate": "2023-01-01T00:00:00.000001",
+                                                "endDate": "2019-12-31T23:59:59.999999"}
+                else:
+                    data['budget']['period'] = create_fake_period(days=365 * float(params['years']))
+
     if params['mode'] in mode_limited:
         data["tender"]["procurementMethod"] = "limited"
     return munchify(data)
@@ -749,3 +774,7 @@ def test_tender_data_esco(params, submissionMethodDetails):
     for index in range(params['number_of_items']):
         del data['items'][index]['deliveryDate']
     return data
+
+
+
+

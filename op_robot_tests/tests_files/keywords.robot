@@ -12,7 +12,6 @@ Documentation
 ...  This resource file contains keywords that are used directly by
 ...  test suites or by brokers' keyword libraries (also known as drivers).
 
-
 *** Keywords ***
 Test Suite Setup
   Set Suite Variable  ${WARN_RUN_AS}  ${False}
