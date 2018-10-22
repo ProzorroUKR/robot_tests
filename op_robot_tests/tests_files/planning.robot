@@ -7,13 +7,12 @@ Suite Teardown  Test Suite Teardown
 ${RESOURCE}     plans
 ${MODE}         belowThreshold
 @{USED_ROLES}   tender_owner  viewer
-${API_LOGIN}    test
-${API_PASS}     test
 
+${API_LOGIN}        test
+${API_PASS}         test
 ${NUMBER_OF_ITEMS}  ${2}
 ${TENDER_MEAT}      ${False}
 ${ITEM_MEAT}        ${False}
-
 
 *** Test Cases ***
 Можливість створити план закупівлі
@@ -23,13 +22,16 @@ ${ITEM_MEAT}        ${False}
   ...      create_plan
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити план закупівлі
 
-  Можливість створити план закупівлі для closeFrameworkAgreementUA
-  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням періоду
-  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням періоду 5 років
-  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням періоду більше 5 років
-  Можливість створити план закупівлі для closeFrameworkAgreementUA да budget.period.startDate передує budget.period.startDate
-  Можливість створити план закупівлі для belowThreshold з періодом більше 1 року
+
+Можливість знайти план по ідентифікатору
+  [Tags]   ${USERS.users['${viewer}'].broker}: Пошук плану
+  ...      viewer  tender_owner
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      find_plan
+  ...      critical
+  Можливість знайти план по ідентифікатору
 
 
 Відображення типу запланованого тендера
@@ -310,21 +312,17 @@ ${ITEM_MEAT}        ${False}
   Можливість видалити предмет закупівлі з плану
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Можливість closeFrameworkAgreementUA
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      delete_item
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити план закупівлі для closeFrameworkAgreementUA
+  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням періоду
+  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням Періоду 5 Років
+  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням періоду більше 5 років
+  Можливість створити план закупівлі для closeFrameworkAgreementUA да budget.period.startDate передує budget.period.startDate
+  Можливість створити план закупівлі для belowThreshold з періодом більше 1 року
