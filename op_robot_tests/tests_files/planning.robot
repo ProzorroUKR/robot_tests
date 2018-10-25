@@ -8,8 +8,6 @@ ${RESOURCE}     plans
 ${MODE}         belowThreshold
 @{USED_ROLES}   tender_owner  viewer
 
-${API_LOGIN}        test
-${API_PASS}         test
 ${NUMBER_OF_ITEMS}  ${2}
 ${TENDER_MEAT}      ${False}
 ${ITEM_MEAT}        ${False}
@@ -312,17 +310,29 @@ ${ITEM_MEAT}        ${False}
   Можливість видалити предмет закупівлі з плану
 
 
-Можливість closeFrameworkAgreementUA
+
+Можливість задати період бюджету 1 рік
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування плану
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      delete_item
+  ...      modify_plan
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість створити план закупівлі для closeFrameworkAgreementUA
-  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням періоду
-  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням Періоду 5 Років
-  Можливість створити план закупівлі для closeFrameworkAgreementUA з вказанням періоду більше 5 років
-  Можливість створити план закупівлі для closeFrameworkAgreementUA да budget.period.startDate передує budget.period.startDate
-  Можливість створити план закупівлі для belowThreshold з періодом більше 1 року
+  ${days}=  Convert To Integer  0
+  ${new_period}=   create_fake_period  days=${days}
+  Можливість змінити поле budget.period плану на ${new_period}
+
+
+Можливість задати період бюджету 5 років
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_plan
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${days}=  Convert To Integer  1460
+  ${new_period}=   create_fake_period  days=${days}
+  Можливість змінити поле budget.period плану на ${new_period}
+
