@@ -1,4 +1,4 @@
--v MODE:closeFrameworkAgreementUA
+-v MODE:belowThreshold
 
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:1
@@ -16,4 +16,3 @@
 -i modify_plan
 -i add_item
 -i delete_item
--i closeframework_period

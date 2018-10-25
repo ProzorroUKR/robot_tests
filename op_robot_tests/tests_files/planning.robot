@@ -317,6 +317,7 @@ ${ITEM_MEAT}        ${False}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      modify_plan
   ...      critical
+  ...      closeframework_period
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${days}=  Convert To Integer  0
@@ -325,11 +326,7 @@ ${ITEM_MEAT}        ${False}
 
 
 Можливість задати період бюджету 5 років
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування плану
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      modify_plan
-  ...      critical
+  [Tags]   closeframework_period
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${days}=  Convert To Integer  1460
