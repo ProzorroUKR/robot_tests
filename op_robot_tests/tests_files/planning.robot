@@ -316,7 +316,6 @@ ${ITEM_MEAT}        ${False}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      modify_plan
   ...      critical
-  ...      closeframework_period
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${new_period}=   create_fake_period  days=${0}
