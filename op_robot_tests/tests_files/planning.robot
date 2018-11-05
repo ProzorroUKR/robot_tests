@@ -310,7 +310,6 @@ ${ITEM_MEAT}        ${False}
   Можливість видалити предмет закупівлі з плану
 
 
-
 Можливість задати період бюджету 1 рік
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування плану
   ...      tender_owner
@@ -320,8 +319,7 @@ ${ITEM_MEAT}        ${False}
   ...      closeframework_period
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${days}=  Convert To Integer  0
-  ${new_period}=   create_fake_period  days=${days}
+  ${new_period}=   create_fake_period  days=${0}
   Можливість змінити поле budget.period плану на ${new_period}
 
 
@@ -329,7 +327,6 @@ ${ITEM_MEAT}        ${False}
   [Tags]   closeframework_period
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${days}=  Convert To Integer  1460
-  ${new_period}=   create_fake_period  days=${days}
+  ${new_period}=   create_fake_period  days=${1460}
   Можливість змінити поле budget.period плану на ${new_period}
 
