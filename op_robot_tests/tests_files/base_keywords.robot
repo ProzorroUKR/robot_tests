@@ -1441,3 +1441,31 @@ Resource           resource.robot
 Перевірити документ кваліфікіції ${award_id} для користувача ${username} в тендері ${tender_uaid}
   ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerExtract  ${username}  ${tender_uaid}  ${award_id}
   Порівняти об'єкти  ${document['documentType']}  registerExtract
+
+##############################################################################################
+#             MNN-validation
+##############################################################################################
+
+Можливість оголосити тендер з використанням валідації для MNN
+  [Arguments]  ${data_version}
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${adapted_data_mnn}=  edit_tender_data_for_mnn  ${adapted_data}  ${MODE}  ${data_version}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_mnn}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_mnn}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}

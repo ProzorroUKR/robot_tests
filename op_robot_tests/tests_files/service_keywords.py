@@ -662,3 +662,21 @@ def dictionary_should_not_contain_path(dictionary, path):
     except KeyError:
         return
     raise RuntimeError("Dictionary contains path '%s'." % path)
+
+
+def edit_tender_data_for_mnn(data, mode, data_version):
+    id = {1: '33600000-6', 2: '33632100-0', 3: '33632100-0'}
+    dict_data = unmunchify(data)
+    dict_data['data']['items'][0]['classification']['id'] = id[data_version]
+
+    if data_version is 3:
+        dict_data['data']['items'][0].pop('additionalClassifications', None)
+
+    if mode == 'negotiation.quick' or 'negotiation':
+        dict_data['data'].pop('features', None)
+
+    if mode == 'reporting':
+        dict_data['data'].pop('features', None)
+        dict_data['data'].pop('lots', None)
+        dict_data['data']['items'][0].pop('relatedLot', None)
+    return munchify(dict_data)
