@@ -65,7 +65,7 @@ ${MOZ_INTEGRATION}  ${False}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      check_MPC_field  level2
+  ...      tender_view_mpc  level2
   ...      non-critical
   Звірити відображення поля description тендера для користувача ${viewer}
 
