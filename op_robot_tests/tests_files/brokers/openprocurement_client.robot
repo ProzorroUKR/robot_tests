@@ -227,9 +227,8 @@ Library  openprocurement_client.utils
 
 Отримати список тендерів
   [Arguments]  ${username}
-  ${tenders_feed_generator}=  Run Keyword  get_tenders_feed  ${USERS.users['${username}'].client}
-  @{tenders_feed}=  Set Variable  @{tenders_feed_generator}
-  [return]  ${tenders_feed}
+  @{tenders_feed}=  get_tenders_feed  ${USERS.users['${username}'].client}
+  [return]  @{tenders_feed}
 
 
 Отримати тендер по внутрішньому ідентифікатору
@@ -368,9 +367,8 @@ Library  openprocurement_client.utils
 
 Отримати список планів
   [Arguments]  ${username}
-  ${plans_feed_generator}=  Run Keyword  get_plans_feed  ${USERS.users['${username}'].client}
-  @{plans_feed}=  Set Variable  @{plans_feed_generator}
-  [return]  ${plans_feed}
+  @{plans_feed}=  get_plans_feed  ${USERS.users['${username}'].client}
+  [return]  @{plans_feed}
 
 
 Отримати план по внутрішньому ідентифікатору
@@ -1896,9 +1894,8 @@ Library  openprocurement_client.utils
 
 Отримати список договорів
   [Arguments]  ${username}
-  ${contracts_feed_generator}=  Run Keyword  get_contracts_feed  ${USERS.users['${username}'].contracting_client}
-  @{contracts_feed}=  Set Variable  @{contracts_feed_generator}
-  [return]  ${contracts_feed}
+  @{contracts_feed}=  get_contracts_feed  ${USERS.users['${username}'].contracting_client}
+  [return]  @{contracts_feed}
 
 
 Отримати договір по внутрішньому ідентифікатору

@@ -1,6 +1,5 @@
 *** Settings ***
 Resource        base_keywords.robot
-Resource        resource.robot
 Suite Setup     Test Suite Setup
 Suite Teardown  Test Suite Teardown
 
@@ -16,15 +15,14 @@ ${FEED_ITEMS_NUMBER}    10
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      tender_feed
-  ...      tender_view
   ...      critical
-  Можливість прочитати тендери
+  Можливість прочитати тендери для користувача ${viewer}
+
 
 Можливість переглянути договори
   [Tags]   ${USERS.users['${viewer}'].broker}: Читання контрактів
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      contract_feed
-  ...      contract_view
   ...      critical
-  Можливість прочитати договори
+  Можливість прочитати договори для користувача ${viewer}
