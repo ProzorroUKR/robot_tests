@@ -1913,7 +1913,7 @@ Library  openprocurement_client.utils
 Пошук договору по ідентифікатору
   [Arguments]  ${username}  ${contract_uaid}
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
-  ${contract}=  openprocurement_client.Отримати договір по внутрішнтому ідентифікатору  ${username}  ${contract_uaid}
+  ${contract}=  openprocurement_client.Отримати договір по внутрішньому ідентифікатору  ${username}  ${internalid}
   [return]  ${contract}
 
 
@@ -1953,6 +1953,7 @@ Library  openprocurement_client.utils
   ${reply_doc_patch}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_document
   ...      ${contract.data.id}
   ...      ${change_document}
+  ...      ${change_document.data.id}
   ...      access_token=${contract.access.token}
   Log  ${reply_doc_create}
   Log  ${reply_doc_patch}
