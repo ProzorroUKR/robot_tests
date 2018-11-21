@@ -1,6 +1,5 @@
 *** Settings ***
 Resource        base_keywords.robot
-Resource        resource.robot
 Suite Setup     Test Suite Setup
 Suite Teardown  Test Suite Teardown
 
@@ -16,6 +15,5 @@ ${FEED_ITEMS_NUMBER}    10
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      plan_feed
-  ...      plan_view
   ...      critical
-  Можливість прочитати плани
+  Можливість прочитати плани для користувача ${viewer}

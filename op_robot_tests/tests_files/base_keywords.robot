@@ -79,13 +79,8 @@ Resource           resource.robot
   Run As  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
 
 
-Можливість прочитати тендери
-  :FOR  ${username}  IN  ${viewer}
-  \  Можливість прочитати тендери для користувача ${username}
-
-
 Можливість прочитати тендери для користувача ${username}
-  ${tenders_feed}=  Отримати список тендерів  ${username}
+  ${tenders_feed}=  Run As  ${username}  Отримати список тендерів
   ${tenders_len}=  Get Length  ${tenders_feed}
   ${number}=  Evaluate  min(${FEED_ITEMS_NUMBER}, ${tenders_len})
   ${sample}=  Evaluate  random.sample(range(0, ${tenders_len}), ${number})  random
@@ -95,7 +90,7 @@ Resource           resource.robot
   \  ${internalid}=  Get From Dictionary  ${tenders_feed_item}  id
   \  ${date_modified}=  Get From Dictionary  ${tenders_feed_item}  dateModified
   \  Log To Console  - Читання тендеру з id ${internalid} та датою модифікації ${date_modified}
-  \  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
+  \  Run As  ${username}  Отримати тендер по внутрішньому ідентифікатору  ${internalid}
 
 
 Можливість знайти план по ідентифікатору
@@ -103,13 +98,8 @@ Resource           resource.robot
   \  Можливість знайти план по ідентифікатору для користувача ${username}
 
 
-Можливість прочитати плани
-  :FOR  ${username}  IN  ${viewer}
-  \  Можливість прочитати плани для користувача ${username}
-
-
 Можливість прочитати плани для користувача ${username}
-  ${plans_feed}=  Отримати список планів  ${username}
+  ${plans_feed}=  Run As  ${username}  Отримати список планів
   ${plans_len}=  Get Length  ${plans_feed}
   ${number}=  Evaluate  min(${FEED_ITEMS_NUMBER}, ${plans_len})
   ${sample}=  Evaluate  random.sample(range(0, ${plans_len}), ${number})  random
@@ -119,16 +109,11 @@ Resource           resource.robot
   \  ${internalid}=  Get From Dictionary  ${plans_feed_item}  id
   \  ${date_modified}=  Get From Dictionary  ${plans_feed_item}  dateModified
   \  Log To Console  - Читання плану з id ${internalid} та датою модифікації ${date_modified}
-  \  Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}
-
-
-Можливість прочитати договори
-  :FOR  ${username}  IN  ${viewer}
-  \  Можливість прочитати договори для користувача ${username}
+  \  Run As  ${username}  Отримати план по внутрішньому ідентифікатору  ${internalid}
 
 
 Можливість прочитати договори для користувача ${username}
-  ${contracts_feed}=  Отримати список договорів  ${username}
+  ${contracts_feed}=  Run As  ${username}  Отримати список договорів
   ${contracts_len}=  Get Length  ${contracts_feed}
   ${number}=  Evaluate  min(${FEED_ITEMS_NUMBER}, ${contracts_len})
   ${sample}=  Evaluate  random.sample(range(0, ${contracts_len}), ${number})  random
@@ -138,7 +123,7 @@ Resource           resource.robot
   \  ${internalid}=  Get From Dictionary  ${contracts_feed_item}  id
   \  ${date_modified}=  Get From Dictionary  ${contracts_feed_item}  dateModified
   \  Log To Console  - Читання договору з id ${internalid} та датою модифікації ${date_modified}
-  \  Отримати договір по внутрішньому ідентифікатору  ${username}  ${internalid}
+  \  Run As  ${username}  Отримати договір по внутрішньому ідентифікатору  ${internalid}
 
 
 Можливість знайти об'єкт моніторингу по ідентифікатору
