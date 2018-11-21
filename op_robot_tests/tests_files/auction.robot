@@ -97,7 +97,8 @@ Suite Teardown  Test Suite Teardown
 Можливість вичитати посилання на аукціон для ${username}
   ${url}=  Run As  ${username}  Отримати посилання на аукціон для глядача  ${TENDER['TENDER_UAID']}  ${TENDER['LOT_ID']}
   Should Be True  '${url}'
-  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  Run Keyword If  '${procurementMethodType}' == 'esco'  Should Match Regexp  ${url}  ${ESCO_AUCTION_REGEXP}  ELSE  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
   Log  URL аукціону для глядача: ${url}
 
 
