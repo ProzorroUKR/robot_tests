@@ -1910,7 +1910,7 @@ Library  openprocurement_client.utils
 Пошук договору по ідентифікатору
   [Arguments]  ${username}  ${contract_uaid}
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
-  ${contract}=  openprocurement_client.Отримати договір по внутрішнтому ідентифікатору  ${username}  ${contract_uaid}
+  ${contract}=  openprocurement_client.Отримати договір по внутрішньому ідентифікатору  ${username}  ${internalid}
   [return]  ${contract}
 
 
