@@ -1950,6 +1950,7 @@ Library  openprocurement_client.utils
   ${reply_doc_patch}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_document
   ...      ${contract.data.id}
   ...      ${change_document}
+  ...      ${change_document.data.id}
   ...      access_token=${contract.access.token}
   Log  ${reply_doc_create}
   Log  ${reply_doc_patch}
