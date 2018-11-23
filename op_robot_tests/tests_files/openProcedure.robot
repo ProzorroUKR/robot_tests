@@ -37,17 +37,6 @@ ${MOZ_INTEGRATION}  ${False}
   ...      critical
   Можливість знайти тендер по ідентифікатору для усіх користувачів
 
-
-Можливість знайти тендер за кошти донора по ідентифікатору донора
-# invalid test case because of functional changes - this type of search can`t be done any more
-  [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
-  ...      viewer  tender_owner  provider  provider1
-  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
-  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
-  ...      find_tender_by_funder_id
-  ...      critical
-  Можливість знайти тендер за кошти донора для усіх користувачів
-
 ##############################################################################################
 #             Відображення основних даних тендера
 ##############################################################################################

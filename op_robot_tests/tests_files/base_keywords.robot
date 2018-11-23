@@ -146,12 +146,6 @@ Resource           resource.robot
   \  Можливість знайти тендер за кошти донора для користувача ${username}
 
 
-Можливість знайти тендер за кошти донора для користувача ${username}
-  Дочекатись синхронізації з майданчиком  ${username}
-  ${funder_id}=  Set Variable  ${USERS.users['${tender_owner}'].initial_data.data['funders'][0]['identifier']['id']}
-  Run as  ${username}  Пошук тендера за кошти донора  ${funder_id}
-
-
 Можливість оприлюднити рішення про початок моніторингу
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
   ${monitoring_data}=  test_status_data  active
