@@ -39,6 +39,7 @@ ${MOZ_INTEGRATION}  ${False}
 
 
 Можливість знайти тендер за кошти донора по ідентифікатору донора
+# invalid test case because of functional changes - this type of search can`t be done any more
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      viewer  tender_owner  provider  provider1
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}

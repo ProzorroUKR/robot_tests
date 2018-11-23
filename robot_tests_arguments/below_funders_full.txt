@@ -11,7 +11,6 @@
 
 -i create_tender
 -i find_tender
--i find_tender_by_funder_id
 -i tender_view
 -i tender_view_value
 -i tender_view_minimalStep
