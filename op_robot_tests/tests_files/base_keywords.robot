@@ -141,11 +141,6 @@ Resource           resource.robot
   Run as  ${username}  Пошук об'єкта моніторингу по ідентифікатору  ${MONITORING['MONITORING_UAID']}
 
 
-Можливість знайти тендер за кошти донора для усіх користувачів
-  :FOR  ${username}  IN  ${tender_owner}  ${provider}  ${provider1}  ${provider2}  ${viewer}
-  \  Можливість знайти тендер за кошти донора для користувача ${username}
-
-
 Можливість оприлюднити рішення про початок моніторингу
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
   ${monitoring_data}=  test_status_data  active
