@@ -388,14 +388,6 @@ Library  openprocurement_client.utils
   [return]  ${tender}
 
 
-Пошук тендера за кошти донора
-  [Arguments]  ${username}  ${funder_id}=${None}  ${save_key}=tenders_with_funder
-  ${tenders}=  get_tenders_by_funder_id  ${USERS.users['${username}'].client}  ${funder_id}
-  Set To Dictionary  ${USERS.users['${username}']}  ${save_key}=${tender}
-  Log  ${tenders}
-  [return]  ${tenders.keys()}
-
-
 Отримати тендер другого етапу та зберегти його
   [Arguments]  ${username}  ${tender_uaid}
   ${internalid}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
