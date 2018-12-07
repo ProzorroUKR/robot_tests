@@ -659,66 +659,66 @@
     "procuringEntities": [
         {
             "contactPoint": {
-                "url": "http://kpbl.org.ua",
-                "telephone": "0445639942",
-                "email": "kpbl@bigmir.net",
-                "name": "Хильченко Інна Григорівна",
-                "faxNumber": "044-563-99-05"
+                "url": "http://webpage.org.ua/",
+                "telephone": "0881112233",
+                "email": "e_mail_test@bigmir.net",
+                "name": "Тестовий Замовник 1",
+                "faxNumber": "088-111-22-33"
             },
             "identifier": {
                 "scheme": "UA-EDR",
                 "id": "13313462",
-                "legalName": "Київський професійний будівельний ліцей"
+                "legalName": "Київський Тестовий Ліцей"
             },
-            "name": "Київський професійний будівельний ліцей",
+            "name": "Київський Тестовий Ліцей",
             "address": {
-                "postalCode": "02121",
+                "postalCode": "01111",
                 "countryName": "Україна",
-                "streetAddress": "вулиця Чернігівська, 220, 8",
+                "streetAddress": "вулиця Тестова, 220, 8",
                 "region": "місто Київ",
                 "locality": "Київ"
             }
         },
         {
             "contactPoint": {
-                "url": "http://skinmedic.com.ua",
-                "telephone": "4260712",
-                "email": "kmkshvl@ukr.net",
-                "name": "Чередниченко Олена Юріївна",
-                "faxNumber": "413-41-40"
+                "url": "http://webpage.com.ua",
+                "telephone": "2223344",
+                "email": "e_mail_test@ukr.net",
+                "name": "Тестовий Замовник 2",
+                "faxNumber": "333-44-55"
             },
             "identifier": {
                 "scheme": "UA-EDR",
                 "id": "00037256",
-                "legalName": "Київська міська клінічна шкірно-венерологічна лікарня"
+                "legalName": "Київська Тестова міська клінічна лікарня"
             },
-            "name": "Київська міська клінічна шкірно-венерологічна лікарня",
+            "name": "Київська Тестова міська клінічна лікарня",
             "address": {
-                "postalCode": "04655",
+                "postalCode": "04444",
                 "countryName": "Україна",
-                "streetAddress": "вулиця Богатирська, 32",
+                "streetAddress": "вулиця Тестова, 32",
                 "region": "місто Київ",
                 "locality": "Київ"
             }
         },
         {
             "contactPoint": {
-                "url": "http://www.shev.gov.ua/",
-                "telephone": "2341170",
-                "email": "buh510@ukr.net",
-                "name": "Ліповець Євген Іванович",
-                "faxNumber": "2343591"
+                "url": "http://www.page.gov.ua/",
+                "telephone": "6665544",
+                "email": "test_e_mail@ukr.net",
+                "name": "Тезтовий Замовник 3",
+                "faxNumber": "9998877"
             },
             "identifier": {
                 "scheme": "UA-EDR",
                 "id": "21725150",
-                "legalName": "Шевченківська районна в місті Києві державна адміністрація"
+                "legalName": "Тестова районна в місті Києві державна адміністрація"
             },
-            "name": "Шевченківська районна в місті Києві державна адміністрація",
+            "name": "Тестова районна в місті Києві державна адміністрація",
             "address": {
-                "postalCode": "01030",
+                "postalCode": "01111",
                 "countryName": "Україна",
-                "streetAddress": "Богдана Хмельницького вулиця, 21-29",
+                "streetAddress": "Тестова вулиця, 21-29",
                 "region": "Київська область",
                 "locality": "Переяслав-Хмельницький"
             }
