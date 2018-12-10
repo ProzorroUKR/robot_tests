@@ -56,7 +56,7 @@ users:
         api_key:  ""
         dasu_api_key: ""
         broker:   Quinta
-        browser:  firefox
+        browser:  chrome
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         position: [0, 0]
         size:     [1400, 900]
