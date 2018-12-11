@@ -12,6 +12,7 @@
 -i find_tender
 
 -i tender_view
+-i tender_view_value
 -i tender_view_unit_code
 -i tender_view_coordinates
 -i tender_view_framework
@@ -58,6 +59,7 @@
 -i openeu_add_financial_bid_doc_by_provider
 -i openeu_add_qualification_bid_doc_by_provider
 -i openeu_add_eligibility_bid_doc_by_provider
+-i add_winningBid_doc_by_provider
 
 -i pre-qualification_add_doc_to_tender
 -i pre-qualification_add_doc_to_lot
@@ -76,6 +78,7 @@
 -i pre-qualification_approve_qualifications
 
 -i auction_url
+-i auction
 
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
@@ -93,3 +96,12 @@
 -i awarding_approve_first_award
 -i modify_agreement
 -i agreement_registration
+
+
+-i find_agreement
+-i add_agreement_doc
+-i submit_change
+-i change_view
+-i modification
+-i modification_view
+-i apply_change
