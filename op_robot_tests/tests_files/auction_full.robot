@@ -7,7 +7,7 @@ Library         Selenium2Library
 
 *** Variables ***
 @{USED_ROLES}  viewer  provider  provider1
-
+${TENDER_MEAT}      ${True}
 
 *** Test Cases ***
 Можливість знайти закупівлю по ідентифікатору
@@ -319,8 +319,10 @@ Library         Selenium2Library
 
 
 Поставити максимально можливу ставку
-  Wait Until Page Contains Element    xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ${last_amount}=     Get Text        xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Get Text  id=max_bid_amount_price
   ${last_amount}=  convert_amount_string_to_float  ${last_amount}
   ${value}=  Convert To Number  0.01
   ${last_amount}=  subtraction  ${last_amount}  ${value}
@@ -328,8 +330,10 @@ Library         Selenium2Library
 
 
 Поставити ставку більшу від максимальної на ${extra_amount} грн
-  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ${last_amount}=  Get Text         xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Get Text  id=max_bid_amount_price
   ${last_amount}=  convert_amount_string_to_float  ${last_amount}
   ${extra_amount}=  convert_amount_string_to_float  ${extra_amount}
   ${last_amount}=  Evaluate  ${last_amount}+${extra_amount}
@@ -366,12 +370,14 @@ Library         Selenium2Library
 
 
 Поставити малу ставку в ${last_amount} грн
-  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
   Поставити ставку  ${last_amount}  Ви ввели дуже малу суму
 
 
 Поставити нульову ставку
-  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
   Поставити ставку  0  Bid amount is required
 
 
