@@ -79,7 +79,7 @@ ${TENDER_MEAT}      ${True}
   ...      ${USERS.users['${provider}'].broker}
   ...      auction
   Вибрати учасника, який може зробити ставку
-  Поставити максимально можливу ставку
+  Поставити ставку меншу на 0.7 відсотків
   Дочекатись учасником закінчення стадії ставок
   Перевірити чи ставка була прийнята
 
@@ -91,7 +91,7 @@ ${TENDER_MEAT}      ${True}
   ...      auction
   Вибрати учасника, який може зробити ставку
   Поставити ставку більшу від максимальної на 1 грн
-  Поставити максимально можливу ставку
+  Поставити ставку меншу на 0.7 відсотків
   Дочекатись учасником закінчення стадії ставок
   Перевірити чи ставка була прийнята
 
@@ -329,6 +329,20 @@ ${TENDER_MEAT}      ${True}
   Поставити ставку   ${last_amount}   Заявку прийнято
 
 
+Поставити ставку меншу на ${percent} відсотків
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ${max_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ...        ELSE  Get Text  id=max_bid_amount_price
+  ${max_amount}=  convert_amount_string_to_float  ${max_amount}
+  ${max_amount}=  Convert To Number  ${max_amount}  2
+  ${percent}=  convert_amount_string_to_float  ${percent}
+  ${last_amount}=  Evaluate  ${max_amount}*${percent}
+  ${last_amount}=  Convert To Number  ${last_amount}  2
+  Поставити ставку   ${last_amount}  Ви збираєтеся значно понизити свою ставку на
+  Поставити ставку   ${last_amount}  Заявку прийнято
+
+
 Поставити ставку більшу від максимальної на ${extra_amount} грн
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
   ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
@@ -372,13 +386,14 @@ ${TENDER_MEAT}      ${True}
 Поставити малу ставку в ${last_amount} грн
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
   ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
-  Поставити ставку  ${last_amount}  Ви ввели дуже малу суму
+  Поставити ставку  ${last_amount}  Ви збираєтеся значно понизити свою ставку на
+  Поставити ставку  ${last_amount}  Заявку прийнято
 
 
 Поставити нульову ставку
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
   ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
-  Поставити ставку  0  Bid amount is required
+  Поставити ставку  0  Ви збираєтеся значно понизити свою ставку на
 
 
 Перевірити чи ставка була прийнята
