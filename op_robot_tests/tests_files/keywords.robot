@@ -294,6 +294,12 @@ Get Broker Property By Username
   [Return]  ${bid}
 
 
+Підготувати дані для подання пропозиції другого етапу рамкової угоди
+  [Arguments]  ${index}=${0}
+  ${bid}=  test_bid_data_selection  ${USERS.users['${provider2}'].tender_data.data}  ${index}
+  [Return]  ${bid}
+
+
 Підготувати дані для подання пропозиції для другого етапу
   [Arguments]  ${username}
   ${value}=  Evaluate  ${USERS.users['${username}'].bidresponses.bid.data.lotValues[0].value.amount}*0.95
@@ -338,6 +344,25 @@ Get Broker Property By Username
   Set To Dictionary  ${USERS.users['${username}']}  change_data=${change_data}
   Log  ${change_data}
   [Return]  ${change_data}
+
+
+Підготувати дані про зміну до угоди
+  [Arguments]  ${username}  ${rationaleType}
+  ${change_data}=  test_agreement_change_data  ${rationaleType}
+  Set To Dictionary  ${USERS.users['${username}']}  change_data=${change_data}
+  Log  ${change_data}
+  [Return]  ${change_data}
+
+
+Підготувати дані для оновлення властивості угоди
+  [Arguments]  ${username}  ${field_name}  ${field_value}
+  ${modification_data}=  test_modification_data
+  ...      ${USERS.users['${username}'].agreement_data.data['items'][0]['id']}
+  ...      ${field_name}
+  ...      ${field_value}
+  Set To Dictionary  ${USERS.users['${username}']}  modification_data=${modification_data}
+  Log  ${modification_data}
+  [Return]  ${modification_data}
 
 
 Адаптувати дані для оголошення тендера
@@ -530,6 +555,12 @@ Log differences between dicts
   Порівняти об'єкти  ${left}  ${right}
 
 
+Звірити поле угоди із значенням
+  [Arguments]  ${username}  ${agreement_uaid}  ${left}  ${field}
+  ${right}=  Run As  ${username}  Отримати інформацію із угоди  ${agreement_uaid}  ${field}
+  Порівняти об'єкти  ${left}  ${right}
+
+
 Звірити поле зміни до договору
   [Arguments]  ${username}  ${contract_uaid}  ${change_data}  ${field}
   ${left}=  get_from_object  ${change_data.data}  ${field}
@@ -604,7 +635,9 @@ Log differences between dicts
   [Arguments]  ${username}  ${tender_uaid}  ${tender_data}  ${item_id}
   ${item_index}=  get_object_index_by_id  ${tender_data.data['items']}  ${item_id}
   ${left_lat}=  get_from_object  ${tender_data.data}  items[${item_index}].deliveryLocation.latitude
+  ${left_lat}=  Convert To Number  ${left_lat}
   ${left_lon}=  get_from_object  ${tender_data.data}  items[${item_index}].deliveryLocation.longitude
+  ${left_lon}=  Convert To Number  ${left_lon}
   ${right_lat}=  Отримати дані із тендера  ${username}  ${tender_uaid}  deliveryLocation.latitude  ${item_id}
   ${right_lat}=  Convert To Number  ${right_lat}
   ${right_lon}=  Отримати дані із тендера  ${username}  ${tender_uaid}  deliveryLocation.longitude  ${item_id}
@@ -687,6 +720,24 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].second_stage_data.data}
   Set To Dictionary  ${USERS.users['${username}'].second_stage_data}  data=${data}
   Log  ${USERS.users['${username}'].second_stage_data.data}
+  [return]  ${field_value}
+
+
+Отримати дані із угоди
+  [Arguments]  ${username}  ${agreement_uaid}  ${field_name}
+  ${status}  ${field_value}=  Run keyword and ignore error
+  ...      get_from_object
+  ...      ${USERS.users['${username}'].agreement_data.data}
+  ...      ${field_name}
+  # If field in cache, return its value
+  Run Keyword if  '${status}' == 'PASS'  Return from keyword   ${field_value}
+  # Else call broker to find field
+  ${field_value}=  Run As  ${username}  Отримати інформацію із угоди  ${agreement_uaid}  ${field_name}
+  # And caching its value before return
+  Set_To_Object  ${USERS.users['${username}'].agreement_data.data}  ${field_name}  ${field_value}
+  ${data}=  munch_dict  arg=${USERS.users['${username}'].agreement_data.data}
+  Set To Dictionary  ${USERS.users['${username}'].agreement_data}  data=${data}
+  Log  ${USERS.users['${username}'].agreement_data.data}
   [return]  ${field_value}
 
 
@@ -910,6 +961,19 @@ Require Failure
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${left}  ${award_index}=${None}
   ${right}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  status  ${award_index}
   Порівняти об'єкти  ${left}  ${right}
+
+
+Дочекатись дати початку періоду уточнення
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      10 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      active.enquiries
 
 
 Дочекатись дати початку прийому пропозицій
@@ -1136,12 +1200,15 @@ Require Failure
   [Return]  ${index}
 
 
-Розрахувати ціну для ${index} контракту
-  ${contract_data}=  Create Dictionary  data=${USERS.users['${tender_owner}'].tender_data.data.agreements[0].contracts[${index}]}
-  ${quantity}=  Convert To Integer  ${USERS.users['${tender_owner}'].tender_data.data['items'][0]['quantity']}
-  ${value}=  Evaluate  ${USERS.users['${tender_owner}'].tender_data.data.awards[${index}+1].value.amount}/${quantity}
+Розрахувати ціну для ${contract_number} контракту
+  ${contract_data}=  Create Dictionary  data=${USERS.users['${tender_owner}'].tender_data.data.agreements[0].contracts[${contract_number}]}
+  ${quantity}=  Set Variable  ${0}
+  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+  \  ${quantity}=  Evaluate  ${quantity}+${USERS.users['${tender_owner}'].tender_data.data['items'][${index}]['quantity']}
+  ${value}=  Evaluate  ${USERS.users['${tender_owner}'].tender_data.data.awards[${contract_number}+1].value.amount}/${quantity}
   ${value}=  Convert To Integer  ${value}
-  Set To Dictionary  ${contract_data.data.unitPrices[0].value}  amount=${value}
+  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+  \  Set To Dictionary  ${contract_data.data.unitPrices[${index}].value}  amount=${value}
   ${contract_data}=  munch_dict  arg=${contract_data}
   Log  ${contract_data}
   [Return]  ${contract_data}

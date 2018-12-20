@@ -478,6 +478,19 @@ def test_bid_value_esco(tender_data):
     })
 
 
+def test_bid_data_selection(data, index):
+    bid = munchify({
+        "data": {
+            "tenderers": [
+                data['agreements'][0]['contracts'][index]['suppliers'][0]
+            ]
+        }
+    })
+    bid.data['status'] = 'draft'
+    bid.data['parameters'] = data['agreements'][0]['contracts'][index]['parameters']
+    bid.data['lotValues'] = [test_bid_value(data['lots'][0]['value']['amount'])]
+    return bid
+
 
 def test_supplier_data():
     return munchify({
@@ -636,6 +649,22 @@ def test_tender_data_competitive_dialogue(params, submissionMethodDetails):
     return data
 
 
+def test_tender_data_selection(procedure_intervals, params, submissionMethodDetails, tender_data=None):
+    intervals = procedure_intervals['framework_selection']
+    params['intervals'] = intervals
+    data = test_tender_data(params, (), submissionMethodDetails)
+    data['title_en'] = "[TESTING]"
+    data['procuringEntity'] = tender_data['data']['procuringEntity']
+    del data['procuringEntity']['contactPoint']['availableLanguage']
+    data['procurementMethodType'] = 'closeFrameworkAgreementSelectionUA'
+    data['items'] = tender_data['data']['items']
+    data['lots'] = tender_data['data']['lots']
+    data['agreements'] =  [{'id': tender_data['data']['agreements'][0]['id']}]
+    del data['value']
+    del data['minimalStep']
+    return munchify({'data':data})
+
+
 def test_change_data():
     return munchify(
     {
@@ -648,6 +677,32 @@ def test_change_data():
             "status": "pending"
         }
     })
+
+
+def test_agreement_change_data(rationaleType):
+    return munchify(
+    {
+        "data":
+        {
+            "rationale": fake.description(),
+            "rationale_en": fake_en.sentence(nb_words=10, variable_nb_words=True),
+            "rationale_ru": fake_ru.sentence(nb_words=10, variable_nb_words=True),
+            "rationaleType": rationaleType,
+        }
+    })
+
+
+def test_modification_data(item_id, field_name, field_value):
+    data = {
+        "modifications": [
+            {
+                "itemId": item_id,
+                field_name: field_value
+            }
+        ]
+    }
+    return munchify({'data':data})
+
 
 
 def get_hash(file_contents):

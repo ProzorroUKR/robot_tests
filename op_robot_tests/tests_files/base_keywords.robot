@@ -29,6 +29,29 @@ Resource           resource.robot
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 
+Можливість оголосити тендер другого етапу
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ${submissionMethodDetails}=  Get Variable Value  ${submissionMethodDetails}
+  ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
+  ${first_stage}=  Run As  ${provider2}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+  ${tender_data}=  test_tender_data_selection  ${period_intervals}  ${tender_parameters}  ${submissionMethodDetails}  tender_data=${first_stage}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+  Дочекатись дати початку періоду уточнення  ${tender_owner}  ${TENDER_UAID}
+
+
 Можливість створити об'єкт моніторингу
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${accelerator}=  Get Variable Value  ${accelerator}
@@ -683,6 +706,27 @@ Resource           resource.robot
   ...      object_id=${feature_id}
 
 
+Отримати дані із поля ${field_name} нецінових показників для усіх користувачів
+  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+  \  Отримати дані із поля ${field_name} нецінових показників для користувача ${username}
+
+
+Отримати дані із поля ${field_name} нецінових показників для користувача ${username}
+  ${number_of_features}=  Get Length  ${USERS.users['${provider2}'].tender_data.data.features}
+  :FOR  ${feature_index}  IN RANGE  ${number_of_features}
+  \  Отримати дані із нецінового показника  ${username}  ${TENDER['TENDER_UAID']}  features[${feature_index}].${field_name}
+
+
+Отримати дані із нецінового показника
+  [Arguments]  ${username}  ${tender_uaid}  ${field_name}
+  ${field_value}=  Run As  ${username}  Отримати інформацію із тендера  ${tender_uaid}  ${field_name}
+  Set_To_Object  ${USERS.users['${username}'].tender_data.data}  ${field_name}  ${field_value}
+  ${data}=  munch_dict  arg=${USERS.users['${username}'].tender_data.data}
+  Set To Dictionary  ${USERS.users['${username}'].tender_data}  data=${data}
+  Log  ${USERS.users['${username}'].tender_data.data}
+  [return]  ${field_value}
+
+
 Можливість видалити ${feature_index} неціновий показник
   ${feature_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data['features'][${feature_index}]}
   Run As  ${tender_owner}  Видалити неціновий показник  ${TENDER['TENDER_UAID']}  ${feature_id}
@@ -1267,6 +1311,18 @@ Resource           resource.robot
   Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
 
 
+Можливість подати цінову пропозицію на другому етапі рамкової угоди користувачем
+  [Arguments]  ${username}  ${index}=${0}
+  ${bid}=  Підготувати дані для подання пропозиції другого етапу рамкової угоди  ${index}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
+
+
 Можливість подати цінову пропозицію на другий етап користувачем ${username}
   ${bid}=  Підготувати дані для подання пропозиції для другого етапу  ${username}
   ${bidresponses}=  Create Dictionary  bid=${bid}
@@ -1362,6 +1418,33 @@ Resource           resource.robot
   ...      content=${file_content}
   Set to dictionary  ${USERS.users['${tender_owner}']}  contract_doc=${doc}
   Run As  ${username}  Завантажити документ в угоду  ${file_path}  ${TENDER['TENDER_UAID']}  ${contract_index}
+  Remove File  ${file_path}
+
+
+Можливість завантажити документ для рамкової угоди користувачем ${username}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${doc_id}=  get_id_from_string  ${file_name}
+  ${doc}=  Create Dictionary
+  ...      id=${doc_id}
+  ...      name=${file_name}
+  ...      content=${file_content}
+  Set to dictionary  ${USERS.users['${username}']}  contract_doc=${doc}
+  Run As  ${username}  Завантажити документ в рамкову угоду  ${file_path}  ${USERS.users['${username}'].tender_data.data.agreements[0].agreementID}
+  Remove File  ${file_path}
+
+
+Можливість завантажити документ для зміни у рамковій угоді користувачем ${username}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${doc_id}=  get_id_from_string  ${file_name}
+  ${doc}=  Create Dictionary
+  ...      id=${doc_id}
+  ...      name=${file_name}
+  ...      content=${file_content}
+  Set to dictionary  ${USERS.users['${username}']}  contract_doc=${doc}
+  Run As  ${username}  Завантажити документ для зміни у рамковій угоді
+  ...      ${file_path}
+  ...      ${USERS.users['${username}'].tender_data.data.agreements[0].agreementID}
+  ...      ${USERS.users['${username}'].agreement_data.data['items'][0]['id']}
   Remove File  ${file_path}
 
 
