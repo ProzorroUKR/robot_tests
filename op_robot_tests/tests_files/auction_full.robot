@@ -394,7 +394,7 @@ ${TENDER_MEAT}      ${True}
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
   ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
   Поставити ставку  0  Ви збираєтеся значно понизити свою ставку на
-
+  
 
 Перевірити чи ставка була прийнята
   ${last_amount}=  convert_amount  ${USERS['${CURRENT_USER}']['last_amount']}
