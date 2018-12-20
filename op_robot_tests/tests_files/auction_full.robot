@@ -329,7 +329,7 @@ ${TENDER_MEAT}      ${True}
   Поставити ставку   ${last_amount}   Заявку прийнято
 
 
-Поставити ставку меншу на ${percent} відсотків
+Поставити ставку в ${percent} відсотків від максимальної
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
   ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
   ${max_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
