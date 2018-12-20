@@ -7,7 +7,6 @@ Library         Selenium2Library
 
 *** Variables ***
 @{USED_ROLES}  viewer  provider  provider1
-${TENDER_MEAT}      ${True}
 
 *** Test Cases ***
 Можливість знайти закупівлю по ідентифікатору
