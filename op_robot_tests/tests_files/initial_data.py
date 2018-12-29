@@ -122,6 +122,14 @@ def create_fake_IsoDurationType(
     )
 
 
+def percentage_generation(number_of_milestones):
+    # input: number_of_milestones 1, 2, 3, ...
+    # output: list of percentage numbers
+    percentage_data = [random.randint(1, round(100 / number_of_milestones)) for _ in range(number_of_milestones - 1)]
+    percentage_data.append(100 - sum(percentage_data))
+    return percentage_data
+
+
 def test_tender_data(params,
                      periods=("enquiry", "tender"),
                      submissionMethodDetails=None,
@@ -215,6 +223,20 @@ def test_tender_data(params,
     if funders is not None:
         data['funders'] = [fake.funders_data() for _ in range(int(funders))]
     data['status'] = 'draft'
+    milestones = params.get('number_of_milestones')
+    if milestones:
+        data['milestones'] = []
+        percentage_data = percentage_generation(milestones)
+        for percentage in percentage_data:
+            milestone_element = {"code": "prepayment",
+                                 "sequenceNumber": 0,
+                                 "title": "Підписання договору",
+                                 "duration": {
+                                     "type": "banking",
+                                     "days": 5},
+                                 "percentage": percentage,
+                                 "type": "financing"}
+            data["milestones"].append(milestone_element)
     return munchify(data)
 
 
