@@ -795,3 +795,43 @@ users:
         browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
+    playtender_Owner:
+        broker:   playtender
+        homepage: "http://test.playtender.com.ua/user/tenders"
+        login:    chuzhin@mail.ua
+        password: 'qwe123qwe'
+        browser:  chrome
+        position: [0, 0]
+        size:     [1000, 800]
+    playtender_Provider:
+        broker:   playtender
+        homepage: "http://test.playtender.com.ua/user/bids"
+        login:    mayanov@mail.ua
+        password: 'qwe123qwe'
+        browser:  chrome
+        position: [0, 0]
+        size:     [1000, 800]
+    playtender_Provider1:
+        broker:   playtender
+        homepage: "http://test.playtender.com.ua/user/bids"
+        login:    shmol@mail.ua
+        password: 'qwe123qwe'
+        browser:  chrome
+        position: [0, 0]
+        size:     [1000, 800]
+    playtender_Provider2:
+        broker:   playtender
+        homepage: "http://test.playtender.com.ua/user/bids"
+        login:    chumakin@mail.ua
+        password: 'qwe123qwe'
+        browser:  chrome
+        position: [0, 0]
+        size:     [1000, 800]
+    playtender_Viewer:
+        broker:   playtender
+        homepage: "http://test.playtender.com.ua/user/tenders"
+        login:    chumakin@mail.ua
+        password: 'qwe123qwe'
+        browser:  chrome
+        position: [0, 0]
+        size:     [1000, 800]
