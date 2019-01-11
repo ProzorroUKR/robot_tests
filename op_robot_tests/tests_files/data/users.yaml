@@ -835,3 +835,33 @@ users:
         browser:  chrome
         position: [0, 0]
         size:     [1000, 800]
+    avi_Owner:
+        broker:   avi
+        homepage: "https://test.avi.net.ua/prozorro/tender"
+        login:    tenderOwner@yopmail.com
+        password: tenderOwner@yopmail.com
+        browser:  chrome
+        position: [0, 0]
+        size:     [1280, 1000]
+    avi_Provider1:
+        broker:   avi
+        homepage: "https://test.avi.net.ua/prozorro/tender"
+        login:    tenderProvider@yopmail.com
+        password: tenderProvider@yopmail.com
+        browser:  chrome
+        position: [0, 800]
+        size:     [1280, 1000]
+    avi_Provider2:
+        broker:   avi
+        homepage: "https://test.avi.net.ua/prozorro/tender"
+        login:    tenderProvider2@yopmail.com
+        password: tenderProvider2@yopmail.com
+        browser:  chrome
+        position: [800, 0]
+        size:     [1280, 1000]
+    avi_Viewer:
+        broker:   avi
+        homepage: "https://test.avi.net.ua/prozorro/tender"
+        browser:  chrome
+        position: [0, 500]
+        size:     [1280, 1000]

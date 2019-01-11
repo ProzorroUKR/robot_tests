@@ -584,3 +584,40 @@ playtender:
         tender_owner:   playtender_Owner
         viewer:         playtender_Viewer
     timeout_on_wait: 1
+avi:
+    intervals:
+        default:
+            accelerator: 1440
+            enquiry: [0, 12]
+            tender:  [0, 20]
+        openeu:
+            accelerator: 1440
+            tender:  [0, 50]
+        openua:
+            accelerator: 2880
+            tender:  [0, 45]
+        belowThreshold:
+            accelerator: 1440
+            enquiry: [0, 20]
+            tender:  [0, 15]
+        negotiation:
+            accelerator: 720
+            enquiry: [0, 20]
+            tender:  [0, 20]
+        open_esco:
+            accelerator: 1440
+            enquiry: [0, 20]
+            tender:  [0, 40]
+        open_competitive_dialogue:
+            accelerator: 1440
+            tender:  [0, 75]
+    keywords_file: avi
+    homepage: 'https://test.avi.net.ua/prozorro'
+    buy:      'https://test.avi.net.ua/prozorro/tender/buy'
+    plans:    'https://test.avi.net.ua/prozorro/plan-view'
+    roles:
+        provider:       avi_Provider1
+        provider1:      avi_Provider2
+        tender_owner:   avi_Owner
+        viewer:         avi_Viewer
+    timeout_on_wait: 120
