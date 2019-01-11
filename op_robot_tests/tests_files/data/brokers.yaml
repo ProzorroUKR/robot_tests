@@ -547,3 +547,40 @@ ukrtender:
         tender_owner:   ukrtender_Owner
         viewer:         ukrtender_Viewer
     timeout_on_wait: 10
+playtender:
+    intervals:
+        default:
+            enquiry: [0, 20]
+            tender:  [0, 20]
+            accelerator: 1440
+        belowThreshold:
+            enquiry: [0, 25]
+            tender:  [0, 25]
+            accelerator: 1440
+        openua:
+            tender:  [0, 25]
+            accelerator: 1440
+        openeu:
+            tender:  [0, 25]
+            accelerator: 1440
+        open_competitive_dialogue:
+            accelerator: 1440
+            tender:  [0, 35]
+        open_esco:
+             enquiry: [0, 25]
+             tender:  [0, 25]
+             accelerator: 1440
+        open_framework:
+             tender:  [0, 25]
+             accelerator: 1440
+    keywords_file: playtender
+    basepage: 'http://test.playtender.com.ua'
+    homepage: 'http://test.playtender.com.ua/tenders'
+    syncpage: 'http://test.playtender.com.ua/develop/sync?psw=369369'
+    roles:
+        provider:       playtender_Provider
+        provider1:      playtender_Provider1
+        provider2:      playtender_Provider2
+        tender_owner:   playtender_Owner
+        viewer:         playtender_Viewer
+    timeout_on_wait: 1
