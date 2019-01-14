@@ -9,10 +9,12 @@ Resource           resource.robot
 Можливість оголосити тендер
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
   ...      number_of_items=${NUMBER_OF_ITEMS}
   ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
   ...      tender_meat=${${TENDER_MEAT}}
   ...      lot_meat=${${LOT_MEAT}}
   ...      item_meat=${${ITEM_MEAT}}
@@ -399,6 +401,17 @@ Resource           resource.robot
 Звірити відображення поля ${field} усіх предметів для користувача ${username}
   :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
   \  Звірити відображення поля ${field} ${item_index} предмету для користувача ${username}
+
+
+Звірити відображення поля ${field} усіх умов оплати для усіх користувачів
+  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+  \  Звірити відображення поля ${field} усіх умов оплати для користувача ${username}
+
+
+Звірити відображення поля ${field} усіх умов оплати для користувача ${username}
+  :FOR  ${milestone_index}  IN RANGE  ${NUMBER_OF_MILESTONES}
+  \  ${milestone_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data['milestones'][${milestone_index}]}
+  \  Звірити поле тендера із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${USERS.users['${tender_owner}'].initial_data.data['milestones'][${milestone_index}].${field}}  ${field}  ${milestone_id}
 
 
 Звірити відображення ${field} усіх предметів плану для усіх користувачів
