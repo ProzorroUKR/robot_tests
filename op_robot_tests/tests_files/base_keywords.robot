@@ -410,8 +410,11 @@ Resource           resource.robot
 
 Звірити відображення поля ${field} усіх умов оплати для користувача ${username}
   :FOR  ${milestone_index}  IN RANGE  ${NUMBER_OF_MILESTONES}
-  \  ${milestone_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data['milestones'][${milestone_index}]}
-  \  Звірити поле тендера із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${USERS.users['${tender_owner}'].initial_data.data['milestones'][${milestone_index}].${field}}  ${field}  ${milestone_id}
+  \  Звірити поле тендера із значенням
+  \  ...      ${username}
+  \  ...      ${TENDER['TENDER_UAID']}
+  \  ...      ${USERS.users['${tender_owner}'].initial_data.data['milestones'][${milestone_index}].${field}}
+  \  ...      ${field}  object_type=milestones  object_index=${milestone_index}
 
 
 Звірити відображення ${field} усіх предметів плану для усіх користувачів

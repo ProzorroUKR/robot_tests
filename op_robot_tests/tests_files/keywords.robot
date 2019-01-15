@@ -532,8 +532,8 @@ Log differences between dicts
 
 
 Звірити поле тендера із значенням
-  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${field}  ${object_id}=${Empty}
-  ${right}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${field}  ${object_id}
+  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${field}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
+  ${right}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${field}  ${object_id}  ${object_type}  ${object_index}
   Порівняти об'єкти  ${left}  ${right}
 
 
@@ -685,8 +685,9 @@ Log differences between dicts
 
 
 Отримати дані із тендера
-  [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${object_id}=${Empty}
+  [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
   ${field}=  Run Keyword If  '${object_id}'  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
+  ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}[${object_index}].${field_name}
   ...             ELSE  Set Variable  ${field_name}
   ${status}  ${field_value}=  Run keyword and ignore error
   ...      get_from_object
