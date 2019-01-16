@@ -8115,5 +8115,15 @@
         "taxRate",
         "thirdParty",
         "fiscalYearExtension"
+    ],
+    "title_of_milestones": [
+        "executionOfWorks",
+        "deliveryOfGoods",
+        "submittingServices",
+        "signingTheContract",
+        "submissionDateOfApplications",
+        "dateOfInvoicing",
+        "endDateOfTheReportingPeriod",
+        "anotherEvent"
     ]
 }
