@@ -811,6 +811,7 @@ def test_tender_data_esco(params, submissionMethodDetails):
     percentage_list = []
     del data["value"]
     del data["minimalStep"]
+    del data["milestones"]
     for index in range(params['number_of_lots']):
         data['lots'][index]['fundingKind'] = data['fundingKind']
         if index == 0:
