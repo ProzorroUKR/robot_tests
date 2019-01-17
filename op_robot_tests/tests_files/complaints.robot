@@ -10,6 +10,7 @@ ${MOZ_INTEGRATION}  ${False}
 
 ${NUMBER_OF_ITEMS}  ${1}
 ${NUMBER_OF_LOTS}   ${1}
+${NUMBER_OF_MILESTONES}  ${0}
 ${TENDER_MEAT}      ${0}
 ${ITEM_MEAT}        ${0}
 ${LOT_MEAT}         ${0}

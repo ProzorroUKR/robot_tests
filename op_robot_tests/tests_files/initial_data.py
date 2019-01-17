@@ -200,6 +200,19 @@ def test_tender_data(params,
         for i in range(params['number_of_items']):
             new_item = test_item_data(cpv_group)
             data['items'].append(new_item)
+    milestones = params.get('number_of_milestones')
+    if milestones:
+        data['milestones'] = []
+        percentage_data = percentage_generation(milestones)
+        for percentage in percentage_data:
+            milestone_element = test_milestone_data()
+            milestone_element['sequenceNumber'] = len(data['milestones'])
+            milestone_element['percentage'] = percentage
+            if milestone_element['title'] == 'anotherEvent':
+                milestone_element['description'] = fake.sentence(nb_words=40, variable_nb_words=True)
+            if params.get('number_of_lots'):
+                milestone_element['relatedLot'] = lot_id
+            data["milestones"].append(milestone_element)
     if params.get('tender_meat'):
         new_feature = test_feature_data()
         new_feature.featureOf = "tenderer"
@@ -800,6 +813,7 @@ def test_tender_data_esco(params, submissionMethodDetails):
     percentage_list = []
     del data["value"]
     del data["minimalStep"]
+    del data["milestones"]
     for index in range(params['number_of_lots']):
         data['lots'][index]['fundingKind'] = data['fundingKind']
         if index == 0:
@@ -823,3 +837,23 @@ def test_tender_data_esco(params, submissionMethodDetails):
     for index in range(params['number_of_items']):
         del data['items'][index]['deliveryDate']
     return data
+
+
+def test_milestone_data():
+    return munchify({
+        "code": random.choice(["prepayment", "postpayment"]),
+        "title": fake.milestone_title(),
+        "duration": {
+            "type": random.choice(["working", "banking", "calendar"]),
+            "days": random.randint(1, 364)
+        },
+        "type": "financing"
+    })
+
+
+def percentage_generation(number_of_milestones):
+    # input: number_of_milestones 1, 2, 3, ...
+    # output: list of percentage numbers
+    percentage_data = [random.randint(1, round(100 / number_of_milestones)) for _ in range(number_of_milestones - 1)]
+    percentage_data.append(100 - sum(percentage_data))
+    return percentage_data

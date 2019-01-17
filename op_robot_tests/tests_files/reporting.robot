@@ -10,6 +10,7 @@ ${MODE}         reporting
 
 ${NUMBER_OF_ITEMS}  ${2}
 ${NUMBER_OF_LOTS}   ${0}
+${NUMBER_OF_MILESTONES}  ${3}
 ${TENDER_MEAT}      ${False}
 ${LOT_MEAT}         ${False}
 ${ITEM_MEAT}        ${False}
@@ -73,6 +74,60 @@ ${MOZ_INTEGRATION}  ${False}
   ...  level1
   ...  critical
   Можливість знайти тендер по ідентифікатору для користувача ${viewer}
+
+
+Відображення типу оплати
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля code усіх умов оплати для користувача ${viewer}
+
+
+Відображення події яка ініціює оплату
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля title усіх умов оплати для користувача ${viewer}
+
+
+Відображення розміру оплати
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля percentage усіх умов оплати для користувача ${viewer}
+
+
+Відображення к-ті днів періоду оплати
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля duration.days усіх умов оплати для користувача ${viewer}
+
+
+Відображення типу днів періоду оплати
+    [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля duration.type усіх умов оплати для користувача ${viewer}
+
+
+Відображення виду предмету закупівлі тендера
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view  level2
+  ...      non-critical
+  Звірити відображення поля mainProcurementCategory тендера для користувача ${viewer}
 
 ##############################################################################################
 #             CONTRACTS

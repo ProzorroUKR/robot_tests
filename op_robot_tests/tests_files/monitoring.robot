@@ -11,6 +11,7 @@ ${MODE}              belowThreshold
 
 ${NUMBER_OF_ITEMS}   ${1}
 ${NUMBER_OF_LOTS}    ${1}
+${NUMBER_OF_MILESTONES}  ${0}
 ${TENDER_MEAT}       ${True}
 ${LOT_MEAT}          ${True}
 ${ITEM_MEAT}         ${True}

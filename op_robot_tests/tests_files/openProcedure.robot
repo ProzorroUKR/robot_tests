@@ -12,6 +12,7 @@ ${DIALOGUE_TYPE}    EU
 
 ${NUMBER_OF_ITEMS}  ${1}
 ${NUMBER_OF_LOTS}   ${1}
+${NUMBER_OF_MILESTONES}  ${3}
 ${TENDER_MEAT}      ${True}
 ${LOT_MEAT}         ${True}
 ${ITEM_MEAT}        ${True}
@@ -58,6 +59,51 @@ ${MOZ_INTEGRATION}  ${False}
   ...      tender_view  level2
   ...      non-critical
   Звірити відображення поля description тендера для користувача ${viewer}
+
+
+Відображення типу оплати
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля code усіх умов оплати для усіх користувачів
+
+
+Відображення події яка ініціює оплату
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля title усіх умов оплати для усіх користувачів
+
+
+Відображення розміру оплати
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля percentage усіх умов оплати для усіх користувачів
+
+
+Відображення к-ті днів періоду оплати
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля duration.days усіх умов оплати для усіх користувачів
+
+
+Відображення типу днів періоду оплати
+    [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_milestone  level2
+  ...      non-critical
+  Звірити відображення поля duration.type усіх умов оплати для усіх користувачів
 
 
 Відображення виду предмету закупівлі тендера
