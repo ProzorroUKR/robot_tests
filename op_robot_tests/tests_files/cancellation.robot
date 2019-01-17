@@ -6,7 +6,7 @@ Suite Teardown  Test Suite Teardown
 *** Variables ***
 @{USED_ROLES}       tender_owner  viewer
 ${MOZ_INTEGRATION}  ${False}
-
+${NUMBER_OF_MILESTONES}  ${0}
 
 *** Test Cases ***
 Можливість оголосити тендер
