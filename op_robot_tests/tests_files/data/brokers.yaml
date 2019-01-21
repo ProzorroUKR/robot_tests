@@ -592,10 +592,10 @@ avi:
             tender:  [0, 20]
         openeu:
             accelerator: 1440
-            tender:  [0, 50]
+            tender:  [0, 65]
         openua:
-            accelerator: 2880
-            tender:  [0, 45]
+            accelerator: 1440
+            tender:  [0, 60]
         belowThreshold:
             accelerator: 1440
             enquiry: [0, 20]
