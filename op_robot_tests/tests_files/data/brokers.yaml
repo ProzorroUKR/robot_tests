@@ -448,7 +448,7 @@ pzo:
             tender:  [0, 35]
             accelerator: 1440
         openua_defense:
-            accelerator:720
+            accelerator: 720
             tender: [0, 40]
         open_competitive_dialogue:
             accelerator: 1440
