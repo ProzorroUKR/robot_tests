@@ -442,14 +442,19 @@ pzo:
             tender:  [0, 25]
             accelerator: 1440
         openua:
-            tender:  [0, 25]
+            tender:  [0, 35]
             accelerator: 1440
         openeu:
-            tender:  [0, 25]
+            tender:  [0, 35]
             accelerator: 1440
+        openua_defense:
+            accelerator:720
+            tender: [0, 40]
         open_competitive_dialogue:
             accelerator: 1440
-            tender:  [0, 35]
+            tender:  [0, 40]
+        open_esco:
+            tender: [0, 35]
     keywords_file: pzo
     basepage: 'http://dev.pzo.com.ua'
     homepage: 'http://dev.pzo.com.ua/tenders'
