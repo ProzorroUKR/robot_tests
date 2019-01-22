@@ -859,6 +859,14 @@ users:
         browser:  chrome
         position: [800, 0]
         size:     [1280, 1000]
+    avi_Provider3:
+        broker:   avi
+        homepage: "https://test.avi.net.ua/prozorro/tender"
+        login:    tenderProvider3@yopmail.com
+        password: tenderProvider3@yopmail.com
+        browser:  chrome
+        position: [800, 0]
+        size:     [1280, 1000]
     avi_Viewer:
         broker:   avi
         homepage: "https://test.avi.net.ua/prozorro/tender"
