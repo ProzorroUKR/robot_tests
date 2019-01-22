@@ -616,6 +616,9 @@ avi:
         open_competitive_dialogue:
             accelerator: 1440
             tender:  [0, 75]
+        openua_defense:
+            accelerator: 720
+            tender:  [0, 50]
     keywords_file: avi
     homepage: 'https://test.avi.net.ua/prozorro'
     buy:      'https://test.avi.net.ua/prozorro/tender/buy'
