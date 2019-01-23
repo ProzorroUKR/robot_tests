@@ -621,6 +621,7 @@ avi:
     roles:
         provider:       avi_Provider1
         provider1:      avi_Provider2
+        provider2:      avi_Provider3
         tender_owner:   avi_Owner
         viewer:         avi_Viewer
     timeout_on_wait: 120
