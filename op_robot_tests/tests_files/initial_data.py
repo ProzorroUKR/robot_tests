@@ -52,6 +52,10 @@ def create_fake_number(min_number, max_number):
     return random.randint(int(min_number), int(max_number))
 
 
+def create_fake_number_float(min_number, max_number):
+    return round(random.uniform(float(min_number), float(max_number)), 3)
+
+
 def create_fake_title():
     return u"[ТЕСТУВАННЯ] {}".format(fake.title())
 
