@@ -162,7 +162,7 @@ class OP_Provider(BaseProvider):
             "deliveryAddress": address["deliveryAddress"],
             "deliveryLocation": address["deliveryLocation"],
             "unit": item_base_data["unit"],
-            "quantity": self.randomize_nb_elements(number=item_base_data["quantity"], le=80, ge=120)
+            "quantity": round(random.uniform(3, 150), 3)
         }
         if item_base_data["cpv_id"] == "99999999-9":
             scheme = classification["additionalClassifications"][0]["scheme"]
