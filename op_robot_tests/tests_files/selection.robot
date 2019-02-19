@@ -93,7 +93,7 @@ ${MOZ_INTEGRATION}  ${False}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${new_quantity}=  create_fake_number  ${1}  ${USERS.users['${tender_owner}'].tender_data.data['items'][0]['quantity']}
+  ${new_quantity}=  create_fake_number_float  ${1}  ${USERS.users['${tender_owner}'].tender_data.data['items'][0]['quantity']}
   Можливість змінити поле items[0].quantity тендера на ${new_quantity}
 
 
