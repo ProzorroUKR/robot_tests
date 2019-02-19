@@ -29,6 +29,86 @@ ${MOZ_INTEGRATION}  ${False}
   Можливість оголосити тендер
 
 
+Можливість оголосити тендер на закупівлю фармацевтичної продукції
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_mnn_1  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації для MNN  ${1}
+
+
+Можливість оголосити тендер на лікарських засобів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_mnn_2  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації для MNN  ${2}
+
+
+Можливість оголосити тендер на лікарських засобів без додаткового класифікатора
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_mnn_3  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації для MNN  ${3}
+
+
+Неможливість опублікувати тендер на закупівлю лікарських засобів з двома значеннями МНН
+    [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_2_INN  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації для MNN  ${4}
+
+
+Неможливість опублікувати тендер на закупівлю фармацевтичної продукції з відсутнім додатковим класифікатором
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_no_add_class  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації для MNN  ${5}
+
+
+Опублікувати тендер на закупівлю лікарських засобів без коду МНН
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_no_INN  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації для MNN  ${6}
+
+
+Опублікувати тендер на закупівлю фармацевтичної продукції без коду АТХ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_no_atc  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації для MNN  ${7}
+
+
+Опублікувати тендер на закупівлю лікарських засобів без коду АТХ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_no_atc_2  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації для MNN  ${8}
+
+
 Можливість знайти тендер по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      viewer  tender_owner  provider  provider1
@@ -429,6 +509,55 @@ ${MOZ_INTEGRATION}  ${False}
   ...      esco_tender_view
   ...      critical
   Отримати дані із поля yearlyPaymentsPercentageRange тендера для усіх користувачів
+
+
+##############################################################################################
+#             Відображення основних даних МНН/АТХ
+##############################################################################################
+
+Відображення схеми МНН
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних МНН/АТХ
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_sheme_inn  level1
+  ...      critical
+  Звірити відображення поля additionalClassifications[0].scheme усіх предметів для користувача ${viewer}
+
+
+Відображення ідентифікатора МНН
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних МНН/АТХ
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_id_inn  level1
+  ...      critical
+  Звірити відображення поля additionalClassifications[0].id усіх предметів для користувача ${viewer}
+
+
+Відображення опису МНН
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних МНН/АТХ
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_description_inn  level1
+  ...      critical
+  Звірити відображення поля additionalClassifications[0].description усіх предметів для користувача ${viewer}
+
+
+Відображення схеми АТХ
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних МНН/АТХ
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_sheme_atc  level1
+  ...      critical
+  Звірити відображення поля additionalClassifications[1].scheme усіх предметів для користувача ${viewer}
+
+
+Відображення ідентифікатора АТХ
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних МНН/АТХ
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view_id_atc  level1
+  ...      critical
+  Звірити відображення поля additionalClassifications[1].id усіх предметів для користувача ${viewer}
 
 ##############################################################################################
 #             Відображення основних даних лоту

@@ -8,7 +8,7 @@ from dpath.util import delete as xpathdelete, get as xpathget, new as xpathnew
 from haversine import haversine
 from json import load, loads
 from jsonpath_rw import parse as parse_path
-from munch import Munch, munchify
+from munch import Munch, munchify, unmunchify
 from robot.errors import ExecutionFailed
 from robot.libraries.BuiltIn import BuiltIn
 from robot.output import LOGGER
@@ -73,6 +73,7 @@ from .initial_data import (
     convert_amount,
     get_number_of_minutes,
     get_hash,
+    invalid_INN_data
 )
 from barbecue import chef
 from restkit import request
@@ -667,3 +668,31 @@ def dictionary_should_not_contain_path(dictionary, path):
     except KeyError:
         return
     raise RuntimeError("Dictionary contains path '%s'." % path)
+
+
+def edit_tender_data_for_mnn(data, mode, data_version):
+    id = {1: '33600000-6', 2: '33632100-0', 3: '33632100-0', 4: '33622200-8', 5: '33600000-6', 6: '33692500-2', 7: '33600000-6', 8: '33615100-5'}
+    dict_data = unmunchify(data)
+    dict_data['data']['items'][0]['classification']['id'] = id[data_version]
+
+    if data_version is 3:
+        dict_data['data']['items'][0].pop('additionalClassifications', None)
+
+    if data_version is 4:
+        add_INN = invalid_INN_data()
+        dict_data['data']['items'][0]['additionalClassifications'].append(add_INN)
+
+    if data_version is 5:
+        dict_data['data']['items'][0].pop('additionalClassifications', None)
+
+    if data_version is 6:
+        dict_data['data']['items'][0]['additionalClassifications'].pop(0)
+
+    if data_version is 7:
+        dict_data['data']['items'][0]['additionalClassifications'].pop(1)
+
+    if data_version is 8:
+        dict_data['data']['items'][0]['additionalClassifications'].pop(1)
+    return munchify(dict_data)
+
+
