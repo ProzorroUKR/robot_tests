@@ -861,3 +861,13 @@ def percentage_generation(number_of_milestones):
     percentage_data = [random.randint(1, round(100 / number_of_milestones)) for _ in range(number_of_milestones - 1)]
     percentage_data.append(100 - sum(percentage_data))
     return percentage_data
+
+
+def invalid_INN_data():
+    return munchify({
+            "scheme": "INN",
+            "description": "Insulin (human)",
+            "id": "insulin (human)"
+    })
+
+
