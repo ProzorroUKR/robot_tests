@@ -10,12 +10,6 @@
 
 -i create_tender_mnn_3
 -i find_tender
--i tender_view_sheme_inn
--i tender_view_id_inn
--i tender_view_description_inn
--i tender_view_sheme_atc
--i tender_view_id_atc
--i tender_view_description_atc
 -i tender_view
 -i tender_view_milestone
 -i tender_view_value
