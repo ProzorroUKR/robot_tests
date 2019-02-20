@@ -58,10 +58,12 @@ Resource           resource.robot
   [Arguments]  ${data_version}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
   ...      number_of_items=${NUMBER_OF_ITEMS}
   ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
   ...      tender_meat=${${TENDER_MEAT}}
   ...      lot_meat=${${LOT_MEAT}}
   ...      item_meat=${${ITEM_MEAT}}
