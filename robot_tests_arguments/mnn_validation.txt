@@ -1,0 +1,19 @@
+-v MODE:belowThreshold
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:True
+-v LOT_MEAT:True
+-v MOZ_INTEGRATION:True
+
+-i create_tender_invalid_2_INN
+
+-i create_tender_invalid_no_add_class
+
+-i create_tender_invalid_no_INN
+
+-i create_tender_invalid_no_atc
+
+-i create_tender_invalid_no_atc_2

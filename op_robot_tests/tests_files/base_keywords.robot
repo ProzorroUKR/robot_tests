@@ -54,6 +54,34 @@ Resource           resource.robot
   Дочекатись дати початку періоду уточнення  ${tender_owner}  ${TENDER_UAID}
 
 
+Можливість оголосити тендер з використанням валідації для MNN
+  [Arguments]  ${data_version}
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${adapted_data_mnn}=  edit_tender_data_for_mnn  ${adapted_data}  ${MODE}  ${data_version}
+  Log  ${adapted_data_mnn}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_mnn}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_mnn}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
 Можливість створити об'єкт моніторингу
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${accelerator}=  Get Variable Value  ${accelerator}

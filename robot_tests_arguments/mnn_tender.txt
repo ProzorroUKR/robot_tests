@@ -1,0 +1,15 @@
+-v MODE:belowThreshold
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:True
+-v LOT_MEAT:True
+-v MOZ_INTEGRATION:True
+
+-i create_tender_mnn_1
+
+-i create_tender_mnn_2
+
+-i create_tender_mnn_3
