@@ -509,50 +509,50 @@
     ],
     "funders": [
         {
-            "additionalIdentifiers": [ ],
-            "contactPoint": {
-                "telephone": "+380444906671",
-                "url": "http://www.worldbank.org/uk/country/ukraine",
-                "faxNumber": "+380444906670",
-                "name": "Дар’я Гулей",
-                "email": "ukraine@worldbank.org"
-            },
-            "identifier": {
-                "scheme": "XM-DAC",
-                "id": "44000",
-                "legalName": "Міжнародний банк реконструкції та розвитку (МБРР)"
-            },
-            "name": "Світовий Банк",
-            "address": {
-                "postalCode": "20433",
-                "countryName": "USA",
-                "streetAddress": "1818 H Street, NW",
-                "region": "DC",
-                "locality": "Washington"
-            }
+            "additionalIdentifiers": [],
+                "address": {
+                    "countryName": "USA",
+                    "locality": "Washington",
+                    "postalCode": "20433",
+                    "region": "DC",
+                    "streetAddress": "1818 H Street, NW"
+                },
+                "contactPoint": {
+                    "email": "ukraine@worldbank.org",
+                    "faxNumber": "+38044 4906670",
+                    "name": "Дар’я Гулей",
+                    "telephone": "+38044 4906671",
+                    "url": "http://www.worldbank.org/uk/country/ukraine"
+                },
+                "identifier": {
+                    "id": "44000",
+                    "legalName": "Міжнародний банк реконструкції та розвитку (МБРР)",
+                    "scheme": "XM-DAC"
+                },
+                "name": "Світовий Банк"
         },
         {
-            "additionalIdentifiers": [ ],
-            "contactPoint": {
-                "email": "ccm@theglobalfund.org",
-                "faxNumber": "+41 44 580 6820",
-                "name": "Куца Світлана Валентинівна",
-                "telephone": "+41 58 791 1700",
-                "url": "https://www.theglobalfund.org/en/"
-            },
-            "identifier": {
-                "id": "47045",
-                "legalName": "Global Fund to Fight AIDS, Tuberculosis and Malaria",
-                "scheme": "XM-DAC"
-            },
-            "name": "Глобальний фонд",
-            "address": {
-                "countryName": "Switzerland",
-                "locality": "Geneva",
-                "postalCode": "1218",
-                "region": "Grand-Saconnex",
-                "streetAddress": "Global Health Campus, Chemin du Pommier 40"
-            }
+            "additionalIdentifiers": [],
+                "address": {
+                    "countryName": "Switzerland",
+                    "locality": "Geneva",
+                    "postalCode": "1218",
+                    "region": "Grand-Saconnex",
+                    "streetAddress": "Global Health Campus, Chemin du Pommier 40"
+                },
+                "contactPoint": {
+                    "email": "ccm@theglobalfund.org",
+                    "faxNumber": "+41 44 580 6820",
+                    "name": "",
+                    "telephone": "+41 58 791 1700",
+                    "url": "https://www.theglobalfund.org/en/"
+                },
+                "identifier": {
+                    "id": "47045",
+                    "legalName": "Глобальний Фонд для боротьби зі СНІДом, туберкульозом і малярією",
+                    "scheme": "XM-DAC"
+                },
+                "name": "Глобальний фонд"
         }
     ],
     "funders_scheme": [
