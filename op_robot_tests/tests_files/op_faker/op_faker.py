@@ -30,6 +30,7 @@ class OP_Provider(BaseProvider):
     items_base_data = _fake_data.items_base_data
     rationale_types = _fake_data.rationale_types
     title_of_milestones = _fake_data.title_of_milestones
+    procuringTenderers = _fake_data.procuringTenderers
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -93,6 +94,10 @@ class OP_Provider(BaseProvider):
     @classmethod
     def procuringEntity(self):
         return deepcopy(self.random_element(self.procuringEntities))
+
+    @classmethod
+    def procuringTenderer(self):
+        return deepcopy(self.random_element(self.procuringTenderers))
 
     @classmethod
     def funders_data(self):
