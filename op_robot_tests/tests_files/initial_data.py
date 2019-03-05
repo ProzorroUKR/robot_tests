@@ -350,7 +350,7 @@ def test_feature_data():
 def test_question_data():
     return munchify({
         "data": {
-            "author": fake.procuringEntity(),
+            "author": fake.procuringTenderer(),
             "description": fake.description(),
             "title": field_with_id("q", fake.title())
         }
@@ -373,7 +373,7 @@ def test_question_answer_data():
 def test_complaint_data():
     data = munchify({
         "data": {
-            "author": fake.procuringEntity(),
+            "author": fake.procuringTenderer(),
             "description": fake.description(),
             "title": fake.title()
         }
@@ -425,7 +425,7 @@ def test_bid_competitive_data():
     bid = munchify({
         "data": {
             "tenderers": [
-                fake.procuringEntity()
+                fake.procuringTenderer()
             ]
         }
     })
@@ -452,7 +452,7 @@ def test_bid_data():
     bid = munchify({
         "data": {
             "tenderers": [
-                fake.procuringEntity()
+                fake.procuringTenderer()
             ]
         }
     })

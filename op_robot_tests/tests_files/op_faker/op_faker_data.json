@@ -723,13 +723,15 @@
                 "region": "місто Київ",
                 "locality": "Київ"
             }
-        },
+        }
+        ],
+    "procuringTenderers": [
         {
             "contactPoint": {
                 "url": "http://www.page.gov.ua/",
                 "telephone": "6665544",
                 "email": "test_e_mail@ukr.net",
-                "name": "Тезтовий Замовник 3",
+                "name": "Тестовий Учасник 1",
                 "faxNumber": "9998877"
             },
             "identifier": {
@@ -744,6 +746,72 @@
                 "streetAddress": "Тестова вулиця, 21-29",
                 "region": "Київська область",
                 "locality": "Переяслав-Хмельницький"
+            }
+        },
+        {
+            "contactPoint": {
+                "url": "http://www.page.gov.ua/",
+                "telephone": "6665544",
+                "email": "test_e_mail@ukr.net",
+                "name": "ТЕСТ ФОП 1",
+                "faxNumber": "9998877"
+            },
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "2833906462",
+                "legalName": "Тестовий ФОП 1"
+            },
+            "name": "Тестовий ФОП 1",
+            "address": {
+                "postalCode": "01111",
+                "countryName": "Україна",
+                "streetAddress": "Тестова вулиця, 21-29",
+                "region": "Київська область",
+                "locality": "Переяслав-Хмельницький"
+            }
+        },
+        {
+            "contactPoint": {
+                "url": "http://webpage.com.ua",
+                "telephone": "2223344",
+                "email": "e_mail_test@ukr.net",
+                "name": "ТЕСТ ФОП 2",
+                "faxNumber": "333-44-55"
+            },
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "2894905868",
+                "legalName": "Тестовий ФОП 2"
+            },
+            "name": "Тестовий ФОП 2",
+            "address": {
+                "postalCode": "04444",
+                "countryName": "Україна",
+                "streetAddress": "вулиця Тестова, 32",
+                "region": "місто Київ",
+                "locality": "Київ"
+            }
+        },
+        {
+            "contactPoint": {
+                "url": "http://webpage.org.ua/",
+                "telephone": "0881112233",
+                "email": "e_mail_test@bigmir.net",
+                "name": "ТЕСТ ФОП 3",
+                "faxNumber": "088-111-22-33"
+            },
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "2854913619",
+                "legalName": "Тестовий ФОП 3"
+            },
+            "name": "Тестовий ФОП 3",
+            "address": {
+                "postalCode": "01111",
+                "countryName": "Україна",
+                "streetAddress": "вулиця Тестова, 220, 8",
+                "region": "місто Київ",
+                "locality": "Київ"
             }
         }
     ],
