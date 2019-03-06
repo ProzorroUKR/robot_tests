@@ -1517,7 +1517,7 @@ Resource           resource.robot
 
 Перевірити документ прекваліфікіції ${qualification_id} для користувача ${username} в тендері ${tender_uaid}
   ${document}=  openprocurement_client.Отримати останній документ прекваліфікації з типом registerExtract  ${username}  ${tender_uaid}  ${qualification_id}
-  Порівняти об'єкти  ${document['documentType']}  registerExtract
+  Порівняти об'єкти  ${document['title']}  edr_identification.yaml
 
 ##############################################################################################
 #             Qualifications
@@ -1539,4 +1539,4 @@ Resource           resource.robot
 
 Перевірити документ кваліфікіції ${award_id} для користувача ${username} в тендері ${tender_uaid}
   ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerExtract  ${username}  ${tender_uaid}  ${award_id}
-  Порівняти об'єкти  ${document['documentType']}  registerExtract
+  Порівняти об'єкти  ${document['title']}  edr_identification.yaml
