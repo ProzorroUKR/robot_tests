@@ -14,6 +14,7 @@
 -i tender_view
 -i tender_view_milestone
 -i tender_view_value
+-i tender_view_unit_name
 -i tender_view_unit_code
 -i tender_view_coordinates
 -i tender_view_framework
