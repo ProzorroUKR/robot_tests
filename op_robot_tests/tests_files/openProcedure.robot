@@ -450,7 +450,7 @@ ${VAT_INCLUDED}     ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури тендера
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view  level2
+  ...      tender_view_unit_name  level2+
   ...      non-critical
   Звірити відображення поля unit.name усіх предметів для користувача ${viewer}
 
