@@ -1189,17 +1189,37 @@ Require Failure
   Run Keyword If  '${status}' == 'PASS'  Set To Dictionary  ${MONITORING}  DASU_LAST_MODIFICATION_DATE=${LAST_MODIFICATION_DATE}
 
 
-Отримати останній індекс
-  [Arguments]  ${object}  @{username}
-  :FOR  ${role}  IN  @{username}
+Отримати користувача з доступом до поля за пріорітетом
+  [Arguments]  ${field}  @{usernames}
+  :FOR  ${username}  IN  @{usernames}
+  \  ${user_data}=  Get From Dictionary  ${USERS.users}  ${username}
   \  ${status}  ${field_value}=  Run Keyword And Ignore Error
   ...      get_from_object
-  ...      ${USERS.users['${role}'].tender_data.data}
-  ...      ${object}
+  ...      ${user_data.tender_data.data}
+  ...      ${field}
   \  Run Keyword If  '${status}' == 'PASS'  Exit For Loop
-  ${len_of_object}=  Run Keyword If  '${status}' == 'PASS'  Get Length  ${USERS.users['${role}'].tender_data.data.${object}}
-  ${index}=  Run Keyword If  '${status}' == 'PASS'  subtraction  ${len_of_object}  1
+  Run Keyword If  '${status}' == 'FAIL'  Fail  ${object} not found for usernames @{usernames}
+  [Return]  ${username}
+
+
+Отримати останній індекс
+  [Arguments]  ${field}  @{usernames}
+  ${username}=  Отримати користувача з доступом до поля за пріорітетом  ${field}  @{usernames}
+  ${user_data}=  Get From Dictionary  ${USERS.users}  ${username}
+  ${object}=  Get From Dictionary  ${user_data.tender_data.data}  ${field}
+  ${len}=  Get Length  ${object}
+  ${index}=  Evaluate  ${len} - 1
   [Return]  ${index}
+
+
+Отримати останній элемент
+  [Arguments]  ${field}  @{usernames}
+  ${username}=  Отримати користувача з доступом до поля за пріорітетом  ${field}  @{usernames}
+  ${index}=  Отримати останній індекс  ${field}  @{usernames}
+  ${user_data}=  Get From Dictionary  ${USERS.users}  ${username}
+  ${object}=  Get From Dictionary  ${user_data.tender_data.data}  ${field}
+  ${item}=  Get From List  ${object}  ${index}
+  [Return]  ${item}
 
 
 Розрахувати ціну для ${contract_number} контракту
