@@ -276,7 +276,7 @@ Suite Teardown  Test Suite Teardown
   Звірити поле договору із значенням
   ...      ${viewer}
   ...      ${CONTRACT_UAID}
-  ...      ${USERS.users['${tender_owner}'].new_amount}
+  ...      ${tender_owner_data.new_amount}
   ...      value.amount
 
 

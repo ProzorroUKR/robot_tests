@@ -47,7 +47,7 @@ Suite Teardown  Test Suite Teardown
 Відображення вартості угоди без урахування ПДВ
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
   ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
+  ...      ${viewer_data.broker}
   ...      contract_view
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
@@ -104,9 +104,11 @@ Suite Teardown  Test Suite Teardown
 
 
 Можливість редагувати вартість угоди
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${tender_owner_data.broker}: Редагування угоди
   ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      ${tender_owner_data.broker}
   ...      modify_contract_value
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
@@ -123,7 +125,9 @@ Suite Teardown  Test Suite Teardown
 
 
 Відображення відредагованої вартості угоди
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${viewer_data.broker}: Відображення основних даних угоди
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker} ${USERS.users['${tender_owner}'].broker}
   ...      modify_contract_value
@@ -152,6 +156,7 @@ Suite Teardown  Test Suite Teardown
   ...      value.amountNet
   ...      ${amount_net}
   Should Contain  ${value}  Value amountNet should be less or equal to amount
+
 
 Неможливість вказати ціну договору з ПДВ більше ніж результат проведення аукціону (закупівля з ПДВ)
 # contract:value:amount should be <= award.value.amount if valueAddedTaxIncluded=ture
