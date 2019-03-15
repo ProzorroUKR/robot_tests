@@ -125,9 +125,7 @@ Suite Teardown  Test Suite Teardown
 
 
 Відображення відредагованої вартості угоди
-  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
-  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
-  [Tags]   ${viewer_data.broker}: Відображення основних даних угоди
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker} ${USERS.users['${tender_owner}'].broker}
   ...      modify_contract_value
