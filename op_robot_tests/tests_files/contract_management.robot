@@ -162,26 +162,24 @@ Suite Teardown  Test Suite Teardown
 
 
 Можливість редагувати вартість договору без ПДВ
-  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
-  [Tags]   ${tender_owner_data.broker}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      tender_owner
-  ...      ${tender_owner_data.broker}
+  ...      ${USERS.users['${tender_owner}']}
   ...      modify_contract
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${amount_net}=  create_fake_amount_net  ${tender_owner_data.contract_data.data.value.amount}
-  Set to dictionary  ${tender_owner_data}  new_amount_net=${amount_net}
+  ${amount_net}=  create_fake_amount_net  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amountNet  ${amount_net}
 
 
 Можливість редагувати вартість договору
-  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
-  [Tags]   ${tender_owner_data.broker}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      tender_owner
-  ...      ${tender_owner_data.broker}
+  ...      ${USERS.users['${tender_owner}']}
   ...      modify_contract
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${amount}=  create_fake_amount  ${tender_owner_data.contract_data.data.value.amount}
-  Set to dictionary  ${tender_owner_data}  new_amount=${amount}
+  ${amount}=  create_fake_amount  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
 
 
@@ -259,30 +257,26 @@ Suite Teardown  Test Suite Teardown
 
 
 Відображення відредагованої вартості договору без ПДВ
-  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
-  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
-  [Tags]   ${viewer_data.broker}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      viewer
-  ...      ${viewer_data.broker}
+  ...      ${USERS.users['${tender_owner}']}
   ...      modify_contract
   Звірити поле договору із значенням
   ...      ${viewer}
   ...      ${CONTRACT_UAID}
-  ...      ${tender_owner_data.new_amount_net}
+  ...      ${USERS.users['${tender_owner}'].new_amount_net}
   ...      value.amountNet
 
 
 Відображення відредагованої вартості договору
-  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
-  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
-  [Tags]   ${viewer_data.broker}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      viewer
-  ...      ${viewer_data.broker}
+  ...      ${USERS.users['${tender_owner}']}
   ...      modify_contract
   Звірити поле договору із значенням
   ...      ${viewer}
   ...      ${CONTRACT_UAID}
-  ...      ${tender_owner_data.new_amount}
+  ...      ${USERS.users['${tender_owner}'].new_amount}
   ...      value.amount
 
 

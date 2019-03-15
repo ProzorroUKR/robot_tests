@@ -79,6 +79,8 @@
 -i qualification_approve_second_award
 
 -i contract_view
+-i modify_contract_amount_vat_true
+-i modify_contract_amountNet_vat_true
 -i modify_contract
   -i modify_contract_value
 -i add_doc_to_contract
