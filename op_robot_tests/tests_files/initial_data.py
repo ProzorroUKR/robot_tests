@@ -526,7 +526,7 @@ def test_bid_data_selection(data, index):
     })
     bid.data['status'] = 'draft'
     bid.data['parameters'] = data['agreements'][0]['contracts'][index]['parameters']
-    bid.data['lotValues'] = [test_bid_value(data['agreements'][0]['contracts'][index]['value']['amount'])]
+    bid.data['lotValues'] = [test_bid_value(data['agreements'][0]['contracts'][index]['value']['amount'], data['agreements'][0]['contracts'][index]['value']['valueAddedTaxIncluded'])]
     return bid
 
 
