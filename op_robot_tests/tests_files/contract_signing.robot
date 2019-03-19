@@ -153,7 +153,7 @@ Suite Teardown  Test Suite Teardown
   ...      ${contract_index}
   ...      value.amountNet
   ...      ${amount_net}
-  Should Contain  ${value}  Value amountNet should be less or equal to amount
+  Should Contain  ${value}  Value amountNet should be less or equal to awarded amount
 
 
 Неможливість вказати ціну договору з ПДВ більше ніж результат проведення аукціону (закупівля з ПДВ)
@@ -172,11 +172,14 @@ Suite Teardown  Test Suite Teardown
   ...      ${contract_index}
   ...      value.amount
   ...      ${amount}
-  Should Contain  ${value}  Value amount should be less or equal to awarded amount
+  Run Keyword IF  '${MODE}' == 'open_esco'
+  ...  Should Contain  ${value}  Can't update amount for contract value
+  ...  ELSE
+  ...  Should Contain  ${value}  Value amount should be less or equal to awarded amount
 
 
 Неможливість зменшити ціну договору без ПДВ на суму більшу за 20% від ціни договору з ПДВ (закупівля з ПДВ)
-# contract:value:amountNet can be <= contract:value:amount but no more than on 20% of contract:value:amount value if valueAddedTaxIncluded=ture
+# contract:value:amountNet can be <= contract:value:amount but no more than on contract:value:amount/1.2 value if valueAddedTaxIncluded=ture
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
