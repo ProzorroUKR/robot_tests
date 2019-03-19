@@ -56,7 +56,7 @@ def create_fake_amount(award_amount, value_added_tax_included=False):
 
 
 def create_fake_amount_net(award_amount, value_added_tax_included=False):
-    min_amount_net = award_amount - award_amount * 0.2
+    min_amount_net = award_amount / 1.2
     range_amount_net = award_amount - min_amount_net
     half_min_amount_net = min_amount_net + range_amount_net / 2
     if value_added_tax_included:
