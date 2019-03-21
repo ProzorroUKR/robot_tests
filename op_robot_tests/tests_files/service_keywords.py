@@ -20,6 +20,7 @@ from .initial_data import (
     create_fake_doc,
     create_fake_sentence,
     create_fake_amount,
+    create_fake_amount_net,
     create_fake_number,
     create_fake_number_float,
     create_fake_date,
@@ -626,7 +627,7 @@ def generate_test_bid_data(tender_data):
             if tender_data.get('procurementMethodType', '') == 'esco':
                 value = test_bid_value_esco(tender_data)
             else:
-                value = test_bid_value(lot['value']['amount'])
+                value = test_bid_value(lot['value']['amount'], lot['value']['valueAddedTaxIncluded'])
             value['relatedLot'] = lot.get('id', '')
             bid.data.lotValues.append(value)
     else:
@@ -634,7 +635,7 @@ def generate_test_bid_data(tender_data):
             value = test_bid_value(tender_data)
             bid.data.update(value)
         else:
-            bid.data.update(test_bid_value(tender_data['value']['amount']))
+            bid.data.update(test_bid_value(tender_data['value']['amount'], tender_data['value']['valueAddedTaxIncluded']))
     if 'features' in tender_data:
         bid.data.parameters = []
         for feature in tender_data['features']:

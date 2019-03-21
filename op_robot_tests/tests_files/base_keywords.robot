@@ -20,6 +20,7 @@ Resource           resource.robot
   ...      item_meat=${${ITEM_MEAT}}
   ...      api_host_url=${API_HOST_URL}
   ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      vat_included=${${VAT_INCLUDED}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -834,7 +835,8 @@ Resource           resource.robot
 
 Вказати дійсно оплачену суму
   ${amount}=  Get variable value  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
-  ${amountPaid}=  Create Dictionary  amount=${amount}  valueAddedTaxIncluded=${True}  currency=UAH
+  ${valueAddedTaxIncluded}=  Get variable value  ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  ${amountPaid}=  Create Dictionary  amount=${amount}  valueAddedTaxIncluded=${valueAddedTaxIncluded}  currency=UAH
   ${data}=  Create Dictionary  amountPaid=${amountPaid}
   ${data}=  Create Dictionary  data=${data}
   Set to dictionary  ${USERS.users['${tender_owner}']}  terminating_data=${data}

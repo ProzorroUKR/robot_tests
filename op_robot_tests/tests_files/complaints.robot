@@ -7,6 +7,7 @@ Suite Teardown  Test Suite Teardown
 ${MODE}             belowThreshold
 @{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer
 ${MOZ_INTEGRATION}  ${False}
+${VAT_INCLUDED}     ${True}
 
 ${NUMBER_OF_ITEMS}  ${1}
 ${NUMBER_OF_LOTS}   ${1}

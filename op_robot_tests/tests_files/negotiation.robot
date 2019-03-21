@@ -15,6 +15,7 @@ ${TENDER_MEAT}      ${False}
 ${LOT_MEAT}         ${False}
 ${ITEM_MEAT}        ${False}
 ${MOZ_INTEGRATION}  ${False}
+${VAT_INCLUDED}     ${True}
 
 *** Test Cases ***
 ##############################################################################################

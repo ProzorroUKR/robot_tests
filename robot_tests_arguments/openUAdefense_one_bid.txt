@@ -66,6 +66,8 @@
 
 -i contract_sign
 -i contract_stand_still
+-i modify_contract_amount_vat_true
+-i modify_contract_amountNet_vat_true
 -i modify_contract
   -i modify_contract_value
 -i contract_view
