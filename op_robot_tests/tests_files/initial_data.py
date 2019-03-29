@@ -44,24 +44,32 @@ def get_fake_funder_scheme():
     return fake.funder_scheme()
 
 
-def create_fake_amount(award_amount, value_added_tax_included=False):
-    min_amount_net = award_amount - award_amount * 0.2
-    range_amount_net = award_amount - min_amount_net
-    half_min_amount_net = min_amount_net + range_amount_net / 2
-    half_max_amount_net = half_min_amount_net + range_amount_net
-    if value_added_tax_included:
-        return round(random.uniform(half_min_amount_net, award_amount), 2)
-    else:
-        return round(random.uniform(award_amount, half_max_amount_net), 2)
-
-
-def create_fake_amount_net(award_amount, value_added_tax_included=False):
+def create_fake_amount(award_amount, tender_value_added_tax_included, contract_value_added_tax_included):
     min_amount_net = award_amount / 1.2
     range_amount_net = award_amount - min_amount_net
     half_min_amount_net = min_amount_net + range_amount_net / 2
-    if value_added_tax_included:
+    half_max_amount_net = half_min_amount_net + range_amount_net
+    if tender_value_added_tax_included == True and contract_value_added_tax_included == True:
+        return round(random.uniform(half_min_amount_net, award_amount), 2)
+    if tender_value_added_tax_included == False and contract_value_added_tax_included == True:
+        return round(random.uniform(award_amount, half_max_amount_net), 2)
+    if tender_value_added_tax_included == True and contract_value_added_tax_included == False:
+        return round(random.uniform(half_min_amount_net, award_amount), 2)
+    if tender_value_added_tax_included == False and contract_value_added_tax_included == False:
+        return round(random.uniform(half_min_amount_net, award_amount), 2)
+
+
+def create_fake_amount_net(award_amount, tender_value_added_tax_included, contract_value_added_tax_included):
+    min_amount_net = award_amount / 1.2
+    range_amount_net = award_amount - min_amount_net
+    half_min_amount_net = min_amount_net + range_amount_net / 2
+    if tender_value_added_tax_included == True and contract_value_added_tax_included == True:
         return round(random.uniform(min_amount_net, half_min_amount_net), 2)
-    else:
+    if tender_value_added_tax_included == False and contract_value_added_tax_included == True:
+        return round(random.uniform(half_min_amount_net, award_amount), 2)
+    if tender_value_added_tax_included == True and contract_value_added_tax_included == False:
+        return round(random.uniform(half_min_amount_net, award_amount), 2)
+    if tender_value_added_tax_included == False and contract_value_added_tax_included == False:
         return round(random.uniform(half_min_amount_net, award_amount), 2)
 
 
