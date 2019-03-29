@@ -1,0 +1,52 @@
+-v MODE:belowThreshold
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:True
+-v LOT_MEAT:True
+
+-v VAT_INCLUDED: False
+
+-i create_tender
+-i find_tender
+-i tender_view
+
+-i make_bid_by_provider
+-i make_bid_by_provider1
+
+-i qualification_approve_first_award
+
+-i contract_stand_still
+-i contract_view
+
+-i modify_contract_invalid_amount
+-i modify_contract_invalid_amountNet
+
+-i modify_contract_amount_and_amountNet
+
+-i contract_view_new_amount_and_amountNet
+
+-i modify_contract
+
+-i add_doc_to_contract
+-i contract_doc_documentOf
+
+-i contract_sign
+
+-i find_contract
+-i access_contract
+-i submit_change
+-i view_change
+-i upload_change_document
+-i modify_change
+-i change_contract_amount_and_amountNet
+-i modify_contract_view_new_amount_amountNet
+-i apply_change
+-i add_contract_doc
+-i termination_reasons
+-i amount_paid
+-i change_amount_and_amountNet_paid
+-i contract_termination
