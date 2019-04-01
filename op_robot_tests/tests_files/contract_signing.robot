@@ -253,8 +253,12 @@ Suite Teardown  Test Suite Teardown
   ...      ${contract_index}
   ...      value.amount
   ...      ${amount}
-  Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${True}'
+  Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${True}' and '${MODE}' == 'open_esco'
+  ...      Should Contain  ${value}  Can't update amount for contract value
+  ...      ELSE
   ...      Should Contain  ${value}  Amount should be less or equal to awarded amount
+  #Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${True}'
+  #...      Should Contain  ${value}  Amount should be less or equal to awarded amount
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'
   ...      Should Contain  ${value}  Amount should be less or equal to awarded amount
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${False}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'

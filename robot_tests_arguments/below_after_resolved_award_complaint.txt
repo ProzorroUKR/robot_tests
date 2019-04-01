@@ -11,4 +11,6 @@
 -i qualification_approve_first_award
 
 -i award_complaint
+-i modify_contract_amount_net
+-i modify_contract_value
 -i below_award_complaint

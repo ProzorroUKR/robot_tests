@@ -33,3 +33,25 @@
 
 -i contract_sign
 -i contract_stand_still
+
+-i modify_contract_invalid_amount
+-i modify_contract_invalid_amountNet_tender_vat_true
+
+-i modify_contract
+-i add_doc_to_contract
+-i contract_doc_documentOf
+-i contract_sign
+
+-i find_contract
+-i access_contract
+-i submit_change
+-i view_change
+-i upload_change_document
+-i modify_change
+
+-i apply_change
+-i add_contract_doc
+-i termination_reasons
+-i amount_paid
+
+-i contract_termination
