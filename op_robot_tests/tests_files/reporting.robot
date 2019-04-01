@@ -55,6 +55,48 @@ ${VAT_INCLUDED}     ${True}
   Можливість зареєструвати, додати документацію і підтвердити першого постачальника до закупівлі
 
 
+Можливість редагувати вартість угоди без урахування ПДВ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_contract_amount_net
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  ${amount_net}=  create_fake_amount_net  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
+  Run As  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amountNet
+  ...      ${amount_net}
+
+
+Можливість редагувати вартість угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${tender_owner_data.broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${tender_owner_data.broker}
+  ...      modify_contract_value
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  ${amount}=  create_fake_amount  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
+  Run As  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amount
+  ...      ${amount}
+
+
 Можливість укласти угоду для звіту про укладений договір
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Можливість укласти угоду для процедури
   ...  ${tender_owner}
