@@ -1794,6 +1794,34 @@ Library  openprocurement_client.utils
   Log  ${reply}
 
 
+Редагувати обидва поля вартості угоди
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${field_amount}  ${field_amountNet}  ${fieldvalue}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  Set_to_object  ${contract.data}  ${field_amount}  ${fieldvalue}
+  Set_to_object  ${contract.data}  ${field_amountNet}  ${fieldvalue}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+  ...      ${tender.data.id}
+  ...      ${contract}
+  ...      ${contract.data.id}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
+
+
+Змінити ознаку ПДВ на True
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${vat_fieldvalue}  ${field_amount}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  Set To Dictionary  ${contract.data.value}  valueAddedTaxIncluded=${vat_fieldvalue}
+  Set To Dictionary  ${contract.data.value}  amountNet=${field_amount}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+  ...      ${tender.data.id}
+  ...      ${contract}
+  ...      ${contract.data.id}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
+
+
 Встановити ціну за одиницю для контракту
   [Arguments]  ${username}  ${tender_uaid}  ${contract_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
@@ -1826,6 +1854,19 @@ Library  openprocurement_client.utils
   ...      ${agreement}
   ...      ${agreement_id}
   ...      access_token=${access_token}
+  Log  ${reply}
+
+
+Змінити ознаку ПДВ
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldvalue}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  Set To Dictionary  ${contract.data.value}  valueAddedTaxIncluded=${fieldvalue}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+  ...      ${tender.data.id}
+  ...      ${contract}
+  ...      ${contract.data.id}
+  ...      access_token=${tender.access.token}
   Log  ${reply}
 
 
@@ -1981,6 +2022,17 @@ Library  openprocurement_client.utils
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
   ${contract}=  openprocurement_client.Пошук договору по ідентифікатору  ${username}  ${contract_uaid}
   Set_To_Object  ${contract.data}   ${fieldname}   ${fieldvalue}
+  Log  ${contract}
+  ${contract}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract  ${internalid}  ${USERS.users['${username}'].contract_access_token}  ${contract}
+  Log  ${contract}
+
+
+Одночасно Редагувати два поля договору
+  [Arguments]  ${username}  ${contract_uaid}  ${first_fieldname}  ${first_fieldvalue}  ${second_fieldname}  ${second_fieldvalue}
+  ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
+  ${contract}=  openprocurement_client.Пошук договору по ідентифікатору  ${username}  ${contract_uaid}
+  Set_To_Object  ${contract.data}  ${first_fieldname}  ${first_fieldvalue}
+  Set_To_Object  ${contract.data}  ${second_fieldname}  ${second_fieldvalue}
   Log  ${contract}
   ${contract}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract  ${internalid}  ${USERS.users['${username}'].contract_access_token}  ${contract}
   Log  ${contract}

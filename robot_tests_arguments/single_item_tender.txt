@@ -48,3 +48,5 @@
 
 -i contract_sign
 -i contract_stand_still
+-i modify_contract_amount_net
+-i modify_contract_value

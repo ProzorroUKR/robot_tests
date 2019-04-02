@@ -76,10 +76,12 @@
 -i qualification_approve_third_award
 
 
--i contract_view
 -i contract_stand_still
--i modify_contract_amount_vat_true
--i modify_contract_amountNet_vat_true
+-i contract_view
+-i modify_contract_invalid_amount
+-i modify_contract_invalid_amountNet_tender_vat_true
+-i modify_contract_amount_net
 -i modify_contract
 -i add_doc_to_contract
+-i contract_doc_documentOf
 -i contract_sign

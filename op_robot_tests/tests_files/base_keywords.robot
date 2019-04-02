@@ -835,8 +835,9 @@ Resource           resource.robot
 
 Вказати дійсно оплачену суму
   ${amount}=  Get variable value  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ${amount_net}=  Get variable value  ${USERS.users['${tender_owner}'].contract_data.data.value.amountNet}
   ${valueAddedTaxIncluded}=  Get variable value  ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
-  ${amountPaid}=  Create Dictionary  amount=${amount}  valueAddedTaxIncluded=${valueAddedTaxIncluded}  currency=UAH
+  ${amountPaid}=  Create Dictionary  amount=${amount}  amountNet=${amount_net}  valueAddedTaxIncluded=${valueAddedTaxIncluded}  currency=UAH
   ${data}=  Create Dictionary  amountPaid=${amountPaid}
   ${data}=  Create Dictionary  data=${data}
   Set to dictionary  ${USERS.users['${tender_owner}']}  terminating_data=${data}

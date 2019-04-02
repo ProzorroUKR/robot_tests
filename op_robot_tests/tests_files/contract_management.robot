@@ -17,7 +17,8 @@ Suite Teardown  Test Suite Teardown
   Завантажити дані про тендер
   :FOR  ${username}  in  @{used_roles}
   \  Run As  ${${username}}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
-  ${CONTRACT_UAID}=  Get variable value  ${USERS.users['${tender_owner}'].tender_data.data.contracts[1].contractID}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${CONTRACT_UAID}=  Get variable value  ${USERS.users['${tender_owner}'].tender_data.data.contracts[${contract_index}].contractID}
   Set Suite Variable  ${CONTRACT_UAID}
 
 
@@ -165,9 +166,13 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}']}
-  ...      modify_contract
+  ...      change_contract_amountNet
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${amount_net}=  create_fake_amount_net  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${amount_net}=  create_fake_amount_net
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${award.value.valueAddedTaxIncluded}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amountNet  ${amount_net}
 
@@ -176,11 +181,31 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}']}
-  ...      modify_contract
+  ...      change_contract_amount
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${amount}=  create_fake_amount  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${amount}=  create_fake_amount
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${award.value.valueAddedTaxIncluded}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
+
+
+Можливість одночасно редагувати вартість договору з/без ПДВ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_contract_amount_and_amountNet
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${amount_both_fields}=  create_fake_amount
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${award.value.valueAddedTaxIncluded}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  amount=${amount_both_fields}
+  Run As  ${tender_owner}  Одночасно Редагувати два поля договору  ${CONTRACT_UAID}  value.amount  ${amount_both_fields}  value.amountNet  ${amount_both_fields}
 
 
 Можливість редагувати дату завершення дії договору
@@ -260,7 +285,7 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      viewer
   ...      ${USERS.users['${tender_owner}']}
-  ...      modify_contract
+  ...      modify_contract_view_new_amountNet
   Звірити поле договору із значенням
   ...      ${viewer}
   ...      ${CONTRACT_UAID}
@@ -272,12 +297,30 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
   ...      viewer
   ...      ${USERS.users['${tender_owner}']}
-  ...      modify_contract
+  ...      modify_contract_view_new_amountNet
   Звірити поле договору із значенням
   ...      ${viewer}
   ...      ${CONTRACT_UAID}
   ...      ${USERS.users['${tender_owner}'].new_amount}
   ...      value.amount
+
+
+Відображення одночасно відредагованої вартості договору з/без ПДВ
+  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  ...      viewer
+  ...      ${USERS.users['${tender_owner}']}
+  ...      modify_contract_view_new_amount_amountNet
+  Звірити поле договору із значенням
+  ...      ${viewer}
+  ...      ${CONTRACT_UAID}
+  ...      ${USERS.users['${tender_owner}'].amount}
+  ...      value.amount
+  Звірити поле договору із значенням
+  ...      ${viewer}
+  ...      ${CONTRACT_UAID}
+  ...      ${USERS.users['${tender_owner}'].amount}
+  ...      value.amountNet
+
 
 
 Відображення відредагованої дати початку дії договору
@@ -416,11 +459,28 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      amount_paid
+  ...      change_amount_paid
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${amountPaid.amount}=  create_fake_value_amount
+  ${amountPaid.amount}=  create_fake_amount_paid
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amountNet}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amountPaid_amount=${amountPaid.amount}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  amountPaid.amount  ${amountPaid.amount}
+
+
+Можливість одночасно редагувати обсяг дійсно оплаченої суми з/без ПДВ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_amount_and_amountNet_paid
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${amountPaid.amount_both_fields}=  create_fake_amount
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${award.value.valueAddedTaxIncluded}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amountPaid_amount=${amountPaid.amount_both_fields}
+  Run As  ${tender_owner}  Одночасно Редагувати два поля договору  ${CONTRACT_UAID}  amountPaid.amount  ${amountPaid.amount_both_fields}  amountPaid.amountNet  ${amountPaid.amount_both_fields}
 
 
 Відображення відредагованого обсягу дійсно оплаченої суми
