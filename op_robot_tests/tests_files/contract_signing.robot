@@ -226,7 +226,7 @@ Suite Teardown  Test Suite Teardown
   ...      value.amountNet
   ...      ${amount_net}
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${False}' and '${contract.value.valueAddedTaxIncluded}' == '${True}'
-  ...      Should Contain  ${value}  Amount and amountNet should be equal
+  ...      Should Contain  ${value}  AmountNet should be less or equal to awarded amount
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'
   ...      Should Contain  ${value}  Amount and amountNet should be equal
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${False}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'
@@ -302,7 +302,7 @@ Suite Teardown  Test Suite Teardown
   ...      ${contract_index}
   ...      value.amount
   ...      ${amount}
-  Should Contain  ${value}  Value amount can't be greater than amountNet
+  Should Contain  ${value}  Amount should be greater than amountNet and differ by no more than 20.0%"
 
 
 Можливість встановити дату підписання угоди
