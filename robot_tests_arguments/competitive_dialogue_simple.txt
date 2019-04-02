@@ -64,9 +64,6 @@
 -i contract_sign
 -i contract_stand_still
 
--i modify_contract_invalid_amount
--i modify_contract_invalid_amountNet_tender_vat_true
-
 -i modify_contract
 -i add_doc_to_contract
 -i contract_doc_documentOf

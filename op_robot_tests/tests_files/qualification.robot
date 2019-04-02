@@ -238,6 +238,7 @@ ${award_index}      ${0}
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  qualification_approve_first_award
   ...  critical
+  [Setup]  Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
 
 
