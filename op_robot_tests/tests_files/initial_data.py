@@ -73,6 +73,14 @@ def create_fake_amount_net(award_amount, tender_value_added_tax_included, contra
         return round(random.uniform(half_min_amount_net, award_amount), 2)
 
 
+def create_fake_amount_paid(contract_amount, contract_amountNet):
+    minimum = contract_amountNet
+    maximum = contract_amount
+    range = maximum - minimum
+    half_min_range = minimum + range / 2
+    return round(random.uniform(minimum, half_min_range), 2)
+
+
 def create_fake_number(min_number, max_number):
     return random.randint(int(min_number), int(max_number))
 

@@ -461,11 +461,9 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      change_amount_paid
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
-  ${amountPaid.amount}=  create_fake_amount
+  ${amountPaid.amount}=  create_fake_amount_paid
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
-  ...      ${award.value.valueAddedTaxIncluded}
-  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amountNet}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amountPaid_amount=${amountPaid.amount}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  amountPaid.amount  ${amountPaid.amount}
 
