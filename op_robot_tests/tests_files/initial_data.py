@@ -383,13 +383,13 @@ def test_feature_data():
 
 
 def test_question_data():
-    return munchify({
-        "data": {
-            "author": fake.procuringTenderer(),
-            "description": fake.description(),
-            "title": field_with_id("q", fake.title())
-        }
-    })
+    data = {
+        "author": fake.procuringTenderer(),
+        "description": fake.description(),
+        "title": field_with_id("q", fake.title())
+    }
+    del data['author']['scale']
+    return munchify({'data': data})
 
 
 def test_related_question(question, relation, obj_id):
@@ -406,14 +406,13 @@ def test_question_answer_data():
 
 
 def test_complaint_data():
-    data = munchify({
-        "data": {
-            "author": fake.procuringTenderer(),
-            "description": fake.description(),
-            "title": fake.title()
-        }
-    })
-    return data
+    data = {
+        "author": fake.procuringTenderer(),
+        "description": fake.description(),
+        "title": field_with_id("q", fake.title())
+    }
+    del data['author']['scale']
+    return munchify({'data': data})
 
 
 test_claim_data = test_complaint_data
@@ -471,7 +470,7 @@ def test_bid_competitive_data():
         bid = munchify({
             "data": {
                 "tenderers": [
-                    fake.procuringEntity()
+                    fake.procuringTenderer()
                 ]
             }
         })
@@ -550,7 +549,7 @@ def test_supplier_data():
     return munchify({
         "data": {
             "suppliers": [
-                fake.procuringEntity()
+                fake.procuringTenderer()
             ],
             "value": {
                 "amount": fake.random_int(min=1),
