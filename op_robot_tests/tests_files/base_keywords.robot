@@ -4,6 +4,8 @@ Library            Collections
 Resource           keywords.robot
 Resource           resource.robot
 
+*** Variables ***
+${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": "error", "errors": [{"location": "url", "name": "tender_id", "description": "Archived"}]}
 
 *** Keywords ***
 Можливість оголосити тендер
@@ -144,7 +146,11 @@ Resource           resource.robot
   \  ${internalid}=  Get From Dictionary  ${tenders_feed_item}  id
   \  ${date_modified}=  Get From Dictionary  ${tenders_feed_item}  dateModified
   \  Log To Console  - Читання тендеру з id ${internalid} та датою модифікації ${date_modified}
-  \  Run As  ${username}  Отримати тендер по внутрішньому ідентифікатору  ${internalid}
+  \  ${status}=  Run Keyword And Return Status  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
+  \  Run Keyword If  ${status} == ${False}
+  \  ...  Run Keyword And Expect Error  ${ERROR_MESSAGE}  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
+  \  Run Keyword If  ${status} == ${True}
+  \  ...  Run As  ${username}  Отримати тендер по внутрішньому ідентифікатору  ${internalid}
 
 
 Можливість знайти план по ідентифікатору
