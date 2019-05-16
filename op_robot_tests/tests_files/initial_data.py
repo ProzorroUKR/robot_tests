@@ -172,7 +172,6 @@ def test_tender_data(params,
     data = {
         "mode": "test",
         "submissionMethodDetails": submissionMethodDetails,
-        "mainProcurementCategory": fake.random_element(('goods', 'services', 'works')),
         "description": fake.description(),
         "description_en": fake_en.sentence(nb_words=10, variable_nb_words=True),
         "description_ru": fake_ru.sentence(nb_words=10, variable_nb_words=True),
@@ -193,6 +192,12 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
+    if params.get("mode") == "open_framework":
+        data["mainProcurementCategory"] = random.choice(['goods', 'services'])
+    elif params.get("mode") == "open_competitive_dialogue":
+        data["mainProcurementCategory"] = random.choice(['services', 'works'])
+    else:
+        data["mainProcurementCategory"] = random.choice(['goods', 'services', 'works'])
     accelerator = accelerator \
         if accelerator else params['intervals']['accelerator']
     data['procurementMethodDetails'] = 'quick, ' \
