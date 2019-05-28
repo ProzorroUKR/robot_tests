@@ -12,6 +12,7 @@ from time import sleep
 import os
 import urllib
 
+
 def retry_if_request_failed(exception):
     status_code = getattr(exception, 'status_code', None)
     print(status_code)
@@ -145,6 +146,7 @@ def get_plans_feed(client, interval=0.5):
 def get_contracts_feed(client, interval=0.5):
     for item in get_items_feed(client, 'get_contracts', interval):
         yield item
+
 
 def get_items_feed(client, client_method, interval=0.5):
     items = True
