@@ -60,10 +60,14 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}
   [Documentation]  Відкрити браузер, створити об’єкти api wrapper і
   ...              ds api wrapper, приєднати їх атрибутами до користувача, тощо
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${RESOURCE}
   Log  ${API_HOST_URL}
   Log  ${API_VERSION}
   Log  ${DS_HOST_URL}
+  Log  ${ARTIFACT.tender_id}
+  Log  ${ARTIFACT.access_token}
   ${auth_ds_all}=  get variable value  ${USERS.users.${username}.auth_ds}
   ${auth_ds}=  set variable  ${auth_ds_all.${RESOURCE}}
   Log  ${auth_ds}
@@ -72,9 +76,16 @@ Library  openprocurement_client.utils
   ${api_wrapper}=  Run Keyword If  '${RESOURCE}' == 'plans'
   ...     prepare_plan_api_wrapper  ${USERS.users['${username}'].api_key}  PLANS  ${API_HOST_URL}  ${API_VERSION}
   ...                     ELSE  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  ${RESOURCE}  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
+  ${tender_create_wrapper}=  prepare_tender_create_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  PLANS
+  ...  ${API_HOST_URL}
+  ...  ${API_VERSION}
+  ...  ${ds_config}
   ${dasu_api_wraper}=  prepare_dasu_api_wrapper  ${USERS.users['${username}'].dasu_api_key}  ${DASU_RESOURCE}  ${DASU_API_HOST_URL}  ${DASU_API_VERSION}  ${ds_config}
   ${agreement_wrapper}=  prepare_agreement_api_wrapper  ${USERS.users['${username}'].api_key}  AGREEMENTS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
   Set To Dictionary  ${USERS.users['${username}']}  client=${api_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  tender_create_client=${tender_create_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  agreement_client=${agreement_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  dasu_client=${dasu_api_wraper}
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${EMPTY}
@@ -177,7 +188,15 @@ Library  openprocurement_client.utils
 
 Створити тендер
   [Arguments]  ${username}  ${tender_data}
-  ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
+  Log  ${ARTIFACT.tender_owner_access_token}
+  ${plan}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${ARTIFACT.tender_uaid}
+  ${tender}=  Call Method  ${USERS.users['${username}'].tender_create_client}  create_tender
+  ...      ${plan.data.id}
+  ...      ${tender_data}
+  ...      access_token=${ARTIFACT.tender_owner_access_token}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}

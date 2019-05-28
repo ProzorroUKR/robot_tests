@@ -166,9 +166,12 @@ Get Broker Property By Username
 Створити артефакт
   ${artifact}=  Create Dictionary
   ...      api_version=${API_VERSION}
-  ...      tender_uaid=${TENDER['TENDER_UAID']}
+  #...      tender_uaid=${TENDER['TENDER_UAID']}
   ...      last_modification_date=${TENDER['LAST_MODIFICATION_DATE']}
   ...      mode=${MODE}
+  run keyword if  '${RESOURCE}' == 'plans'
+  ...           Set To Dictionary  ${artifact}  tender_uaid=${TENDER['PLAN_UAID']}
+  ...               ELSE  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['TENDER_UAID']}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...          tender_owner=${USERS.users['${tender_owner}'].broker}
   ...          access_token=${USERS.users['${tender_owner}'].access_token}
@@ -504,7 +507,7 @@ Log differences between dicts
 
 Оновити сторінку
   [Arguments]  ${username}
-  Run Keyword If  '${RESOURCE}' == 'plans'  Run As  ${username}  Оновити сторінку з планом  ${TENDER['TENDER_UAID']}
+  Run Keyword If  '${RESOURCE}' == 'plans'  Run As  ${username}  Оновити сторінку з планом  ${TENDER['PLAN_UAID']}
   ...      ELSE  Run As  ${username}  Оновити сторінку з тендером  ${TENDER['TENDER_UAID']}
 
 

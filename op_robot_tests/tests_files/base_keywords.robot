@@ -122,7 +122,7 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити план  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
-  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+  Set To Dictionary  ${TENDER}  PLAN_UAID=${TENDER_UAID}
 
 
 Можливість знайти тендер по ідентифікатору для усіх користувачів
@@ -193,7 +193,7 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 Можливість знайти план по ідентифікатору для користувача ${username}
   Дочекатись синхронізації з майданчиком  ${username}
-  Run as  ${username}  Пошук плану по ідентифікатору  ${TENDER['TENDER_UAID']}
+  Run as  ${username}  Пошук плану по ідентифікатору  ${TENDER['PLAN_UAID']}
 
 
 Можливість знайти об'єкт моніторингу по ідентифікатору для користувача ${username}
