@@ -179,6 +179,5 @@ class StableClient_dasu(DasuClient):
         return super(StableClient_dasu, self).request(*args, **kwargs)
 
 
-def prepare_dasu_api_wrapper(key, resource, host_url, api_version, ds_config=None):
-    return StableClient_dasu(key, resource, host_url, api_version,
-                        ds_config=ds_config)
+def prepare_dasu_api_wrapper(resource, host_url, api_version, username, password, ds_config=None):
+    return StableClient_dasu(resource, host_url, api_version, username, password, ds_config=ds_config)
