@@ -160,10 +160,12 @@ def create_fake_IsoDurationType(
 
 
 def test_tender_data(params,
+                     plan_data,
                      periods=("enquiry", "tender"),
                      submissionMethodDetails=None,
                      funders=None,
-                     accelerator=None):
+                     accelerator=None
+                     ):
     submissionMethodDetails = submissionMethodDetails \
         if submissionMethodDetails else "quick"
     now = get_now()
@@ -192,6 +194,8 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
+    data["procuringEntity"]["name"] = plan_data["data"]["procuringEntity"]["name"]
+    data["procuringEntity"]["identifier"] = plan_data["data"]["procuringEntity"]["identifier"]
     if params.get("mode") == "open_framework":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") == "open_competitive_dialogue":
@@ -229,6 +233,7 @@ def test_tender_data(params,
             for i in range(params['number_of_items']):
                 new_item = test_item_data(cpv_group)
                 new_item['relatedLot'] = lot_id
+                new_item["classification"] = plan_data["data"]["classification"]
                 data['items'].append(new_item)
         value_amount = round(sum(lot['value']['amount'] for lot in data['lots']), 2)
         minimalStep = min(lot['minimalStep']['amount'] for lot in data['lots'])
@@ -243,6 +248,7 @@ def test_tender_data(params,
     else:
         for i in range(params['number_of_items']):
             new_item = test_item_data(cpv_group)
+            new_item["classification"] = plan_data["data"]["classification"]
             data['items'].append(new_item)
     milestones = params.get('number_of_milestones')
     if milestones:

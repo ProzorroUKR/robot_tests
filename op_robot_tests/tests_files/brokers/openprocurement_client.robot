@@ -25,7 +25,7 @@ Library  openprocurement_client.utils
   ${status}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${USERS.users['${username}'].id_map}  ${tender_uaid}
   Run Keyword And Return If  ${status}  Get From Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}
   Call Method  ${USERS.users['${username}'].client}  get_plans
-  ${tender_id}=  Wait Until Keyword Succeeds  5x  30 sec  get_plan_id_by_uaid  ${tender_uaid}  ${USERS.users['${username}'].client}
+  ${tender_id}=  Wait Until Keyword Succeeds  5x  30 sec  get_plan_id_by_uaid  ${tender_uaid}  ${USERS.users['${username}'].plan_client}
   Set To Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}  ${tender_id}
   [return]  ${tender_id}
 
@@ -73,9 +73,8 @@ Library  openprocurement_client.utils
   Log  ${auth_ds}
 
   ${ds_config}=  Create Dictionary  host_url=${ds_host_url}  auth_ds=${auth_ds}
-  ${api_wrapper}=  Run Keyword If  '${RESOURCE}' == 'plans'
-  ...     prepare_plan_api_wrapper  ${USERS.users['${username}'].api_key}  PLANS  ${API_HOST_URL}  ${API_VERSION}
-  ...                     ELSE  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  ${RESOURCE}  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
+  ${plan_api_wrapper}=  prepare_plan_api_wrapper  ${USERS.users['${username}'].api_key}  PLANS  ${API_HOST_URL}  ${API_VERSION}
+  ${tender_api_wrapper}=  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  TENDERS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
   ${tender_create_wrapper}=  prepare_tender_create_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  PLANS
@@ -84,7 +83,8 @@ Library  openprocurement_client.utils
   ...  ${ds_config}
   ${dasu_api_wraper}=  prepare_dasu_api_wrapper  ${USERS.users['${username}'].dasu_api_key}  ${DASU_RESOURCE}  ${DASU_API_HOST_URL}  ${DASU_API_VERSION}  ${ds_config}
   ${agreement_wrapper}=  prepare_agreement_api_wrapper  ${USERS.users['${username}'].api_key}  AGREEMENTS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
-  Set To Dictionary  ${USERS.users['${username}']}  client=${api_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  plan_client=${plan_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  tender_create_client=${tender_create_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  agreement_client=${agreement_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  dasu_client=${dasu_api_wraper}
@@ -190,11 +190,12 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_data}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
-  Log  ${ARTIFACT.tender_uaid}
+  #Log  ${ARTIFACT.tender_uaid}
   Log  ${ARTIFACT.tender_owner_access_token}
-  ${plan}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${ARTIFACT.tender_uaid}
+  Log  ${ARTIFACT.tender_id}
+  #${plan}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${ARTIFACT.tender_uaid}
   ${tender}=  Call Method  ${USERS.users['${username}'].tender_create_client}  create_tender
-  ...      ${plan.data.id}
+  ...      ${ARTIFACT.tender_id}
   ...      ${tender_data}
   ...      access_token=${ARTIFACT.tender_owner_access_token}
   Log  ${tender}
@@ -245,10 +246,10 @@ Library  openprocurement_client.utils
 
 Створити план
   [Arguments]  ${username}  ${tender_data}
-  ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_plan  ${tender_data}
+  ${tender}=  Call Method  ${USERS.users['${username}'].plan_client}  create_plan  ${tender_data}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
-  ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_plan
+  ${tender}=  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
   ...      ${tender.data.id}
   ...      ${tender}
   ...      access_token=${tender.access.token}
@@ -418,7 +419,7 @@ Library  openprocurement_client.utils
 
 Отримати план по внутрішньому ідентифікатору
   [Arguments]  ${username}  ${internalid}  ${save_key}=tender_data
-  ${tender}=  Call Method  ${USERS.users['${username}'].client}  get_plan  ${internalid}
+  ${tender}=  Call Method  ${USERS.users['${username}'].plan_client}  get_plan  ${internalid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   Set To Dictionary  ${USERS.users['${username}']}  ${save_key}=${tender}
   ${tender}=  munch_dict  arg=${tender}

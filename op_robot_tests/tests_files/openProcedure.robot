@@ -26,7 +26,9 @@ ${VAT_INCLUDED}     ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_plan
   ...      critical
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  [Teardown]  run keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
   Можливість створити план закупівлі
 
 

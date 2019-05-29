@@ -318,7 +318,9 @@ def prepare_test_tender_data(procedure_intervals,
                              tender_parameters,
                              submissionMethodDetails,
                              accelerator,
-                             funders):
+                             funders,
+                             plan_data
+                             ):
     # Get actual intervals by mode name
     mode = tender_parameters['mode']
     if mode in procedure_intervals:
@@ -358,9 +360,11 @@ def prepare_test_tender_data(procedure_intervals,
     elif mode == 'belowThreshold':
         return munchify({'data': test_tender_data(
             tender_parameters,
+            plan_data,
             submissionMethodDetails=submissionMethodDetails,
             funders=funders,
-            accelerator=accelerator)})
+            accelerator=accelerator
+            )})
     elif mode == 'open_esco':
          return munchify({'data': test_tender_data_esco(
             tender_parameters, submissionMethodDetails)})
