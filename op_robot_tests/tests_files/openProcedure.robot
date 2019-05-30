@@ -20,27 +20,6 @@ ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
 
 *** Test Cases ***
-Можливість створити план закупівлі
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      create_plan
-  ...      critical
-  [Teardown]  run keywords
-  ...         Оновити LAST_MODIFICATION_DATE
-  ...         Створити артефакт
-  Можливість створити план закупівлі
-
-
-Можливість знайти план по ідентифікатору
-  [Tags]   ${USERS.users['${viewer}'].broker}: Пошук плану
-  ...      viewer  tender_owner
-  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
-  ...      find_plan
-  ...      critical
-  Можливість знайти план по ідентифікатору
-
-
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner

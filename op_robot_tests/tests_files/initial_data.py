@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -
+
 import os
 import random
 import hashlib
@@ -297,10 +298,9 @@ def test_tender_data_planning(params):
         "procuringEntity": {
             "identifier": {
                 "scheme": "UA-EDR",
-                "id": str(fake.random_int(min=1, max=999)),
-                "legalName": fake.description(),
+                "id": random.choice(["13313462", "00037256"]),
+                "legalName": random.choice(["Київський Тестовий Ліцей", "Київська Тестова міська клінічна лікарня"]),
             },
-            "name": fake.description(),
         },
         "tender": {
             "procurementMethod": "",
@@ -311,8 +311,12 @@ def test_tender_data_planning(params):
         },
         "items": []
         }
-    id_cpv=fake.cpv()[:4]
-    cpv_data=test_item_data(id_cpv)
+    data["procuringEntity"]["name"] = data["procuringEntity"]["identifier"]["legalName"]
+    if params.get('moz_integration'):
+        id_cpv = 336
+    else:
+        id_cpv = fake.cpv()[:4]
+    cpv_data = test_item_data(id_cpv)
     data.update(cpv_data)
     del data['deliveryDate']
     del data['description']

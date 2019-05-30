@@ -172,7 +172,7 @@ Get Broker Property By Username
   #Run Keyword If  '${RESOURCE}' == 'plans'
   #...           Set To Dictionary  ${artifact}  tender_uaid=${TENDER['PLAN_UAID']}
   #...               ELSE  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['TENDER_UAID']}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['PLAN_UAID']}
+  #Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['PLAN_UAID']}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['TENDER_UAID']}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...          tender_owner=${USERS.users['${tender_owner}'].broker}
@@ -509,7 +509,7 @@ Log differences between dicts
 
 Оновити сторінку
   [Arguments]  ${username}
-  Run Keyword If  '${RESOURCE}' == 'plans'  Run As  ${username}  Оновити сторінку з планом  ${TENDER['PLAN_UAID']}
+  Run Keyword If  '${RESOURCE}' == 'plans'  Run As  ${username}  Оновити сторінку з планом  ${TENDER['TENDER_UAID']}
   ...      ELSE  Run As  ${username}  Оновити сторінку з тендером  ${TENDER['TENDER_UAID']}
 
 

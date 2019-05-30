@@ -24,7 +24,7 @@ Library  openprocurement_client.utils
   Log Many  ${USERS.users['${username}'].id_map}
   ${status}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${USERS.users['${username}'].id_map}  ${tender_uaid}
   Run Keyword And Return If  ${status}  Get From Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}
-  Call Method  ${USERS.users['${username}'].client}  get_plans
+  Call Method  ${USERS.users['${username}'].plan_client}  get_plans
   ${tender_id}=  Wait Until Keyword Succeeds  5x  30 sec  get_plan_id_by_uaid  ${tender_uaid}  ${USERS.users['${username}'].plan_client}
   Set To Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}  ${tender_id}
   [return]  ${tender_id}
@@ -526,7 +526,7 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_plan
+  ${tender}=  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
   ...      ${tender.data.id}
   ...      ${tender}
   ...      access_token=${tender.access.token}
@@ -550,7 +550,7 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_uaid}  ${item}
   ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
   Append To List  ${tender.data['items']}  ${item}
-  Call Method  ${USERS.users['${username}'].client}  patch_plan
+  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
   ...      ${tender.data.id}
   ...      ${tender}
   ...      access_token=${tender.access.token}
@@ -577,7 +577,7 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
   ${item_index}=  get_object_index_by_id  ${tender.data['items']}  ${item_id}
   Remove From List  ${tender.data['items']}  ${item_index}
-  Call Method  ${USERS.users['${username}'].client}  patch_plan
+  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
   ...      ${tender.data.id}
   ...      ${tender}
   ...      access_token=${tender.access.token}

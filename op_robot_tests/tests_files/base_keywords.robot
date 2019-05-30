@@ -15,13 +15,14 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      number_of_items=${NUMBER_OF_ITEMS}
   ...      tender_meat=${${TENDER_MEAT}}
   ...      item_meat=${${ITEM_MEAT}}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   ${tender_data}=  Підготувати дані для створення плану  ${tender_parameters}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити план  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
-  Set To Dictionary  ${TENDER}  PLAN_UAID=${TENDER_UAID}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 
 Можливість оголосити тендер
@@ -197,7 +198,7 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 Можливість знайти план по ідентифікатору для користувача ${username}
   Дочекатись синхронізації з майданчиком  ${username}
-  Run as  ${username}  Пошук плану по ідентифікатору  ${TENDER['PLAN_UAID']}
+  Run as  ${username}  Пошук плану по ідентифікатору  ${TENDER['TENDER_UAID']}
 
 
 Можливість знайти об'єкт моніторингу по ідентифікатору для користувача ${username}
