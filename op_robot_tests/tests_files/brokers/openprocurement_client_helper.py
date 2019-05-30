@@ -12,6 +12,7 @@ from time import sleep
 import os
 import urllib
 
+
 def retry_if_request_failed(exception):
     status_code = getattr(exception, 'status_code', None)
     print(status_code)
@@ -146,6 +147,7 @@ def get_contracts_feed(client, interval=0.5):
     for item in get_items_feed(client, 'get_contracts', interval):
         yield item
 
+
 def get_items_feed(client, client_method, interval=0.5):
     items = True
     while items:
@@ -179,6 +181,5 @@ class StableClient_dasu(DasuClient):
         return super(StableClient_dasu, self).request(*args, **kwargs)
 
 
-def prepare_dasu_api_wrapper(key, resource, host_url, api_version, ds_config=None):
-    return StableClient_dasu(key, resource, host_url, api_version,
-                        ds_config=ds_config)
+def prepare_dasu_api_wrapper(resource, host_url, api_version, username, password, ds_config=None):
+    return StableClient_dasu(resource, host_url, api_version, username, password, ds_config=ds_config)

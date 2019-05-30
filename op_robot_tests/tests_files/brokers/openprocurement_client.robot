@@ -72,7 +72,13 @@ Library  openprocurement_client.utils
   ${api_wrapper}=  Run Keyword If  '${RESOURCE}' == 'plans'
   ...     prepare_plan_api_wrapper  ${USERS.users['${username}'].api_key}  PLANS  ${API_HOST_URL}  ${API_VERSION}
   ...                     ELSE  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  ${RESOURCE}  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
-  ${dasu_api_wraper}=  prepare_dasu_api_wrapper  ${USERS.users['${username}'].dasu_api_key}  ${DASU_RESOURCE}  ${DASU_API_HOST_URL}  ${DASU_API_VERSION}  ${ds_config}
+  ${dasu_api_wraper}=  prepare_dasu_api_wrapper
+  ...  ${DASU_RESOURCE}
+  ...  ${DASU_API_HOST_URL}
+  ...  ${DASU_API_VERSION}
+  ...  ${USERS.users['${username}'].auth_dasu[0]}
+  ...  ${USERS.users['${username}'].auth_dasu[1]}
+  ...  ${ds_config}
   ${agreement_wrapper}=  prepare_agreement_api_wrapper  ${USERS.users['${username}'].api_key}  AGREEMENTS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
   Set To Dictionary  ${USERS.users['${username}']}  client=${api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  agreement_client=${agreement_wrapper}
