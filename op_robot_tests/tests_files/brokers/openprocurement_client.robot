@@ -190,10 +190,8 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_data}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
-  #Log  ${ARTIFACT.tender_uaid}
   Log  ${ARTIFACT.tender_owner_access_token}
   Log  ${ARTIFACT.tender_id}
-  #${plan}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${ARTIFACT.tender_uaid}
   ${tender}=  Call Method  ${USERS.users['${username}'].tender_create_client}  create_tender
   ...      ${ARTIFACT.tender_id}
   ...      ${tender_data}
