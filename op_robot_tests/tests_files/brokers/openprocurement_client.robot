@@ -73,6 +73,7 @@ Library  openprocurement_client.utils
   Log  ${auth_ds}
 
   ${ds_config}=  Create Dictionary  host_url=${ds_host_url}  auth_ds=${auth_ds}
+
   ${plan_api_wrapper}=  prepare_plan_api_wrapper  ${USERS.users['${username}'].api_key}  PLANS  ${API_HOST_URL}  ${API_VERSION}
   ${tender_api_wrapper}=  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  TENDERS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
   ${tender_create_wrapper}=  prepare_tender_create_wrapper
@@ -81,7 +82,13 @@ Library  openprocurement_client.utils
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
-  ${dasu_api_wraper}=  prepare_dasu_api_wrapper  ${USERS.users['${username}'].dasu_api_key}  ${DASU_RESOURCE}  ${DASU_API_HOST_URL}  ${DASU_API_VERSION}  ${ds_config}
+  ${dasu_api_wraper}=  prepare_dasu_api_wrapper
+  ...  ${DASU_RESOURCE}
+  ...  ${DASU_API_HOST_URL}
+  ...  ${DASU_API_VERSION}
+  ...  ${USERS.users['${username}'].auth_dasu[0]}
+  ...  ${USERS.users['${username}'].auth_dasu[1]}
+  ...  ${ds_config}
   ${agreement_wrapper}=  prepare_agreement_api_wrapper  ${USERS.users['${username}'].api_key}  AGREEMENTS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
   Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  plan_client=${plan_api_wrapper}
