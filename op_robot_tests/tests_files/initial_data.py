@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -
+
 import os
 import random
 import hashlib
@@ -115,8 +116,10 @@ def subtraction(value1, value2):
 def create_fake_value_amount():
     return fake.random_int(min=1)
 
+
 def get_number_of_minutes(days, accelerator):
     return 1440 * int(days) / accelerator
+
 
 def field_with_id(prefix, sentence):
     return u"{}-{}: {}".format(prefix, fake.uuid4()[:8], sentence)
@@ -160,10 +163,12 @@ def create_fake_IsoDurationType(
 
 
 def test_tender_data(params,
+                     plan_data,
                      periods=("enquiry", "tender"),
                      submissionMethodDetails=None,
                      funders=None,
-                     accelerator=None):
+                     accelerator=None
+                     ):
     submissionMethodDetails = submissionMethodDetails \
         if submissionMethodDetails else "quick"
     now = get_now()
@@ -192,6 +197,8 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
+    data["procuringEntity"]["name"] = plan_data["data"]["procuringEntity"]["name"]
+    data["procuringEntity"]["identifier"] = plan_data["data"]["procuringEntity"]["identifier"]
     if params.get("mode") == "open_framework":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") == "open_competitive_dialogue":
@@ -215,10 +222,11 @@ def test_tender_data(params,
             inc_dt += timedelta(minutes=params['intervals'][period_name][i])
             period_dict[period_name + "Period"][j + "Date"] = inc_dt.astimezone(TZ).isoformat()
     data.update(period_dict)
-    if params.get('moz_integration'):
-        cpv_group = 336
-    else:
-        cpv_group = fake.cpv()[:4]
+    cpv_group = plan_data["data"]["classification"]["id"]
+    #if params.get('moz_integration'):
+        #cpv_group = 336
+    #else:
+        #cpv_group = fake.cpv()[:4]
     if params.get('number_of_lots'):
         data['lots'] = []
         for lot_number in range(params['number_of_lots']):
@@ -291,10 +299,9 @@ def test_tender_data_planning(params):
         "procuringEntity": {
             "identifier": {
                 "scheme": "UA-EDR",
-                "id": str(fake.random_int(min=1, max=999)),
-                "legalName": fake.description(),
+                "id": random.choice(["13313462", "00037256"]),
+                "legalName": random.choice([u"Київський Тестовий Ліцей", u"Київська Тестова міська клінічна лікарня"]),
             },
-            "name": fake.description(),
         },
         "tender": {
             "procurementMethod": "",
@@ -305,8 +312,12 @@ def test_tender_data_planning(params):
         },
         "items": []
         }
-    id_cpv=fake.cpv()[:4]
-    cpv_data=test_item_data(id_cpv)
+    data["procuringEntity"]["name"] = data["procuringEntity"]["identifier"]["legalName"]
+    if params.get('moz_integration'):
+        id_cpv = 336
+    else:
+        id_cpv = fake.cpv()[:4]
+    cpv_data = test_item_data(id_cpv)
     data.update(cpv_data)
     del data['deliveryDate']
     del data['description']
@@ -317,7 +328,7 @@ def test_tender_data_planning(params):
     del data['quantity']
     del data['unit']
     for i in range(params['number_of_items']):
-        item_data=test_item_data(id_cpv)
+        item_data = test_item_data(id_cpv)
         del item_data['deliveryAddress']
         del item_data['deliveryLocation']
         item_data['deliveryDate']['endDate'] = (get_now() + timedelta(days=10)).replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
@@ -330,8 +341,8 @@ def test_tender_data_planning(params):
     return munchify(data)
 
 
-def test_tender_data_limited(params):
-    data = test_tender_data(params)
+def test_tender_data_limited(params, plan_data):
+    data = test_tender_data(params, plan_data)
     del data["submissionMethodDetails"]
     del data["minimalStep"]
     del data["enquiryPeriod"]
@@ -635,31 +646,31 @@ def test_change_document_data(document, change_id):
     return munchify(document)
 
 
-def test_tender_data_openua(params, submissionMethodDetails):
+def test_tender_data_openua(params, submissionMethodDetails, plan_data):
     # We should not provide any values for `enquiryPeriod` when creating
     # an openUA or openEU procedure. That field should not be present at all.
     # Therefore, we pass a nondefault list of periods to `test_tender_data()`.
-    data = test_tender_data(params, ('tender',), submissionMethodDetails)
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdUA'
     data['procuringEntity']['kind'] = 'general'
     return data
 
 
-def test_tender_data_openua_defense(params, submissionMethodDetails):
+def test_tender_data_openua_defense(params, submissionMethodDetails, plan_data):
     """We should not provide any values for `enquiryPeriod` when creating
     an openUA, openEU or openUA_defense procedure. That field should not be present at all.
     Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
-    data = test_tender_data(params, ('tender',), submissionMethodDetails)
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdUA.defense'
     data['procuringEntity']['kind'] = 'defense'
     return data
 
 
-def test_tender_data_openeu(params, submissionMethodDetails):
+def test_tender_data_openeu(params, submissionMethodDetails, plan_data):
     # We should not provide any values for `enquiryPeriod` when creating
     # an openUA or openEU procedure. That field should not be present at all.
     # Therefore, we pass a nondefault list of periods to `test_tender_data()`.
-    data = test_tender_data(params, ('tender',), submissionMethodDetails)
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdEU'
     data['title_en'] = "[TESTING]"
     for item_number, item in enumerate(data['items']):
@@ -672,8 +683,8 @@ def test_tender_data_openeu(params, submissionMethodDetails):
     return data
 
 
-def test_tender_data_framework_agreement(params, submissionMethodDetails):
-    data = test_tender_data_openeu(params, submissionMethodDetails)
+def test_tender_data_framework_agreement(params, submissionMethodDetails, plan_data):
+    data = test_tender_data_openeu(params, submissionMethodDetails, plan_data)
     data['procurementMethodType'] = 'closeFrameworkAgreementUA'
     data['maxAwardsCount'] = fake.random_int(min=3, max=5)
     data['agreementDuration'] = create_fake_IsoDurationType(
@@ -687,11 +698,11 @@ def test_tender_data_framework_agreement(params, submissionMethodDetails):
     return data
 
 
-def test_tender_data_competitive_dialogue(params, submissionMethodDetails):
+def test_tender_data_competitive_dialogue(params, submissionMethodDetails, plan_data):
     # We should not provide any values for `enquiryPeriod` when creating
     # an openUA or openEU procedure. That field should not be present at all.
     # Therefore, we pass a nondefault list of periods to `test_tender_data()`.
-    data = test_tender_data(params, ('tender',), submissionMethodDetails)
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     if params.get('dialogue_type') == 'UA':
         data['procurementMethodType'] = 'competitiveDialogueUA'
     else:
@@ -839,8 +850,8 @@ def test_elimination_report(corruption, relatedParty_id):
     })
 
 
-def test_tender_data_esco(params, submissionMethodDetails):
-    data = test_tender_data(params, ('tender',), submissionMethodDetails)
+def test_tender_data_esco(params, submissionMethodDetails, plan_data):
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'esco'
     data['title_en'] = "[TESTING]"
     for item_number, item in enumerate(data['items']):

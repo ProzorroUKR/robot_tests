@@ -8,9 +8,10 @@ ${RESOURCE}     plans
 ${MODE}         belowThreshold
 @{USED_ROLES}   tender_owner  viewer
 
-${NUMBER_OF_ITEMS}  ${2}
+${NUMBER_OF_ITEMS}  ${1}
 ${TENDER_MEAT}      ${False}
 ${ITEM_MEAT}        ${False}
+${MOZ_INTEGRATION}  ${False}
 
 *** Test Cases ***
 Можливість створити план закупівлі
@@ -21,6 +22,42 @@ ${ITEM_MEAT}        ${False}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість створити план закупівлі
+
+
+Можливість створити план на закупівлю фармацевтичної продукції
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_1
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${1}
+
+
+Можливість створити план закупівлі лікарських засобів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_2
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${2}
+
+
+Можливість створити план закупівлі лікарських засобів без додаткового класифікатора
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_3
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${3}
 
 
 Можливість знайти план по ідентифікатору

@@ -6,6 +6,7 @@ from openprocurement_client.resources.document_service import DocumentServiceCli
 from openprocurement_client.resources.plans import PlansClient
 from openprocurement_client.resources.contracts import ContractingClient
 from openprocurement_client.exceptions import IdNotFound
+from openprocurement_client.resources.tenders import TenderCreateClient
 from restkit.errors import RequestFailed, BadStatusLine, ResourceError
 from retrying import retry
 from time import sleep
@@ -43,9 +44,21 @@ class StableAgreementClient(AgreementClient):
         return super(StableAgreementClient, self).request(*args, **kwargs)
 
 
+class StableTenderCreateClient(TenderCreateClient):
+    @retry(stop_max_attempt_number=100, wait_random_min=500,
+           wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    def request(self, *args, **kwargs):
+        return super(StableTenderCreateClient, self).request(*args, **kwargs)
+
+
 def prepare_api_wrapper(key, resource, host_url, api_version, ds_config=None):
     return StableClient(key, resource, host_url, api_version,
                         ds_config=ds_config)
+
+
+def prepare_tender_create_wrapper(key, resource, host_url, api_version, ds_config=None):
+    return StableTenderCreateClient(key, resource, host_url, api_version,
+                                    ds_config=ds_config)
 
 
 def prepare_ds_api_wrapper(ds_host_url, auth_ds):

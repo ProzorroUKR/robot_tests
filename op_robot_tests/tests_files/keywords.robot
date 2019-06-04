@@ -166,9 +166,14 @@ Get Broker Property By Username
 Створити артефакт
   ${artifact}=  Create Dictionary
   ...      api_version=${API_VERSION}
-  ...      tender_uaid=${TENDER['TENDER_UAID']}
+  #...      tender_uaid=${TENDER['TENDER_UAID']}
   ...      last_modification_date=${TENDER['LAST_MODIFICATION_DATE']}
   ...      mode=${MODE}
+  #Run Keyword If  '${RESOURCE}' == 'plans'
+  #...           Set To Dictionary  ${artifact}  tender_uaid=${TENDER['PLAN_UAID']}
+  #...               ELSE  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['TENDER_UAID']}
+  #Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['PLAN_UAID']}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_uaid=${TENDER['TENDER_UAID']}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...          tender_owner=${USERS.users['${tender_owner}'].broker}
   ...          access_token=${USERS.users['${tender_owner}'].access_token}
@@ -213,12 +218,12 @@ Get Broker Property By Username
 
 
 Підготувати дані для створення тендера
-  [Arguments]  ${tender_parameters}
+  [Arguments]  ${tender_parameters}  ${plan_data}
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${submissionMethodDetails}=  Get Variable Value  ${submissionMethodDetails}
   ${accelerator}=  Get Variable Value  ${accelerator}
   ${funders}=  Get Variable Value  ${FUNDERS}
-  ${tender_data}=  prepare_test_tender_data  ${period_intervals}  ${tender_parameters}  ${submissionMethodDetails}  ${accelerator}  ${funders}
+  ${tender_data}=  prepare_test_tender_data  ${period_intervals}  ${tender_parameters}  ${submissionMethodDetails}  ${accelerator}  ${funders}  ${plan_data}
   ${TENDER}=  Create Dictionary
   Set Global Variable  ${TENDER}
   Log  ${tender_data}

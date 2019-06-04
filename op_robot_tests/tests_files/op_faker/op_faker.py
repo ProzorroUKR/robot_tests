@@ -139,6 +139,10 @@ class OP_Provider(BaseProvider):
             for cpv_element in self.cpvs:
                 if cpv_element.startswith(cpv_group):
                     similar_cpvs.append(cpv_element)
+            else:
+                for cpv_element in self.moz_cpvs:
+                    if cpv_element.startswith(cpv_group):
+                        similar_cpvs.append(cpv_element)
             cpv = self.random_element(similar_cpvs)
         for entity in self.items_base_data:
             if entity["cpv_id"] == cpv:

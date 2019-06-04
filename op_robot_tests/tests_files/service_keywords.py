@@ -318,7 +318,9 @@ def prepare_test_tender_data(procedure_intervals,
                              tender_parameters,
                              submissionMethodDetails,
                              accelerator,
-                             funders):
+                             funders,
+                             plan_data
+                             ):
     # Get actual intervals by mode name
     mode = tender_parameters['mode']
     if mode in procedure_intervals:
@@ -335,35 +337,37 @@ def prepare_test_tender_data(procedure_intervals,
     assert intervals['accelerator'] >= 0, \
         "Accelerator should not be less than 0"
     if mode == 'negotiation':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'negotiation.quick':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'openeu':
         return munchify({'data': test_tender_data_openeu(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'openua':
         return munchify({'data': test_tender_data_openua(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'openua_defense':
         return munchify({'data': test_tender_data_openua_defense(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'open_competitive_dialogue':
         return munchify({'data': test_tender_data_competitive_dialogue(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'reporting':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'open_framework':
         return munchify({'data': test_tender_data_framework_agreement(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'belowThreshold':
         return munchify({'data': test_tender_data(
             tender_parameters,
+            plan_data,
             submissionMethodDetails=submissionMethodDetails,
             funders=funders,
-            accelerator=accelerator)})
+            accelerator=accelerator
+            )})
     elif mode == 'open_esco':
          return munchify({'data': test_tender_data_esco(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
         # The previous line needs an explicit keyword argument because,
         # unlike previous functions, this one has three arguments.
     raise ValueError("Invalid mode for prepare_test_tender_data")
@@ -698,3 +702,12 @@ def edit_tender_data_for_mnn(data, mode, data_version):
     return munchify(dict_data)
 
 
+def edit_plan_data_for_mnn(data, mode, data_version):
+    id = {1: '33600000-6', 2: '33632100-0', 3: '33632100-0', 4: '33622200-8', 5: '33600000-6', 6: '33692500-2', 7: '33600000-6', 8: '33615100-5'}
+    dict_data = unmunchify(data)
+    dict_data['data']['items'][0]['classification']['id'] = id[data_version]
+    dict_data['data']['classification']['id'] = id[data_version]
+    if data_version is 3:
+        dict_data['data']['items'][0].pop('additionalClassifications', None)
+        dict_data['data'].pop('additionalClassifications', None)
+    return munchify(dict_data)
