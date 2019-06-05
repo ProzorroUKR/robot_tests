@@ -8,7 +8,7 @@
 -v LOT_MEAT:True
 -v MOZ_INTEGRATION:True
 
--i create_tender_mnn_1
+-i create_tender
 -i find_tender
 -i tender_view_sheme_inn
 -i tender_view_id_inn

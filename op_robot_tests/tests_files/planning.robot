@@ -60,6 +60,78 @@ ${MOZ_INTEGRATION}  ${False}
   Можливість створити план закупівлі з використанням валідації для MNN  ${3}
 
 
+Можливість створити план закупівлі лікарських засобів з двома значеннями МНН
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_4
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${4}
+
+
+Можливість створити план закупівлі фармацевтичної продукції з відсутнім додатковим класифікатором
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_5
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${5}
+
+
+Можливість створити план закупівлі лікарських засобів без коду МНН
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_6
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${6}
+
+
+Можливість створити план закупівлі лікарських засобів без коду МНН
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_6
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${6}
+
+
+Можливість створити план закупівлі фармацевтичної продукції без коду АТХлікарських засобів без коду МНН
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_7
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${7}
+
+
+Можливість створити план закупівлі лікарських засобів без коду АТХ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_mnn_8
+  ...      critical
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
+  Можливість створити план закупівлі з використанням валідації для MNN  ${8}
+
+
 Можливість знайти план по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук плану
   ...      viewer  tender_owner
