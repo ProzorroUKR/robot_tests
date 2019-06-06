@@ -20,7 +20,9 @@ ${MOZ_INTEGRATION}  ${False}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_plan
   ...      critical
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  [Teardown]  Run Keywords
+  ...         Оновити LAST_MODIFICATION_DATE
+  ...         Створити артефакт
   Можливість створити план закупівлі
 
 
@@ -82,18 +84,6 @@ ${MOZ_INTEGRATION}  ${False}
   ...         Оновити LAST_MODIFICATION_DATE
   ...         Створити артефакт
   Можливість створити план закупівлі з використанням валідації для MNN  ${5}
-
-
-Можливість створити план закупівлі лікарських засобів без коду МНН
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      create_plan_mnn_6
-  ...      critical
-  [Teardown]  Run Keywords
-  ...         Оновити LAST_MODIFICATION_DATE
-  ...         Створити артефакт
-  Можливість створити план закупівлі з використанням валідації для MNN  ${6}
 
 
 Можливість створити план закупівлі лікарських засобів без коду МНН
