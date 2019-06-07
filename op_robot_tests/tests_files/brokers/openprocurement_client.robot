@@ -418,7 +418,7 @@ Library  openprocurement_client.utils
 
 Отримати список планів
   [Arguments]  ${username}
-  @{plans_feed}=  get_plans_feed  ${USERS.users['${username}'].client}
+  @{plans_feed}=  get_plans_feed  ${USERS.users['${username}'].plan_client}
   [return]  @{plans_feed}
 
 
