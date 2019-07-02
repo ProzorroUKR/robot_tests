@@ -18,6 +18,8 @@ ${LOT_MEAT}         ${True}
 ${ITEM_MEAT}        ${True}
 ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
+${ROAD_INDEX}       ${False}
+${GMDN_INDEX}       ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -108,6 +110,116 @@ ${VAT_INCLUDED}     ${True}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість оголосити тендер з використанням валідації для MNN  ${8}
+
+
+Опублікувати тендер на закупівлю дорожніх робіт без додаткового класифікатора
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_cost_no_addclass  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг  ${1}
+
+
+Неможливість опублікувати тендер на закупівлю дорожніх робіт з 2-ма додатковими класифікаторами
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_cost_2_addclass  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг  ${2}
+
+
+Неможливість опублікувати тендер на закупівлю дорожніх робіт з невалідним id дороги
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_cost_invalid_addclass_id  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг  ${3}
+
+
+Неможливість опублікувати тендер на закупівлю дорожніх робіт з невалідним description дороги
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_cost_invalid_addclass_description  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг  ${4}
+
+
+Неможливість опублікувати тендер cpv не відповідає додатковому класифікатору UA-ROAD
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_cost_invalid_addclass  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг  ${5}
+
+
+Опублікувати тендер на закупівлю медичних виробів без додаткового класифікатора
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_gmdn_no_addclass  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з використанням валідації класифікатор медичних виробів  ${1}
+
+
+Неможливість опублікувати на закупівлю медичних виробів з 2-ма додатковими класифікаторами
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_gmdn_2_addclass  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації класифікатор медичних виробів  ${2}
+
+
+Неможливість опублікувати на закупівлю медичних виробів з невалідним id виробу
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_gmdn_invalid_addclass_id  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації класифікатор медичних виробів  ${3}
+
+
+Неможливість опублікувати на закупівлю медичних виробів з невалідним description виробу
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_gmdn_invalid_addclass_description  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації класифікатор медичних виробів  ${4}
+
+
+Неможливість опублікувати тендер cpv не відповідає додатковому класифікатору GMDN
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_gmdn_invalid_addclass  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації класифікатор медичних виробів  ${5}
+
+
+Неможливість опублікувати тендер на закупівлю медичних виробів з INN
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_gmdn_inn_addclass  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації класифікатор медичних виробів  ${6}
 
 
 Можливість знайти тендер по ідентифікатору

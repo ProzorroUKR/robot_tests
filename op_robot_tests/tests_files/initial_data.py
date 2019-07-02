@@ -217,6 +217,10 @@ def test_tender_data(params,
     data.update(period_dict)
     if params.get('moz_integration'):
         cpv_group = 336
+    elif params.get('road_index'):
+        cpv_group = 'road'
+    elif params.get('gmdn_index'):
+        cpv_group = 'gmdn'
     else:
         cpv_group = fake.cpv()[:4]
     if params.get('number_of_lots'):
@@ -908,6 +912,22 @@ def invalid_INN_data():
             "scheme": "INN",
             "description": "Insulin (human)",
             "id": "insulin (human)"
+    })
+
+
+def invalid_cost_data():
+    return munchify({
+            "scheme": "UA-ROAD",
+            "id": "М-15",
+            "description": "Одеса - Рені (на м. Бухарест)"
+    })
+
+
+def invalid_gmdn_data():
+    return munchify({
+            "scheme": "GMDN",
+            "id": "33110",
+            "description": "Коліматор радіонуклідної системи, високоенергетичний"
     })
 
 

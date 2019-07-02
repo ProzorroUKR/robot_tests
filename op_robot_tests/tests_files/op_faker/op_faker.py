@@ -27,6 +27,8 @@ class OP_Provider(BaseProvider):
     classifications = _fake_data.classifications
     cpvs = _fake_data.cpvs
     moz_cpvs = _fake_data.moz_cpvs
+    road_cpvs = _fake_data.road_cpvs
+    gmdn_cpvs = _fake_data.gmdn_cpvs
     items_base_data = _fake_data.items_base_data
     rationale_types = _fake_data.rationale_types
     title_of_milestones = _fake_data.title_of_milestones
@@ -119,6 +121,28 @@ class OP_Provider(BaseProvider):
             return self.random_element(self.cpvs)
 
     @classmethod
+    def road_cpv(self, cpv_group=None):
+        if cpv_group:
+            road_cpvs  = []
+            for cpv_element in self.road_cpvs:
+                if cpv_element.startswith(cpv_group):
+                    road_cpvs.append(road_cpvs)
+            return self.random_element(road_cpvs)
+        else:
+            return self.random_element(self.road_cpvs)
+
+    @classmethod
+    def gmdn_cpv(self, cpv_group=None):
+        if cpv_group:
+            gmdn_cpvs  = []
+            for cpv_element in self.gmdn_cpvs:
+                if cpv_element.startswith(cpv_group):
+                    gmdn_cpvs.append(gmdn_cpvs)
+            return self.random_element(gmdn_cpvs)
+        else:
+            return self.random_element(self.gmdn_cpvs)
+
+    @classmethod
     def fake_item(self, cpv_group=None):
         """
         Generate a random item for openprocurement tenders
@@ -133,6 +157,10 @@ class OP_Provider(BaseProvider):
             cpv = self.random_element(self.cpvs)
         elif cpv_group == 336:
             cpv = self.random_element(self.moz_cpvs)
+        elif cpv_group == 'road':
+            cpv = self.random_element(self.road_cpvs)
+        elif cpv_group == 'gmdn':
+            cpv = self.random_element(self.gmdn_cpvs)
         else:
             cpv_group = str(cpv_group)
             similar_cpvs = []

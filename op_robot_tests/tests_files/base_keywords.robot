@@ -23,6 +23,8 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      api_host_url=${API_HOST_URL}
   ...      moz_integration=${${MOZ_INTEGRATION}}
   ...      vat_included=${${VAT_INCLUDED}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -46,6 +48,8 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      item_meat=${${ITEM_MEAT}}
   ...      api_host_url=${API_HOST_URL}
   ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
   ${submissionMethodDetails}=  Get Variable Value  ${submissionMethodDetails}
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${first_stage}=  Run As  ${provider2}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
@@ -72,6 +76,8 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      item_meat=${${ITEM_MEAT}}
   ...      api_host_url=${API_HOST_URL}
   ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -82,6 +88,66 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   Log  ${adapted_data_mnn}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_mnn}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_mnn}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
+Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг
+  [Arguments]  ${data_version}
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${adapted_data_cost}=  edit_tender_data_for_cost  ${adapted_data}  ${MODE}  ${data_version}
+  Log  ${adapted_data_cost}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_cost}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_cost}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
+Можливість оголосити тендер з використанням валідації класифікатор медичних виробів
+  [Arguments]  ${data_version}
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${adapted_data_gmdn}=  edit_tender_data_for_gmdn  ${adapted_data}  ${MODE}  ${data_version}
+  Log  ${adapted_data_gmdn}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_gmdn}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_gmdn}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 
