@@ -8,7 +8,8 @@ Suite Teardown  Test Suite Teardown
 ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
 ${NUMBER_OF_MILESTONES}  ${0}
-
+${ROAD_INDEX}       ${False}
+${GMDN_INDEX}       ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер

@@ -16,6 +16,8 @@ ${LOT_MEAT}         ${False}
 ${ITEM_MEAT}        ${False}
 ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
+${ROAD_INDEX}       ${False}
+${GMDN_INDEX}       ${False}
 
 *** Test Cases ***
 ##############################################################################################
