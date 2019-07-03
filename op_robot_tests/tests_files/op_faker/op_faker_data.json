@@ -7956,6 +7956,175 @@
                 "id": "38945000-7",
                 "description": "Лічильники гамма-частинок"
             }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "UA-ROAD",
+                    "id": "М-01",
+                    "description": "Київ - Чернігів - Нові Яриловичі (на м. Гомель)"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "34921000-9",
+                "description": "Дорожньо-експлуатаційне обладнання"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "UA-ROAD",
+                    "id": "М-02",
+                    "description": "Кіпті - Глухів - Бачівськ (на м. Брянськ)"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "34921100-0",
+                "description": "Підмітально-прибиральні машини"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "UA-ROAD",
+                    "id": "М-03",
+                    "description": "Київ - Харків - Довжанський (на м. Ростов-на-Дону)"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "71247000-1",
+                "description": "Нагляд за будівельними роботами"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "UA-ROAD",
+                    "id": "М-04",
+                    "description": "Знам’янка - Луганськ - Ізварине (на м. Волгоград через мм. Дніпро, Донецьк)"
+
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "71248000-8",
+                "description": "Технічний нагляд за проектами та документацією"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "UA-ROAD",
+                    "id": "М-19",
+                    "description": "Доманове (на м. Брест) - Ковель - Чернівці - Тереблече (на м. Бухарест)"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "63712311-6",
+                "description": "Послуги зі стягнення плати за користування мостами"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "UA-ROAD",
+                    "id": "М-27",
+                    "description": "Одеса - Чорноморськ"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "63712320-2",
+                "description": "Послуги зі стягнення плати за користування мостами"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "GMDN",
+                    "id": "10058",
+                    "description": "Пінцети обструкції дихальних шляхів"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "33111000-1",
+                "description": "Рентгенологічне обладнання"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "GMDN",
+                    "id": "10184",
+                    "description": "Багаторазовий каркас"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "33111100-2",
+                "description": "Рентгенівські столи"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "GMDN",
+                    "id": "10298",
+                    "description": "Стенд для чаші, таза"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "33793000-5",
+                "description": "Скляний посуд лабораторного призначення"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "GMDN",
+                    "id": "10531",
+                    "description": "Приліжкова шафа"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "33791000-1",
+                "description": "Скляний посуд санітарно-гігієнічного призначення"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "GMDN",
+                    "id": "10729",
+                    "description": "Центральний венозний катетер"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "38946000-7",
+                "description": "Вимірювачі пікової напруги в кіловольтах"
+            }
+        },
+        {
+            "additionalClassifications": [
+                {
+                    "scheme": "GMDN",
+                    "id": "13201",
+                    "description": "Помпа для розведення барвника"
+                }
+            ],
+            "classification": {
+                "scheme": "ДК021",
+                "id": "38947000-7",
+                "description": "Рентгенологічні мікроаналізатори"
+            }
         }
     ],
     "units": [
@@ -8054,7 +8223,13 @@
         "30192130-1",
         "30197600-2",
         "30199000-0",
-        "99999999-9"
+        "99999999-9",
+        "34920000-2",
+        "71246000-4",
+        "63712320-2",
+        "33110000-4",
+        "33792000-8",
+        "38945000-7"
     ],
     "moz_cpvs": [
         "33615100-5",
@@ -8067,14 +8242,25 @@
     ],
     "road_cpvs": [
         "34920000-2",
+        "34921000-9",
+        "34921100-0",
         "71246000-4",
-        "63712310-9"
+        "71247000-1",
+        "71248000-8",
+        "63712310-9",
+        "63712311-6",
+        "63712320-2"
     ],
-
     "gmdn_cpvs": [
         "33110000-4",
+        "33111000-1",
+        "33111100-2",
         "33792000-8",
-        "38945000-7"
+        "33793000-5",
+        "33791000-1",
+        "38945000-7",
+        "38946000-7",
+        "38947000-7"
     ],
 
     "items_base_data": [
@@ -8358,6 +8544,127 @@
             "description": "Лічильники гамма-частинок",
             "description_ru": "Лічильники гамма-частинок",
             "description_en": "Gamma Particle Counters",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "34921000-9",
+            "description": "Дорожньо-експлуатаційне обладнання",
+            "description_ru": "Дорожньо-експлуатаційне обладнання",
+            "description_en": "Road-maintenance equipment",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "34921100-0",
+            "description": "Підмітально-прибиральні машини",
+            "description_ru": "Підмітально-прибиральні машини",
+            "description_en": "Sweepers",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "71247000-1",
+            "description": "Нагляд за будівельними роботами",
+            "description_ru": "Нагляд за будівельними роботами",
+            "description_en": "Construction supervision",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "71248000-8",
+            "description": "Технічний нагляд за проектами та документацією",
+            "description_ru": "Технічний нагляд за проектами та документацією",
+            "description_en": "Technical supervision of projects and documentation",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "63712311-6",
+            "description": "Послуги зі стягнення плати за користування мостами",
+            "description_ru": "Послуги зі стягнення плати за користування мостами",
+            "description_en": "Services for charging for the use of bridges",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "33111000-1",
+            "description": "Рентгенологічне обладнання",
+            "description_ru": "Рентгенологічне обладнання",
+            "description_en": "X-ray equipment",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "33111100-2",
+            "description": "Рентгенівські столи",
+            "description_ru": "Рентгенівські столи",
+            "description_en": "X-ray tables",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "33793000-5",
+            "description": "Скляний посуд лабораторного призначення",
+            "description_ru": "Скляний посуд лабораторного призначення",
+            "description_en": "Glassware for laboratory purposes",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "33791000-1",
+            "description": "Скляний посуд санітарно-гігієнічного призначення",
+            "description_ru": "Скляний посуд санітарно-гігієнічного призначення",
+            "description_en": "Glassware for sanitary purposes",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "38946000-7",
+            "description": "Вимірювачі пікової напруги в кіловольтах",
+            "description_ru": "Вимірювачі пікової напруги в кіловольтах",
+            "description_en": "Measuring Peak Volts in Kilowatts",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
+        {
+            "cpv_id": "38947000-7",
+            "description": "Рентгенологічні мікроаналізатори",
+            "description_ru": "Рентгенологічні мікроаналізатори",
+            "description_en": "X-ray Microanalysers",
             "quantity": 15,
             "unit": {
                 "code": "H87",
