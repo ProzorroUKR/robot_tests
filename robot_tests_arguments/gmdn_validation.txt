@@ -16,7 +16,5 @@
 
 -i create_tender_gmdn_invalid_addclass_description
 
--i create_tender_gmdn_invalid_addclass
-
 -i create_tender_gmdn_inn_addclass
 

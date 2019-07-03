@@ -15,6 +15,3 @@
 -i create_tender_cost_invalid_addclass_id
 
 -i create_tender_cost_invalid_addclass_description
-
--i create_tender_cost_invalid_addclass
-
