@@ -8605,6 +8605,17 @@
                 "name": "Штуки"
             }
         },
+                {
+            "cpv_id": "63712320-2",
+            "description": "Послуги з експлуатації тунелів",
+            "description_ru": "Послуги з експлуатації тунелів",
+            "description_en": "Operation of tunnels",
+            "quantity": 15,
+            "unit": {
+                "code": "H87",
+                "name": "Штуки"
+            }
+        },
         {
             "cpv_id": "33111000-1",
             "description": "Рентгенологічне обладнання",
