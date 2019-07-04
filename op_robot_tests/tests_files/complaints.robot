@@ -17,6 +17,8 @@ ${ITEM_MEAT}        ${0}
 ${LOT_MEAT}         ${0}
 ${lot_index}        ${0}
 ${award_index}      ${0}
+${ROAD_INDEX}       ${False}
+${GMDN_INDEX}       ${False}
 
 *** Test Cases ***
 

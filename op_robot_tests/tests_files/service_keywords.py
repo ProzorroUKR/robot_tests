@@ -75,7 +75,9 @@ from .initial_data import (
     convert_amount,
     get_number_of_minutes,
     get_hash,
-    invalid_INN_data
+    invalid_INN_data,
+    invalid_cost_data,
+    invalid_gmdn_data
 )
 from barbecue import chef
 from restkit import request
@@ -695,6 +697,56 @@ def edit_tender_data_for_mnn(data, mode, data_version):
 
     if data_version is 8:
         dict_data['data']['items'][0]['additionalClassifications'].pop(1)
+    return munchify(dict_data)
+
+
+def edit_tender_data_for_cost(data, mode, data_version):
+    test_data = {3: 'PQ-17', 4: 'Дорога'}
+    dict_data = unmunchify(data)
+
+    if data_version is 1:
+        dict_data['data']['items'][0].pop('additionalClassifications', None)
+
+    if data_version is 2:
+        add_cost = invalid_cost_data()
+        dict_data['data']['items'][0]['additionalClassifications'].append(add_cost)
+
+    if data_version is 3:
+        dict_data['data']['items'][0]['additionalClassifications'][0]['id'] = test_data[data_version]
+
+    if data_version is 4:
+        dict_data['data']['items'][0]['additionalClassifications'][0]['description'] = test_data[data_version]
+
+    if data_version is 5:
+        add_cost = invalid_cost_data()
+        dict_data['data']['items'][0]['additionalClassifications'][0] = add_cost
+    return munchify(dict_data)
+
+
+def edit_tender_data_for_gmdn(data, mode, data_version):
+    gmdn_test_data = {3: '9999', 4: 'Виріб'}
+    dict_data = unmunchify(data)
+
+    if data_version is 1:
+        dict_data['data']['items'][0].pop('additionalClassifications', None)
+
+    if data_version is 2:
+        add_gmdn = invalid_gmdn_data()
+        dict_data['data']['items'][0]['additionalClassifications'].append(add_gmdn)
+
+    if data_version is 3:
+        dict_data['data']['items'][0]['additionalClassifications'][0]['id'] = gmdn_test_data[data_version]
+
+    if data_version is 4:
+        dict_data['data']['items'][0]['additionalClassifications'][0]['description'] = gmdn_test_data[data_version]
+
+    if data_version is 5:
+        add_gmdn = invalid_gmdn_data()
+        dict_data['data']['items'][0]['additionalClassifications'][0] = add_gmdn
+
+    if data_version is 6:
+        add_INN = invalid_INN_data()
+        dict_data['data']['items'][0]['additionalClassifications'].append(add_INN)
     return munchify(dict_data)
 
 

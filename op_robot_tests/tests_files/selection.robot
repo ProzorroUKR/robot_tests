@@ -15,6 +15,8 @@ ${TENDER_MEAT}      ${True}
 ${LOT_MEAT}         ${False}
 ${ITEM_MEAT}        ${False}
 ${MOZ_INTEGRATION}  ${False}
+${ROAD_INDEX}       ${False}
+${GMDN_INDEX}       ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер другого етапу

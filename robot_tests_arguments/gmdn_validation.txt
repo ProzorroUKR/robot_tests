@@ -1,0 +1,20 @@
+-v MODE:belowThreshold
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:True
+-v LOT_MEAT:True
+-v GMDN_INDEX:True
+
+-i create_tender_gmdn_no_addclass
+
+-i create_tender_gmdn_2_addclass
+
+-i create_tender_gmdn_invalid_addclass_id
+
+-i create_tender_gmdn_invalid_addclass_description
+
+-i create_tender_gmdn_inn_addclass
+
