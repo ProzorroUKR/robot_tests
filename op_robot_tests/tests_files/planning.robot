@@ -79,24 +79,6 @@ ${ITEM_MEAT}        ${False}
   Звірити відображення поля budget.id плану для користувача ${viewer}
 
 
-Відображення id проекту в бюджеті
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних плану
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      plan_view
-  ...      non-critical
-  Звірити відображення поля budget.project.id плану для користувача ${viewer}
-
-
-Відображення назви проекту в бюджеті
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних плану
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      plan_view
-  ...      critical
-  Звірити відображення поля budget.project.name плану для користувача ${viewer}
-
-
 Відображення назви організації
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних плану
   ...      viewer

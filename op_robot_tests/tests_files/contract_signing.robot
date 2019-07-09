@@ -24,7 +24,7 @@ Suite Teardown  Test Suite Teardown
 
 Відображення закінчення періоду подачі скарг на пропозицію
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних тендера
-  ...      tender_owner
+  ...      viewer
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      contract_stand_still
   ...      critical
@@ -35,7 +35,7 @@ Suite Teardown  Test Suite Teardown
 
 Дочекатися закічення stand still періоду
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес укладання угоди
-  ...      tender_owner
+  ...      viewer
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      contract_stand_still
   ...      critical
