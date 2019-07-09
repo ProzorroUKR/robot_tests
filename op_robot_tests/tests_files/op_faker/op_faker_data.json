@@ -683,7 +683,7 @@
         {
             "contactPoint": {
                 "url": "http://webpage.org.ua/",
-                "telephone": "0881112233",
+                "telephone": "+380771112233",
                 "email": "e_mail_test@bigmir.net",
                 "name": "Тестовий Замовник 1",
                 "faxNumber": "088-111-22-33"
@@ -705,7 +705,7 @@
         {
             "contactPoint": {
                 "url": "http://webpage.com.ua",
-                "telephone": "2223344",
+                "telephone": "+380664445566",
                 "email": "e_mail_test@ukr.net",
                 "name": "Тестовий Замовник 2",
                 "faxNumber": "333-44-55"
@@ -729,7 +729,7 @@
         {
             "contactPoint": {
                 "url": "http://www.page.gov.ua/",
-                "telephone": "6665544",
+                "telephone": "+380506665544",
                 "email": "test_e_mail@ukr.net",
                 "name": "Тестовий Учасник 1",
                 "faxNumber": "9998877"
@@ -752,7 +752,7 @@
         {
             "contactPoint": {
                 "url": "http://www.page.gov.ua/",
-                "telephone": "6665544",
+                "telephone": "+380997778899",
                 "email": "test_e_mail@ukr.net",
                 "name": "ТЕСТ ФОП 1",
                 "faxNumber": "9998877"
@@ -775,7 +775,7 @@
         {
             "contactPoint": {
                 "url": "http://webpage.com.ua",
-                "telephone": "2223344",
+                "telephone": "+380972223344",
                 "email": "e_mail_test@ukr.net",
                 "name": "ТЕСТ ФОП 2",
                 "faxNumber": "333-44-55"
@@ -798,7 +798,7 @@
         {
             "contactPoint": {
                 "url": "http://webpage.org.ua/",
-                "telephone": "0881112233",
+                "telephone": "+380881112233",
                 "email": "e_mail_test@bigmir.net",
                 "name": "ТЕСТ ФОП 3",
                 "faxNumber": "088-111-22-33"
