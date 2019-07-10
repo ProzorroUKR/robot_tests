@@ -703,8 +703,8 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 Звірити відображення поля ${field} ${lot_index} лоту другого етапу для користувача ${username}
   Дочекатись синхронізації з майданчиком  ${username}
-  ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data.lots[${lot_index}]}
-  ${left}=  Set Variable  ${USERS.users['${tender_owner}'].initial_data.data.lots[${lot_index}].${field}}
+  ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
+  ${left}=  Set Variable  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}].${field}}
   ${right}=  Run As  ${username}  Отримати інформацію із лоту  ${TENDER['TENDER_UAID']}  ${lot_id}  ${field}
   Порівняти об'єкти  ${left}  ${right}
 

@@ -92,3 +92,55 @@
 -i stage2_pending_status_view
 
 -i wait_bridge_for_work
+
+-i get_second_stage
+
+-i compare_stages
+
+-i save_tender_second_stage
+
+-i activate_second_stage
+
+-i make_bid_by_provider_second_stage
+-i make_bid_by_provider1_second_stage
+
+#-i qualifications_check_by_edrpou
+
+-i pre-qualification_approve_first_bid_second_stage
+-i pre-qualification_approve_second_bid_second_stage
+
+-i pre-qualification_approve_qualifications_second_stage
+
+-i auction
+
+-i qualification_add_doc_to_first_award
+-i qualification_approve_first_award
+-i qualification_cancel_first_award_qualification
+-i qualification_add_doc_to_second_award
+-i qualification_approve_second_award
+
+-i contract_stand_still
+-i contract_view
+-i modify_contract_invalid_amount
+-i modify_contract_invalid_amountNet_tender_vat_true
+-i modify_contract_amount_net
+-i modify_contract_value
+-i modify_contract
+-i add_doc_to_contract
+-i contract_doc_documentOf
+-i contract_sign
+
+-i find_contract
+-i access_contract
+-i submit_change
+-i view_change
+-i upload_change_document
+-i modify_change
+-i change_contract_amountNet
+-i change_contract_amount
+-i apply_change
+-i add_contract_doc
+-i termination_reasons
+-i amount_paid
+-i change_amount_paid
+-i contract_termination
