@@ -77,7 +77,8 @@ from .initial_data import (
     get_hash,
     invalid_INN_data,
     invalid_cost_data,
-    invalid_gmdn_data
+    invalid_gmdn_data,
+    invalid_buyers_data
 )
 from barbecue import chef
 from restkit import request
@@ -320,7 +321,8 @@ def prepare_test_tender_data(procedure_intervals,
                              tender_parameters,
                              submissionMethodDetails,
                              accelerator,
-                             funders):
+                             funders,
+                             plan_data):
     # Get actual intervals by mode name
     mode = tender_parameters['mode']
     if mode in procedure_intervals:
@@ -337,35 +339,37 @@ def prepare_test_tender_data(procedure_intervals,
     assert intervals['accelerator'] >= 0, \
         "Accelerator should not be less than 0"
     if mode == 'negotiation':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'negotiation.quick':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'openeu':
         return munchify({'data': test_tender_data_openeu(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'openua':
         return munchify({'data': test_tender_data_openua(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'openua_defense':
         return munchify({'data': test_tender_data_openua_defense(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'open_competitive_dialogue':
         return munchify({'data': test_tender_data_competitive_dialogue(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'reporting':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'open_framework':
         return munchify({'data': test_tender_data_framework_agreement(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'belowThreshold':
         return munchify({'data': test_tender_data(
             tender_parameters,
+            plan_data,
             submissionMethodDetails=submissionMethodDetails,
             funders=funders,
-            accelerator=accelerator)})
+            accelerator=accelerator,
+            )})
     elif mode == 'open_esco':
          return munchify({'data': test_tender_data_esco(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
         # The previous line needs an explicit keyword argument because,
         # unlike previous functions, this one has three arguments.
     raise ValueError("Invalid mode for prepare_test_tender_data")
@@ -750,3 +754,13 @@ def edit_tender_data_for_gmdn(data, mode, data_version):
     return munchify(dict_data)
 
 
+def edit_plan_buyers(data, data_version):
+    dict_data = unmunchify(data)
+    if data_version is 1:
+        add_buyer = invalid_buyers_data()
+        dict_data['data']['buyers'].append(add_buyer)
+
+    if data_version is 2:
+        dict_data['data'].pop('buyers')
+
+    return munchify(dict_data)

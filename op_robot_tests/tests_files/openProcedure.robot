@@ -20,6 +20,7 @@ ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
+${PLAN_TENDER}      ${True}
 
 *** Test Cases ***
 Можливість оголосити тендер
