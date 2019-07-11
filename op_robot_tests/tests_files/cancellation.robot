@@ -10,6 +10,7 @@ ${VAT_INCLUDED}     ${True}
 ${NUMBER_OF_MILESTONES}  ${0}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
+${PLAN_TENDER}      ${True}
 
 *** Test Cases ***
 Можливість оголосити тендер
