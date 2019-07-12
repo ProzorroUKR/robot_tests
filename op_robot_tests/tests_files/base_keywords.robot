@@ -9,6 +9,9 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 *** Keywords ***
 Можливість оголосити тендер
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -25,11 +28,14 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      vat_included=${${VAT_INCLUDED}}
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
+  ...      plan_tender=${${PLAN_TENDER}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${plan_data}=  Run as  ${tender_owner}  Пошук плану по ідентифікатору  ${ARTIFACT.tender_uaid}
+  Log  ${plan_data}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
@@ -182,12 +188,35 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      number_of_items=${NUMBER_OF_ITEMS}
   ...      tender_meat=${${TENDER_MEAT}}
   ...      item_meat=${${ITEM_MEAT}}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   ${tender_data}=  Підготувати дані для створення плану  ${tender_parameters}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити план  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
+Можливість створити план закупівлі з використанням валідації для buyers
+  [Arguments]  ${data_version}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  ${tender_data}=  Підготувати дані для створення плану  ${tender_parameters}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${adapted_data_buyers}=  edit_plan_buyers  ${adapted_data}  ${data_version}
+  Log  ${adapted_data_buyers}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити план  ${adapted_data_buyers}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_buyers}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 

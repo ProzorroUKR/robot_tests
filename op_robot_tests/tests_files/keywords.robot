@@ -213,12 +213,12 @@ Get Broker Property By Username
 
 
 Підготувати дані для створення тендера
-  [Arguments]  ${tender_parameters}
+  [Arguments]  ${tender_parameters}  ${plan_data}
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${submissionMethodDetails}=  Get Variable Value  ${submissionMethodDetails}
   ${accelerator}=  Get Variable Value  ${accelerator}
   ${funders}=  Get Variable Value  ${FUNDERS}
-  ${tender_data}=  prepare_test_tender_data  ${period_intervals}  ${tender_parameters}  ${submissionMethodDetails}  ${accelerator}  ${funders}
+  ${tender_data}=  prepare_test_tender_data  ${period_intervals}  ${tender_parameters}  ${submissionMethodDetails}  ${accelerator}  ${funders}  ${plan_data}
   ${TENDER}=  Create Dictionary
   Set Global Variable  ${TENDER}
   Log  ${tender_data}
