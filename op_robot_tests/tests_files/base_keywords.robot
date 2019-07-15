@@ -68,6 +68,9 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 
 Можливість оголосити тендер з використанням валідації для MNN
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
   [Arguments]  ${data_version}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
@@ -84,11 +87,14 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      moz_integration=${${MOZ_INTEGRATION}}
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
+  ...      plan_tender=${${PLAN_TENDER}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${plan_data}=  Run as  ${tender_owner}  Пошук плану по ідентифікатору  ${ARTIFACT.tender_uaid}
+  Log  ${plan_data}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${adapted_data_mnn}=  edit_tender_data_for_mnn  ${adapted_data}  ${MODE}  ${data_version}
   Log  ${adapted_data_mnn}
@@ -99,6 +105,9 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг
   [Arguments]  ${data_version}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -114,11 +123,14 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      moz_integration=${${MOZ_INTEGRATION}}
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
+  ...      plan_tender=${${PLAN_TENDER}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${plan_data}=  Run as  ${tender_owner}  Пошук плану по ідентифікатору  ${ARTIFACT.tender_uaid}
+  Log  ${plan_data}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${adapted_data_cost}=  edit_tender_data_for_cost  ${adapted_data}  ${MODE}  ${data_version}
   Log  ${adapted_data_cost}
@@ -129,6 +141,9 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 Можливість оголосити тендер з використанням валідації класифікатор медичних виробів
   [Arguments]  ${data_version}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -144,11 +159,14 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ...      moz_integration=${${MOZ_INTEGRATION}}
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
+  ...      plan_tender=${${PLAN_TENDER}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}
+  ${plan_data}=  Run as  ${tender_owner}  Пошук плану по ідентифікатору  ${ARTIFACT.tender_uaid}
+  Log  ${plan_data}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${adapted_data_gmdn}=  edit_tender_data_for_gmdn  ${adapted_data}  ${MODE}  ${data_version}
   Log  ${adapted_data_gmdn}

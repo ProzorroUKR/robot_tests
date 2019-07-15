@@ -198,7 +198,6 @@ Library  openprocurement_client.utils
   ...      ${ARTIFACT.tender_id}
   ...      ${tender_data}
   ...      access_token=${ARTIFACT.tender_owner_access_token}
-  #${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
