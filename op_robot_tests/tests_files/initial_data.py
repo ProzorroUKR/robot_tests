@@ -323,9 +323,9 @@ def test_tender_data_planning(params):
     if params.get('moz_integration'):
         id_cpv = 336
     elif params.get('road_index'):
-        id_cpv = 'road'
+        id_cpv = fake.road_cpv()[:4]
     elif params.get('gmdn_index'):
-        id_cpv = 'gmdn'
+        id_cpv = fake.gmdn_cpv()[:4]
     else:
         id_cpv = fake.cpv()[:4]
     cpv_data = test_item_data(id_cpv)
@@ -339,7 +339,7 @@ def test_tender_data_planning(params):
     del data['quantity']
     del data['unit']
     for i in range(params['number_of_items']):
-        item_data=test_item_data(id_cpv)
+        item_data = test_item_data(id_cpv)
         del item_data['deliveryAddress']
         del item_data['deliveryLocation']
         item_data['deliveryDate']['endDate'] = (get_now() + timedelta(days=10)).replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
@@ -862,7 +862,7 @@ def test_elimination_report(corruption, relatedParty_id):
 
 
 def test_tender_data_esco(params, submissionMethodDetails, plan_data):
-    data = test_tender_data(params, ('tender',), submissionMethodDetails, plan_data)
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'esco'
     data['title_en'] = "[TESTING]"
     for item_number, item in enumerate(data['items']):
