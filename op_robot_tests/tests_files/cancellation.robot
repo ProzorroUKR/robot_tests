@@ -7,7 +7,7 @@ Suite Teardown  Test Suite Teardown
 @{USED_ROLES}       tender_owner  viewer
 ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
-${NUMBER_OF_MILESTONES}  ${0}
+${NUMBER_OF_MILESTONES}  ${1}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 
