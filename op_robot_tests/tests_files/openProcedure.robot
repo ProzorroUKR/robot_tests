@@ -230,7 +230,7 @@ ${PLAN_TENDER}      ${True}
   ...      create_tender_invalid_edrpou  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість оголосити тендер з використанням валідації план-тендер  ${1}
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${1}
 
 
 Неможливість опублікувати тендер на закупівлю з невідповідною схемою
@@ -240,7 +240,7 @@ ${PLAN_TENDER}      ${True}
   ...      create_tender_invalid_schema  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість оголосити тендер з використанням валідації план-тендер  ${2}
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${2}
 
 
 Неможливість опублікувати тендер на закупівлю з невідповідним cpv кодом
@@ -250,7 +250,7 @@ ${PLAN_TENDER}      ${True}
   ...      create_tender_invalid_cpv  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість оголосити тендер з використанням валідації план-тендер  ${3}
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${3}
 
 
 Неможливість опублікувати тендер на закупівлю з невідповідним cpv кодом
@@ -260,7 +260,7 @@ ${PLAN_TENDER}      ${True}
   ...      create_tender_invalid_procurementMethodType  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість оголосити тендер з використанням валідації план-тендер  ${4}
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${4}
 
 
 Можливість знайти тендер по ідентифікатору
