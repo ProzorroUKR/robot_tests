@@ -936,16 +936,16 @@ def invalid_INN_data():
 def invalid_cost_data():
     return munchify({
             "scheme": "UA-ROAD",
-            "id": "М-15",
-            "description": "Одеса - Рені (на м. Бухарест)"
+            "id": "Н-08",
+            "description": "Бориспіль - Дніпро - Запоріжжя (через м. Кременчук) - Маріуполь"
     })
 
 
 def invalid_gmdn_data():
     return munchify({
             "scheme": "GMDN",
-            "id": "33110",
-            "description": "Коліматор радіонуклідної системи, високоенергетичний"
+            "id": "10082",
+            "description": "Змішувач амальгами для стоматології"
     })
 
 
