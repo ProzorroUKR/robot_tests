@@ -11,6 +11,7 @@ from retrying import retry
 from time import sleep
 import os
 import urllib
+from openprocurement_client.resources.tenders import TenderCreateClient
 
 
 def retry_if_request_failed(exception):
@@ -183,3 +184,15 @@ class StableClient_dasu(DasuClient):
 
 def prepare_dasu_api_wrapper(resource, host_url, api_version, username, password, ds_config=None):
     return StableClient_dasu(resource, host_url, api_version, username, password, ds_config=ds_config)
+
+
+class StableTenderCreateClient(TenderCreateClient):
+    @retry(stop_max_attempt_number=100, wait_random_min=500,
+           wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    def request(self, *args, **kwargs):
+        return super(StableTenderCreateClient, self).request(*args, **kwargs)
+
+
+def prepare_tender_create_wrapper(key, resource, host_url, api_version, ds_config=None):
+    return StableTenderCreateClient(key, resource, host_url, api_version,
+                                    ds_config=ds_config)

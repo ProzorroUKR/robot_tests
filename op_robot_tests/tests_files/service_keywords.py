@@ -77,7 +77,8 @@ from .initial_data import (
     get_hash,
     invalid_INN_data,
     invalid_cost_data,
-    invalid_gmdn_data
+    invalid_gmdn_data,
+    invalid_buyers_data
 )
 from barbecue import chef
 from restkit import request
@@ -320,7 +321,8 @@ def prepare_test_tender_data(procedure_intervals,
                              tender_parameters,
                              submissionMethodDetails,
                              accelerator,
-                             funders):
+                             funders,
+                             plan_data):
     # Get actual intervals by mode name
     mode = tender_parameters['mode']
     if mode in procedure_intervals:
@@ -337,35 +339,37 @@ def prepare_test_tender_data(procedure_intervals,
     assert intervals['accelerator'] >= 0, \
         "Accelerator should not be less than 0"
     if mode == 'negotiation':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'negotiation.quick':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'openeu':
         return munchify({'data': test_tender_data_openeu(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'openua':
         return munchify({'data': test_tender_data_openua(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'openua_defense':
         return munchify({'data': test_tender_data_openua_defense(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'open_competitive_dialogue':
         return munchify({'data': test_tender_data_competitive_dialogue(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'reporting':
-        return munchify({'data': test_tender_data_limited(tender_parameters)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'open_framework':
         return munchify({'data': test_tender_data_framework_agreement(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'belowThreshold':
         return munchify({'data': test_tender_data(
             tender_parameters,
+            plan_data,
             submissionMethodDetails=submissionMethodDetails,
             funders=funders,
-            accelerator=accelerator)})
+            accelerator=accelerator,
+            )})
     elif mode == 'open_esco':
          return munchify({'data': test_tender_data_esco(
-            tender_parameters, submissionMethodDetails)})
+            tender_parameters, submissionMethodDetails, plan_data)})
         # The previous line needs an explicit keyword argument because,
         # unlike previous functions, this one has three arguments.
     raise ValueError("Invalid mode for prepare_test_tender_data")
@@ -678,23 +682,17 @@ def edit_tender_data_for_mnn(data, mode, data_version):
     id = {1: '33600000-6', 2: '33632100-0', 3: '33632100-0', 4: '33622200-8', 5: '33600000-6', 6: '33692500-2', 7: '33600000-6', 8: '33615100-5'}
     dict_data = unmunchify(data)
     dict_data['data']['items'][0]['classification']['id'] = id[data_version]
-
     if data_version is 3:
         dict_data['data']['items'][0].pop('additionalClassifications', None)
-
     if data_version is 4:
         add_INN = invalid_INN_data()
         dict_data['data']['items'][0]['additionalClassifications'].append(add_INN)
-
     if data_version is 5:
         dict_data['data']['items'][0].pop('additionalClassifications', None)
-
     if data_version is 6:
         dict_data['data']['items'][0]['additionalClassifications'].pop(0)
-
     if data_version is 7:
         dict_data['data']['items'][0]['additionalClassifications'].pop(1)
-
     if data_version is 8:
         dict_data['data']['items'][0]['additionalClassifications'].pop(1)
     return munchify(dict_data)
@@ -703,20 +701,15 @@ def edit_tender_data_for_mnn(data, mode, data_version):
 def edit_tender_data_for_cost(data, mode, data_version):
     test_data = {3: 'PQ-17', 4: 'Дорога'}
     dict_data = unmunchify(data)
-
     if data_version is 1:
         dict_data['data']['items'][0].pop('additionalClassifications', None)
-
     if data_version is 2:
         add_cost = invalid_cost_data()
         dict_data['data']['items'][0]['additionalClassifications'].append(add_cost)
-
     if data_version is 3:
         dict_data['data']['items'][0]['additionalClassifications'][0]['id'] = test_data[data_version]
-
     if data_version is 4:
         dict_data['data']['items'][0]['additionalClassifications'][0]['description'] = test_data[data_version]
-
     if data_version is 5:
         add_cost = invalid_cost_data()
         dict_data['data']['items'][0]['additionalClassifications'][0] = add_cost
@@ -726,27 +719,43 @@ def edit_tender_data_for_cost(data, mode, data_version):
 def edit_tender_data_for_gmdn(data, mode, data_version):
     gmdn_test_data = {3: '9999', 4: 'Виріб'}
     dict_data = unmunchify(data)
-
     if data_version is 1:
         dict_data['data']['items'][0].pop('additionalClassifications', None)
-
     if data_version is 2:
         add_gmdn = invalid_gmdn_data()
         dict_data['data']['items'][0]['additionalClassifications'].append(add_gmdn)
-
     if data_version is 3:
         dict_data['data']['items'][0]['additionalClassifications'][0]['id'] = gmdn_test_data[data_version]
-
     if data_version is 4:
         dict_data['data']['items'][0]['additionalClassifications'][0]['description'] = gmdn_test_data[data_version]
-
     if data_version is 5:
         add_gmdn = invalid_gmdn_data()
         dict_data['data']['items'][0]['additionalClassifications'][0] = add_gmdn
-
     if data_version is 6:
         add_INN = invalid_INN_data()
         dict_data['data']['items'][0]['additionalClassifications'].append(add_INN)
     return munchify(dict_data)
 
 
+def edit_plan_buyers(data, data_version):
+    dict_data = unmunchify(data)
+    if data_version is 1:
+        add_buyer = invalid_buyers_data()
+        dict_data['data']['buyers'].append(add_buyer)
+    if data_version is 2:
+        dict_data['data'].pop('buyers')
+    return munchify(dict_data)
+
+
+def edit_tender_data_for_plan_tender(data, mode, data_version):
+    plan_tedner_test_data = {1: '03222111-4', 2: 'UA-FIN', 3: '11112222', 4: 'aboveThresholdEU'}
+    dict_data = unmunchify(data)
+    if data_version is 1:
+        dict_data['data']['items'][0]['classification']['id'] = plan_tedner_test_data[data_version]
+    if data_version is 2:
+        dict_data['data']['procuringEntity']['identifier']['scheme'] = plan_tedner_test_data[data_version]
+    if data_version is 3:
+        dict_data['data']['procuringEntity']['identifier']['id'] = plan_tedner_test_data[data_version]
+    if data_version is 4:
+        dict_data['data']['procurementMethodType'] = plan_tedner_test_data[data_version]
+    return munchify(dict_data)

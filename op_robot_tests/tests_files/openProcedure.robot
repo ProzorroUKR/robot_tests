@@ -20,6 +20,7 @@ ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
+${PLAN_TENDER}      ${True}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -220,6 +221,46 @@ ${GMDN_INDEX}       ${False}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації класифікатор медичних виробів  ${6}
+
+
+Неможливість опублікувати тендер на закупівлю з невідповідним кодом ЄДРПОУ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_edrpou  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${1}
+
+
+Неможливість опублікувати тендер на закупівлю з невідповідною схемою
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_schema  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${2}
+
+
+Неможливість опублікувати тендер на закупівлю з невідповідним cpv кодом
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_cpv  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${3}
+
+
+Неможливість опублікувати тендер на закупівлю з невідповідним cpv кодом
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_procurementMethodType  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${4}
 
 
 Можливість знайти тендер по ідентифікатору
