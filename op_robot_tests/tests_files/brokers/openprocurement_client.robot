@@ -217,6 +217,28 @@ Library  openprocurement_client.utils
   [return]  ${tender.data.tenderID}
 
 
+Створити тендер другого етапу
+  [Arguments]  ${username}  ${tender_data}
+  ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
+  Log  ${tender}
+  ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
+  ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
+  ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
+  Set To Dictionary  ${tender['data']}  status=${status}
+  ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
+  ...      ${tender.data.id}
+  ...      ${tender}
+  ...      access_token=${tender.access.token}
+  Log  ${tender}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
+  Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
+  Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
+  Log   ${USERS.users['${username}'].tender_data}
+  [return]  ${tender.data.tenderID}
+
+
 Створити об'єкт моніторингу
   [Arguments]  ${username}  ${monitoring_data}
   ${monitoring}=  Call Method  ${USERS.users['${username}'].dasu_client}  create_monitoring  ${monitoring_data}
