@@ -61,7 +61,7 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
   ${first_stage}=  Run As  ${provider2}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
   ${tender_data}=  test_tender_data_selection  ${period_intervals}  ${tender_parameters}  ${submissionMethodDetails}  tender_data=${first_stage}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер другого етапу  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
   Дочекатись дати початку періоду уточнення  ${tender_owner}  ${TENDER_UAID}

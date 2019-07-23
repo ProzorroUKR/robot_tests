@@ -17,6 +17,7 @@ ${ITEM_MEAT}        ${False}
 ${MOZ_INTEGRATION}  ${False}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
+${PLAN_TENDER}      ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер другого етапу
@@ -83,8 +84,11 @@ ${GMDN_INDEX}       ${False}
   ...      extend_tendering_period  level3
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість продовжити період подання пропозиції на ${10} днів
+  ${endDate}=  add_minutes_to_date  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod.endDate}  10
+  Можливість змінити поле tenderPeriod.endDate тендера на ${endDate}
   Remove From Dictionary  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod}  endDate
+  #Можливість продовжити період подання пропозиції на ${10} днів
+  #Remove From Dictionary  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod}  endDate
 
 
 Можливість змінити кількість одиниць в предметі закупівлі
