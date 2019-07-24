@@ -16,6 +16,26 @@ ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 
 *** Test Cases ***
+Неможливість створити план закупівлі з двома buyers
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_two_buyers
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість створити план закупівлі з використанням валідації для buyers  ${1}
+
+
+Неможливість створити план закупівлі з порожнім buyers
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_no_buyers
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість створити план закупівлі з використанням валідації для buyers  ${2}
+
+
 Можливість створити план закупівлі
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
   ...      tender_owner
@@ -24,24 +44,6 @@ ${GMDN_INDEX}       ${False}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість створити план закупівлі
-
-
-Можливість створити план закупівлі з двома buyers
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      create_plan_two_buyers
-  ...      critical
-  Run Keyword And Expect Error  *  Можливість створити план закупівлі з використанням валідації для buyers  ${1}
-
-
-Можливість створити план закупівлі з порожнім buyers
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      create_plan_no_buyers
-  ...      critical
-  Run Keyword And Expect Error  *  Можливість створити план закупівлі з використанням валідації для buyers  ${2}
 
 
 Можливість знайти план по ідентифікатору

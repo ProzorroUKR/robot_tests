@@ -37,4 +37,6 @@
 -i qualification_approve_first_award
 
 -i contract_sign
+-i modify_contract_amount_net
+-i modify_contract_value
 -i contract_stand_still
