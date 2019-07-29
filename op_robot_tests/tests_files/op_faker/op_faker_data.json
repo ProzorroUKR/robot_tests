@@ -7877,7 +7877,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-15",
+                    "id": "M-15",
                     "description": "Одеса - Рені (на м. Бухарест)"
                 }
             ],
@@ -7905,7 +7905,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-05",
+                    "id": "M-05",
                     "description": "Київ - Одеса"
                 }
             ],
@@ -7933,7 +7933,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-10",
+                    "id": "M-10",
                     "description": "Львів - Краковець (на м. Краків)"
                 }
             ],
@@ -7961,7 +7961,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-01",
+                    "id": "M-01",
                     "description": "Київ - Чернігів - Нові Яриловичі (на м. Гомель)"
                 }
             ],
@@ -7975,7 +7975,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-02",
+                    "id": "M-02",
                     "description": "Кіпті - Глухів - Бачівськ (на м. Брянськ)"
                 }
             ],
@@ -7989,7 +7989,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-03",
+                    "id": "M-03",
                     "description": "Київ - Харків - Довжанський (на м. Ростов-на-Дону)"
                 }
             ],
@@ -8003,7 +8003,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-04",
+                    "id": "M-04",
                     "description": "Знам’янка - Луганськ - Ізварине (на м. Волгоград через мм. Дніпро, Донецьк)"
 
                 }
@@ -8018,7 +8018,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-19",
+                    "id": "M-19",
                     "description": "Доманове (на м. Брест) - Ковель - Чернівці - Тереблече (на м. Бухарест)"
                 }
             ],
@@ -8032,7 +8032,7 @@
             "additionalClassifications": [
                 {
                     "scheme": "UA-ROAD",
-                    "id": "М-27",
+                    "id": "M-27",
                     "description": "Одеса - Чорноморськ"
                 }
             ],

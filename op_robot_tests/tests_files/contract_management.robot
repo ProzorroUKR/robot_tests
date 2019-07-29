@@ -71,7 +71,7 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення зміни договору
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      view_change
+  ...      view_change_en
   Звірити відображення поля rationale_en зміни до договору для користувача ${viewer}
 
 
@@ -79,7 +79,7 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення зміни договору
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      view_change
+  ...      view_change_ru
   Звірити відображення поля rationale_ru зміни до договору для користувача ${viewer}
 
 
