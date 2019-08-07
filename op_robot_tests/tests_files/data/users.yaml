@@ -276,14 +276,14 @@ users:
         size:     [800, 700]
     PrivatMarket_Viewer:
         broker:   PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/stage/ptr/registry.html?lang=uk"
+        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
         email:    pbecommercetest2@ukr.net
         browser:  chrome
         position: [0, 0]
         size:     [1920, 1080]
     PrivatMarket_Provider:
         broker:   PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/stage/ptr/registry.html?lang=uk"
+        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
         email:    pbecommercetest2@ukr.net
         login:    380270010001
         password: password0001
@@ -292,19 +292,19 @@ users:
         size:     [1920, 1080]
     PrivatMarket_Provider1:
         broker:   PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/stage/ptr/registry.html?lang=uk"
+        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
         email:    pbecommercetest2@ukr.net
         login:    380270010002
-        password: password0002
+        password: zakupivli24
         browser:  chrome
         position: [0, 0]
         size:     [1920, 1080]
     PrivatMarket_Owner:
         broker: PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/stage/ptr/registry.html?lang=uk"
+        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
         email: pbecommercetest1@ukr.net
         login: 380270010003
-        password: password0003
+        password: zakupivli24
         browser: chrome
         position: [0, 0]
         size: [1920, 1080]
