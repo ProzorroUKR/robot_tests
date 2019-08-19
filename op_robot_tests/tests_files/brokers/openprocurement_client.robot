@@ -2261,3 +2261,10 @@ Library  openprocurement_client.utils
   ...      ${field_name}
   Run Keyword If  '${status}' == 'PASS'  Return From Keyword   ${field_value}
   Fail  Field not found: ${field_name}
+
+
+знайти план за ідентифікатором
+  [Arguments]  ${tender_uaid}  ${username}  ${save_key}=tender_data
+  ${internalid}=  openprocurement_client.Отримати internal id плану по UAid  ${username}  ${tender_uaid}
+  ${plan}=  openprocurement_client.Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}  ${save_key}
+  [return]  ${plan}
