@@ -35,7 +35,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  ${plan_data}=  Run as  ${tender_owner}  Пошук плану по ідентифікатору  ${ARTIFACT.tender_uaid}
+  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
+  \  ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
+  \  Run Keyword If  ${status}   Exit For Loop
+  ${plan_data}=  знайти план за ідентифікатором  ${ARTIFACT.tender_uaid}  ${username}
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
