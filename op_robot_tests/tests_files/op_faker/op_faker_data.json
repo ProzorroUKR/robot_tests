@@ -817,6 +817,29 @@
                 "region": "місто Київ",
                 "locality": "Київ"
             }
+        },
+        {
+            "contactPoint": {
+                "url": "http://www.page.gov.ua/",
+                "telephone": "+380506665544",
+                "email": "test_e_mail@ukr.net",
+                "name": "Тестовий Учасник 2",
+                "faxNumber": "9998877"
+            },
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "00037256",
+                "legalName": "Тестове державне управління справами"
+            },
+            "scale": "not specified",
+            "name": "Тестове державне управління справами",
+            "address": {
+                "postalCode": "01111",
+                "countryName": "Україна",
+                "streetAddress": "Тестова вулиця, 21-29",
+                "region": "Київська область",
+                "locality": "Переяслав-Хмельницький"
+            }
         }
     ],
     "addresses": [
