@@ -80,10 +80,10 @@
 
 #-i pre-qualifications_check_by_edrpou
 
--i pre-qualification_add_doc_to_first_bid
+#-i pre-qualification_add_doc_to_first_bid
 -i pre-qualification_approve_first_bid
 
--i pre-qualification_add_doc_to_second_bid
+#-i pre-qualification_add_doc_to_second_bid
 -i pre-qualification_approve_second_bid
 -i pre-qualification_approve_third_bid
 
