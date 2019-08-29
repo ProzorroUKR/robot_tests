@@ -936,7 +936,7 @@ def invalid_INN_data():
 def invalid_cost_data():
     return munchify({
             "scheme": "UA-ROAD",
-            "id": "Н-08",
+            "id": "H-08",
             "description": "Бориспіль - Дніпро - Запоріжжя (через м. Кременчук) - Маріуполь"
     })
 
