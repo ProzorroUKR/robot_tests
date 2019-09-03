@@ -58,6 +58,32 @@ ${PLAN_TENDER}      ${True}
   Можливість зареєструвати, додати документацію і підтвердити першого постачальника до закупівлі
 
 
+Відображення вартості угоди без урахування ПДВ
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  ${award}=  Get From List  ${USERS.users['${viewer}'].tender_data.data.awards}  ${award_index}
+  ${award_amount}=  Get From Dictionary  ${award.value}  amount
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${amount_net_field}=  Set Variable  contracts[${contract_index}].value.amountNet
+  Звірити відображення поля ${amount_net_field} тендера із ${award_amount} для користувача ${viewer}
+
+
+Відображення вартості угоди
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${amount_field}=  Set Variable  contracts[${contract_index}].value.amount
+
+
 Можливість редагувати вартість угоди без урахування ПДВ
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
   ...      tender_owner
@@ -503,7 +529,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення номенклатури процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_coordinate
   ...  non-critical
   Звірити відображення координат усіх предметів для користувача ${viewer}
 
