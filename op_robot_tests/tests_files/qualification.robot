@@ -212,13 +212,22 @@ ${award_index}      ${0}
 #             QUALIFICATION
 ##############################################################################################
 
+Можливість дочекатися перевірки переможців по ЄДРПОУ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Перевірка користувача по ЄДРПОУ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualifications_check_by_edrpou
+  [Setup]  Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Дочекатися перевірки кваліфікацій  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+
 Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  qualification_add_doc_to_first_award
   ...  critical
-  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
+  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc0
   Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії   ${file_path}   ${TENDER['TENDER_UAID']}   0
   Remove File  ${file_path}
 
@@ -324,11 +333,3 @@ ${award_index}      ${0}
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Затвердити постачальників  ${TENDER['TENDER_UAID']}
-
-
-Можливість дочекатися перевірки переможців по ЄДРПОУ
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Перевірка користувача по ЄДРПОУ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      qualifications_check_by_edrpou
-  Дочекатися перевірки кваліфікацій  ${tender_owner}  ${TENDER['TENDER_UAID']}
