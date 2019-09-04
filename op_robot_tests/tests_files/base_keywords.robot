@@ -1697,19 +1697,14 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...       [Return]  Nothing
   [Arguments]  ${username}  ${tender_uaid}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Wait until keyword succeeds
-  ...      10 min 15 sec
-  ...      30 sec
-  ...      Перевірити документ кваліфікіції ${tender.data.awards[-1].id} для користувача ${username} в тендері ${tender_uaid}
+  :FOR  ${award}  IN  @{tender.data.awards}
+  \   Wait until keyword succeeds
+  \   ...      10 min 15 sec
+  \   ...      30 sec
+  \   ...      Перевірити документ кваліфікіції ${award.id} для користувача ${username} в тендері ${tender_uaid}
 
 
 Перевірити документ кваліфікіції ${award_id} для користувача ${username} в тендері ${tender_uaid}
   ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerExtract  ${username}  ${tender_uaid}  ${award_id}
   Порівняти об'єкти  ${document['title']}  edr_identification.yaml
-
-
-Перевірити довідку ЄДПРОУ кваліфікації
-  [Documentation]
-  [Arguments]  ${username}  ${tender_uaid}  ${award_index}
-  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
 
