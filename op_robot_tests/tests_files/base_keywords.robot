@@ -1707,3 +1707,4 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 Перевірити документ кваліфікіції ${award_id} для користувача ${username} в тендері ${tender_uaid}
   ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerExtract  ${username}  ${tender_uaid}  ${award_id}
   Порівняти об'єкти  ${document['title']}  edr_identification.yaml
+
