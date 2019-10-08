@@ -263,6 +263,15 @@ ${PLAN_TENDER}      ${True}
   Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${4}
 
 
+Перевірити статус плану - завершено
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      plan_status_complete_view
+  ...      critical
+  Можливість перевірити статус плану після публікації тендера
+
+
 Можливість знайти тендер по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      viewer  tender_owner  provider  provider1
