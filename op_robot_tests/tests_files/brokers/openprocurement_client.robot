@@ -190,7 +190,7 @@ Library  openprocurement_client.utils
 
 Створити тендер
   [Arguments]  ${username}  ${tender_data}
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
   Log  ${ARTIFACT.tender_id}
@@ -1680,6 +1680,36 @@ Library  openprocurement_client.utils
   ${document}=  get_document_by_id  ${tender.data}  ${doc_id}
   ${filename}=  download_file_from_url  ${document.url}  ${OUTPUT_DIR}${/}${document.title}
   [return]  ${filename}
+
+
+Скасувати план
+  [Arguments]  ${username}  ${tender_uaid}  ${cancellation_reason}
+  ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
+  ${data}=  Create dictionary  cancellation=${cancellation_reason}
+  ${cancellation_data}=  Create dictionary  data=${data}
+  ${cancellation_data}=  munch_dict  arg=${cancellation_data}
+  ${cancel_reply}=  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
+  ...      ${tender.data.id}
+  ...      ${cancellation_data}
+  ...      access_token=${tender.access.token}
+  ${cancellation_id}=  Set variable  ${cancel_reply.data.id}
+  openprocurement_client.Підтвердити скасування плану  ${username}  ${tender_uaid}  ${cancellation_id}
+
+
+Підтвердити скасування плану
+  [Documentation]
+  ...      [Arguments] Username, tender uaid
+  ...      Find plan using uaid, get cancellation test_confirmation data and call patch_plan
+  ...      [Return] Nothing
+  [Arguments]  ${username}  ${tender_uaid}  ${cancellation_id}
+  ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
+  ${data}=  test_confirm_plan_cancel_data
+  Log  ${data}
+  ${reply}=  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
+  ...      ${tender.data.id}
+  ...      ${data}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
 
 ##############################################################################
 #             OpenUA procedure

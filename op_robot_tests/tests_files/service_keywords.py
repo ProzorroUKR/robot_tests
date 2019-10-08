@@ -78,7 +78,9 @@ from .initial_data import (
     invalid_INN_data,
     invalid_cost_data,
     invalid_gmdn_data,
-    invalid_buyers_data
+    invalid_buyers_data,
+    test_plan_cancel_data,
+    test_confirm_plan_cancel_data
 )
 from barbecue import chef
 from restkit import request

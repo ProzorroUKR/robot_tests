@@ -28,6 +28,11 @@ Test Suite Teardown
   Run Keyword And Ignore Error  Створити артефакт
 
 
+Test Suite Teardown Plan
+  Close all browsers
+  Run Keyword And Ignore Error  Створити артефакт план
+
+
 Set Suite Variable With Default Value
   [Arguments]  ${suite_var}  ${def_value}
   ${tmp}=  Get Variable Value  ${${suite_var}}  ${def_value}
@@ -188,6 +193,23 @@ Get Broker Property By Username
   log_object_data  ${artifact}  file_name=artifact  update=${True}  artifact=${True}
 
 
+Створити артефакт план
+  ${artifact}=  Create Dictionary
+  ...      api_version=${API_VERSION}
+  ...      tender_uaid=${TENDER['TENDER_UAID']}
+  ...      last_modification_date=${TENDER['LAST_MODIFICATION_DATE']}
+  ...      mode=${MODE}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
+  ...          tender_owner=${USERS.users['${tender_owner}'].broker}
+  ...          access_token=${USERS.users['${tender_owner}'].access_token}
+  ...          tender_id=${USERS.users['${tender_owner}'].tender_data.data.id}
+  ...          tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
+  ...      tender_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
+  Log   ${artifact}
+  log_object_data  ${artifact}  file_name=artifact_plan  update=${True}  artifact=${True}
+
+
 Завантажити дані про тендер
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
@@ -336,6 +358,19 @@ Get Broker Property By Username
   ...      document=${document}
   ...      description=${new_description}
   ${cancellation_data}=  munchify  ${cancellation_data}
+  Log  ${cancellation_data}
+  [Return]  ${cancellation_data}
+
+
+Підготувати дані про скасування плану
+  ${cancellation_reason}=  create_fake_sentence
+  ${cancellation_reason_en}=  create_fake_sentence
+  ${cancellation_data}=  Create Dictionary
+  ...       reason=${cancellation_reason}
+  ...       reason_en=${cancellation_reason_en}
+  ${cancellation_data}=  munchify  ${cancellation_data}
+  #${cancellation_data}=  test_plan_cancel_data
+  Log  ${cancellation_data}
   [Return]  ${cancellation_data}
 
 
@@ -951,6 +986,12 @@ Require Failure
   [Arguments]  ${username}  ${tender_uaid}  ${left}
   ${right}=  Run as  ${username}  Отримати інформацію із тендера  ${tender_uaid}  status
   Порівняти об'єкти  ${left}  ${right}
+  Порівняти об'єкти  ${left}  ${right}
+
+
+Звірити статус плану
+  [Arguments]  ${username}  ${tender_uaid}  ${left}
+  ${right}=  Run as  ${username}  Отримати інформацію із плану  ${tender_uaid}  status
 
 
 Звірити статус об'єкта моніторингу
