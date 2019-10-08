@@ -1000,7 +1000,7 @@ def test_confirm_plan_cancel_data():
 
 def test_breakdown_data():
     return munchify({
-        "title": random.choice(["state", "local"]),
+        "title": random.choice(["state", "local", "crimea", "own", "fund", "loan", "other"]),
         "description": fake.description(),
         "value": {
             "currency": "UAH"
@@ -1010,5 +1010,5 @@ def test_breakdown_data():
 
 def breakdown_value_generation(number_of_breakdown, plan_value):
     value_data = [round(random.uniform(1, plan_value / number_of_breakdown), 2) for _ in range(number_of_breakdown - 1)]
-    value_data.append(plan_value - sum(value_data))
+    value_data.append(round(plan_value - sum(value_data), 2))
     return value_data
