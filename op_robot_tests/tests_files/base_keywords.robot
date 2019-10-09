@@ -73,7 +73,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість оголосити тендер з використанням валідації для MNN
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   [Arguments]  ${data_version}
@@ -110,7 +110,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг
   [Arguments]  ${data_version}
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
@@ -146,7 +146,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість оголосити тендер з використанням валідації класифікатор медичних виробів
   [Arguments]  ${data_version}
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
@@ -182,7 +182,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість оголосити тендер з використанням валідації план-тендер
   [Arguments]  ${data_version}
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
