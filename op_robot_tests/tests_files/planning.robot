@@ -1,7 +1,7 @@
 *** Settings ***
 Resource        base_keywords.robot
 Suite Setup     Test Suite Setup
-Suite Teardown  Test Suite Teardown
+Suite Teardown  Test Suite Teardown Plan
 
 *** Variables ***
 ${RESOURCE}     plans
@@ -14,6 +14,7 @@ ${ITEM_MEAT}        ${False}
 ${MOZ_INTEGRATION}  ${False}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
+${NUMBER_OF_BREAKDOWN}  ${2}
 
 *** Test Cases ***
 Неможливість створити план закупівлі з двома buyers
@@ -53,6 +54,16 @@ ${GMDN_INDEX}       ${False}
   ...      find_plan
   ...      critical
   Можливість знайти план по ідентифікатору
+
+
+Відображення статусу плану - заплановано
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      status_sheduled_view
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  Звірити статус плану  ${tender_owner}  ${TENDER['TENDER_UAID']}  scheduled
 
 
 Відображення типу запланованого тендера
@@ -265,8 +276,7 @@ ${GMDN_INDEX}       ${False}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${new_amount}=  create_fake_value_amount
-  Можливість змінити поле budget.amount плану на ${new_amount}
+  Можливість змінити на 150 відсотки бюджет плану
 
 
 Можливість змінити кінцеву дату доставки
@@ -337,3 +347,22 @@ ${GMDN_INDEX}       ${False}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${new_period}=   create_fake_period  days=${1460}
   Можливість змінити поле budget.period плану на ${new_period}
+
+
+Можливість скасувати план
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування плану
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  plan_cancellation
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати план
+
+
+Відображення статусу плану - скасовано
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      status_cancelled_view
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  Звірити статус плану  ${tender_owner}  ${TENDER['TENDER_UAID']}  cancelled

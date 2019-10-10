@@ -253,7 +253,7 @@ ${PLAN_TENDER}      ${True}
   Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${3}
 
 
-Неможливість опублікувати тендер на закупівлю з невідповідним cpv кодом
+Неможливість опублікувати тендер на закупівлю з невідповідним типом процедури
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -261,6 +261,15 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run Keyword And Expect Error  *  Можливість оголосити тендер з використанням валідації план-тендер  ${4}
+
+
+Перевірити статус плану - завершено
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      plan_status_complete_view
+  ...      critical
+  Можливість перевірити статус плану після публікації тендера
 
 
 Можливість знайти тендер по ідентифікатору

@@ -9,6 +9,7 @@
 
 
 -i create_tender
+-i plan_status_complete_view
 -i find_tender
 -i tender_view
 -i tender_view_milestone

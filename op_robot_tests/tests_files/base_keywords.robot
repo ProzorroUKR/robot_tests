@@ -11,7 +11,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 *** Keywords ***
 Можливість оголосити тендер
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
@@ -73,7 +73,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість оголосити тендер з використанням валідації для MNN
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   [Arguments]  ${data_version}
@@ -110,7 +110,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість оголосити тендер з використанням валідації Індекс автомобільних доріг
   [Arguments]  ${data_version}
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
@@ -146,7 +146,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість оголосити тендер з використанням валідації класифікатор медичних виробів
   [Arguments]  ${data_version}
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
@@ -182,7 +182,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість оголосити тендер з використанням валідації план-тендер
   [Arguments]  ${data_version}
-  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
@@ -242,6 +242,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість створити план закупівлі
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_BREAKDOWN}=  Convert To Integer  ${NUMBER_OF_BREAKDOWN}
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
   ...      number_of_items=${NUMBER_OF_ITEMS}
@@ -250,6 +251,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      moz_integration=${${MOZ_INTEGRATION}}
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
+  ...      number_of_breakdown=${NUMBER_OF_BREAKDOWN}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   ${tender_data}=  Підготувати дані для створення плану  ${tender_parameters}
@@ -377,6 +379,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Перевірити неможливість зміни поля ${field_name} тендера на значення ${field_value} для користувача ${username}
   Require Failure  ${username}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  ${field_name}  ${field_value}
+
 
 Можливість змінити поле ${field_name} плану на ${field_value}
   Run As  ${tender_owner}  Внести зміни в план  ${TENDER['TENDER_UAID']}  ${field_name}  ${field_value}
@@ -1708,3 +1711,28 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerExtract  ${username}  ${tender_uaid}  ${award_id}
   Порівняти об'єкти  ${document['title']}  edr_identification.yaml
 
+##############################################################################################
+#             PLAN
+##############################################################################################
+
+Можливість скасувати план
+  ${cancellation_data}=  Підготувати дані про скасування плану
+  Run As  ${tender_owner}
+  ...      Скасувати план
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${cancellation_data}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  plan_cancellation_data=${cancellation_data}
+
+
+Можливість перевірити статус плану після публікації тендера
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
+  Звірити статус плану  ${tender_owner}  ${ARTIFACT.tender_uaid}  complete
+
+
+Можливість змінити на ${percent} відсотки бюджет плану
+  ${percent}=  Convert To Number  ${percent}
+  ${divider}=  Convert To Number  0.01
+  ${value}=  mult_and_round  ${USERS.users['${tender_owner}'].tender_data.data.budget.amount}  ${percent}  ${divider}  precision=${2}
+  Можливість змінити поле budget.amount плану на ${value}

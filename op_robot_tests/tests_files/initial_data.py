@@ -298,6 +298,7 @@ def test_tender_data_planning(params):
             "currency": "UAH",
             "amount": round(random.uniform(3000, 99999999999.99), 2),
             "id": str(fake.random_int(min=1, max=99999999999)) + "-" + str(fake.random_int(min=1, max=9)),
+            "breakdown": []
         },
         "procuringEntity": {
             "identifier": {
@@ -349,6 +350,12 @@ def test_tender_data_planning(params):
         data["tender"]["procurementMethod"] = "open"
     if params['mode'] in mode_limited:
         data["tender"]["procurementMethod"] = "limited"
+    if params.get('number_of_breakdown'):
+        value_data = breakdown_value_generation(params['number_of_breakdown'], data['budget']['amount'])
+        for value in value_data:
+            breakdown_element = test_breakdown_data()
+            breakdown_element['value']['amount'] = value
+            data['budget']['breakdown'].append(breakdown_element)
     return munchify(data)
 
 
@@ -784,7 +791,6 @@ def test_modification_data(item_id, field_name, field_value):
     return munchify({'data':data})
 
 
-
 def get_hash(file_contents):
     return ("md5:"+hashlib.md5(file_contents).hexdigest())
 
@@ -970,3 +976,39 @@ def invalid_buyers_data():
         "name": "Київський Тестовий Ліцей"
         }
     return munchify(buyers)
+
+
+def test_plan_cancel_data():
+    plan_cancel = {
+        "cancellation": {
+            "reason": "Підстава для скасування",
+            "reason_en": "Reason of the cancellation"
+        }
+    }
+    return munchify(plan_cancel)
+
+
+def test_confirm_plan_cancel_data():
+    return munchify({
+        "data": {
+            "cancellation": {
+                "status": "active"
+            }
+        }
+    })
+
+
+def test_breakdown_data():
+    return munchify({
+        "title": random.choice(["state", "local", "crimea", "own", "fund", "loan", "other"]),
+        "description": fake.description(),
+        "value": {
+            "currency": "UAH"
+        }
+    })
+
+
+def breakdown_value_generation(number_of_breakdown, plan_value):
+    value_data = [round(random.uniform(1, plan_value / number_of_breakdown), 2) for _ in range(number_of_breakdown - 1)]
+    value_data.append(round(plan_value - sum(value_data), 2))
+    return value_data

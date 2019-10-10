@@ -8,6 +8,7 @@
 
 -i create_plan
 -i find_plan
+-i status_sheduled_view
 
 -i plan_view
 
