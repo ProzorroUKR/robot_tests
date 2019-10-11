@@ -135,7 +135,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення основних даних процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_en
   Звірити відображення поля title_en тендера для користувача ${viewer}
 
 
@@ -143,7 +143,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення основних даних процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_ru
   Звірити відображення поля title_ru тендера для користувача ${viewer}
 
 
@@ -169,7 +169,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення основних даних процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_en
   Звірити відображення поля description_en тендера для користувача ${viewer}
 
 
@@ -177,7 +177,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення основних даних процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_ru
   Звірити відображення поля description_ru тендера для користувача ${viewer}
 
 
@@ -419,7 +419,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення номенклатури процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_coordinate
   Звірити відображення координат усіх предметів для користувача ${viewer}
 
 
@@ -436,7 +436,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення номенклатури процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_ru
   Звірити відображення поля deliveryAddress.countryName_ru усіх предметів для користувача ${viewer}
 
 
@@ -444,7 +444,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення номенклатури процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_en
   Звірити відображення поля deliveryAddress.countryName_en усіх предметів для користувача ${viewer}
 
 
