@@ -319,17 +319,6 @@ Suite Teardown  Test Suite Teardown
   Run As  ${tender_owner}  Встановити дату підписання угоди  ${TENDER['TENDER_UAID']}  ${contract_index}  ${dateSigned}
 
 
-Відображення дати підписання угоди
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      contract_view
-  ...      non-critical
-  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  Звірити відображення дати contracts[${contract_index}].dateSigned контракту із ${USERS.users['${tender_owner}'].dateSigned} для користувача ${viewer}
-
-
 Можливість вказати період дії угоди
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
   ...      tender_owner
@@ -343,6 +332,28 @@ Suite Teardown  Test Suite Teardown
   ${endDate}=  add_minutes_to_date  ${startDate}  10
   Set to dictionary  ${USERS.users['${tender_owner}']}  contract_startDate=${startDate}  contract_endDate=${endDate}
   Run As  ${tender_owner}  Вказати період дії угоди  ${TENDER['TENDER_UAID']}  ${contract_index}  ${startDate}  ${endDate}
+
+
+Можливість завантажити документацію в угоду
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантаження документації в угоду
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_contract
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Можливість завантажити документ в ${contract_index} угоду користувачем ${tender_owner}
+
+
+Відображення дати підписання угоди
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Звірити відображення дати contracts[${contract_index}].dateSigned контракту із ${USERS.users['${tender_owner}'].dateSigned} для користувача ${viewer}
 
 
 Відображення дати початку дії угоди
@@ -365,17 +376,6 @@ Suite Teardown  Test Suite Teardown
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Звірити відображення дати contracts[${contract_index}].period.endDate контракту із ${USERS.users['${tender_owner}'].contract_endDate} для користувача ${viewer}
-
-
-Можливість завантажити документацію в угоду
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантаження документації в угоду
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      add_doc_to_contract
-  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  Можливість завантажити документ в ${contract_index} угоду користувачем ${tender_owner}
 
 
 Відображення заголовку документа
