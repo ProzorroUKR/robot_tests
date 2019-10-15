@@ -108,7 +108,7 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних плану
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      plan_view
+  ...      plan_view_budget_id
   ...      non-critical
   Звірити відображення поля budget.id плану для користувача ${viewer}
 

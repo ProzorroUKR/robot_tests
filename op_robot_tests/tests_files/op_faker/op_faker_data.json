@@ -8062,7 +8062,7 @@
             "classification": {
                 "scheme": "ДК021",
                 "id": "63712320-2",
-                "description": "Послуги зі стягнення плати за користування мостами"
+                "description": "Послуги з експлуатації тунелів"
             }
         },
         {
@@ -8300,9 +8300,9 @@
         },
         {
             "cpv_id": "30199000-0",
-            "description": "Папір для офісної техніки А4",
-            "description_ru": "Бумага для офисной техники формата А4",
-            "description_en": "Paper for office equipment А4",
+            "description": "Паперове канцелярське приладдя та інші паперові вироби",
+            "description_ru": "Канцелярские товары и прочие изделия из бумаги",
+            "description_en": "Paper stationery and other items",
             "quantity": 15,
             "unit": {
                 "code": "PK",
@@ -8355,9 +8355,9 @@
         },
         {
             "cpv_id": "30192130-1",
-            "description": "Олівці прості",
-            "description_ru": "Карандаши простые",
-            "description_en": "Plain pencils",
+            "description": "Олівці",
+            "description_ru": "Карандаши",
+            "description_en": "Pencils",
             "quantity": 3,
             "unit": {
                 "code": "PK",
@@ -8368,7 +8368,7 @@
             "cpv_id": "30197600-2",
             "description": "Папір офісний призначений для друку та копіювання на лазерній, струменевій техніці, формат А4 - 210 х 297 мм, щільність 80г/м2.",
             "description_ru": "Бумага офисная предназначен для печати и копирования на лазерной, струйной технике, формат А4 - 210 х 297 мм, плотность 80г м2.",
-            "description_en": "Paper for office equipment А4",
+            "description_en": "Paper for office equipment A4",
             "quantity": 20,
             "unit": {
                 "code": "PK",
@@ -8631,8 +8631,8 @@
                 {
             "cpv_id": "63712320-2",
             "description": "Послуги з експлуатації тунелів",
-            "description_ru": "Послуги з експлуатації тунелів",
-            "description_en": "Operation of tunnels",
+            "description_ru": "Услуги эксплуатации тоннелей",
+            "description_en": "Tunnel operation services",
             "quantity": 15,
             "unit": {
                 "code": "H87",
