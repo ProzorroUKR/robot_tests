@@ -74,7 +74,7 @@ users:
         size:     [1400, 900]
     Etender_Owner:
         broker:   Etender
-        homepage: "https://qa-prozorro.e-tender.ua/#/"
+        homepage: "https://uat-prozorro.e-tender.ua/#/"
         login:    auto_owner
         password: Qq123456
         browser:  chrome
@@ -82,7 +82,7 @@ users:
         size:     [1366, 800]
     Etender_Provider1:
         broker:   Etender
-        homepage: "https://qa-prozorro.e-tender.ua/#/"
+        homepage: "https://uat-prozorro.e-tender.ua/#/"
         login:    auto_provider1
         password: Qq123456
         browser:  chrome
@@ -90,7 +90,7 @@ users:
         size:     [1366, 800]
     Etender_Provider2:
         broker:   Etender
-        homepage: "https://qa-prozorro.e-tender.ua/#/"
+        homepage: "https://uat-prozorro.e-tender.ua/#/"
         login:    auto_provider2
         password: Qq123456
         browser:  chrome
@@ -98,7 +98,7 @@ users:
         size:     [1366, 800]
     Etender_Viewer:
         broker:   Etender
-        homepage: "https://qa-prozorro.e-tender.ua/#/"
+        homepage: "https://uat-prozorro.e-tender.ua/#/"
         browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
