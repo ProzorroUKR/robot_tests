@@ -568,28 +568,28 @@ ukrtender:
 playtender:
     intervals:
         default:
-            enquiry: [0, 20]
-            tender:  [0, 20]
+            enquiry: [0, 25]
+            tender:  [0, 25]
             accelerator: 1440
         belowThreshold:
             enquiry: [0, 25]
             tender:  [0, 25]
             accelerator: 1440
         openua:
-            tender:  [0, 25]
+            tender:  [0, 30]
             accelerator: 1440
         openeu:
-            tender:  [0, 25]
+            tender:  [0, 35]
             accelerator: 1440
         open_competitive_dialogue:
+            tender:  [0, 40]
             accelerator: 1440
-            tender:  [0, 35]
         open_esco:
              enquiry: [0, 25]
-             tender:  [0, 25]
+             tender:  [0, 35]
              accelerator: 1440
         open_framework:
-             tender:  [0, 25]
+             tender:  [0, 40]
              accelerator: 1440
     keywords_file: playtender
     basepage: 'http://test.playtender.com.ua'
