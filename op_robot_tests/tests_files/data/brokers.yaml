@@ -97,7 +97,7 @@ Etender:
             tender:  [0, 20]
             accelerator: 1440
         openua:
-            tender:  [1, 17]
+            tender:  [1, 35]
         openeu:
             tender:  [1, 35]
         openua_defense:
