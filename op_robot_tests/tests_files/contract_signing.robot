@@ -51,12 +51,13 @@ Suite Teardown  Test Suite Teardown
   ...      contract_view
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
-  ${award}=  Get From List  ${USERS.users['${viewer}'].tender_data.data.awards}  ${award_index}
-  ${award_amount}=  Get From Dictionary  ${award.value}  amount
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${amount_net_field}=  Set Variable  contracts[${contract_index}].value.amountNet
-  Звірити відображення поля ${amount_net_field} тендера із ${award_amount} для користувача ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amountNet тендера із ${award.value.amount} для користувача ${viewer}
 
 
 Відображення вартості угоди
@@ -67,8 +68,12 @@ Suite Teardown  Test Suite Teardown
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${amount_field}=  Set Variable  contracts[${contract_index}].value.amount
-  Отримати дані із поля ${amount_field} тендера для користувача ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amount тендера із ${award.value.amount} для користувача ${viewer}
 
 
 Можливість змінити ознаку контракту на без ПДВ

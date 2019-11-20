@@ -58,6 +58,17 @@ ${PLAN_TENDER}      ${True}
   Можливість зареєструвати, додати документацію і підтвердити першого постачальника до закупівлі
 
 
+Можливість знайти звіт про укладений договір по ідентифікатору
+  [Tags]  ${USERS.users['${viewer}'].broker}: Можливість знайти процедуру
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker} ${USERS.users['${tender_owner}'].broker}
+  ...  find_tender
+  ...  level1
+  ...  critical
+  Можливість знайти тендер по ідентифікатору для користувача ${viewer}
+  Можливість знайти тендер по ідентифікатору для користувача ${tender_owner}
+
+
 Відображення вартості угоди без урахування ПДВ
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
   ...      viewer
@@ -65,12 +76,17 @@ ${PLAN_TENDER}      ${True}
   ...      contract_view
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
-  ${award}=  Get From List  ${USERS.users['${viewer}'].tender_data.data.awards}  ${award_index}
-  ${award_amount}=  Get From Dictionary  ${award.value}  amount
+  #${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${amount_net_field}=  Set Variable  contracts[${contract_index}].value.amountNet
-  Звірити відображення поля ${amount_net_field} тендера із ${award_amount} для користувача ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  #:FOR  ${username}  IN  ${viewer}  ${tender_owner}
+  #\  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards
+  #${award_amount}=  get variable value  ${USERS.users['${username}'].tender_data.data.awards[${award_index}].value.amount}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amountNet тендера із ${award.value.amount} для користувача ${viewer}
 
 
 Відображення вартості угоди
@@ -80,8 +96,17 @@ ${PLAN_TENDER}      ${True}
   ...      contract_view
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  #${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${amount_field}=  Set Variable  contracts[${contract_index}].value.amount
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  #:FOR  ${username}  IN  ${viewer}  ${tender_owner}
+  #\  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards
+  #${award_amount}=  get variable value  ${USERS.users['${username}'].tender_data.data.awards[${award_index}].value.amount}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amount тендера із ${award.value.amount} для користувача ${viewer}
 
 
 Можливість редагувати вартість угоди без урахування ПДВ
@@ -93,7 +118,9 @@ ${PLAN_TENDER}      ${True}
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
   ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
   ${amount_net}=  create_fake_amount_net  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
@@ -115,7 +142,9 @@ ${PLAN_TENDER}      ${True}
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
   ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
   ${amount}=  create_fake_amount  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
@@ -136,16 +165,6 @@ ${PLAN_TENDER}      ${True}
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість укласти угоду для закупівлі
-
-
-Можливість знайти звіт про укладений договір по ідентифікатору
-  [Tags]  ${USERS.users['${viewer}'].broker}: Можливість знайти процедуру
-  ...  viewer
-  ...  ${USERS.users['${viewer}'].broker}
-  ...  find_tender
-  ...  level1
-  ...  critical
-  Можливість знайти тендер по ідентифікатору для користувача ${viewer}
 
 
 Відображення типу оплати
