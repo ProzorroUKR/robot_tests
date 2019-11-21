@@ -1238,6 +1238,7 @@ Require Failure
   ...      get_from_object
   ...      ${user_data.tender_data.data}
   ...      ${field}
+  \  Log  ${user_data.tender_data.data}
   \  Run Keyword If  '${status}' == 'PASS'  Exit For Loop
   Run Keyword If  '${status}' == 'FAIL'  Fail  ${object} not found for usernames @{usernames}
   [Return]  ${username}

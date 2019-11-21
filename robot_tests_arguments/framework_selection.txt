@@ -25,13 +25,11 @@
 -i modify_lot
 
 -i add_tender_doc
-#-i add_lot_doc
 
 -i extend_tendering_period
 
 -i make_bid_by_provider
   -i modify_bid_by_provider
-  -i add_doc_to_bid_by_provider
 -i make_bid_by_provider1
   -i modify_bid_by_provider1
 -i bid_view_in_tendering_period
@@ -66,7 +64,6 @@
 -i change_contract_amountNet
 -i change_contract_amount
 -i apply_change
--i add_contract_doc
 -i termination_reasons
 -i amount_paid
 -i change_amount_paid
