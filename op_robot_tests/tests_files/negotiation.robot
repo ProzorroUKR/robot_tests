@@ -736,13 +736,46 @@ ${PLAN_TENDER}      ${True}
 
 
 Відображення закінчення періоду подачі скарг на пропозицію
-  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення основних даних тендера
-  ...      tender_owner  viewer
-  ...      ${USERS.users['${tender_owner}'].broker}  ${USERS.users['${viewer}'].broker}
-  ...      tender_view
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      contract_stand_still
+  ...      critical
+  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  :FOR  ${username}  IN  ${viewer}
+  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
+
+
+Відображення вартості угоди без урахування ПДВ
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
   ...      non-critical
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[0].complaintPeriod.endDate
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amountNet тендера із ${award.value.amount} для користувача ${viewer}
+
+
+Відображення вартості угоди
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amount тендера із ${award.value.amount} для користувача ${viewer}
 
 
 Можливість редагувати вартість угоди без урахування ПДВ
