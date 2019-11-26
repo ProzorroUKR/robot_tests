@@ -778,6 +778,38 @@ ${PLAN_TENDER}      ${True}
   Звірити відображення поля contracts[${contract_index}].value.amount тендера із ${award.value.amount} для користувача ${viewer}
 
 
+Відображення вартості угоди без урахування ПДВ
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amountNet тендера із ${award.value.amount} для користувача ${viewer}
+
+
+Відображення вартості угоди
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amount тендера із ${award.value.amount} для користувача ${viewer}
+
+
 Можливість редагувати вартість угоди без урахування ПДВ
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
   ...      tender_owner
@@ -829,7 +861,7 @@ ${PLAN_TENDER}      ${True}
   ...  critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Дочекатись дати  ${USERS.users['${tender_owner}'].tender_data.data.awards[0].complaintPeriod.endDate}
+  Дочекатись дати  ${USERS.users['${viewer}'].tender_data.data.awards[0].complaintPeriod.endDate}
   Можливість укласти угоду для закупівлі
 
 
