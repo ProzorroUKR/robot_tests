@@ -153,12 +153,8 @@ def create_fake_doc():
 
 
 def create_fake_IsoDurationType(
-        years=0, months=0, days=0,
-        hours=0, minutes=0, seconds=0):
-    return u"P{}Y{}M{}DT{}H{}M{}S".format(
-        years, months, days,
-        hours, minutes, seconds
-    )
+        years=0, months=0, days=0):
+    return u"P{}Y{}M{}D".format(years, months, days)
 
 
 def test_tender_data(params,
@@ -708,10 +704,7 @@ def test_tender_data_framework_agreement(params, submissionMethodDetails, plan_d
     data['agreementDuration'] = create_fake_IsoDurationType(
         years=fake.random_int(min=1, max=3),
         months=fake.random_int(min=1, max=8),
-        days=fake.random_int(min=1, max=6),
-        hours=fake.random_int(min=1, max=20),
-        minutes=fake.random_int(min=1, max=50),
-        seconds=fake.random_int(min=1, max=50)
+        days=fake.random_int(min=1, max=6)
     )
     return data
 
