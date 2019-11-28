@@ -68,7 +68,6 @@
   -i open_confirm_first_bid
   -i open_confirm_second_bid
 
--i openeu_make_bid_doc_private_by_provider
 -i openeu_add_financial_bid_doc_by_provider
 -i openeu_add_qualification_bid_doc_by_provider
 -i openeu_add_eligibility_bid_doc_by_provider
