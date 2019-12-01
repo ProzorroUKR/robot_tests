@@ -29,8 +29,8 @@
 -i add_lot_doc
 -i modify_lot_value_amount
 #-i add_lot
--i add_item
--i delete_item
+#-i add_item
+#-i delete_item
 #-i delete_lot
 -i add_tender_meat
 -i delete_tender_meat
