@@ -31,8 +31,8 @@
 -i modify_lot_value_amount
 #-i add_lot
   #-i delete_lot
--i add_item
-  -i delete_item
+#-i add_item
+  #-i delete_item
 -i add_tender_meat
   -i delete_tender_meat
 -i add_lot_meat
@@ -66,8 +66,8 @@
 
 -i contract_stand_still
 -i contract_view
--i modify_contract_invalid_amount
--i modify_contract_invalid_amountNet_tender_vat_true
+#-i modify_contract_invalid_amount
+#-i modify_contract_invalid_amountNet_tender_vat_true
 -i modify_contract_amount_net
 -i modify_contract_value
 -i modify_contract

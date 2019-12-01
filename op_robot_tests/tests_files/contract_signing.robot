@@ -365,7 +365,7 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      contract_view
+  ...      contract_view_start_date
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
@@ -376,7 +376,7 @@ Suite Teardown  Test Suite Teardown
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      contract_view
+  ...      contract_view_end_date
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
