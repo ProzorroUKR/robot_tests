@@ -8,8 +8,8 @@
 -v LOT_MEAT:False
 
 -i create_tender
--i add_tender_doc
 -i find_tender
+-i add_tender_doc
 -i tender_view
 -i tender_view_milestone
 -i tender_view_value
@@ -17,27 +17,16 @@
 -i tender_view_deliveryDate
 -i tender_view_quantity
 -i tender_view_unit_name
--i tender_view_unit_code
--i tender_view_coordinates
 -i extend_tendering_period
 -i ask_question_to_tender
 -i answer_question_to_tender
 -i modify_tender_after_questions
 
--i ask_question_to_tender_after_tendering_period
 -i make_bid_before_tendering_period
 -i make_bid_by_provider
 -i modify_bid_by_provider
 -i add_doc_to_bid_by_provider
 -i make_bid_by_provider1
--i bid_view_in_tendering_period
-
--i add_bid_doc_after_tendering_period_by_provider
--i modify_bid_doc_after_tendering_period_by_provider
--i modify_bid_after_tendering_period_by_provider1
--i cancel_bid_after_tendering_period_by_provider1
-
--i document_service
 
 -i auction_url
 
@@ -46,7 +35,7 @@
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
 
--i contract_sign
 -i contract_stand_still
 -i modify_contract_amount_net
 -i modify_contract_value
+-i contract_sign

@@ -14,7 +14,6 @@
 -i tender_view_cause
 -i tender_view_milestone
 -i tender_view_contactPoint_url
--i tender_view_unit_code
 -i tender_view_delivery_address
 -i add_tender_doc
 -i award_view

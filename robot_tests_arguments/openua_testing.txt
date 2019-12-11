@@ -4,9 +4,8 @@
 -v NUMBER_OF_LOTS:1
 
 -v TENDER_MEAT:True
--v ITEM_MEAT:True
--v LOT_MEAT:True
-
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
 
 -i create_tender
 -i find_tender
@@ -17,8 +16,6 @@
 -i tender_view_deliveryDate
 -i tender_view_quantity
 -i tender_view_unit_name
--i tender_view_unit_code
--i tender_view_coordinates
 -i meat_view
 -i lot_view
 -i lot_view_value
@@ -26,49 +23,25 @@
 
 -i extend_tendering_period
 -i add_tender_doc
--i add_lot_doc
 -i modify_lot_value_amount
-#-i add_lot
-#-i add_item
-#-i delete_item
-#-i delete_lot
+
 -i add_tender_meat
 -i delete_tender_meat
--i add_lot_meat
--i delete_lot_meat
--i add_item_meat
-  -i delete_item_meat
 
 -i ask_question_to_tender
   -i answer_question_to_tender
 
--i ask_question_to_lot
-  -i answer_question_to_lot
-
 -i modify_tender_after_questions
 -i modify_lot_after_questions
--i make_bid_without_related_lot
--i make_bid_without_parameters
+
 -i make_bid_by_provider
   -i modify_bid_by_provider
   -i add_doc_to_bid_by_provider
 -i make_bid_by_provider1
--i bid_view_in_tendering_period
-
--i add_bid_doc_after_tendering_period_by_provider
--i modify_bid_doc_after_tendering_period_by_provider
--i modify_bid_after_tendering_period_by_provider1
--i cancel_bid_after_tendering_period_by_provider1
-
--i ask_question_to_tender_after_tendering_period
--i ask_question_to_item_after_tendering_period
--i ask_question_to_lot_after_tendering_period
 
 -i open_modify_tender_in_tendering_period
   -i open_confirm_first_bid
   -i open_confirm_second_bid
-
--i document_service
 
 -i auction_url
 
@@ -80,7 +53,6 @@
 -i qualification_add_doc_to_second_award
 -i qualification_approve_second_award
 
--i contract_sign
 -i contract_stand_still
 -i modify_contract
 -i modify_contract_amount_net
@@ -88,3 +60,4 @@
 -i contract_view
 -i add_doc_to_contract
   -i contract_doc_documentOf
+-i contract_sign

@@ -730,8 +730,9 @@ ${PLAN_TENDER}      ${True}
   ...     tender_owner
   ...     ${USERS.users['${tender_owner}'].broker}
   ...     award_complaint
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
+  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  :FOR  ${username}  IN  ${viewer}
+  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDatee
 
 
 Дочекатися закічення stand still періоду
@@ -739,8 +740,41 @@ ${PLAN_TENDER}      ${True}
   ...     tender_owner
   ...     ${USERS.users['${tender_owner}'].broker}
   ...     award_complaint
-  ${standstillEnd}=  Get Variable Value  ${USERS.users['${tender_owner}'].tender_data.data.awards[${award_index}].complaintPeriod.endDate}
+  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  ${standstillEnd}=  Get Variable Value  ${USERS.users['${viewer}'].tender_data.data.awards[${award_index}].complaintPeriod.endDate}
   Дочекатись дати  ${standstillEnd}
+
+
+Відображення вартості угоди без урахування ПДВ
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amountNet тендера із ${award.value.amount} для користувача ${viewer}
+
+
+Відображення вартості угоди
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${award}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  Log  ${contract}
+  Log  ${award.value.amount}
+  Звірити відображення поля contracts[${contract_index}].value.amount тендера із ${award.value.amount} для користувача ${viewer}
 
 
 Можливість редагувати вартість угоди без урахування ПДВ
