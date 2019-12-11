@@ -9,7 +9,6 @@
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
 
-
 -i create_tender
 -i find_tender
 -i tender_view
@@ -18,8 +17,6 @@
 -i tender_view_minimalStep
 -i tender_view_deliveryDate
 -i tender_view_quantity
--i tender_view_unit_name
--i tender_view_unit_code
 -i tender_view_coordinates
 -i lot_view
 -i lot_view_value
@@ -56,26 +53,17 @@
 
 -i auction
 
+-i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
+-i qualification_cancel_first_award_qualification
+-i qualification_add_doc_to_second_award
+-i qualification_approve_second_award
 
--i contract_sign
 -i contract_stand_still
-
+-i contract_view
+-i modify_contract_amount_net
+-i modify_contract_value
 -i modify_contract
 -i add_doc_to_contract
 -i contract_doc_documentOf
 -i contract_sign
-
--i find_contract
--i access_contract
--i submit_change
--i view_change
--i upload_change_document
--i modify_change
-
--i apply_change
--i add_contract_doc
--i termination_reasons
--i amount_paid
-
--i contract_termination

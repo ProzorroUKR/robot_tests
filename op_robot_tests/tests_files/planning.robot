@@ -8,7 +8,7 @@ ${RESOURCE}     plans
 ${MODE}         belowThreshold
 @{USED_ROLES}   tender_owner  viewer
 
-${NUMBER_OF_ITEMS}  ${2}
+${NUMBER_OF_ITEMS}  ${1}
 ${TENDER_MEAT}      ${False}
 ${ITEM_MEAT}        ${False}
 ${MOZ_INTEGRATION}  ${False}
