@@ -392,6 +392,7 @@ Get Broker Property By Username
 
 Підготувати дані для оновлення властивості угоди
   [Arguments]  ${username}  ${field_name}  ${field_value}
+  ${username}=  Отримати користувача з доступом до поля за пріорітетом  items  ${tender_owner}  ${viewer}
   ${modification_data}=  test_modification_data
   ...      ${USERS.users['${username}'].agreement_data.data['items'][0]['id']}
   ...      ${field_name}
@@ -986,13 +987,12 @@ Require Failure
   [Arguments]  ${username}  ${tender_uaid}  ${left}
   ${right}=  Run as  ${username}  Отримати інформацію із тендера  ${tender_uaid}  status
   Порівняти об'єкти  ${left}  ${right}
-  Порівняти об'єкти  ${left}  ${right}
 
 
 Звірити статус плану
   [Arguments]  ${username}  ${tender_uaid}  ${left}
   ${right}=  Run as  ${username}  Отримати інформацію із плану  ${tender_uaid}  status
-
+  Порівняти об'єкти  ${left}  ${right}
 
 Звірити статус об'єкта моніторингу
   [Arguments]  ${username}  ${monitoring_uaid}  ${left}
@@ -1194,6 +1194,7 @@ Require Failure
 
 Дочекатись можливості зареєструвати угоди
   [Arguments]  ${username}
+  ${username}=  Отримати користувача з доступом до поля за пріорітетом  contractPeriod  ${tender_owner}  ${viewer}
   Дочекатись дати  ${USERS.users['${tender_owner}'].tender_data.data.contractPeriod.clarificationsUntil}
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
@@ -1265,6 +1266,7 @@ Require Failure
 
 
 Розрахувати ціну для ${contract_number} контракту
+  ${username}=  Отримати користувача з доступом до поля за пріорітетом  agreements  ${tender_owner}  ${viewer}
   ${contract_data}=  Create Dictionary  data=${USERS.users['${tender_owner}'].tender_data.data.agreements[0].contracts[${contract_number}]}
   ${quantity}=  Set Variable  ${0}
   :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
