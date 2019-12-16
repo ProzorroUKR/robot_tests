@@ -18,6 +18,7 @@
 -i add_tender_doc
 -i award_view
 -i add_contract
+-i contract_stand_still
 -i contract_view
 -i modify_contract_amount_net
 -i modify_contract_value
