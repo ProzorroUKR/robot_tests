@@ -415,6 +415,14 @@ users:
         browser:  chrome
         position: [0, 450]
         size:     [1280, 1024]
+    SmartTender_Provider3:
+        broker:   SmartTender
+        homepage: "http://test.smarttender.biz"
+        login:    monosmarttender@gmail.com
+        password: monosmart11
+        browser:  chrome
+        position: [0, 450]
+        size:     [1280, 1024]
     SmartTender_Owner:
         broker:   SmartTender
         homepage: "http://test.smarttender.biz"

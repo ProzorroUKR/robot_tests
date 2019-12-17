@@ -301,20 +301,26 @@ SmartTender:
     intervals:
         default:
             enquiry: [0, 10]
+            tender:  [0, 30]
+        belowThreshold:
+            enquiry: [0, 25]
             tender:  [0, 20]
         openua:
             accelerator: 1440
-            tender:  [0, 15]
+            tender:  [30, 70]
         openeu:
-            tender:  [0, 30]
+            tender:  [30, 70]
             accelerator: 1440
+        framework_selection:
+            accelerator: 360
     keywords_file: smarttender
     roles:
         provider:       SmartTender_Provider1
         provider1:      SmartTender_Provider2
+        provider2:      SmartTender_Provider3
         tender_owner:   SmartTender_Owner
         viewer:         SmartTender_Viewer
-    timeout_on_wait: 300
+    timeout_on_wait: 0
 uatenders:
     intervals:
         default:

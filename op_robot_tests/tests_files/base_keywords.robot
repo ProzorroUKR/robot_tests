@@ -14,6 +14,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
+  Log  ${ARTIFACT.tender_id}
+  Log  ${ARTIFACT.tender_owner_access_token}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -42,7 +44,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}  ${ARTIFACT.tender_id}  ${ARTIFACT.tender_owner_access_token}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
