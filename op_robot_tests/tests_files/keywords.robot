@@ -326,6 +326,7 @@ Get Broker Property By Username
 Підготувати дані для подання пропозиції для другого етапу
   [Arguments]  ${username}
   ${value}=  Evaluate  ${USERS.users['${username}'].bidresponses.bid.data.lotValues[0].value.amount}*0.95
+  ${value}=  Convert To Number  ${value}  2
   Set To Dictionary  ${USERS.users['${username}'].bidresponses.bid.data.lotValues[0].value}  amount=${value}
   [Return]  ${USERS.users['${username}'].bidresponses.bid}
 
@@ -1195,7 +1196,7 @@ Require Failure
 Дочекатись можливості зареєструвати угоди
   [Arguments]  ${username}
   ${username}=  Отримати користувача з доступом до поля за пріорітетом  contractPeriod  ${tender_owner}  ${viewer}
-  Дочекатись дати  ${USERS.users['${tender_owner}'].tender_data.data.contractPeriod.clarificationsUntil}
+  Дочекатись дати  ${USERS.users['${username}'].tender_data.data.contractPeriod.clarificationsUntil}
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
 
