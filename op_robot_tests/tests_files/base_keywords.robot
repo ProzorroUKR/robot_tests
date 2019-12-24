@@ -14,8 +14,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
-  Log  ${ARTIFACT.tender_id}
-  Log  ${ARTIFACT.tender_owner_access_token}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -44,7 +42,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}  ${ARTIFACT.tender_id}  ${ARTIFACT.tender_owner_access_token}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}  ${ARTIFACT.tender_uaid}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
@@ -78,8 +76,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
-  Log  ${ARTIFACT.tender_id}
-  Log  ${ARTIFACT.tender_owner_access_token}
   [Arguments]  ${data_version}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
@@ -107,7 +103,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${adapted_data_mnn}=  edit_tender_data_for_mnn  ${adapted_data}  ${MODE}  ${data_version}
   Log  ${adapted_data_mnn}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_mnn}  ${ARTIFACT.tender_id}  ${ARTIFACT.tender_owner_access_token}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_mnn}  ${ARTIFACT.tender_uaid}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_mnn}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
@@ -117,8 +113,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
-  Log  ${ARTIFACT.tender_id}
-  Log  ${ARTIFACT.tender_owner_access_token}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -145,7 +139,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${adapted_data_cost}=  edit_tender_data_for_cost  ${adapted_data}  ${MODE}  ${data_version}
   Log  ${adapted_data_cost}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_cost}  ${ARTIFACT.tender_id}  ${ARTIFACT.tender_owner_access_token}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_cost}  ${ARTIFACT.tender_uaid}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_cost}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
@@ -155,8 +149,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
-  Log  ${ARTIFACT.tender_id}
-  Log  ${ARTIFACT.tender_owner_access_token}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -183,7 +175,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${adapted_data_gmdn}=  edit_tender_data_for_gmdn  ${adapted_data}  ${MODE}  ${data_version}
   Log  ${adapted_data_gmdn}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_gmdn}  ${ARTIFACT.tender_id}  ${ARTIFACT.tender_owner_access_token}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_gmdn}  ${ARTIFACT.tender_uaid}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_gmdn}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
@@ -193,8 +185,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_uaid}
-  Log  ${ARTIFACT.tender_id}
-  Log  ${ARTIFACT.tender_owner_access_token}
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
@@ -221,7 +211,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${adapted_data_plan_tender}=  edit_tender_data_for_plan_tender  ${adapted_data}  ${MODE}  ${data_version}
   Log  ${adapted_data_plan_tender}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_plan_tender}  ${ARTIFACT.tender_id}  ${ARTIFACT.tender_owner_access_token}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data_plan_tender}  ${ARTIFACT.tender_uaid}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data_plan_tender}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
