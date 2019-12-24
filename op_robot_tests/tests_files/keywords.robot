@@ -1268,11 +1268,11 @@ Require Failure
 
 Розрахувати ціну для ${contract_number} контракту
   ${username}=  Отримати користувача з доступом до поля за пріорітетом  agreements  ${tender_owner}  ${viewer}
-  ${contract_data}=  Create Dictionary  data=${USERS.users['${tender_owner}'].tender_data.data.agreements[0].contracts[${contract_number}]}
+  ${contract_data}=  Create Dictionary  data=${USERS.users['${username}'].tender_data.data.agreements[0].contracts[${contract_number}]}
   ${quantity}=  Set Variable  ${0}
   :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  ${quantity}=  Evaluate  ${quantity}+${USERS.users['${tender_owner}'].tender_data.data['items'][${index}]['quantity']}
-  ${value}=  Evaluate  ${USERS.users['${tender_owner}'].tender_data.data.awards[${contract_number}+1].value.amount}/${quantity}
+  \  ${quantity}=  Evaluate  ${quantity}+${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+  ${value}=  Evaluate  ${USERS.users['${username}'].tender_data.data.awards[${contract_number}+1].value.amount}/${quantity}
   ${value}=  Convert To Integer  ${value}
   :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
   \  Set To Dictionary  ${contract_data.data.unitPrices[${index}].value}  amount=${value}
