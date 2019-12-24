@@ -315,6 +315,7 @@ def test_tender_data_planning(params):
                 "startDate": get_now().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
             }
         },
+        "mode": "test",
         "items": [],
         "buyers": []
         }
