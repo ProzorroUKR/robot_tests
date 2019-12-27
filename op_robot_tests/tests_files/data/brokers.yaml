@@ -104,6 +104,8 @@ Etender:
             tender:  [0, 38]
         open_competitive_dialogue:
             tender:  [0,  35]
+        open_framework:
+            tender:  [0, 35]
     keywords_file: etender
     roles:
         provider:       Etender_Provider1
