@@ -323,6 +323,7 @@ SmartTender:
             enquiry: [0, 10]
             tender:  [0, 30]
         belowThreshold:
+            accelerator: 1440
             enquiry: [0, 25]
             tender:  [0, 20]
         openua:
