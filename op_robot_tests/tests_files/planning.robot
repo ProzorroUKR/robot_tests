@@ -218,7 +218,7 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних плану
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      plan_view
+  ...      plan_view_unit_code
   ...      non-critical
   Звірити відображення unit.code усіх предметів плану для користувача ${viewer}
 
