@@ -286,14 +286,14 @@ def test_tender_data(params,
 def test_tender_data_planning(params):
     data = {
         "budget": {
-            "amountNet": round(random.uniform(3000, 999999999.99), 2),
+            "amountNet": round(random.uniform(3000, 999999.99), 2),
             "description": fake.description(),
             "project": {
                 "id": str(fake.random_int(min=1, max=999)),
                 "name": fake.description(),
             },
             "currency": "UAH",
-            "amount": round(random.uniform(3000, 99999999999.99), 2),
+            "amount": round(random.uniform(3000, 99999999.99), 2),
             "id": str(fake.random_int(min=1, max=99999999999)) + "-" + str(fake.random_int(min=1, max=9)),
             "breakdown": [],
             "period": {
