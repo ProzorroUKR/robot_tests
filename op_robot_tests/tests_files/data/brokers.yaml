@@ -332,8 +332,14 @@ SmartTender:
         openeu:
             tender:  [30, 70]
             accelerator: 1440
+        open_esco:
+            tender: [0, 50]
+            accelerator: 1440
         framework_selection:
             accelerator: 360
+        open_framework:
+            tender:  [0, 50]
+            accelerator: 1440
     keywords_file: smarttender
     roles:
         provider:       SmartTender_Provider1
