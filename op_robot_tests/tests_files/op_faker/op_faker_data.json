@@ -534,7 +534,7 @@
         {
             "additionalIdentifiers": [],
                 "address": {
-                    "countryName": "Switzerland",
+                    "countryName": "Швейцарська Конфедерація",
                     "locality": "Geneva",
                     "postalCode": "1218",
                     "region": "Grand-Saconnex",
@@ -698,7 +698,7 @@
                 "postalCode": "01111",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Тестова, 220, 8",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -720,7 +720,7 @@
                 "postalCode": "04444",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Тестова, 32",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         }
@@ -791,7 +791,7 @@
                 "postalCode": "04444",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Тестова, 32",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -814,7 +814,7 @@
                 "postalCode": "01111",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Тестова, 220, 8",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -852,7 +852,7 @@
                 "postalCode": "01030",
                 "countryName": "Україна",
                 "streetAddress": "бульвар Тараса Шевченка, 17",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -865,7 +865,7 @@
                 "postalCode": "02660",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Братиславська, 3",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -891,7 +891,7 @@
                 "postalCode": "01030",
                 "countryName": "Україна",
                 "streetAddress": "бульвар Тараса Шевченка, 17",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -904,7 +904,7 @@
                 "postalCode": "03164",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Підлісна, 8",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -917,7 +917,7 @@
                 "postalCode": "04201",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Юрія Кондратюка, 8",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1021,7 +1021,7 @@
                 "postalCode": "03115",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Верховинна, 51, 49",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1034,7 +1034,7 @@
                 "postalCode": "04070",
                 "countryName": "Україна",
                 "streetAddress": "Набережне шосе, 2",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1047,7 +1047,7 @@
                 "postalCode": "03179",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Бударіна, 11",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1060,7 +1060,7 @@
                 "postalCode": "03039",
                 "countryName": "Україна",
                 "streetAddress": "проспект Голосіївський, 59А",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1086,7 +1086,7 @@
                 "postalCode": "02091",
                 "countryName": "Україна",
                 "streetAddress": "Харківське шосе, 121/3",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1099,7 +1099,7 @@
                 "postalCode": "02121",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Чернігівська, 220, 8",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1112,7 +1112,7 @@
                 "postalCode": "04655",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Богатирська, 32",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1125,7 +1125,7 @@
                 "postalCode": "02660",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Братиславська, 3",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1164,7 +1164,7 @@
                 "postalCode": "04655",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Редьчинська, 30",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1177,7 +1177,7 @@
                 "postalCode": "03110",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Олександра Пироговського, 17, 5",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1203,7 +1203,7 @@
                 "postalCode": "03150",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Івана Федорова, 9, 5А",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1242,580 +1242,8 @@
                 "postalCode": "03057",
                 "countryName": "Україна",
                 "streetAddress": "Польовий провулок, 8, 9",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
-            }
-        },
-        {
-            "deliveryLocation": {
-                "latitude": 50.537702,
-                "longitude": 30.174488
-            },
-            "deliveryAddress": {
-                "postalCode": "08296",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Курортна, 22",
-                "region": "Київська область",
-                "locality": "Ворзель"
             }
         },
         {
@@ -1853,7 +1281,7 @@
                 "postalCode": "02217",
                 "countryName": "Україна",
                 "streetAddress": "проспект Володимира Маяковського, 28В",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1866,7 +1294,7 @@
                 "postalCode": "03151",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Сім'ї Ідзиковських, 21, 41А",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1879,7 +1307,7 @@
                 "postalCode": "03126",
                 "countryName": "Україна",
                 "streetAddress": "бульвар Івана Лепсе, 3, 32",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1892,7 +1320,7 @@
                 "postalCode": "03150",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Івана Федорова, 9, 5А",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1918,7 +1346,7 @@
                 "postalCode": "02125",
                 "countryName": "Україна",
                 "streetAddress": "проспект Алішера Навої, 2, 2",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -1944,7 +1372,7 @@
                 "postalCode": "01103",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Чеська, 4Б, 11/15",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2009,7 +1437,7 @@
                 "postalCode": "03179",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Верховинна, 95, 87",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2022,7 +1450,7 @@
                 "postalCode": "02660",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Братиславська, 3",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2035,7 +1463,7 @@
                 "postalCode": "02232",
                 "countryName": "Україна",
                 "streetAddress": "проспект Володимира Маяковського, 93В",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2048,7 +1476,7 @@
                 "postalCode": "03680",
                 "countryName": "Україна",
                 "streetAddress": "проспект Перемоги, 54/1",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2061,7 +1489,7 @@
                 "postalCode": "04655",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Редьчинська, 30",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2074,7 +1502,7 @@
                 "postalCode": "03126",
                 "countryName": "Україна",
                 "streetAddress": "бульвар Івана Лепсе, 3, 32",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2087,7 +1515,7 @@
                 "postalCode": "02125",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Петра Запорожця, 26А",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2100,7 +1528,7 @@
                 "postalCode": "03164",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Підлісна, 8",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2204,7 +1632,7 @@
                 "postalCode": "03680",
                 "countryName": "Україна",
                 "streetAddress": "Unnamed Road, 1",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2217,7 +1645,7 @@
                 "postalCode": "02121",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Чернігівська, 220, 8",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2230,7 +1658,7 @@
                 "postalCode": "02156",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Шолом-Алейхема, 4, 24",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2308,7 +1736,7 @@
                 "postalCode": "01030",
                 "countryName": "Україна",
                 "streetAddress": "бульвар Тараса Шевченка, 17",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2321,7 +1749,7 @@
                 "postalCode": "03039",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Деміївська, 5А, 29",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2334,7 +1762,7 @@
                 "postalCode": "02232",
                 "countryName": "Україна",
                 "streetAddress": "проспект Володимира Маяковського, 93В",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2373,7 +1801,7 @@
                 "postalCode": "01015",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Лаврська, 19",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2386,7 +1814,7 @@
                 "postalCode": "03680",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Виборзька, 40, 95",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2425,7 +1853,7 @@
                 "postalCode": "03126",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Михайла Донця, 46, 26",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2464,7 +1892,7 @@
                 "postalCode": "04050",
                 "countryName": "Україна",
                 "streetAddress": "Орловський провулок, 21/12, 2/7",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2477,7 +1905,7 @@
                 "postalCode": "04070",
                 "countryName": "Україна",
                 "streetAddress": "Набережне шосе, 2",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2490,7 +1918,7 @@
                 "postalCode": "03179",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Бударіна, 11",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },
@@ -2503,7 +1931,7 @@
                 "postalCode": "01103",
                 "countryName": "Україна",
                 "streetAddress": "вулиця Чеська, 4А, 16",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },

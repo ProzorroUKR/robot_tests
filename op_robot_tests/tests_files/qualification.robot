@@ -137,6 +137,7 @@ ${award_index}      ${0}
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   Можливість підтвердити задоволення вимоги про виправлення визначення ${award_index} переможця
 
+
 Відображення статусу 'resolved' вимоги про виправлення визначення переможця
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
   ...  viewer
@@ -333,3 +334,13 @@ ${award_index}      ${0}
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Затвердити постачальників  ${TENDER['TENDER_UAID']}
+
+
+Можливість дочекатися перевірки переможців по ДФС
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Перевірка користувача по ДФС
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      awards_check_by_dfs
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Дочекатися перевірки кваліфікацій ДФС  ${tender_owner}  ${TENDER['TENDER_UAID']}

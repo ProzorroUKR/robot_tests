@@ -1499,6 +1499,20 @@ Library  openprocurement_client.utils
   [Return]  ${item}
 
 
+Отримати останній документ кваліфікації з типом registerFiscal
+  [Documentation]
+  ...       [Arguments]  Username, tender uaid, award id
+  ...       [Description] Check documentType in last award document
+  ...       [Return] Last document for
+  [Arguments]  ${username}  ${tender_uaid}  ${award_id}
+  ${docs}=  Run As  ${username}  Отримати список документів по кваліфікації  ${tender_uaid}  ${award_id}
+  :FOR  ${item}  IN  @{docs['data']}
+  \  ${status}  ${_}=  Run Keyword And Ignore Error  Dictionary Should Contain Item  ${item}  documentType  registerFiscal
+  \  Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  Log  ${item}
+  [Return]  ${item}
+
+
 Завантажити документ рішення кваліфікаційної комісії
   [Documentation]
   ...      [Arguments] Username, tender uaid, qualification number and document to upload
