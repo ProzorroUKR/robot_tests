@@ -534,7 +534,7 @@
         {
             "additionalIdentifiers": [],
                 "address": {
-                    "countryName": "Switzerland",
+                    "countryName": "Швейцарська Конфедерація",
                     "locality": "Geneva",
                     "postalCode": "1218",
                     "region": "Grand-Saconnex",
@@ -852,7 +852,7 @@
                 "postalCode": "01030",
                 "countryName": "Україна",
                 "streetAddress": "бульвар Тараса Шевченка, 17",
-                "region": "місто Київ",
+                "region": "м. Київ",
                 "locality": "Київ"
             }
         },

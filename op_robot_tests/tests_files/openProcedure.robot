@@ -926,7 +926,7 @@ ${PLAN_TENDER}      ${True}
   ...      viewer  tender_owner  provider  provider1
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
-  ...      funders_view
+  ...      funders_url_view
   ...      non-critical
   Звірити відображення поля contactPoint.url усіх донорів для усіх користувачів
 
@@ -1233,7 +1233,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення нецінових показників
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      add_tender_meat
+  ...      featureOf_meat_view
   ...      non-critical
   Звірити відображення поля featureOf у новоствореному неціновому показнику для користувача ${viewer}
 
