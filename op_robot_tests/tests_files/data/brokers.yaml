@@ -261,14 +261,34 @@ PrivatMarket:
 Prom:
     intervals:
         default:
+            accelerator: 1440
             enquiry: [4, 4]
             tender:  [0,  30]
+        abovethresholdeu:
+            accelerator: 1440
+            tender:  [0, 50]
+        openeu:
+            accelerator: 1440
+            tender:  [0, 50]
+        openua:
+            accelerator: 1440
+            tender:  [0, 65]
+        belowThreshold:
+            accelerator: 1440
+            enquiry: [0, 75]
+            tender:  [0, 65]
+        negotiation:
+            accelerator: 360
+            enquiry: [0, 20]
+            tender:  [0, 20]
+        openua_defense:
+            tender:  [0, 110]
     keywords_file: prom
     roles:
         tender_owner:   Prom_Owner
         viewer:         Prom_Viewer
-        provider:       Prom_Provider1
-    timeout_on_wait: 10
+        provider:       Prom_Provider
+    timeout_on_wait: 300
 Publicbid:
     intervals:
         default:
