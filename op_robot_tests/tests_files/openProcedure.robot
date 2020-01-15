@@ -2655,7 +2655,8 @@ ${PLAN_TENDER}      ${True}
   ...      ${USERS.users['${viewer}'].broker}
   ...      auction_url
   ...      critical
-  [Setup]  Дочекатись дати початку періоду аукціону  ${viewer}  ${TENDER['TENDER_UAID']}
+  Дочекатись дати закінчення прийому пропозицій  ${viewer}  ${TENDER['TENDER_UAID']}
+  Дочекатись дати початку періоду аукціону  ${viewer}  ${TENDER['TENDER_UAID']}
   Можливість отримати посилання на аукціон для глядача
 
 
