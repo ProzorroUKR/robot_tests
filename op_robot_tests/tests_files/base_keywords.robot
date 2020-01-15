@@ -1711,6 +1711,25 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerExtract  ${username}  ${tender_uaid}  ${award_id}
   Порівняти об'єкти  ${document['title']}  edr_identification.yaml
 
+
+Дочекатися перевірки кваліфікацій ДФС
+  [Documentation]
+  ...       [Arguments] Username, tender uaid
+  ...       [Description]  Waint until edr bridge create check award
+  ...       [Return]  Nothing
+  [Arguments]  ${username}  ${tender_uaid}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  :FOR  ${award}  IN  @{tender.data.awards}
+  \   Wait until keyword succeeds
+  \   ...      10 min 15 sec
+  \   ...      30 sec
+  \   ...      Перевірити наявність першої квитанції від ДФС ${award.id} для користувача ${username} в тендері ${tender_uaid}
+
+
+Перевірити наявність першої квитанції від ДФС ${award_id} для користувача ${username} в тендері ${tender_uaid}
+  ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerFiscal  ${username}  ${tender_uaid}  ${award_id}
+  Порівняти об'єкти  ${document['documentType']}  registerFiscal
+
 ##############################################################################################
 #             PLAN
 ##############################################################################################
