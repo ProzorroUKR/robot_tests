@@ -762,6 +762,12 @@ users:
         size:     [1280, 1024]
         login: "test1@izi.trade"
         password: "qwerty1!"
+    izi_provider2:
+        broker:   izi
+        browser:  chrome
+        size:     [1280, 1024]
+        login: "test2@izi.trade"
+        password: "qwerty1!"
     izi_viewer:
         broker:   izi
         browser:  chrome
