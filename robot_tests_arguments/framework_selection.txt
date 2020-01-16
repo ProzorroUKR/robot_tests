@@ -21,7 +21,7 @@
 -i modify_item
 -i modify_lot
 
--i add_tender_doc
+
 
 -i extend_tendering_period
 
