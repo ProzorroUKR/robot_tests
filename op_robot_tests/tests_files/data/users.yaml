@@ -338,6 +338,16 @@ users:
         browser:  chrome
         position: [640, 0]
         size:     [1920, 1080]
+    Prom_Provider1:
+        broker:   Prom
+        homepage: "https://zakupki.company"
+        default_page: "https://my.zakupki.company/cabinet/purchases/state_purchase/search/all"
+        state_plan_page: "https://my.zakupki.company/cabinet/purchases/state_plan/list?mode=all_prozorro"
+        login:    test@test4.com
+        password: 123456
+        browser:  chrome
+        position: [640, 0]
+        size:     [1920, 1080]
     Publicbid_Owner:
         broker:   Publicbid
         homepage: "http://217.76.194.185:56034/"
