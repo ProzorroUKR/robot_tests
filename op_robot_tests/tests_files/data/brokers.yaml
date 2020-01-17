@@ -266,10 +266,10 @@ Prom:
             tender:  [0,  30]
         abovethresholdeu:
             accelerator: 1440
-            tender:  [0, 50]
+            tender:  [0, 20]
         openeu:
             accelerator: 1440
-            tender:  [0, 50]
+            tender:  [0, 20]
         openua:
             accelerator: 1440
             tender:  [0, 65]
@@ -285,10 +285,11 @@ Prom:
             tender:  [0, 110]
     keywords_file: prom
     roles:
-        tender_owner:   Prom_Owner
-        viewer:         Prom_Viewer
-        provider:       Prom_Provider
-    timeout_on_wait: 300
+        tender_owner:    Prom_Owner
+        viewer:          Prom_Viewer
+        provider:        Prom_Provider
+        provider1:       Prom_Provider1
+    timeout_on_wait: 100
 Publicbid:
     intervals:
         default:
