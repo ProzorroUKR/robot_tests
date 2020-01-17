@@ -853,7 +853,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення нецінових показників
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      meat_view  level2
+  ...      featureOf_meat_view  level2
   ...      non-critical
   Звірити відображення поля featureOf усіх нецінових показників для користувача ${viewer}
 
