@@ -110,6 +110,7 @@ Etender:
     roles:
         provider:       Etender_Provider1
         provider1:      Etender_Provider2
+        provider2:      Etender_Provider3
         tender_owner:   Etender_Owner
         viewer:         Etender_Viewer
     timeout_on_wait: 30
