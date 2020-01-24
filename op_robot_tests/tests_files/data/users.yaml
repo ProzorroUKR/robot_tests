@@ -80,7 +80,7 @@ users:
         browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
-    Etender_Provider:
+    Etender_Provider1:
         broker:   Etender
         homepage: "https://stage.e-tender.ua/"
         login:    auto_provider1
@@ -88,7 +88,7 @@ users:
         browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
-    Etender_Provider1:
+    Etender_Provider2:
         broker:   Etender
         homepage: "https://stage.e-tender.ua/"
         login:    auto_provider2
@@ -96,7 +96,7 @@ users:
         browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
-    Etender_Provider2:
+    Etender_Provider3:
         broker:   Etender
         homepage: "https://stage.e-tender.ua/"
         login:    auto_provider3
