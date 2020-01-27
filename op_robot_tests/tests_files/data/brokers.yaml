@@ -275,11 +275,11 @@ Prom:
             tender:  [0, 20]
         openua:
             accelerator: 1440
-            tender:  [0, 65]
+            tender:  [0, 35]
         belowThreshold:
             accelerator: 1440
-            enquiry: [0, 75]
-            tender:  [0, 65]
+            enquiry: [0, 30]
+            tender:  [0, 30]
         negotiation:
             accelerator: 360
             enquiry: [0, 20]
@@ -292,7 +292,8 @@ Prom:
         viewer:          Prom_Viewer
         provider:        Prom_Provider
         provider1:       Prom_Provider1
-    timeout_on_wait: 100
+        provider2:       Prom_Provider2
+    timeout_on_wait: 300
 Publicbid:
     intervals:
         default:
