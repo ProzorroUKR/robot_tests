@@ -265,27 +265,27 @@ Prom:
     intervals:
         default:
             accelerator: 1440
-            enquiry: [4, 4]
-            tender:  [0,  30]
+            enquiry: [15, 35]
+            tender:  [0, 40]
         abovethresholdeu:
             accelerator: 1440
-            tender:  [0, 20]
+            tender:  [0, 40]
         openeu:
             accelerator: 1440
-            tender:  [0, 20]
+            tender:  [0, 40]
         openua:
             accelerator: 1440
-            tender:  [0, 35]
+            tender:  [0, 40]
         belowThreshold:
             accelerator: 1440
             enquiry: [0, 30]
             tender:  [0, 30]
         negotiation:
             accelerator: 360
-            enquiry: [0, 20]
-            tender:  [0, 20]
+            enquiry: [0, 50]
+            tender:  [0, 30]
         openua_defense:
-            tender:  [0, 110]
+            tender:  [0, 60]
     keywords_file: prom
     roles:
         tender_owner:    Prom_Owner
@@ -293,7 +293,7 @@ Prom:
         provider:        Prom_Provider
         provider1:       Prom_Provider1
         provider2:       Prom_Provider2
-    timeout_on_wait: 300
+    timeout_on_wait: 240
 Publicbid:
     intervals:
         default:
