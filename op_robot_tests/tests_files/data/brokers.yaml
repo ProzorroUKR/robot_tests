@@ -265,7 +265,7 @@ Prom:
     intervals:
         default:
             accelerator: 1440
-            enquiry: [15, 35]
+            enquiry: [20, 45]
             tender:  [0, 40]
         abovethresholdeu:
             accelerator: 1440
