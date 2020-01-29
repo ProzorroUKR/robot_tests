@@ -265,20 +265,20 @@ Prom:
     intervals:
         default:
             accelerator: 1440
-            enquiry: [20, 45]
+            enquiry: [15, 60]
             tender:  [0, 40]
         abovethresholdeu:
             accelerator: 1440
             tender:  [0, 40]
         openeu:
             accelerator: 1440
-            tender:  [0, 40]
+            tender:  [0, 80]
         openua:
             accelerator: 1440
             tender:  [0, 40]
         belowThreshold:
             accelerator: 1440
-            enquiry: [0, 30]
+            enquiry: [0, 80]
             tender:  [0, 30]
         negotiation:
             accelerator: 360
