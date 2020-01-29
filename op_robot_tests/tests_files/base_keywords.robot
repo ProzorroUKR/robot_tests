@@ -1656,7 +1656,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${username}  Завантажити документ для зміни у рамковій угоді
   ...      ${file_path}
   ...      ${USERS.users['${username}'].tender_data.data.agreements[0].agreementID}
-  ...      ${USERS.users['${username}'].agreement_data.data['items'][0]['id']}
+  ...      ${USERS.users['${username}'].modification_data.data.modifications[0].itemId}
   Remove File  ${file_path}
 
 
