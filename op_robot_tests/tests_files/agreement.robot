@@ -344,7 +344,7 @@ Suite Teardown  Test Suite Teardown
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Log  ${USERS.users['${tender_owner}'].agreement_data}
+  #Log  ${USERS.users['${tender_owner}'].agreement_data}
   ${change_data}=  Підготувати дані для оновлення властивості угоди  ${tender_owner}  factor  ${0.97}
   Run As  ${tender_owner}  Оновити властивості угоди  ${AGREEMENT_UAID}  ${change_data}
 

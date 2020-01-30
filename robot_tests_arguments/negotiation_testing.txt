@@ -15,8 +15,13 @@
 -i tender_view_milestone
 -i tender_view_contactPoint_url
 -i tender_view_delivery_address
+-i tender_view_contactPoint_region
 -i add_tender_doc
 -i award_view
+-i award_view_contactPoint_telephone
+-i award_view_contactPoint_name
+-i award_view_contactPoint_email
+-i award_view_identifier_id
 -i add_contract
 -i contract_stand_still
 -i contract_view

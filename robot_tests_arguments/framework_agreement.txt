@@ -68,13 +68,13 @@
 
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
--i qualification_cancel_first_award_qualification
+#-i qualification_cancel_first_award_qualification
 -i qualification_add_doc_to_second_award
 -i qualification_approve_second_award
 -i qualification_add_doc_to_third_award
 -i qualification_approve_third_award
--i qualification_add_doc_to_fourth_award
--i qualification_approve_fourth_award
+#-i qualification_add_doc_to_fourth_award
+#-i qualification_approve_fourth_award
 -i qualification_approve_qualifications
 
 -i contract_stand_still

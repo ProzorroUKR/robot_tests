@@ -48,6 +48,7 @@
 
 -i contract_stand_still
 -i contract_view
+-i contract_view_dateSigned
 -i modify_contract_amount_net
 -i modify_contract_value
 -i modify_contract

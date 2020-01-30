@@ -59,10 +59,13 @@
 
 -i contract_stand_still
 -i contract_view
+-i contract_view_dateSigned
 #-i modify_contract_invalid_amount
 #-i modify_contract_invalid_amountNet_tender_vat_true
 -i modify_contract_amount_net
 -i modify_contract
 -i add_doc_to_contract
+-i add_doc_to_contract_content
 -i contract_doc_documentOf
+-i add_doc_to_contract_title
 -i contract_sign

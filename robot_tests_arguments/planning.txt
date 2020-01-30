@@ -11,6 +11,9 @@
 -i status_sheduled_view
 
 -i plan_view
+-i plan_view_procuringEntity_name
+-i plan_view_identifier_id
+-i plan_view_identifier_legalName
 
 -i modify_plan
 
