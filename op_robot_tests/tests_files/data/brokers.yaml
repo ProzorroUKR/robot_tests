@@ -266,7 +266,7 @@ Prom:
         default:
             accelerator: 1440
             enquiry: [15, 60]
-            tender:  [0, 40]
+            tender:  [0, 80]
         abovethresholdeu:
             accelerator: 1440
             tender:  [0, 40]
