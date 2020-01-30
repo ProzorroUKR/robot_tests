@@ -73,6 +73,9 @@
 -i modify_contract_amount_net
  -i modify_contract_value
 -i contract_view
+-i contract_view_dateSigned
 -i add_doc_to_contract
-  -i contract_doc_documentOf
+    -i add_doc_to_contract_content
+    -i contract_doc_documentOf
+    -i add_doc_to_contract_title
 -i contract_sign
