@@ -355,15 +355,35 @@ SmartTender:
     timeout_on_wait: 0
 uatenders:
     intervals:
-        default:
-            enquiry: [0, 20]
-            tender:  [0, 30]
+        openua:
+            accelerator: 1440
+            auction:  [0, 20]  
+            tender:  [0, 15]
+        openeu:
+            accelerator: 1440
+            auction:  [0, 25]
+            tender:  [0, 25]
+        open_framework:
+             accelerator: 1440
+             tender:  [0, 45]
+        open_esco:
+             accelerator: 1440
+             enquiry: [0, 15]
+             tender:  [0, 35]
+        belowThreshold:
+             accelerator: 1440
+             enquiry: [0, 15]
+             tender:  [0, 15]
+        framework_selection:
+             accelerator: 360
     keywords_file: uatenders
     roles:
         provider:       uatenders_Provider
+        provider1:      uatenders_Provider1
+        provider2:      uatenders_Provider2
         tender_owner:   uatenders_Owner
         viewer:         uatenders_Viewer
-    timeout_on_wait: 60
+    timeout_on_wait: 10
 ubiz:
     intervals:
         default:

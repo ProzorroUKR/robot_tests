@@ -464,28 +464,52 @@ users:
         size:     [1280, 1024]
     uatenders_Owner:
         broker:   uatenders
-        homepage: "http://dev.zakupki.com.ua/tender/list"
-        login:    Azarov.andreas@Gmail.com
-        password: 111111
-        browser:  chrome
-        position: [750, 0]
-        size:     [1280, 800]
+        homepage: "http://staging.zakupki.com.ua/tender/list"
+        login:    test_owner_arm@ukr.net
+        password: 121212
+        browser:  Chrome
+        position: [25, 0]
+        size:     [1280, 1024]
     uatenders_Provider:
         broker:   uatenders
-        homepage: "http://dev.zakupki.com.ua/tender/list"
-        login:    andreynichik@gmail.com
-        password: 111111
-        browser:  chrome
-        position: [750, 0]
-        size:     [1280, 800]
+        homepage: "http://staging.zakupki.com.ua/tender/list"
+        login:    testautoprovider@ukr.net
+        password: 121212
+        browser:  Chrome
+        position: [25, 0]
+        size:     [1280, 1024]
+    uatenders_Provider1:
+        broker:   uatenders
+        homepage: "http://staging.zakupki.com.ua/tender/list"
+        login:    test_providerpl@ukr.net
+        password: 121212
+        browser:  Chrome
+        position: [25, 0]
+        size:     [1280, 1024]
+    uatenders_Provider2:
+        broker:   uatenders
+        homepage: "http://staging.zakupki.com.ua/tender/list"
+        login:    testautoprovider@ukr.net
+        password: 121212
+        browser:  Chrome
+        position: [25, 0]
+        size:     [1280, 1024]
+    uatenders_Provider3:
+        broker:   uatenders
+        homepage: "http://staging.zakupki.com.ua/tender/list"
+        login:    testautoprovider1@ukr.net
+        password: 121212
+        browser:  Chrome
+        position: [25, 0]
+        size:     [1280, 1024]
     uatenders_Viewer:
         broker:   uatenders
-        homepage: "http://dev.zakupki.com.ua/tender/list"
-        login:    Azarov.andreas@Gmail.com
-        password: 111111
-        browser:  chrome
-        position: [750, 0]
-        size:     [1280, 800]
+        homepage: "http://staging.zakupki.com.ua/tender/list"
+        login:    test_owner_arm@ukr.net
+        password: 121212
+        browser:  Chrome
+        position: [25, 0]
+        size:     [1280, 1024]
     ubiz_Owner:
         broker:   ubiz
         homepage: "http://test.ubiz.com.ua/prozorro"
