@@ -287,8 +287,12 @@ Prom:
         openua_defense:
             tender:  [0, 60]
         esco:
-            accelerator: 1440
+            accelerator: 1200
+            enquiry: [0, 50]
             tender:  [0, 60]
+        open_framework:
+            accelerator: 1440
+            tender:  [0, 55]
     keywords_file: prom
     roles:
         tender_owner:    Prom_Owner
