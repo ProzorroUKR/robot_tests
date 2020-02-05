@@ -112,34 +112,42 @@ users:
         size:     [1366, 800]
     DZO_Owner:
         broker:   DZO
-        homepage: "http://dz2.byustudio.in.ua"
-        login:    ovramet.s@gmail.com
-        password: Password1
-        browser:  firefox
+        homepage: "https://www.sandbox.dzo.com.ua"
+        login:    prozorroytenderowner@gmail.com
+        password: R713Fe3mt
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     DZO_Provider:
         broker:   DZO
-        homepage: "http://dz2.byustudio.in.ua"
-        login:    halyna.khimka@gmail.com
-        password: JHO5VUp5n
-        browser:  firefox
+        homepage: "https://www.sandbox.dzo.com.ua"
+        login:    prozorroyprovider11@byustudio.in.ua
+        password: wC5tz3yt4
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     DZO_Provider1:
         broker:   DZO
-        homepage: "http://dz2.byustudio.in.ua"
-        login:    dzoprovider2@gmail.com
-        password: UxYkGVVfk
-        browser:  firefox
+        homepage: "https://www.sandbox.dzo.com.ua"
+        login:    prozorroyprovider2@byustudio.in.ua
+        password: QGaS4nu4E
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
+    DZO_Provider2:
+        broker:   DZO
+        homepage: "https://www.sandbox.dzo.com.ua"
+        login:    prozorroyprovider3@byustudio.in.ua
+        password: 1G796kCaE
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
     DZO_Viewer:
         broker:   DZO
-        homepage: "http://dz2.byustudio.in.ua/?test_mode=guest"
-        browser:  firefox
+        homepage: "https://www.sandbox.dzo.com.ua/?test_mode=1"
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     u25h8_Owner:
         broker:   b25h8
         homepage: "http://25h8.byustudio.in.ua"
@@ -172,62 +180,78 @@ users:
         size:     [1366, 800]
     allbiz_Owner:
         broker:   tendersallbiz
-        homepage: "https://tenders.all.biz"
+        homepage: "http://test-tenders.all.biz"
         login:    prozorroytenderowner@gmail.com
         password: 123456
-        browser:  Firefox
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 10080]
     allbiz_Provider:
         broker:   tendersallbiz
-        homepage: "https://tenders.all.biz"
+        homepage: "http://test-tenders.all.biz"
         login:    prozorroyprovider1@gmail.com
         password: 123456
-        browser:  Firefox
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     allbiz_Provider1:
         broker:   tendersallbiz
-        homepage: "https://tenders.all.biz"
+        homepage: "http://test-tenders.all.biz"
         login:    prozorroyprovider2@gmail.com
         password: 123456
-        browser:  Firefox
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
+    allbiz_Provider2:
+        broker:   tendersallbiz
+        homepage: "http://test-tenders.all.biz"
+        login:    prozorroyprovider3@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
     allbiz_Viewer:
         broker:   tendersallbiz
-        homepage: "https://tenders.all.biz"
-        browser:  Firefox
+        homepage: "http://test-tenders.all.biz"
+        browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Owner:
         broker:   tenderonline
-        homepage: "http://tender-online.com.ua"
+        homepage: "http://test.tender-online.com.ua"
         login:    prozorroytenderowner@gmail.com
         password: 123456
-        browser:  firefox
+        browser:  Chrome
         position: [0, 0]
         size:     [1366, 800]
     tenderonline_Provider:
         broker:   tenderonline
-        homepage: "http://tender-online.com.ua"
+        homepage: "http://test.tender-online.com.ua"
         login:    prozorroyprovider1@gmail.com
         password: 123456
-        browser:  firefox
+        browser:  Chrome
         position: [0, 0]
         size:     [1366, 800]
     tenderonline_Provider1:
         broker:   tenderonline
-        homepage: "http://tender-online.com.ua"
+        homepage: "http://test.tender-online.com.ua"
         login:    prozorroyprovider2@gmail.com
         password: 123456
-        browser:  firefox
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1366, 800]
+    tenderonline_Provider2:
+        broker:   tenderonline
+        homepage: "http://test.tender-online.com.ua"
+        login:    prozorroyprovider3@gmail.com
+        password: 123456
+        browser:  Chrome
         position: [0, 0]
         size:     [1366, 800]
     tenderonline_Viewer:
         broker:   tenderonline
-        homepage: "http://tender-online.com.ua"
-        browser:  firefox
+        homepage: "http://test.tender-online.com.ua"
+        browser:  Chrome
         position: [0, 0]
         size:     [1366, 800]
     ztv_Owner:

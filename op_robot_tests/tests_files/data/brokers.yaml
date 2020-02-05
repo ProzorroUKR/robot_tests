@@ -119,16 +119,27 @@ DZO:
         default:
             enquiry: [0, 20]
             tender:  [0, 20]
+        belowThreshold:
+            enquiry: [0, 15]
+            tender:  [0, 15]
+            accelerator: 1440
         openua:
             accelerator: 720
+            tender:  [0, 30]
+        open_competitive_dialogue:
+            tender:  [0,  10]
+        open_esco:
+            accelerator: 1440
+            enquiry: [0, 12]
             tender:  [0, 30]
     keywords_file: dzo
     roles:
         tender_owner:   DZO_Owner
         provider:       DZO_Provider
         provider1:      DZO_Provider1
+        provider2:      DZO_Provider2
         viewer:         DZO_Viewer
-    timeout_on_wait: 300
+    timeout_on_wait: 15
 b25h8:
     intervals:
         default:
@@ -168,10 +179,10 @@ tendersallbiz:
             tender:  [0, 20]
         openua:
             accelerator: 720
-            tender:  [0, 60]
+            tender:  [0, 35]
         openeu:
             accelerator: 720
-            tender:  [0, 71]
+            tender:  [0, 30]
         openua_defense:
             accelerator: 720
             tender:  [0, 71]
@@ -184,6 +195,7 @@ tendersallbiz:
         tender_owner:   allbiz_Owner
         provider:       allbiz_Provider
         provider1:      allbiz_Provider1
+        provider2:      allbiz_Provider2
         viewer:         allbiz_Viewer
     timeout_on_wait: 180
 tenderonline:
@@ -211,6 +223,7 @@ tenderonline:
         tender_owner:   tenderonline_Owner
         provider:       tenderonline_Provider
         provider1:      tenderonline_Provider1
+        provider2:      tenderonline_Provider2
         viewer:         tenderonline_Viewer
     timeout_on_wait: 180
 ztv:
