@@ -372,8 +372,8 @@ uatenders:
              tender:  [0, 35]
         belowThreshold:
              accelerator: 1440
-             enquiry: [0, 15]
-             tender:  [0, 15]
+             enquiry: [0, 20]
+             tender:  [0, 20]
         framework_selection:
              accelerator: 360
     keywords_file: uatenders
