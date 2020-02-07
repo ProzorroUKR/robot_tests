@@ -11,5 +11,6 @@
 -i qualification_approve_first_award
 
 -i award_complaint
+-i claim_award
 -i openua_award_complaint 
 -i award_complaint_before_resolved

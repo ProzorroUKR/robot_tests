@@ -374,7 +374,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення замовника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_address_region
   ...  level3
   ...  non-critical
   Звірити відображення поля procuringEntity.address.region тендера для користувача ${viewer}
@@ -414,7 +414,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення замовника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_contactPoint_url
   ...  level3
   ...  non-critical
   Звірити відображення поля procuringEntity.contactPoint.url тендера для користувача ${viewer}
@@ -434,7 +434,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення замовника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_identifier_scheme
   ...  non-critical
   Звірити відображення поля procuringEntity.identifier.scheme тендера для користувача ${viewer}
 
@@ -529,7 +529,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення номенклатури процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_view
+  ...  tender_view_unit_code
   ...  non-critical
   Звірити відображення поля unit.code усіх предметів для користувача ${viewer}
 
@@ -720,7 +720,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення постачальника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  award_view
+  ...  award_view_contactPoint_name
   ...  level3
   ...  non-critical
   Звірити відображення поля awards[0].suppliers[0].contactPoint.name тендера із ${USERS.users['${tender_owner}']['supplier_data']['data']['suppliers'][0]['contactPoint']['name']} для користувача ${viewer}
@@ -730,7 +730,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення постачальника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  award_view
+  ...  award_view_contactPoint_email
   ...  level3
   ...  non-critical
   Звірити відображення поля awards[0].suppliers[0].contactPoint.email тендера із ${USERS.users['${tender_owner}']['supplier_data']['data']['suppliers'][0]['contactPoint']['email']} для користувача ${viewer}
@@ -749,7 +749,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення постачальника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  award_view
+  ...  award_view_identifier_legalName
   ...  level3
   ...  non-critical
   Звірити відображення поля awards[0].suppliers[0].identifier.legalName тендера із ${USERS.users['${tender_owner}']['supplier_data']['data']['suppliers'][0]['identifier']['legalName']} для користувача ${viewer}
@@ -759,7 +759,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення постачальника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  award_view
+  ...  award_view_identifier_id
   ...  level3
   ...  non-critical
   Звірити відображення поля awards[0].suppliers[0].identifier.id тендера із ${USERS.users['${tender_owner}']['supplier_data']['data']['suppliers'][0]['identifier']['id']} для користувача ${viewer}
@@ -769,7 +769,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення постачальника процедури
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  award_view
+  ...  award_view_suppliers_name
   ...  level3
   ...  non-critical
   Звірити відображення поля awards[0].suppliers[0].name тендера із ${USERS.users['${tender_owner}']['supplier_data']['data']['suppliers'][0]['name']} для користувача ${viewer}

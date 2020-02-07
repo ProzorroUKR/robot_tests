@@ -11,6 +11,7 @@
 -i qualification_approve_first_award
 
 -i award_complaint
+-i claim_award
 -i contract_view
 -i modify_contract_amount_net
 -i modify_contract_value
