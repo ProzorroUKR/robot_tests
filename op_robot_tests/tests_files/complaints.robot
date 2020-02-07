@@ -326,7 +326,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
   ...     viewer
   ...     ${USERS.users['${viewer}'].broker}
-  ...     tender_complaint
+  ...     tender_complaint_resolutionType
   ...     non-critical
   Звірити відображення поля resolutionType для вимоги ${USERS.users['${provider}'].tender_claim_data['complaintID']} із ${USERS.users['${tender_owner}'].tender_claim_data.claim_answer.data.resolutionType} для користувача ${viewer}
 
@@ -355,7 +355,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
   ...     viewer
   ...     ${USERS.users['${viewer}'].broker}
-  ...     tender_complaint
+  ...     tender_complaint_satisfied
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
@@ -641,7 +641,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження
   ...     provider
   ...     ${USERS.users['${provider}'].broker}
-  ...     award_complaint
+  ...     claim_award
   ...     critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE

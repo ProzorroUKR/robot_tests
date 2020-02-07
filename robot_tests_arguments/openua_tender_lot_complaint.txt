@@ -9,4 +9,6 @@
 -i tenderPeriod_endDate
 
 -i tender_complaint
+-i tender_complaint_satisfied
+-i tender_complaint_resolutionType
 -i lot_complaint 
