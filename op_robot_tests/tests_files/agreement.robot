@@ -449,10 +449,11 @@ Suite Teardown  Test Suite Teardown
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${username}=  Отримати користувача з доступом до поля за пріорітетом  agreements  ${viewer}  ${tender_owner}
   ${change_data}=  Підготувати дані для оновлення властивості угоди
   ...      ${tender_owner}
   ...      contractId
-  ...      ${USERS.users['${tender_owner}'].agreement_data.data['contracts'][0]['id']}
+  ...      ${USERS.users['${username}'].agreement_data.data['contracts'][0]['id']}
   Run As  ${tender_owner}  Оновити властивості угоди  ${AGREEMENT_UAID}  ${change_data}
 
 

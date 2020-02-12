@@ -41,6 +41,15 @@ ${PLAN_TENDER}      ${False}
   Можливість знайти тендер по ідентифікатору для користувача ${tender_owner}
 
 
+Відображення заголовку лоту для замовника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення лоту тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      tender_view
+  ...      critical
+  Отримати дані із поля lots[0].title тендера для користувача ${tender_owner}
+
+
 Відображення бюджету тендера для замовника
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних тендера
   ...      tender_owner
@@ -99,7 +108,10 @@ ${PLAN_TENDER}      ${False}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${new_quantity}=  create_fake_number_float  ${1}  ${USERS.users['${tender_owner}'].tender_data.data['items'][0]['quantity']}
+  Отримати дані із поля items[0].quantity тендера для користувача ${tender_owner}
+  ${items}=  Get From Dictionary  ${USERS.users['${tender_owner}'].tender_data.data}  items
+  ${quantity}=  Get Variable Value  ${items[0].quantity}
+  ${new_quantity}=  create_fake_number_float  ${1}  ${quantity}
   Можливість змінити поле items[0].quantity тендера на ${new_quantity}
 
 
