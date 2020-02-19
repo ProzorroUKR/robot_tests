@@ -25,6 +25,10 @@
 -i award_view_suppliers_name
 -i award_view_contactPoint_email
 -i award_view_contactPoint_name
+-i award_view_address_streetAddress
+-i award_view_contactPoint_telephone
+-i award_view_value_amount
+
 
 
 

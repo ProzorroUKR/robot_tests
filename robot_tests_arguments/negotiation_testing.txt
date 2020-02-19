@@ -17,6 +17,8 @@
 -i tender_view_delivery_address
 -i tender_view_contactPoint_region
 -i tender_view_identifier_scheme
+-i tender_view_contactPoint_name
+-i tender_view_contactPoint_telephone
 -i add_tender_doc
 -i award_view
 -i award_view_contactPoint_telephone
@@ -26,6 +28,7 @@
 -i award_view_address_streetAddress
 -i award_view_address_region
 -i award_view_address_locality
+-i award_view_address_postalCode
 -i add_contract
 -i contract_stand_still
 -i contract_view
