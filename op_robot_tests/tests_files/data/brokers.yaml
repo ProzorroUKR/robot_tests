@@ -357,11 +357,9 @@ uatenders:
     intervals:
         openua:
             accelerator: 1440
-            auction:  [0, 20]  
             tender:  [0, 15]
         openeu:
             accelerator: 1440
-            auction:  [0, 25]
             tender:  [0, 25]
         open_framework:
              accelerator: 1440
