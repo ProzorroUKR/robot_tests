@@ -377,11 +377,9 @@ uatenders:
     intervals:
         openua:
             accelerator: 1440
-            auction:  [0, 20]  
             tender:  [0, 15]
         openeu:
             accelerator: 1440
-            auction:  [0, 25]
             tender:  [0, 25]
         open_framework:
              accelerator: 1440
@@ -392,8 +390,8 @@ uatenders:
              tender:  [0, 35]
         belowThreshold:
              accelerator: 1440
-             enquiry: [0, 15]
-             tender:  [0, 15]
+             enquiry: [0, 20]
+             tender:  [0, 20]
         framework_selection:
              accelerator: 360
     keywords_file: uatenders

@@ -493,7 +493,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -501,7 +501,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider1:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -509,7 +509,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider2:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -517,7 +517,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider3:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -525,7 +525,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Viewer:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -533,7 +533,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     ubiz_Owner:
         broker:   ubiz
         homepage: "http://test.ubiz.com.ua/prozorro"
