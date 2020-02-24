@@ -313,7 +313,7 @@ Prom:
         provider:        Prom_Provider
         provider1:       Prom_Provider1
         provider2:       Prom_Provider2
-    timeout_on_wait: 240
+    timeout_on_wait: 300
 Publicbid:
     intervals:
         default:
