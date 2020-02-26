@@ -132,6 +132,9 @@ DZO:
             accelerator: 1440
             enquiry: [0, 12]
             tender:  [0, 30]
+        open_framework:
+            tender:  [0, 15]
+            accelerator: 5760
     keywords_file: dzo
     roles:
         tender_owner:   DZO_Owner
@@ -205,7 +208,7 @@ tenderonline:
             enquiry: [0, 50]
             tender:  [0, 15]
         belowThreshold:
-            accelerator: 60
+            accelerator: 720
             enquiry: [0, 60]
             tender:  [0, 15]
         openua:
@@ -225,6 +228,40 @@ tenderonline:
         provider1:      tenderonline_Provider1
         provider2:      tenderonline_Provider2
         viewer:         tenderonline_Viewer
+    timeout_on_wait: 180
+GovAuction:
+    intervals:
+        default:
+            accelerator: 720
+            enquiry: [0, 50]
+            tender:  [0, 15]
+        belowThreshold:
+            accelerator: 720
+            enquiry: [0, 60]
+            tender:  [0, 15]
+        openua:
+            accelerator: 720
+            tender:  [0, 70]
+        open_framework:
+            accelerator: 1440
+            tender:  [0, 15]
+        openeu:
+            accelerator: 720
+            tender:  [0, 62]
+        negotiation:
+            accelerator: 720
+            enquiry: [0, 20]
+            tender:  [0, 20]
+        openua_defense:
+            accelerator: 720
+            tender:  [0, 45]
+    keywords_file: GovAuction
+    roles:
+        tender_owner:   GovAuction_Owner
+        provider:       GovAuction_Provider
+        provider1:      GovAuction_Provider1
+        provider2:      GovAuction_Provider2
+        viewer:         GovAuction_Viewer
     timeout_on_wait: 180
 ztv:
     intervals:
