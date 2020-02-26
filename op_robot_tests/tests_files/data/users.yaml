@@ -112,15 +112,15 @@ users:
         size:     [1366, 800]
     DZO_Owner:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroytenderowner@gmail.com
         password: R713Fe3mt
         browser:  Chrome
         position: [0, 0]
-        size:     [1920, 1080]
+        size:     [1920, 10080]
     DZO_Provider:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroyprovider11@byustudio.in.ua
         password: wC5tz3yt4
         browser:  Chrome
@@ -128,7 +128,7 @@ users:
         size:     [1920, 1080]
     DZO_Provider1:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroyprovider2@byustudio.in.ua
         password: QGaS4nu4E
         browser:  Chrome
@@ -136,7 +136,7 @@ users:
         size:     [1920, 1080]
     DZO_Provider2:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroyprovider3@byustudio.in.ua
         password: 1G796kCaE
         browser:  Chrome
@@ -144,10 +144,10 @@ users:
         size:     [1920, 1080]
     DZO_Viewer:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua/?test_mode=1"
+        homepage: "https://www.stage.dzo.com.ua/?test_mode=1"
         browser:  Chrome
         position: [0, 0]
-        size:     [1920, 1080]
+        size:     [1920, 10080]
     u25h8_Owner:
         broker:   b25h8
         homepage: "http://25h8.byustudio.in.ua"
@@ -223,7 +223,7 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Provider:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
@@ -231,7 +231,7 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Provider1:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
@@ -239,7 +239,7 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Provider2:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
@@ -247,13 +247,51 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Viewer:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
+    GovAuction_Owner:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroytenderowner@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 10080]
+    GovAuction_Provider:
+        broker:  GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroyprovider1@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
+    GovAuction_Provider1:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroyprovider2@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
+    GovAuction_Provider2:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroyprovider3@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
+    GovAuction_Viewer:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
     ztv_Owner:
         broker:   ztv
         homepage: "http://ztv.byustudio.in.ua/web/"
