@@ -685,7 +685,7 @@
                 "url": "http://webpage.org.ua/",
                 "telephone": "+380771112233",
                 "email": "e_mail_test@bigmir.net",
-                "name": "Тестовий Замовник 1",
+                "name": "Перший Тестовий Замовник",
                 "faxNumber": "088-111-22-33"
             },
             "identifier": {
@@ -707,7 +707,7 @@
                 "url": "http://webpage.com.ua",
                 "telephone": "+380664445566",
                 "email": "e_mail_test@ukr.net",
-                "name": "Тестовий Замовник 2",
+                "name": "Другий Тестовий Замовник",
                 "faxNumber": "333-44-55"
             },
             "identifier": {
@@ -731,7 +731,7 @@
                 "url": "http://www.page.gov.ua/",
                 "telephone": "+380506665544",
                 "email": "test_e_mail@ukr.net",
-                "name": "Тестовий Учасник 1",
+                "name": "Перший Тестовий Учасник",
                 "faxNumber": "9998877"
             },
             "identifier": {
@@ -754,7 +754,7 @@
                 "url": "http://www.page.gov.ua/",
                 "telephone": "+380997778899",
                 "email": "test_e_mail@ukr.net",
-                "name": "ТЕСТ ФОП 1",
+                "name": "Перший Тестовий ФОП",
                 "faxNumber": "9998877"
             },
             "identifier": {
@@ -777,7 +777,7 @@
                 "url": "http://webpage.com.ua",
                 "telephone": "+380972223344",
                 "email": "e_mail_test@ukr.net",
-                "name": "ТЕСТ ФОП 2",
+                "name": "Другий тестовий ФОП",
                 "faxNumber": "333-44-55"
             },
             "identifier": {
@@ -800,7 +800,7 @@
                 "url": "http://webpage.org.ua/",
                 "telephone": "+380881112233",
                 "email": "e_mail_test@bigmir.net",
-                "name": "ТЕСТ ФОП 3",
+                "name": "Третій Тестовий ФОП",
                 "faxNumber": "088-111-22-33"
             },
             "identifier": {
@@ -823,7 +823,7 @@
                 "url": "http://www.page.gov.ua/",
                 "telephone": "+380506665544",
                 "email": "test_e_mail@ukr.net",
-                "name": "Тестовий Учасник 2",
+                "name": "Другий Тестовий Учасник",
                 "faxNumber": "9998877"
             },
             "identifier": {
