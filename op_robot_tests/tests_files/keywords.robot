@@ -1,3 +1,4 @@
+coding: utf-8
 *** Settings ***
 Library  op_robot_tests.tests_files.service_keywords
 Library  String
@@ -292,9 +293,16 @@ Get Broker Property By Username
 
 
 Підготувати дані для подання скарги
-  [Arguments]  ${lot}=${False}
-  ${complaint}=  test_complaint_data  ${lot}
+  #[Arguments]  ${lot}=${False}
+  ${complaint}=  test_complaint_data
   [Return]  ${complaint}
+
+
+Підготувати дані для подання скарги на визнання переможця
+  [Arguments]
+  ${complaint}=  test_complaint_data
+  [Return]  ${complaint}
+
 
 
 Підготувати дані для відповіді на скаргу
