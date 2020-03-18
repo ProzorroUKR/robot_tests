@@ -164,24 +164,26 @@ ${PLAN_TENDER}      ${True}
 
 *** Keywords ***
 Можливість скасувати тендер
-  ${cancellation_data}=  Підготувати дані про скасування
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
   Run As  ${tender_owner}
   ...      Скасувати закупівлю
   ...      ${TENDER['TENDER_UAID']}
   ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
   ...      ${cancellation_data['document']['doc_path']}
   ...      ${cancellation_data['description']}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  tender_cancellation_data=${cancellation_data}
 
 
 Можливість скасувати ${index} лот
-  ${cancellation_data}=  Підготувати дані про скасування
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
   ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data.lots[${index}]}
   Run As  ${tender_owner}
   ...      Скасувати лот
   ...      ${TENDER['TENDER_UAID']}
   ...      ${lot_id}
   ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
   ...      ${cancellation_data['document']['doc_path']}
   ...      ${cancellation_data['description']}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_cancellation_data=${cancellation_data}

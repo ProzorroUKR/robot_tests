@@ -342,6 +342,8 @@ Get Broker Property By Username
 
 
 Підготувати дані про скасування
+  [Arguments]  ${procurementMethodType}
+  ${cancellation_data}=  test_cancellation_data  ${procurementMethodType}
   ${cancellation_reason}=  create_fake_sentence
   ${cancellation_reason}=  field_with_id  c  ${cancellation_reason}
   ${cancellation_id}=  get_id_from_string  ${cancellation_reason}
@@ -355,6 +357,7 @@ Get Broker Property By Username
   ${new_description}=  create_fake_sentence
   ${cancellation_data}=  Create Dictionary
   ...      cancellation_reason=${cancellation_reason}
+  ...      cancellation_reasonType=${cancellation_data.reasonType}
   ...      cancellation_id=${cancellation_id}
   ...      document=${document}
   ...      description=${new_description}
