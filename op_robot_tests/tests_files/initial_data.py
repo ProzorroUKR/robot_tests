@@ -475,6 +475,15 @@ def test_confirm_data(id):
     })
 
 
+def test_cancel_pending_data(id):
+    return munchify({
+        "data": {
+            "status": "pending",
+            "id": id
+        }
+    })
+
+
 def test_submit_claim_data(claim_id):
     return munchify({
         "data": {

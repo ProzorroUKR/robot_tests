@@ -9,6 +9,9 @@
 
 -i create_tender
 -i find_tender
+-i lot_cancellation
 -i tender_cancellation
+-i tender_cancellation_stand_still
+-i tender_cancellation_view
 -i lot_cancellation
 -i delete_lot

@@ -81,7 +81,8 @@ from .initial_data import (
     invalid_buyers_data,
     test_plan_cancel_data,
     test_confirm_plan_cancel_data,
-    test_cancellation_data
+    test_cancellation_data,
+    test_cancel_pending_data
 )
 from barbecue import chef
 from restkit import request
