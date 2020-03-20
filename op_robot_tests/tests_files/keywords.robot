@@ -1010,6 +1010,12 @@ Require Failure
   Порівняти об'єкти  ${left}  ${right}
 
 
+Звірити статус cancellations
+  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${cancellation_index}
+  ${right}=  Run as  ${username}  Отримати інформацію із cancellation  ${tender_uaid}  status  ${cancellation_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
 Дочекатись дати початку періоду уточнення
   [Arguments]  ${username}  ${tender_uaid}
   Оновити LAST_MODIFICATION_DATE
@@ -1216,6 +1222,19 @@ Require Failure
   ...      ${complaintID}
   ...      ${status}
   ...      ${award_index}
+
+
+Дочекатись зміни статусу cancellations
+  [Arguments]  ${username}  ${tender_uaid}  ${status}  ${cancellation_index}
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      12 min
+  ...      60 sec
+  ...      Звірити статус cancellations
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      ${status}
+  ...      ${cancellation_index}
 
 
 Оновити LAST_MODIFICATION_DATE
