@@ -1,0 +1,18 @@
+-v MODE:openua
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+-i create_tender
+-i find_tender
+-i tender_view
+
+-i make_bid_by_provider
+-i make_bid_by_provider1
+
+-i awardPeriod_startDate
+-i qualification_approve_first_award
+
+-i award_complaint_draft
+-i award_complaint_pending
+-i invalid_award_complaint

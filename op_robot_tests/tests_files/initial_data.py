@@ -446,13 +446,49 @@ def test_complaint_data():
     data = {
         "author": fake.procuringTenderer(),
         "description": fake.description(),
-        "title": field_with_id("q", fake.title())
+        "title": field_with_id("q", fake.title()),
+        "type": "complaint"
     }
     del data['author']['scale']
     return munchify({'data': data})
 
 
-test_claim_data = test_complaint_data
+def test_accept_complaint_data():
+    data = {
+        "status": "accepted",
+        "reviewDate": get_now().isoformat(),
+        "reviewPlace": "Place of review"
+    }
+    return munchify({'data': data})
+
+
+def test_reject_complaint_data():
+    data = {
+        "rejectReason": random.choice(["lawNonCompliance", "buyerViolationsCorrected", "alreadyExists", "tenderCancelled"])
+    }
+    return munchify({'data': data})
+
+
+def test_award_complaint_data():
+    data = {
+        "author": fake.procuringTenderer(),
+        "description": fake.description(),
+        "title": field_with_id("q", fake.title()),
+        "type": "complaint"
+    }
+    del data['author']['scale']
+    return munchify({'data': data})
+
+
+def test_claim_data():
+    data = {
+        "author": fake.procuringTenderer(),
+        "description": fake.description(),
+        "title": field_with_id("q", fake.title()),
+        "type": "claim"
+    }
+    del data['author']['scale']
+    return munchify({'data': data})
 
 
 def test_claim_answer_data(status):
