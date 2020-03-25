@@ -353,6 +353,8 @@ Get Broker Property By Username
 
 
 Підготувати дані про скасування
+  [Arguments]  ${procurementMethodType}
+  ${cancellation_data}=  test_cancellation_data  ${procurementMethodType}
   ${cancellation_reason}=  create_fake_sentence
   ${cancellation_reason}=  field_with_id  c  ${cancellation_reason}
   ${cancellation_id}=  get_id_from_string  ${cancellation_reason}
@@ -366,6 +368,7 @@ Get Broker Property By Username
   ${new_description}=  create_fake_sentence
   ${cancellation_data}=  Create Dictionary
   ...      cancellation_reason=${cancellation_reason}
+  ...      cancellation_reasonType=${cancellation_data.reasonType}
   ...      cancellation_id=${cancellation_id}
   ...      document=${document}
   ...      description=${new_description}
@@ -1018,6 +1021,12 @@ Require Failure
   Порівняти об'єкти  ${left}  ${right}
 
 
+Звірити статус cancellations
+  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${cancellation_index}
+  ${right}=  Run as  ${username}  Отримати інформацію із cancellation  ${tender_uaid}  status  ${cancellation_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
 Дочекатись дати початку періоду уточнення
   [Arguments]  ${username}  ${tender_uaid}
   Оновити LAST_MODIFICATION_DATE
@@ -1224,6 +1233,19 @@ Require Failure
   ...      ${complaintID}
   ...      ${status}
   ...      ${award_index}
+
+
+Дочекатись зміни статусу cancellations
+  [Arguments]  ${username}  ${tender_uaid}  ${status}  ${cancellation_index}
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      12 min
+  ...      60 sec
+  ...      Звірити статус cancellations
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      ${status}
+  ...      ${cancellation_index}
 
 
 Оновити LAST_MODIFICATION_DATE

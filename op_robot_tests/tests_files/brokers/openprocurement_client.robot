@@ -729,12 +729,13 @@ Library  openprocurement_client.utils
 
 
 Скасувати лот
-  [Arguments]  ${username}  ${tender_uaid}  ${lot_id}  ${cancellation_reason}  ${document}  ${new_description}
+  [Arguments]  ${username}  ${tender_uaid}  ${lot_id}  ${cancellation_reason}  ${cancellation_reasonType}  ${document}  ${new_description}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
   ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
   ${data}=  Create dictionary
   ...      reason=${cancellation_reason}
+  ...      reasonType=${cancellation_reasonType}
   ...      cancellationOf=lot
   ...      relatedLot=${lot_id}
   ${cancellation_data}=  Create dictionary  data=${data}
@@ -1430,6 +1431,16 @@ Library  openprocurement_client.utils
   ${filename}=  download_file_from_url  ${document.url}  ${OUTPUT_DIR}${/}${document.title}
   [return]  ${filename}
 
+
+Отримати інформацію із cancellation
+  [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${cancellation_index}
+  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${cancellations}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.cancellations[${cancellation_index}]}   ${USERS.users['${username}'].tender_data.data.cancellations}
+  Log  ${cancellations}
+  ${field_value}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.cancellations[${cancellation_index}]['${field_name}']}
+  Log  ${field_value}
+  [Return]  ${field_value}
+
 ##############################################################################
 #             Bid operations
 ##############################################################################
@@ -1742,28 +1753,41 @@ Library  openprocurement_client.utils
 
 Скасувати закупівлю
   [Documentation]
-  ...      [Arguments] Username, tender uaid, cancellation reason,
+  ...      [Arguments] Username, tender uaid, cancellation reason, cancellation reasonType
   ...      document and new description of document
   ...      [Description] Find tender using uaid, set cancellation reason, get data from cancel_tender
   ...      and call create_cancellation
   ...      After that add document to cancellation and change description of document
   ...      [Return] Nothing
-  [Arguments]  ${username}  ${tender_uaid}  ${cancellation_reason}  ${document}  ${new_description}
+  [Arguments]  ${username}  ${tender_uaid}  ${cancellation_reason}  ${cancellation_reasonType}  ${document}  ${new_description}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${data}=  Create dictionary  reason=${cancellation_reason}
+  ${procurementMethodType}=  set variable  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
+  Log  ${procurementMethodType}
+  ${data}=  Create dictionary
+  ...   reason=${cancellation_reason}
+  ...   reasonType=${cancellation_reasonType}
   ${cancellation_data}=  Create dictionary  data=${data}
   ${cancellation_data}=  munch_dict  arg=${cancellation_data}
+  Log  ${cancellation_data}
   ${cancel_reply}=  Call Method  ${USERS.users['${username}'].client}  create_cancellation
   ...      ${tender.data.id}
   ...      ${cancellation_data}
   ...      access_token=${tender.access.token}
   ${cancellation_id}=  Set variable  ${cancel_reply.data.id}
-
-  ${document_id}=  openprocurement_client.Завантажити документацію до запиту на скасування  ${username}  ${tender_uaid}  ${cancellation_id}  ${document}
-
-  openprocurement_client.Змінити опис документа в скасуванні  ${username}  ${tender_uaid}  ${cancellation_id}  ${document_id}  ${new_description}
-
-  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
+  ${document_id}=  openprocurement_client.Завантажити документацію до запиту на скасування
+  ...  ${username}
+  ...  ${tender_uaid}
+  ...  ${cancellation_id}
+  ...  ${document}
+  openprocurement_client.Змінити опис документа в скасуванні
+  ...  ${username}
+  ...  ${tender_uaid}
+  ...  ${cancellation_id}
+  ...  ${document_id}
+  ...  ${new_description}
+  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementUA']
+  ...  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
+  ...  ELSE  openprocurement_client.Перевести скасування закупівлі в період очікування  ${username}  ${tender_uaid}  ${cancellation_id}
 
 
 Завантажити документацію до запиту на скасування
@@ -1810,6 +1834,23 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_uaid}  ${cancel_id}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${data}=  test_confirm_data  ${cancel_id}
+  Log  ${data}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation
+  ...      ${tender.data.id}
+  ...      ${data}
+  ...      ${data.data.id}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
+
+
+Перевести скасування закупівлі в період очікування
+  [Documentation]
+  ...      [Arguments] Username, tender uaid, cancellation number
+  ...      Find tender using uaid, get cancellation test_confirmation data and call patch_cancellation
+  ...      [Return] Nothing
+  [Arguments]  ${username}  ${tender_uaid}  ${cancel_id}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${data}=  test_cancel_pending_data  ${cancel_id}
   Log  ${data}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation
   ...      ${tender.data.id}

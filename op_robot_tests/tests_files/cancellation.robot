@@ -103,23 +103,22 @@ ${PLAN_TENDER}      ${True}
   Можливість скасувати тендер
 
 
-Відображення активного статусу скасування тендера
-  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
-  ...  viewer
-  ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_cancellation
-  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
-  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
-  ...      active
-  ...      cancellations[${cancellation_index}].status
+Дочекатися закічення complait періоду
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Скасування тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      tender_cancellation_stand_still
+  ...      critical
+  Log  ${TENDER['TENDER_UAID']}
+  ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}
+  Дочекатись зміни статусу cancellations  ${tender_owner}  ${TENDER['TENDER_UAID']}  active  ${cancellation_index}
 
 
 Відображення причини скасування тендера
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_cancellation
+  ...  tender_cancellation_view
   ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${tender_owner}']['tender_cancellation_data']['cancellation_reason']}
@@ -130,7 +129,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_cancellation
+  ...  tender_cancellation_view
   Звірити відображення поля description документа ${USERS.users['${tender_owner}']['tender_cancellation_data']['document']['doc_id']} до скасування ${USERS.users['${tender_owner}']['tender_cancellation_data']['cancellation_id']} із ${USERS.users['${tender_owner}']['tender_cancellation_data']['description']} для користувача ${viewer}
 
 
@@ -138,7 +137,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_cancellation
+  ...  tender_cancellation_view
   Звірити відображення поля title документа ${USERS.users['${tender_owner}']['tender_cancellation_data']['document']['doc_id']} до скасування ${USERS.users['${tender_owner}']['tender_cancellation_data']['cancellation_id']} із ${USERS.users['${tender_owner}']['tender_cancellation_data']['document']['doc_name']} для користувача ${viewer}
 
 
@@ -146,8 +145,20 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  tender_cancellation
+  ...  tender_cancellation_view
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['tender_cancellation_data']['document']['doc_id']} до скасування ${USERS.users['${tender_owner}']['tender_cancellation_data']['cancellation_id']} з ${USERS.users['${tender_owner}']['tender_cancellation_data']['document']['doc_content']} для користувача ${viewer}
+
+
+Відображення активного статусу скасування тендера
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_cancellation_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
+  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
+  ...      active
+  ...      cancellations[${cancellation_index}].status
 
 ##############################################################################################
 #             DELETING LOT
@@ -164,24 +175,26 @@ ${PLAN_TENDER}      ${True}
 
 *** Keywords ***
 Можливість скасувати тендер
-  ${cancellation_data}=  Підготувати дані про скасування
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
   Run As  ${tender_owner}
   ...      Скасувати закупівлю
   ...      ${TENDER['TENDER_UAID']}
   ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
   ...      ${cancellation_data['document']['doc_path']}
   ...      ${cancellation_data['description']}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  tender_cancellation_data=${cancellation_data}
 
 
 Можливість скасувати ${index} лот
-  ${cancellation_data}=  Підготувати дані про скасування
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
   ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data.lots[${index}]}
   Run As  ${tender_owner}
   ...      Скасувати лот
   ...      ${TENDER['TENDER_UAID']}
   ...      ${lot_id}
   ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
   ...      ${cancellation_data['document']['doc_path']}
   ...      ${cancellation_data['description']}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_cancellation_data=${cancellation_data}

@@ -221,7 +221,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${accelerator}=  Get Variable Value  ${accelerator}
   ${accelerator}=  Set Variable If  '${accelerator}' != '${None}'  ${accelerator}  ${period_intervals.default.accelerator}
-  ${monitoring_data}=  tets_monitoring_data  ${USERS.users['${dasu_user}'].tender_data.data.id}  ${accelerator}
+  ${monitoring_data}=  test_monitoring_data  ${USERS.users['${dasu_user}'].tender_data.data.id}  ${accelerator}
   Log  ${monitoring_data}
   ${MNITORING_UAID}=  Run As  ${dasu_user}  Створити об'єкт моніторингу  ${monitoring_data}
   ${MONITORING}=  Create Dictionary
