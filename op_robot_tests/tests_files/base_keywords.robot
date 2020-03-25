@@ -1274,41 +1274,35 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Прийняти скаргу до розгляду
-  ${data}=  Create Dictionary  status=accepted
-  ${confirmation_data}=  Create Dictionary  data=${data}
+  ${confirmation_data}=  Підготувати дані для прийняття скарги до розгляду
   Run As  ${amcu_user}
-  ...      Прийняти скаргу
+  ...      Змінити статус скарги
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Прийняти скаргу на визначення ${award_index} переможця до розгляду
-  ${data}=  Create Dictionary  status=accepted
-  ${confirmation_data}=  Create Dictionary  data=${data}
+  ${confirmation_data}=  Підготувати дані для прийняття скарги до розгляду
   Run As  ${amcu_user}
   ...      Змінити статус скарги на визначення переможця
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Задовільнити скаргу
   ${data}=  Create Dictionary  status=satisfied
   ${confirmation_data}=  Create Dictionary  data=${data}
   Run As  ${amcu_user}
-  ...      Прийняти скаргу
+  ...      Змінити статус скарги
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Задовільнити скаргу на визначення ${award_index} переможця
@@ -1320,18 +1314,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Відхилити скаргу
   ${data}=  Create Dictionary  status=declined
   ${confirmation_data}=  Create Dictionary  data=${data}
   Run As  ${amcu_user}
-  ...      Прийняти скаргу
+  ...      Змінити статус скарги
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Відхилити скаргу на визначення ${award_index} переможця
@@ -1343,64 +1335,61 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Зупинити розгляд скарги
-  ${data}=  Create Dictionary  status=stopped
-  ${confirmation_data}=  Create Dictionary  data=${data}
+  ${confirmation_data}=  Підготувати дані для відхилення скарги
+  Set To Dictionary  ${confirmation_data.data}  status=stopped
   Run As  ${amcu_user}
-  ...      Прийняти скаргу
+  ...      Змінити статус скарги
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Зупинити скаргу на визначення ${award_index} переможця
-  ${data}=  Create Dictionary  status=stopped
-  ${confirmation_data}=  Create Dictionary  data=${data}
+  ${confirmation_data}=  Підготувати дані для відхилення скарги
+  Set To Dictionary  ${confirmation_data.data}  status=stopped
   Run As  ${amcu_user}
   ...      Змінити статус скарги на визначення переможця
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Залишити скаргу без розгляду
-  ${data}=  Create Dictionary  status=invalid
-  ${confirmation_data}=  Create Dictionary  data=${data}
+  ${confirmation_data}=  Підготувати дані для відхилення скарги
+  Set To Dictionary  ${confirmation_data.data}  status=invalid
   Run As  ${amcu_user}
-  ...      Прийняти скаргу
+  ...      Змінити статус скарги
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Залишити скаргу на визначення ${award_index} переможця без розгляду
-  ${data}=  Create Dictionary  status=invalid
-  ${confirmation_data}=  Create Dictionary  data=${data}
+  ${confirmation_data}=  Підготувати дані для відхилення скарги
+  Set To Dictionary  ${confirmation_data.data}  status=invalid
   Run As  ${amcu_user}
   ...      Змінити статус скарги на визначення переможця
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Виконати рішення АМКУ
-  ${data}=  Create Dictionary  status=resolved
+  ${tendererAction}=  create_fake_sentence
+  ${data}=  Create Dictionary
+  ...      status=resolved
+  ...      tendererAction=${tendererAction}
   ${confirmation_data}=  Create Dictionary  data=${data}
   Run As  ${tender_owner}
-  ...      Прийняти скаргу
+  ...      Змінити статус скарги
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Виконати рішення АМКУ по скарзі на визначення ${award_index} переможця
@@ -1415,30 +1404,27 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Помилково створена скарга
   ${data}=  Create Dictionary  status=mistaken
   ${confirmation_data}=  Create Dictionary  data=${data}
   Run As  ${provider}
-  ...      Прийняти скаргу
+  ...      Змінити статус скарги
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Помилково створена скарга на визначення ${award_index} переможця
   ${data}=  Create Dictionary  status=mistaken
   ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${amcu_user}
+  Run As  ${provider}
   ...      Змінити статус скарги на визначення переможця
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['tender_complaint_data']['complaintID']}
   ...      ${award_index}
   ...      ${confirmation_data}
-  Log  ${USERS.users['${provider}'].tender_complaint_data}
 
 
 Подати вимогу про виправлення умов закупівлі лоту

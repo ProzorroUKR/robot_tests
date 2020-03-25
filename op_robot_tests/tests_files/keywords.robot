@@ -298,11 +298,14 @@ Get Broker Property By Username
   [Return]  ${complaint}
 
 
-Підготувати дані для подання скарги на визнання переможця
-  [Arguments]
-  ${complaint}=  test_complaint_data
-  [Return]  ${complaint}
+Підготувати дані для прийняття скарги до розгляду
+  ${confirmation_data}=  test_accept_complaint_data
+  [Return]  ${confirmation_data}
 
+
+Підготувати дані для відхилення скарги
+  ${reject_reason}=  test_reject_complaint_data
+  [Return]  ${reject_reason}
 
 
 Підготувати дані для відповіді на скаргу

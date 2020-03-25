@@ -452,6 +452,22 @@ def test_complaint_data():
     return munchify({'data': data})
 
 
+def test_accept_complaint_data():
+    data = {
+        "status": "accepted",
+        "reviewDate": get_now().isoformat(),
+        "reviewPlace": "Place of review"
+    }
+    return munchify({'data': data})
+
+
+def test_reject_complaint_data():
+    data = {
+        "rejectReason": random.choice(["lawNonCompliance", "buyerViolationsCorrected", "alreadyExists", "tenderCancelled"])
+    }
+    return munchify({'data': data})
+
+
 def test_award_complaint_data():
     data = {
         "author": fake.procuringTenderer(),

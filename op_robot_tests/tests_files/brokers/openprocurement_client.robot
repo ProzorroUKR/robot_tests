@@ -1156,17 +1156,22 @@ Library  openprocurement_client.utils
   Log  ${reply}
 
 
-Прийняти скаргу
-  [Documentation]  Переводить скаргу зі статусу "pending" у статус "accepted"
+Змінити статус скарги
+  [Documentation]  Переводить скаргу в tender/lot в інший статус
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${confirmation_data}
-  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...  ${username}
+  ...  ${tender_uaid}
+  run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
-  Log  ${confirmation_data}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
   ...      ${complaint_internal_id}
+  ...      access_token=${tender.access.token}
   Log  ${tender}
   Log  ${reply}
 
@@ -1177,7 +1182,9 @@ Library  openprocurement_client.utils
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
   ...      ${username}
   ...      ${tender_uaid}
-  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
+  run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_complaint

@@ -80,7 +80,9 @@ from .initial_data import (
     invalid_gmdn_data,
     invalid_buyers_data,
     test_plan_cancel_data,
-    test_confirm_plan_cancel_data
+    test_confirm_plan_cancel_data,
+    test_accept_complaint_data,
+    test_reject_complaint_data
 )
 from barbecue import chef
 from restkit import request
