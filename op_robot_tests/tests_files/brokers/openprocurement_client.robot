@@ -731,6 +731,8 @@ Library  openprocurement_client.utils
 Скасувати лот
   [Arguments]  ${username}  ${tender_uaid}  ${lot_id}  ${cancellation_reason}  ${cancellation_reasonType}  ${document}  ${new_description}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${procurementMethodType}=  set variable  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
+  Log  ${procurementMethodType}
   ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
   ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
   ${data}=  Create dictionary
@@ -742,12 +744,11 @@ Library  openprocurement_client.utils
   ${cancellation_data}=  munch_dict  arg=${cancellation_data}
   ${cancel_reply}=  Call Method  ${USERS.users['${username}'].client}  create_cancellation  ${tender}  ${cancellation_data}
   ${cancellation_id}=  Set variable  ${cancel_reply.data.id}
-
   ${document_id}=  openprocurement_client.Завантажити документацію до запиту на скасування  ${username}  ${tender_uaid}  ${cancellation_id}  ${document}
-
   openprocurement_client.Змінити опис документа в скасуванні  ${username}  ${tender_uaid}  ${cancellation_id}  ${document_id}  ${new_description}
-
-  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
+  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementUA']
+  ...  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
+  ...  ELSE  openprocurement_client.Перевести скасування закупівлі в період очікування  ${username}  ${tender_uaid}  ${cancellation_id}
 
 
 Отримати інформацію з документа до лоту

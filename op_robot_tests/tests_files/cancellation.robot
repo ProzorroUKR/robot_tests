@@ -44,11 +44,22 @@ ${PLAN_TENDER}      ${True}
   Можливість скасувати 0 лот
 
 
+Дочекатися закічення complait періоду скасування лота
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Скасування тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      lot_cancellation_stand_still
+  ...      critical
+  Log  ${TENDER['TENDER_UAID']}
+  ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}
+  Дочекатись зміни статусу cancellations  ${tender_owner}  ${TENDER['TENDER_UAID']}  active  ${cancellation_index}
+
+
 Відображення активного статусу скасування лота
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування лота
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  lot_cancellation
+  ...  lot_cancellation_view
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
@@ -60,7 +71,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування лота
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  lot_cancellation
+  ...  lot_cancellation_view
   ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${tender_owner}']['lot_cancellation_data']['cancellation_reason']}
@@ -71,7 +82,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування лота
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  lot_cancellation
+  ...  lot_cancellation_view
   Звірити відображення поля description документа ${USERS.users['${tender_owner}']['lot_cancellation_data']['document']['doc_id']} до скасування ${USERS.users['${tender_owner}']['lot_cancellation_data']['cancellation_id']} із ${USERS.users['${tender_owner}']['lot_cancellation_data']['description']} для користувача ${viewer}
 
 
@@ -79,7 +90,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування лота
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  lot_cancellation
+  ...  lot_cancellation_view
   Звірити відображення поля title документа ${USERS.users['${tender_owner}']['lot_cancellation_data']['document']['doc_id']} до скасування ${USERS.users['${tender_owner}']['lot_cancellation_data']['cancellation_id']} із ${USERS.users['${tender_owner}']['lot_cancellation_data']['document']['doc_name']} для користувача ${viewer}
 
 
@@ -87,7 +98,7 @@ ${PLAN_TENDER}      ${True}
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування лота
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  lot_cancellation
+  ...  lot_cancellation_view
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['lot_cancellation_data']['document']['doc_id']} до скасування ${USERS.users['${tender_owner}']['lot_cancellation_data']['cancellation_id']} з ${USERS.users['${tender_owner}']['lot_cancellation_data']['document']['doc_content']} для користувача ${viewer}
 
 ##############################################################################################
