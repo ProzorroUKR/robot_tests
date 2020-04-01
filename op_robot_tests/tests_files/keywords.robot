@@ -1228,7 +1228,7 @@ Require Failure
   [Arguments]  ${username}  ${tender_uaid}  ${status}  ${cancellation_index}
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      12 min
+  ...      20 min
   ...      60 sec
   ...      Звірити статус cancellations
   ...      ${username}
