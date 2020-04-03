@@ -7,7 +7,9 @@
 -i find_tender
 -i tender_view
 
--i tender_complaint_draft
+-i lot_complaint_draft
 -i tender_complaint_view
 -i tender_complaint_add_doc
--i mistaken_tender_complaint
+-i tender_complaint_pending
+-i accept_tender_complaint
+-i stop_tender_complaint

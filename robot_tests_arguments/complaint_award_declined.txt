@@ -14,6 +14,7 @@
 -i qualification_approve_first_award
 
 -i award_complaint_draft
+-i award_complaint_add_doc
 -i award_complaint_pending
 -i accept_award_complaint
 -i decline_award_complaint

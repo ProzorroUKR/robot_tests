@@ -14,4 +14,5 @@
 -i qualification_approve_first_award
 
 -i award_complaint_draft
+-i award_complaint_add_doc
 -i mistaken_award_complaint

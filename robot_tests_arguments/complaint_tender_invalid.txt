@@ -8,6 +8,7 @@
 -i tender_view
 
 -i tender_complaint_draft
+-i tender_complaint_view
 -i tender_complaint_add_doc
 -i tender_complaint_pending
 -i invalid_tender_complaint
