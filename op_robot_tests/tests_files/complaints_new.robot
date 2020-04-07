@@ -20,7 +20,7 @@ ${LOT_MEAT}         ${0}
 ${lot_index}        ${0}
 ${award_index}      ${0}
 ${qualification_index}  ${0}
-${canellations_index}   ${0}
+${cancellations_index}  ${0}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
@@ -601,40 +601,154 @@ ${PLAN_TENDER}      ${True}
   Можливість скасувати 0 лот
 
 
-Відображення активного статусу скасування лота
+Можливість скасувати тендер
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування тендера
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  tender_cancellation
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати тендер
+
+
+Відображення статусу очікування оскарження скасування
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування лота
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
-  ...  lot_cancellation
+  ...  cancellation_status_view
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
-  ...      active
+  ...      pending
   ...      cancellations[${cancellation_index}].status
 
 
 Можливість створити чернетку скарги на скасування лота
-  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження визначення переможця
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження скасування лота
   ...     provider
   ...     ${USERS.users['${provider}'].broker}
   ...     lot_cancellation_complaint_draft
   ...     critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість створити чернетку скарги на скасування ${canellations_index} лота
+  Можливість створити чернетку скарги на скасування ${cancellations_index}
+
+
+Можливість створити чернетку скарги на скасування тендера
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження скасування тендера
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     tender_cancellation_complaint_draft
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити чернетку скарги на скасування ${cancellations_index}
+
+
+Можливість подати скаргу на скасування
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження скасування тендера/лота
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     cancel_complaint_pending
+  ...     critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати скаргу на скасування ${cancellations_index}
+
+
+Можливість позначити скаргу на скасування як помилково створену
+  [Tags]   ${USERS.users['${provider}'].broker}: Скарга на скасування тендера/лота створена помилково
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      mistaken_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Помилково створена скарга скасування ${cancellations_index}
+
+
+Можливість залишити скаргу на скасування без розгляду
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота без розгляду
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      invalid_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Залишити скаргу на скасування ${cancellations_index}
+
+
+Можливість прийняти скаргу на визначення переможця до розгляду
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота прийнята до розгляду
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      accept_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Прийняти скаргу на скасування ${cancellations_index} до розгляду
+
+
+Можливість задовільнити скаргу на визначення переможця
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота задоволена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      satisfy_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Задовільнити скаргу на скасування ${cancellations_index}
+
+
+Можливість виконати рішення АМКУ Замовником
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Замовник виконує рішення АМКУ по скарзі на скасування тендера/лота
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      resolved_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Виконати рішення АМКУ по скарзі на скасування ${cancellations_index}
+
+
+Можливість відхилити скаргу на визначення переможця
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота відхилена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      decline_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відхилити скаргу на скасування ${cancellations_index}
+
+
+Можливість зупинити розгляд скарги на визначення переможця
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота зупинена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      stop_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Зупинити скаргу на скасування ${cancellations_index}
+
 
 *** Keywords ***
 
 Можливість скасувати ${index} лот
-  ${cancellation_data}=  Підготувати дані про скасування
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
   ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data.lots[${index}]}
   Run As  ${tender_owner}
   ...      Скасувати лот
   ...      ${TENDER['TENDER_UAID']}
   ...      ${lot_id}
   ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
   ...      ${cancellation_data['document']['doc_path']}
   ...      ${cancellation_data['description']}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_cancellation_data=${cancellation_data}
+
+
+Можливість скасувати тендер
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
+  Run As  ${tender_owner}
+  ...      Скасувати закупівлю
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
+  ...      ${cancellation_data['document']['doc_path']}
+  ...      ${cancellation_data['description']}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  tender_cancellation_data=${cancellation_data}
 
 

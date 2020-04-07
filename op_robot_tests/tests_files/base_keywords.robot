@@ -1272,6 +1272,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${confirmation_data}
 
 
+Можливість подати скаргу на скасування ${cancellations_index}
+  ${data}=  Create Dictionary  status=pending
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${payment_user}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${cancellations_index}
+  ...      ${confirmation_data}
+
+
 Прийняти скаргу до розгляду
   ${confirmation_data}=  Підготувати дані для прийняття скарги до розгляду
   Run As  ${amcu_user}
@@ -1298,6 +1309,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
   ...      ${award_index}
+  ...      ${confirmation_data}
+
+
+Прийняти скаргу на скасування ${canсellations_index} до розгляду
+  ${confirmation_data}=  Підготувати дані для прийняття скарги до розгляду
+  Run As  ${amcu_user}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${canсellations_index}
   ...      ${confirmation_data}
 
 
@@ -1333,6 +1354,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${confirmation_data}
 
 
+Задовільнити скаргу на скасування ${canсellations_index}
+  ${data}=  Create Dictionary  status=satisfied
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${amcu_user}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${canсellations_index}
+  ...      ${confirmation_data}
+
+
 Відхилити скаргу
   ${data}=  Create Dictionary  status=declined
   ${confirmation_data}=  Create Dictionary  data=${data}
@@ -1362,6 +1394,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
   ...      ${award_index}
+  ...      ${confirmation_data}
+
+
+Відхилити скаргу на скасування ${canсellations_index}
+  ${data}=  Create Dictionary  status=declined
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${amcu_user}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${canсellations_index}
   ...      ${confirmation_data}
 
 
@@ -1397,6 +1440,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${confirmation_data}
 
 
+Зупинити скаргу на скасування ${cancellations_index}
+  ${confirmation_data}=  Підготувати дані для відхилення скарги
+  Set To Dictionary  ${confirmation_data.data}  status=stopped
+  Run As  ${amcu_user}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${cancellations_index}
+  ...      ${confirmation_data}
+
+
 Залишити скаргу без розгляду
   ${confirmation_data}=  Підготувати дані для відхилення скарги
   Set To Dictionary  ${confirmation_data.data}  status=invalid
@@ -1426,6 +1480,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
   ...      ${award_index}
+  ...      ${confirmation_data}
+
+
+Залишити скаргу на скасування ${cancellations_index}
+  ${confirmation_data}=  Підготувати дані для відхилення скарги
+  Set To Dictionary  ${confirmation_data.data}  status=invalid
+  Run As  ${amcu_user}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${cancellations_index}
   ...      ${confirmation_data}
 
 
@@ -1470,6 +1535,20 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${confirmation_data}
 
 
+Виконати рішення АМКУ по скарзі на скасування ${canсellations_index}
+  ${tendererAction}=  create_fake_sentence
+  ${data}=  Create Dictionary
+  ...      status=resolved
+  ...      tendererAction=${tendererAction}
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${tender_owner}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${canсellations_index}
+  ...      ${confirmation_data}
+
+
 Помилково створена скарга
   ${data}=  Create Dictionary  status=mistaken
   ${confirmation_data}=  Create Dictionary  data=${data}
@@ -1496,6 +1575,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${confirmation_data}=  Create Dictionary  data=${data}
   Run As  ${provider}
   ...      Змінити статус скарги на визначення переможця
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${award_index}
+  ...      ${confirmation_data}
+
+
+Помилково створена скарга скасування ${canсellations_index}
+  ${data}=  Create Dictionary  status=mistaken
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${provider}
+  ...      Змінити статус скарги на скасування
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
   ...      ${award_index}
@@ -1569,13 +1659,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${USERS.users['${provider}']}  claim_data  ${claim_data}
 
 
-Можливість створити чернетку скарги на скасування ${canellations_index}} лота
+Можливість створити чернетку скарги на скасування ${canсellations_index}
   ${complaint}=  Підготувати дані для подання скарги
   ${complaintID}=  Run As  ${provider}
-  ...      Створити чернетку вимоги/скарги на скасування лота
+  ...      Створити чернетку вимоги/скарги на скасування
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
-  ...      ${canellations_index}
+  ...      ${canсellations_index}
   ${complaint_data}=  Create Dictionary
   ...      complaint=${complaint}
   ...      complaintID=${complaintID}
