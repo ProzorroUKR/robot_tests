@@ -992,9 +992,9 @@ Library  openprocurement_client.utils
   [return]  ${reply.data.complaintID}
 
 
-Створити чернетку вимоги/скарги на скасування лота
-  [Documentation]  Створює вимогу/скаргу на скасування лота у статусі "draft"
-  [Arguments]  ${username}  ${tender_uaid}  ${data}  ${canellations_index}
+Створити чернетку вимоги/скарги на скасування
+  [Documentation]  Створює вимогу/скаргу на скасування у статусі "draft"
+  [Arguments]  ${username}  ${tender_uaid}  ${data}  ${cancellations_index}
   Log  ${data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
   ...      ${username}
@@ -1005,7 +1005,7 @@ Library  openprocurement_client.utils
   ...      create_cancellations_complaint
   ...      ${tender.data.id}
   ...      ${data}
-  ...      ${tender.data.canellations[${canellations_index}].id}
+  ...      ${tender.data.cancellations[${canсellations_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
@@ -1265,7 +1265,7 @@ Library  openprocurement_client.utils
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_complaint
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
   ...      ${tender.data.qualifications[${qualification_index}].id}
@@ -1291,6 +1291,28 @@ Library  openprocurement_client.utils
   ...      ${tender.data.id}
   ...      ${confirmation_data}
   ...      ${tender.data.awards[${award_index}].id}
+  ...      ${complaint_internal_id}
+  ...      access_token=${tender.access.token}
+  Log  ${tender}
+  Log  ${reply}
+
+
+Змінити статус скарги на скасування
+  [Documentation]  Переводить скаргу в cancellations тендера в інший статус
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${cancellations_index}  ${confirmation_data}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
+  ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
+  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation_complaint
+  ...      ${tender.data.id}
+  ...      ${confirmation_data}
+  ...      ${tender.data.cancellations[${cancellations_index}].id}
   ...      ${complaint_internal_id}
   ...      access_token=${tender.access.token}
   Log  ${tender}
