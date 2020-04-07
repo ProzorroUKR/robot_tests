@@ -15,3 +15,5 @@
 -i pre-qualification_complaint_draft
 -i pre-qualification_complaint_add_doc
 -i pre-qualification_complaint_pending
+-i accept_pre-qualification_complaint
+-i decline_pre-qualification_complaint
