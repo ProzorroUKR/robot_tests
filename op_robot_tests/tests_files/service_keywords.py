@@ -60,7 +60,7 @@ from .initial_data import (
     test_tender_data_framework_agreement,
     test_tender_data_selection,
     test_bid_competitive_data,
-    tets_monitoring_data,
+    test_monitoring_data,
     test_party,
     test_dialogue,
     test_conclusion,
@@ -80,7 +80,11 @@ from .initial_data import (
     invalid_gmdn_data,
     invalid_buyers_data,
     test_plan_cancel_data,
-    test_confirm_plan_cancel_data
+    test_confirm_plan_cancel_data,
+    test_accept_complaint_data,
+    test_reject_complaint_data,
+    test_cancellation_data,
+    test_cancel_pending_data
 )
 from barbecue import chef
 from restkit import request

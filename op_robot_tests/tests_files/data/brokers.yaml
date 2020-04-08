@@ -86,6 +86,8 @@ Quinta:
         tender_owner:   Tender_Owner
         viewer:         Tender_Viewer
         dasu_user:      Dasu_User
+        amcu_user:      Amcu_User
+        payment_user:   Payment_User
     timeout_on_wait: 15
 Etender:
     intervals:

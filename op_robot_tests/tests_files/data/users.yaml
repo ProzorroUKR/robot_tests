@@ -6,6 +6,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:      e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -18,6 +19,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -30,6 +32,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -42,6 +45,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -67,6 +71,32 @@ users:
             tenders:      [test.quintagroup.com, test.quintagroup.com]
         auth_dasu: [robot_test_sas, 9987b551710b44699bf2ad10188bcf65]
         api_key:  9987b551710b44699bf2ad10188bcf65
+        broker:   Quinta
+        browser:  phantomjs
+        auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
+        position: [0, 0]
+        size:     [1400, 900]
+    Amcu_User:
+        auth_ds:
+            monitorings:  [test.quintagroup.com, test.quintagroup.com]
+            plans:        [test.quintagroup.com, test.quintagroup.com]
+            tenders:      [test.quintagroup.com, test.quintagroup.com]
+        auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: 210945ed5de940b7bce976f411a1a290
+        api_key:  210945ed5de940b7bce976f411a1a290
+        broker:   Quinta
+        browser:  phantomjs
+        auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
+        position: [0, 0]
+        size:     [1400, 900]
+    Payment_User:
+        auth_ds:
+            monitorings:  [test.quintagroup.com, test.quintagroup.com]
+            plans:        [test.quintagroup.com, test.quintagroup.com]
+            tenders:      [test.quintagroup.com, test.quintagroup.com]
+        auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_payment: ab15262404644b60972a8118bac2c587
+        api_key:  ab15262404644b60972a8118bac2c587
         broker:   Quinta
         browser:  phantomjs
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]

@@ -100,6 +100,20 @@ def get_complaint_internal_id(tender, complaintID):
                     return complaint.id
     except AttributeError:
         pass
+    try:
+        for qualification in tender.data.qualifications:
+            for complaint in qualification.complaints:
+                if complaint.complaintID == complaintID:
+                    return complaint.id
+    except AttributeError:
+        pass
+    try:
+        for cancellation in tender.data.cancellations:
+            for complaint in cancellation.complaints:
+                if complaint.complaintID == complaintID:
+                    return complaint.id
+    except AttributeError:
+        pass
     raise IdNotFound
 
 
@@ -196,3 +210,14 @@ class StableTenderCreateClient(TenderCreateClient):
 def prepare_tender_create_wrapper(key, resource, host_url, api_version, ds_config=None):
     return StableTenderCreateClient(key, resource, host_url, api_version,
                                     ds_config=ds_config)
+
+
+class StableClientAmcu(Client):
+    @retry(stop_max_attempt_number=100, wait_random_min=500,
+           wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    def request(self, *args, **kwargs):
+        return super(StableClientAmcu, self).request(*args, **kwargs)
+
+
+def prepare_amcu_api_wrapper(key, resource, host_url, api_version, ds_config=None):
+    return StableClientAmcu(key, resource, host_url, api_version, ds_config=ds_config)
