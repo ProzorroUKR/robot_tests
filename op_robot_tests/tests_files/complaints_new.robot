@@ -7,7 +7,7 @@ Suite Teardown  Test Suite Teardown
 
 *** Variables ***
 ${MODE}             belowThreshold
-@{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer  amcu_user
+@{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer  amcu_user  payment_user
 ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
 
@@ -19,6 +19,8 @@ ${ITEM_MEAT}        ${0}
 ${LOT_MEAT}         ${0}
 ${lot_index}        ${0}
 ${award_index}      ${0}
+${qualification_index}  ${0}
+${cancellations_index}  ${0}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
@@ -81,7 +83,7 @@ ${PLAN_TENDER}      ${True}
   Можливість подати цінову пропозицію користувачем ${provider1}
 
 ##############################################################################################
-#             CREATE ADD DOC SUBMIT TENDER COMPLAINT
+#             TENDER/LOT COMPLAINT
 ##############################################################################################
 
 Можливість створити чернетку скарги про виправлення умов закупівлі тендера
@@ -91,36 +93,47 @@ ${PLAN_TENDER}      ${True}
   ...     tender_complaint_draft
   ...     critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість створити чернетку скарги про виправлення умов закупівлі
+  Можливість створити чернетку скарги
+
+
+Можливість створити чернетку скарги про виправлення умов лоту
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     lot_complaint_draft
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити чернетку скарги про виправлення умов ${lot_index} лоту
 
 
 Відображення статусу 'draft' чернетки скарги
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
   ...     viewer
   ...     ${USERS.users['${viewer}'].broker}
-  ...     tender_complaint_draft
+  ...     tender_complaint_view
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із draft для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із draft для користувача ${viewer}
 
 
 Відображення заголовку скарги
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
   ...     viewer
   ...     ${USERS.users['${viewer}'].broker}
-  ...     tender_complaint_draft
+  ...     tender_complaint_view
   ...     non-critical
-  Звірити відображення поля title для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із ${USERS.users['${provider}'].tender_complaint_data.complaint.data.title} для користувача ${viewer}
+  Звірити відображення поля title для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із ${USERS.users['${provider}'].complaint_data.complaint.data.title} для користувача ${viewer}
 
 
 Відображення опису скарги
   [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
   ...     viewer
   ...     ${USERS.users['${viewer}'].broker}
-  ...     tender_complaint_draft
+  ...     tender_complaint_view
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля description для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із ${USERS.users['${provider}'].tender_complaint_data.complaint.data.description} для користувача ${viewer}
+  Звірити відображення поля description для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із ${USERS.users['${provider}'].complaint_data.complaint.data.description} для користувача ${viewer}
 
 
 Можливість додати документ до скарги про виправлення умов закупівлі тендера
@@ -130,7 +143,7 @@ ${PLAN_TENDER}      ${True}
   ...     tender_complaint_add_doc
   ...     critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Додати документ до скарги про виправлення умов закупівлі
+  Додати документ до скарги
 
 
 Відображення заголовку документації скарги
@@ -139,7 +152,7 @@ ${PLAN_TENDER}      ${True}
   ...     ${USERS.users['${viewer}'].broker}
   ...     tender_complaint_add_doc
   ...     non-critical
-  Звірити відображення поля title документа ${USERS.users['${provider}'].tender_complaint_data.documents.doc_id} до скарги ${USERS.users['${provider}'].tender_complaint_data.complaintID} з ${USERS.users['${provider}'].tender_complaint_data.documents.doc_name} для користувача ${viewer}
+  Звірити відображення поля title документа ${USERS.users['${provider}'].complaint_data.documents.doc_id} до скарги ${USERS.users['${provider}'].complaint_data.complaintID} з ${USERS.users['${provider}'].complaint_data.documents.doc_name} для користувача ${viewer}
 
 
 Можливість подати скаргу про виправлення умов закупівлі
@@ -159,7 +172,7 @@ ${PLAN_TENDER}      ${True}
   ...     tender_complaint_pending
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із pending для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із pending для користувача ${viewer}
 
 
 Можливість прийняти скаргу до розгляду
@@ -179,7 +192,7 @@ ${PLAN_TENDER}      ${True}
   ...     accept_tender_complaint
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із accepted для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із accepted для користувача ${viewer}
 
 
 Можливість задовільнити скаргу
@@ -199,7 +212,7 @@ ${PLAN_TENDER}      ${True}
   ...     satisfy_tender_complaint
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із satisfied для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із satisfied для користувача ${viewer}
 
 
 Можливість відхилити скаргу
@@ -219,7 +232,7 @@ ${PLAN_TENDER}      ${True}
   ...     decline_tender_complaint
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із declined для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із declined для користувача ${viewer}
 
 
 Можливість зупинити розгляд скарги
@@ -239,7 +252,7 @@ ${PLAN_TENDER}      ${True}
   ...     stop_tender_complaint
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із stopped для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із stopped для користувача ${viewer}
 
 
 Можливість залишити скаргу без розгляду
@@ -259,7 +272,7 @@ ${PLAN_TENDER}      ${True}
   ...     invalid_tender_complaint
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із invalid для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із invalid для користувача ${viewer}
 
 
 Можливість позначити скаргу як помилково створену
@@ -279,7 +292,7 @@ ${PLAN_TENDER}      ${True}
   ...     mistaken_tender_complaint
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із mistaken для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із mistaken для користувача ${viewer}
 
 
 Можливість виконати рішення АМКУ Замовником
@@ -299,44 +312,10 @@ ${PLAN_TENDER}      ${True}
   ...     resolved_tender_complaint
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].tender_complaint_data['complaintID']} із resolved для користувача ${viewer}
+  Звірити відображення поля status для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із resolved для користувача ${viewer}
 
 ##############################################################################################
-#             CREATE ADD DOC LOT COMPLAINT
-##############################################################################################
-
-Можливість створити чернетку скарги про виправлення умов лоту
-  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження
-  ...     provider
-  ...     ${USERS.users['${provider}'].broker}
-  ...     lot_claim_draft
-  ...     critical
-  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість створити чернетку вимоги про виправлення умов ${lot_index} лоту
-
-
-Відображення статусу 'draft' чернетки вимоги про виправлення умов лоту
-  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
-  ...     viewer
-  ...     ${USERS.users['${viewer}'].broker}
-  ...     lot_claim_draft
-  ...     non-critical
-  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля status вимоги про виправлення умов ${lot_index} лоту із draft для користувача ${viewer}
-
-
-Можливість додати документ до скарги про виправлення умов закупівлі лота
-  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження
-  ...     provider
-  ...     ${USERS.users['${provider}'].broker}
-  ...     lot_claim_add_doc
-  ...     critical
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Додати документ до вимоги про виправлення умов закупівлі лоту
-
-##############################################################################################
-#             CREATE SUBMIT QUALIFICATION COMPLAINT
+#             QUALIFICATION COMPLAINT
 ##############################################################################################
 
 Можливість підтвердити першу пропозицію кваліфікації
@@ -351,7 +330,7 @@ ${PLAN_TENDER}      ${True}
 
 
 Можливість підтвердити другу пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_second_bid  level1
@@ -370,8 +349,119 @@ ${PLAN_TENDER}      ${True}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість затвердити остаточне рішення кваліфікації
 
+
+Відображення статусу блокування перед початком аукціону
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  Звірити статус тендера  ${tender_owner}  ${TENDER['TENDER_UAID']}  active.pre-qualification.stand-still
+
+
+Можливість створити чернетку скарги про виправлення кваліфікації учасника
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження пре-кваліфікації учасника
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     pre-qualification_complaint_draft
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити чернетку скарги про виправлення кваліфікації ${qualification_index} учасника
+
+
+Можливість додати документ до скарги про виправлення кваліфікації учасника
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження пре-кваліфікації учасника
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     pre-qualification_complaint_add_doc
+  ...     critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Додати документ до скарги ${qualification_index} учасника в qualifications
+
+
+Можливість подати скаргу про виправлення визначення кваліфікації учасника
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження пре-кваліфікації учасника
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     pre-qualification_complaint_pending
+  ...     critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати скаргу на визначення пре-кваліфікації ${qualification_index} учасника
+
+
+Можливість позначити скаргу на визначення пре-кваліфікації учасника як помилково створену
+  [Tags]   ${USERS.users['${provider}'].broker}: Скарга пре-кваліфікації учасника створена помилково
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      mistaken_pre-qualification_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Помилково створена скарга на визначення пре-кваліфікації ${qualification_index} учасника
+
+
+Можливість залишити скаргу на визначення пре-кваліфікації учасника ,tp
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга пре-кваліфікації учасника без розгляду
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      invalid_pre-qualification_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Залишити скаргу на визначення пре-кваліфікації ${qualification_index} учасника без розгляду
+
+
+Можливість прийняти скаргу на визначення пре-кваліфікації учасника
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга прийнята до розгляду
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      accept_pre-qualification_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Прийняти скаргу на визначення пре-кваліфікації ${qualification_index} учасника до розгляду
+
+
+Можливість задовільнити скаргу на визначення пре-кваліфікації учасника
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга пре-кваліфікації учасника задоволена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      satisfy_pre-qualification_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Задовільнити скаргу на визначення пре-кваліфікації ${qualification_index} учасника
+
+
+Можливість виконати рішення АМКУ Замовником
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Замовник виконує рішення АМКУ по скарзі пре-кваліфікації учасника
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      resolved_pre-qualification_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Виконати рішення АМКУ по скарзі на визначення пре-кваліфікації ${qualification_index} учасника
+
+
+Можливість відхилити скаргу на визначення пре-кваліфікації учасника
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга пре-кваліфікації учасника відхилена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      decline_pre-qualification_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відхилити скаргу на визначення пре-кваліфікації ${qualification_index} учасника
+
+
+Можливість зупинити розгляд скарги на визначення пре-кваліфікації учасника
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга пре-кваліфікації учасника зупинена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      stop_pre-qualification_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Зупинити скаргу на визначення пре-кваліфікації ${qualification_index} учасника
+
 ##############################################################################################
-#             CREATE SUBMIT AWARD COMPLAINT
+#             AWARD COMPLAINT
 ##############################################################################################
 
 Можливість дочекатись дати початку періоду кваліфікації
@@ -416,7 +506,7 @@ ${PLAN_TENDER}      ${True}
   ...     award_complaint_add_doc
   ...     critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Додати документ до скарги про виправлення умов закупівлі
+  Додати документ до скарги ${award_index} учасника в awards
 
 
 Можливість подати скаргу про виправлення визначення переможця
@@ -499,5 +589,166 @@ ${PLAN_TENDER}      ${True}
   Зупинити скаргу на визначення ${award_index} переможця
 
 ##############################################################################################
-#             CREATE SUBMIT CANCELLATION COMPLAINT
+#             CANCELLATION COMPLAINT
 ##############################################################################################
+
+Можливість скасувати лот
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування лота
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  lot_cancellation
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати 0 лот
+
+
+Можливість скасувати тендер
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування тендера
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  tender_cancellation
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати тендер
+
+
+Відображення статусу очікування оскарження скасування
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування лота
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  cancellation_status_view
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
+  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
+  ...      pending
+  ...      cancellations[${cancellation_index}].status
+
+
+Можливість створити чернетку скарги на скасування лота
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження скасування лота
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     lot_cancellation_complaint_draft
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити чернетку скарги на скасування ${cancellations_index}
+
+
+Можливість створити чернетку скарги на скасування тендера
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження скасування тендера
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     tender_cancellation_complaint_draft
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити чернетку скарги на скасування ${cancellations_index}
+
+
+Можливість подати скаргу на скасування
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження скасування тендера/лота
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     cancel_complaint_pending
+  ...     critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати скаргу на скасування ${cancellations_index}
+
+
+Можливість позначити скаргу на скасування як помилково створену
+  [Tags]   ${USERS.users['${provider}'].broker}: Скарга на скасування тендера/лота створена помилково
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      mistaken_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Помилково створена скарга скасування ${cancellations_index}
+
+
+Можливість залишити скаргу на скасування без розгляду
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота без розгляду
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      invalid_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Залишити скаргу на скасування ${cancellations_index}
+
+
+Можливість прийняти скаргу на визначення переможця до розгляду
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота прийнята до розгляду
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      accept_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Прийняти скаргу на скасування ${cancellations_index} до розгляду
+
+
+Можливість задовільнити скаргу на визначення переможця
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота задоволена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      satisfy_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Задовільнити скаргу на скасування ${cancellations_index}
+
+
+Можливість виконати рішення АМКУ Замовником
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Замовник виконує рішення АМКУ по скарзі на скасування тендера/лота
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      resolved_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Виконати рішення АМКУ по скарзі на скасування ${cancellations_index}
+
+
+Можливість відхилити скаргу на визначення переможця
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота відхилена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      decline_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відхилити скаргу на скасування ${cancellations_index}
+
+
+Можливість зупинити розгляд скарги на визначення переможця
+  [Tags]   ${USERS.users['${amcu_user}'].broker}: Скарга на скасування тендера/лота зупинена
+  ...      amcu_user
+  ...      ${USERS.users['${amcu_user}'].broker}
+  ...      stop_cancel_complaint
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Зупинити скаргу на скасування ${cancellations_index}
+
+
+*** Keywords ***
+
+Можливість скасувати ${index} лот
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
+  ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data.lots[${index}]}
+  Run As  ${tender_owner}
+  ...      Скасувати лот
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${lot_id}
+  ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
+  ...      ${cancellation_data['document']['doc_path']}
+  ...      ${cancellation_data['description']}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_cancellation_data=${cancellation_data}
+
+
+Можливість скасувати тендер
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
+  Run As  ${tender_owner}
+  ...      Скасувати закупівлю
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
+  ...      ${cancellation_data['document']['doc_path']}
+  ...      ${cancellation_data['description']}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  tender_cancellation_data=${cancellation_data}
+
+

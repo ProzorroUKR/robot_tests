@@ -7,3 +7,10 @@
 -i find_tender
 -i tender_view
 
+-i lot_complaint_draft
+-i tender_complaint_view
+-i tender_complaint_add_doc
+-i tender_complaint_pending
+-i accept_tender_complaint
+-i satisfy_tender_complaint
+-i resolved_tender_complaint

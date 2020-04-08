@@ -934,7 +934,7 @@ Library  openprocurement_client.utils
 
 
 Створити чернетку скарги про виправлення умов лоту
-  [Documentation]  Створює вимогу у статусі "draft"
+  [Documentation]  Створює скарги у статусі "draft"
   [Arguments]  ${username}  ${tender_uaid}  ${complaint}  ${lot_id}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
   ...      ${username}
@@ -948,8 +948,8 @@ Library  openprocurement_client.utils
   [return]  ${complaintID}
 
 
-Створити чернетку вимоги про виправлення визначення переможця
-  [Documentation]  Створює вимогу у статусі "draft"
+Створити чернетку вимоги/скарги про виправлення визначення переможця
+  [Documentation]  Створює вимогу/скаргу у про виправлення визначення переможця статусі "draft"
   [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${award_index}
   Log  ${claim}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
@@ -962,6 +962,50 @@ Library  openprocurement_client.utils
   ...      ${tender.data.id}
   ...      ${claim}
   ...      ${tender.data.awards[${award_index}].id}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
+  Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
+  Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
+  Log  ${USERS.users['${username}'].complaint_access_token}
+  [return]  ${reply.data.complaintID}
+
+
+Створити чернетку вимоги/скарги про виправлення кваліфікації учасника
+  [Documentation]  Створює вимогу/скаргу у про виправлення кваліфікації учасника статусі "draft"
+  [Arguments]  ${username}  ${tender_uaid}  ${data}  ${qualification_index}
+  Log  ${data}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ${reply}=  Call Method
+  ...      ${USERS.users['${username}'].client}
+  ...      create_qualification_complaint
+  ...      ${tender.data.id}
+  ...      ${data}
+  ...      ${tender.data.qualifications[${qualification_index}].id}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
+  Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
+  Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
+  Log  ${USERS.users['${username}'].complaint_access_token}
+  [return]  ${reply.data.complaintID}
+
+
+Створити чернетку вимоги/скарги на скасування
+  [Documentation]  Створює вимогу/скаргу на скасування у статусі "draft"
+  [Arguments]  ${username}  ${tender_uaid}  ${data}  ${cancellations_index}
+  Log  ${data}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ${reply}=  Call Method
+  ...      ${USERS.users['${username}'].client}
+  ...      create_cancellations_complaint
+  ...      ${tender.data.id}
+  ...      ${data}
+  ...      ${tender.data.cancellations[${canсellations_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
@@ -1124,6 +1168,36 @@ Library  openprocurement_client.utils
   Log  ${reply}
 
 
+Завантажити документ до скарги в окремий об'єкт
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${object_index}  ${document}  ${object}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  Log  ${USERS.users['${username}'].complaint_access_token}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
+  ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
+  ${reply}=  run keyword if  '${object}' == 'awards'  Call Method  ${USERS.users['${username}'].client}  upload_award_complaint_document
+  ...      ${document}
+  ...      ${tender.data.id}
+  ...      ${tender.data.${object}[${object_index}].id}
+  ...      ${complaint_internal_id}
+  ...      access_token=${USERS.users['${username}'].complaint_access_token}
+  ...      ELSE IF  '${object}' == 'qualifications'  Call Method  ${USERS.users['${username}'].client}  upload_qualification_complaint_document
+  ...      ${document}
+  ...      ${tender.data.id}
+  ...      ${tender.data.${object}[${object_index}].id}
+  ...      ${complaint_internal_id}
+  ...      access_token=${USERS.users['${username}'].complaint_access_token}
+  ...      ELSE  Call Method  ${USERS.users['${username}'].client}  upload_cancellation_complaint_document
+  ...      ${document}
+  ...      ${tender.data.id}
+  ...      ${tender.data.${object}[${object_index}].id}
+  ...      ${complaint_internal_id}
+  ...      access_token=${USERS.users['${username}'].complaint_access_token}
+  Log  ${tender}
+  Log  ${reply}
+
+
 Подати вимогу
   [Documentation]  Переводить вимогу зі статусу "draft" у статус "claim"
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${confirmation_data}
@@ -1166,12 +1240,35 @@ Library  openprocurement_client.utils
   ...  ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
+  ...      ${complaint_internal_id}
+  ...      access_token=${tender.access.token}
+  Log  ${tender}
+  Log  ${reply}
+
+
+Змінити статус скарги на визначення пре-кваліфікації учасника
+  [Documentation]  Переводить скаргу в qualifications тендера в інший статус
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${qualification_index}  ${confirmation_data}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
+  ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
+  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification_complaint
+  ...      ${tender.data.id}
+  ...      ${confirmation_data}
+  ...      ${tender.data.qualifications[${qualification_index}].id}
   ...      ${complaint_internal_id}
   ...      access_token=${tender.access.token}
   Log  ${tender}
@@ -1186,6 +1283,7 @@ Library  openprocurement_client.utils
   ...      ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
@@ -1199,24 +1297,30 @@ Library  openprocurement_client.utils
   Log  ${reply}
 
 
-Змінити статус скарги на визначення переможця Замовником
-  [Documentation]  Переводить скаргу в awards тендера в статус resolved
-  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${award_index}  ${confirmation_data}
+Змінити статус скарги на скасування
+  [Documentation]  Переводить скаргу в cancellations тендера в інший статус
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${cancellations_index}  ${confirmation_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
   ...      ${username}
   ...      ${tender_uaid}
-  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
+  ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
-  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_complaint
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
-  ...      ${tender.data.awards[${award_index}].id}
+  ...      ${tender.data.cancellations[${cancellations_index}].id}
   ...      ${complaint_internal_id}
   ...      access_token=${tender.access.token}
   Log  ${tender}
   Log  ${reply}
 
+##################################################################
+#                   OLD VERSION CLAIMS/COMPLAINTS
+##################################################################
 
 Подати вимогу про виправлення визначення переможця
   [Documentation]  Переводить вимогу зі статусу "draft" у статус "claim"
