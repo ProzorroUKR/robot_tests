@@ -453,6 +453,22 @@ def test_complaint_data():
     return munchify({'data': data})
 
 
+def test_payment_data(token, complaint_value, complaint_uaid):
+    data = {
+            "amount": str(complaint_value),
+            "currency": "UAH",
+            "description": generate_payment_description(token, complaint_uaid)
+    }
+    return data
+
+
+def generate_payment_description(token, complaint_uaid):
+    full_hash = hashlib.sha512(token).hexdigest()
+    short_hash = full_hash[0:8]
+    description = complaint_uaid + '-' + short_hash
+    return description
+
+
 def test_accept_complaint_data():
     data = {
         "status": "accepted",
