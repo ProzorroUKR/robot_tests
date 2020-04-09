@@ -1134,11 +1134,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      Створити чернетку скарги про виправлення умов закупівлі
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
-  ${complaint_data}=  Create Dictionary
-  ...      complaint=${complaint}
-  ...      complaintID=${complaintID}
-  ${complaint_data}=  munch_dict  arg=${complaint_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaint_data}
+  #${complaint_data}=  Create Dictionary
+  #...      complaint=${complaint}
+  #...      complaintID=${complaintID}
+  #${complaint_data}=  munch_dict  arg=${complaint_data}
+  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
   Log  ${USERS.users['${provider}'].complaint_data}
 
 
@@ -1241,13 +1241,23 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість подати скаргу
-  ${data}=  Create Dictionary  status=pending
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${payment_user}
-  ...      Змінити статус скарги
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${confirmation_data}
+  Log  ${USERS.users['${provider}'].complaint_access_token}
+  ${complaint_token}=  set variable  ${USERS.users['${provider}'].complaint_access_token}
+  Log  ${USERS.users['${provider}']['complaint_data']['value']['amount']}
+  ${complaint_value}=  set variable  ${USERS.users['${provider}']['complaint_data']['value']['amount']}
+  Log  ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ${complaint_uaid}=  set variable  ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ${payment_data}=  Підготувати дані для оплати скарги  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  Run As  ${provider}
+  ...      Виконати оплату скарги
+  ...      ${payment_data}
+  #${data}=  Create Dictionary  status=pending
+  #${confirmation_data}=  Create Dictionary  data=${data}
+  #Run As  ${payment_user}
+  #...      Змінити статус скарги
+  #...      ${TENDER['TENDER_UAID']}
+  #...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  #...      ${confirmation_data}
 
 
 Можливість подати скаргу на визначення пре-кваліфікації ${qualification_index} учасника
