@@ -1005,7 +1005,7 @@ Library  openprocurement_client.utils
   ...      create_cancellations_complaint
   ...      ${tender.data.id}
   ...      ${data}
-  ...      ${tender.data.cancellations[${canсellations_index}].id}
+  ...      ${tender.data.cancellations[${cancellations_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
