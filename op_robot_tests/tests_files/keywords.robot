@@ -298,6 +298,12 @@ Get Broker Property By Username
   [Return]  ${complaint}
 
 
+Підготувати дані для оплати скарги
+  [Arguments]  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  ${payment_data}=  test_payment_data  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  [Return]  ${payment_data}
+
+
 Підготувати дані для прийняття скарги до розгляду
   ${confirmation_data}=  test_accept_complaint_data
   [Return]  ${confirmation_data}
