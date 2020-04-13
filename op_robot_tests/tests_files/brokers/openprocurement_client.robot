@@ -958,25 +958,9 @@ Library  openprocurement_client.utils
   [return]  ${complaintID}
 
 
-Створити чернетку скарги про виправлення умов лоту
-  [Documentation]  Створює скарги у статусі "draft"
-  [Arguments]  ${username}  ${tender_uaid}  ${complaint}  ${lot_id}
-  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
-  ...      ${username}
-  ...      ${tender_uaid}
-  ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
-  Set to dictionary  ${complaint.data}  relatedLot=${tender.data.lots[${lot_index}].id}
-  ${complaintID}=  openprocurement_client.Створити чернетку скарги про виправлення умов закупівлі
-  ...      ${username}
-  ...      ${tender_uaid}
-  ...      ${complaint}
-  [return]  ${complaintID}
-
-
 Створити чернетку вимоги/скарги про виправлення визначення переможця
   [Documentation]  Створює вимогу/скаргу у про виправлення визначення переможця статусі "draft"
-  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${award_index}
-  Log  ${claim}
+  [Arguments]  ${username}  ${tender_uaid}  ${data}  ${award_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
   ...      ${username}
   ...      ${tender_uaid}
@@ -985,14 +969,14 @@ Library  openprocurement_client.utils
   ...      ${USERS.users['${username}'].client}
   ...      create_award_complaint
   ...      ${tender.data.id}
-  ...      ${claim}
+  ...      ${data}
   ...      ${tender.data.awards[${award_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
   Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
   Log  ${USERS.users['${username}'].complaint_access_token}
-  [return]  ${reply.data.complaintID}
+  [return]  ${reply.data}
 
 
 Створити чернетку вимоги/скарги про виправлення кваліфікації учасника
@@ -1014,7 +998,7 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
   Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
   Log  ${USERS.users['${username}'].complaint_access_token}
-  [return]  ${reply.data.complaintID}
+  [return]  ${reply.data}
 
 
 Створити чернетку вимоги/скарги на скасування
@@ -1036,7 +1020,7 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
   Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
   Log  ${USERS.users['${username}'].complaint_access_token}
-  [return]  ${reply.data.complaintID}
+  [return]  ${reply.data}
 
 
 Створити вимогу про виправлення умов закупівлі
@@ -1273,7 +1257,6 @@ Library  openprocurement_client.utils
   ...  ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
@@ -1294,7 +1277,6 @@ Library  openprocurement_client.utils
   ...      ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
@@ -1316,7 +1298,6 @@ Library  openprocurement_client.utils
   ...      ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
@@ -1338,7 +1319,6 @@ Library  openprocurement_client.utils
   ...      ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}

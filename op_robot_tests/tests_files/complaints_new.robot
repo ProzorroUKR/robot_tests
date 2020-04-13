@@ -7,7 +7,7 @@ Suite Teardown  Test Suite Teardown
 
 *** Variables ***
 ${MODE}             belowThreshold
-@{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer  amcu_user  payment_user
+@{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer  amcu_user
 ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
 
@@ -123,7 +123,7 @@ ${PLAN_TENDER}      ${True}
   ...     ${USERS.users['${viewer}'].broker}
   ...     tender_complaint_view
   ...     non-critical
-  Звірити відображення поля title для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із ${USERS.users['${provider}'].complaint_data.complaint.data.title} для користувача ${viewer}
+  Звірити відображення поля title для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із ${USERS.users['${provider}'].complaint_data.title} для користувача ${viewer}
 
 
 Відображення опису скарги
@@ -133,7 +133,7 @@ ${PLAN_TENDER}      ${True}
   ...     tender_complaint_view
   ...     non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля description для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із ${USERS.users['${provider}'].complaint_data.complaint.data.description} для користувача ${viewer}
+  Звірити відображення поля description для вимоги ${USERS.users['${provider}'].complaint_data['complaintID']} із ${USERS.users['${provider}'].complaint_data.description} для користувача ${viewer}
 
 
 Можливість додати документ до скарги про виправлення умов закупівлі тендера
@@ -388,7 +388,7 @@ ${PLAN_TENDER}      ${True}
   ...     pre-qualification_complaint_pending
   ...     critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати скаргу на визначення пре-кваліфікації ${qualification_index} учасника
+  Можливість подати скаргу
 
 
 Можливість позначити скаргу на визначення пре-кваліфікації учасника як помилково створену
@@ -516,7 +516,7 @@ ${PLAN_TENDER}      ${True}
   ...     award_complaint_pending
   ...     critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати скаргу на визначення ${award_index} переможця
+  Можливість подати скаргу
 
 
 Можливість позначити скаргу на визначення переможця як помилково створену
@@ -651,7 +651,7 @@ ${PLAN_TENDER}      ${True}
   ...     cancel_complaint_pending
   ...     critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати скаргу на скасування ${cancellations_index}
+  Можливість подати скаргу
 
 
 Можливість позначити скаргу на скасування як помилково створену
