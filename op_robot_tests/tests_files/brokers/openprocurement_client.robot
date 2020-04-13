@@ -70,8 +70,17 @@ Library  openprocurement_client.utils
   Log  ${auth_ds}
 
   ${ds_config}=  Create Dictionary  host_url=${ds_host_url}  auth_ds=${auth_ds}
-  ${plan_api_wrapper}=  prepare_plan_api_wrapper  ${USERS.users['${username}'].api_key}  PLANS  ${API_HOST_URL}  ${API_VERSION}
-  ${tender_api_wrapper}=  prepare_api_wrapper  ${USERS.users['${username}'].api_key}  TENDERS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
+  ${plan_api_wrapper}=  prepare_plan_api_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  PLANS
+  ...  ${API_HOST_URL}
+  ...  ${API_VERSION}
+  ${tender_api_wrapper}=  prepare_api_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  TENDERS
+  ...  ${API_HOST_URL}
+  ...  ${API_VERSION}
+  ...  ${ds_config}
   ${tender_create_wrapper}=  prepare_tender_create_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  PLANS
@@ -91,7 +100,17 @@ Library  openprocurement_client.utils
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
-  ${agreement_wrapper}=  prepare_agreement_api_wrapper  ${USERS.users['${username}'].api_key}  AGREEMENTS  ${API_HOST_URL}  ${API_VERSION}  ${ds_config}
+  ${agreement_wrapper}=  prepare_agreement_api_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  AGREEMENTS
+  ...  ${API_HOST_URL}
+  ...  ${API_VERSION}
+  ...  ${ds_config}
+  ${payment_wrapper}=  prepare_payment_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  PUSH
+  ...  ${PAYMENT_API}
+  ...  ${PAYMENT_API_VERSION}
   Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  plan_client=${plan_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  tender_create_client=${tender_create_wrapper}
@@ -99,11 +118,17 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}  dasu_client=${dasu_api_wraper}
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${EMPTY}
   Set To Dictionary  ${USERS.users['${username}']}  amcu_client=${amcu_api_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  payment_client=${payment_wrapper}
   ${id_map}=  Create Dictionary
   Set To Dictionary  ${USERS.users['${username}']}  id_map=${id_map}
   Log  ${EDR_HOST_URL}
   Log  ${EDR_VERSION}
-  ${edr_wrapper}=  prepare_edr_wrapper  ${EDR_HOST_URL}  ${EDR_VERSION}  ${USERS.users['${username}'].auth_edr[0]}  ${USERS.users['${username}'].auth_edr[1]}
+  ${edr_wrapper}=  prepare_edr_wrapper
+  ...  ${EDR_HOST_URL}
+  ...  ${EDR_VERSION}
+  ...  ${USERS.users['${username}'].auth_edr[0]}
+  ...  ${USERS.users['${username}'].auth_edr[1]}
+  Log  ${edr_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  edr_client=${edr_wrapper}
   #Variables for contracting_management module
   ${contract_api_wrapper}=  prepare_contract_api_wrapper  ${USERS.users['${username}'].api_key}  CONTRACTS  ${api_host_url}  ${api_version}  ${ds_config}
@@ -902,8 +927,8 @@ Library  openprocurement_client.utils
 
 Створити чернетку скарги про виправлення умов закупівлі
   [Documentation]  Створює скаргу у статусі "draft"
-  [Arguments]  ${username}  ${tender_uaid}  ${complaint}
-  Log  ${complaint}
+  [Arguments]  ${username}  ${tender_uaid}  ${complaint_data}
+  Log  ${complaint_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
   ...      ${username}
   ...      ${tender_uaid}
@@ -911,11 +936,11 @@ Library  openprocurement_client.utils
   ...      ${USERS.users['${username}'].client}
   ...      create_complaint
   ...      ${tender.data.id}
-  ...      ${complaint}
+  ...      ${complaint_data}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
-  [return]  ${reply.data.complaintID}
+  [return]  ${reply.data}
 
 
 Створити чернетку вимоги про виправлення умов лоту
@@ -933,25 +958,9 @@ Library  openprocurement_client.utils
   [return]  ${complaintID}
 
 
-Створити чернетку скарги про виправлення умов лоту
-  [Documentation]  Створює скарги у статусі "draft"
-  [Arguments]  ${username}  ${tender_uaid}  ${complaint}  ${lot_id}
-  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
-  ...      ${username}
-  ...      ${tender_uaid}
-  ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
-  Set to dictionary  ${complaint.data}  relatedLot=${tender.data.lots[${lot_index}].id}
-  ${complaintID}=  openprocurement_client.Створити чернетку скарги про виправлення умов закупівлі
-  ...      ${username}
-  ...      ${tender_uaid}
-  ...      ${complaint}
-  [return]  ${complaintID}
-
-
 Створити чернетку вимоги/скарги про виправлення визначення переможця
   [Documentation]  Створює вимогу/скаргу у про виправлення визначення переможця статусі "draft"
-  [Arguments]  ${username}  ${tender_uaid}  ${claim}  ${award_index}
-  Log  ${claim}
+  [Arguments]  ${username}  ${tender_uaid}  ${data}  ${award_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
   ...      ${username}
   ...      ${tender_uaid}
@@ -960,14 +969,14 @@ Library  openprocurement_client.utils
   ...      ${USERS.users['${username}'].client}
   ...      create_award_complaint
   ...      ${tender.data.id}
-  ...      ${claim}
+  ...      ${data}
   ...      ${tender.data.awards[${award_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
   Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
   Log  ${USERS.users['${username}'].complaint_access_token}
-  [return]  ${reply.data.complaintID}
+  [return]  ${reply.data}
 
 
 Створити чернетку вимоги/скарги про виправлення кваліфікації учасника
@@ -989,7 +998,7 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
   Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
   Log  ${USERS.users['${username}'].complaint_access_token}
-  [return]  ${reply.data.complaintID}
+  [return]  ${reply.data}
 
 
 Створити чернетку вимоги/скарги на скасування
@@ -1011,7 +1020,7 @@ Library  openprocurement_client.utils
   Set To Dictionary  ${USERS.users['${username}']}  complaint_access_token=${reply.access.token}
   Set To Dictionary  ${USERS.users['${amcu_user}']}  complaint_access_token=${reply.access.token}
   Log  ${USERS.users['${username}'].complaint_access_token}
-  [return]  ${reply.data.complaintID}
+  [return]  ${reply.data}
 
 
 Створити вимогу про виправлення умов закупівлі
@@ -1232,6 +1241,14 @@ Library  openprocurement_client.utils
   Log  ${reply}
 
 
+Виконати оплату скарги
+  [Documentation]  Виконує запит на push в liqpay
+  [Arguments]  ${username}  ${payment_data}
+  ${payment}=  Run Keyword And Ignore Error  call method  ${USERS.users['${username}'].payment_client}  create_payment
+  ...  ${payment_data}
+  Log  ${payment}
+
+
 Змінити статус скарги
   [Documentation]  Переводить скаргу в tender/lot в інший статус
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${confirmation_data}
@@ -1240,7 +1257,6 @@ Library  openprocurement_client.utils
   ...  ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
@@ -1261,7 +1277,6 @@ Library  openprocurement_client.utils
   ...      ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
@@ -1283,7 +1298,6 @@ Library  openprocurement_client.utils
   ...      ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
@@ -1305,7 +1319,6 @@ Library  openprocurement_client.utils
   ...      ${tender_uaid}
   run keyword if  '${username}' == 'Tender_Owner'  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
-  ...  ELSE IF  '${username}' == 'Payment_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
   Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}

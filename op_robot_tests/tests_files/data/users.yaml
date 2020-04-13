@@ -89,19 +89,6 @@ users:
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         position: [0, 0]
         size:     [1400, 900]
-    Payment_User:
-        auth_ds:
-            monitorings:  [test.quintagroup.com, test.quintagroup.com]
-            plans:        [test.quintagroup.com, test.quintagroup.com]
-            tenders:      [test.quintagroup.com, test.quintagroup.com]
-        auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
-        auth_payment: ab15262404644b60972a8118bac2c587
-        api_key:  ab15262404644b60972a8118bac2c587
-        broker:   Quinta
-        browser:  phantomjs
-        auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
-        position: [0, 0]
-        size:     [1400, 900]
     Etender_Owner:
         broker:   Etender
         homepage: "https://stage.e-tender.ua/"

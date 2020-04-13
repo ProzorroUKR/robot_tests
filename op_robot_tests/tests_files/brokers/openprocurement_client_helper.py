@@ -12,6 +12,7 @@ from time import sleep
 import os
 import urllib
 from openprocurement_client.resources.tenders import TenderCreateClient
+from openprocurement_client.resources.tenders import PaymentClient
 
 
 def retry_if_request_failed(exception):
@@ -208,8 +209,7 @@ class StableTenderCreateClient(TenderCreateClient):
 
 
 def prepare_tender_create_wrapper(key, resource, host_url, api_version, ds_config=None):
-    return StableTenderCreateClient(key, resource, host_url, api_version,
-                                    ds_config=ds_config)
+    return StableTenderCreateClient(key, resource, host_url, api_version, ds_config=ds_config)
 
 
 class StableClientAmcu(Client):
@@ -221,3 +221,14 @@ class StableClientAmcu(Client):
 
 def prepare_amcu_api_wrapper(key, resource, host_url, api_version, ds_config=None):
     return StableClientAmcu(key, resource, host_url, api_version, ds_config=ds_config)
+
+
+class StableClientPayment(PaymentClient):
+    @retry(stop_max_attempt_number=100, wait_random_min=500,
+           wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    def request(self, *args, **kwargs):
+        return super(StableClientPayment, self).request(*args, **kwargs)
+
+
+def prepare_payment_wrapper(key, resource, host_url, api_version):
+    return StableClientPayment(key, resource, host_url, api_version)
