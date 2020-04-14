@@ -458,7 +458,12 @@ def test_payment_data(token, complaint_value, complaint_uaid):
             "amount": str(complaint_value),
             "currency": "UAH",
             "description": generate_payment_description(token, complaint_uaid),
-            "type": "credit"
+            "type": "credit",
+            "date_oper": get_now().isoformat(),
+            "account": "UA723004380000026001503374077",
+            "okpo": "14360570",
+            "mfo": "123456",
+            "name": u"Плат.интер-эквайрин через LiqPay"
     }
     return data
 
