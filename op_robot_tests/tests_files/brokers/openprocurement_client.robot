@@ -958,6 +958,21 @@ Library  openprocurement_client.utils
   [return]  ${complaintID}
 
 
+Створити чернетку скарги про виправлення умов лоту
+  [Documentation]  Створює скарги у статусі "draft"
+  [Arguments]  ${username}  ${tender_uaid}  ${complaint}  ${lot_id}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
+  Set to dictionary  ${complaint.data}  relatedLot=${tender.data.lots[${lot_index}].id}
+  ${complaintID}=  openprocurement_client.Створити чернетку скарги про виправлення умов закупівлі
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      ${complaint}
+  [return]  ${complaintID}
+
+
 Створити чернетку вимоги/скарги про виправлення визначення переможця
   [Documentation]  Створює вимогу/скаргу у про виправлення визначення переможця статусі "draft"
   [Arguments]  ${username}  ${tender_uaid}  ${data}  ${award_index}
