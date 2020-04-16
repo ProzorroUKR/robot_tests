@@ -1187,6 +1187,32 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${USERS.users['${provider}'].complaint_data}
 
 
+Звірити відображення поля ${field} скарги ${object_index} із ${data} об'єкта ${object} для користувача ${username}
+  Wait until keyword succeeds
+  ...      5 min
+  ...      60 sec
+  ...      Звірити поле скарги із значенням
+  ...      ${username}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${data}
+  ...      ${field}
+  ...      ${USERS.users['${provider}'].complaint_data['complaintID']}
+  ...      ${object_index}
+  ...      ${object}
+
+
+Звірити відображення поля ${field} скарги із ${data} для користувача ${username}
+  Wait until keyword succeeds
+  ...      5 min
+  ...      60 sec
+  ...      Звірити поле скарги із значенням
+  ...      ${username}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${data}
+  ...      ${field}
+  ...      ${USERS.users['${provider}'].complaint_data['complaintID']}
+
+
 Додати документ до скарги ${object_index} учасника в ${object}
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
   Run As  ${provider}
@@ -1420,7 +1446,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${confirmation_data}
 
 
-Залишити скаргу на скасування ${cancellations_index}
+Залишити скаргу на скасування ${cancellations_index} без розгляду
   ${confirmation_data}=  Підготувати дані для відхилення скарги
   Set To Dictionary  ${confirmation_data.data}  status=invalid
   Run As  ${amcu_user}
@@ -2076,6 +2102,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість скасувати цінову пропозицію користувачем ${username}
   Run As  ${username}  Скасувати цінову пропозицію  ${TENDER['TENDER_UAID']}
+
+
+Можливість скасувати ${cancellations_index} cancellation
+  Run As  ${tender_owner}  Скасувати cancellation  ${TENDER['TENDER_UAID']}  ${cancellations_index}
 
 ##############################################################################################
 #             Awarding
