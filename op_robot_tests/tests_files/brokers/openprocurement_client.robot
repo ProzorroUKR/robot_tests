@@ -771,9 +771,10 @@ Library  openprocurement_client.utils
   ${cancellation_id}=  Set variable  ${cancel_reply.data.id}
   ${document_id}=  openprocurement_client.Завантажити документацію до запиту на скасування  ${username}  ${tender_uaid}  ${cancellation_id}  ${document}
   openprocurement_client.Змінити опис документа в скасуванні  ${username}  ${tender_uaid}  ${cancellation_id}  ${document_id}  ${new_description}
-  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA']
+  ${cancellation}= run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA']
   ...  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
   ...  ELSE  openprocurement_client.Перевести скасування закупівлі в період очікування  ${username}  ${tender_uaid}  ${cancellation_id}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  cancellation_data=${cancellation}
 
 
 Отримати інформацію з документа до лоту
@@ -1541,9 +1542,9 @@ Library  openprocurement_client.utils
 
 
 Отримати інформацію із скарги
-  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field_name}  ${award_index}=${None}
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field_name}  ${object_index}  ${object}
   openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${complaints}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.awards[${award_index}].complaints}  ${USERS.users['${username}'].tender_data.data.complaints}
+  ${complaints}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.${object}[${object_index}].complaints}  ${USERS.users['${username}'].tender_data.data.complaints}
   ${complaint_index}=  get_complaint_index_by_complaintID  ${complaints}  ${complaintID}
   ${field_value}=  Get Variable Value  ${complaints[${complaint_index}]['${field_name}']}
   [Return]  ${field_value}
@@ -1918,9 +1919,28 @@ Library  openprocurement_client.utils
   ...  ${cancellation_id}
   ...  ${document_id}
   ...  ${new_description}
-  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA']
+  ${cancellation}= run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA']
   ...  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
   ...  ELSE  openprocurement_client.Перевести скасування закупівлі в період очікування  ${username}  ${tender_uaid}  ${cancellation_id}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  cancellation_data=${cancellation}
+
+
+Скасувати cancellation
+    [Documentation]
+  ...      [Arguments] Username, tender uaid and cancellation number
+  ...      [Description] Find tender using uaid, create data dict with unsuccessful status and call patch_cancellation
+  ...      [Return] Reply of API
+  [Arguments]  ${username}  ${tender_uaid}  ${cancellations_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${data}=  create_data_dict   data.status  unsuccessful
+  Log   ${tender.data.cancellations[${cancellations_index}].id}
+  ${cancellation_id}=  set variable  ${tender.data.cancellations[${cancellations_index}].id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation
+  ...      ${tender.data.id}
+  ...      ${data}
+  ...      ${cancellation_id}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
 
 
 Завантажити документацію до запиту на скасування
@@ -1974,6 +1994,7 @@ Library  openprocurement_client.utils
   ...      ${data.data.id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
+  [Return]  ${reply}
 
 
 Перевести скасування закупівлі в період очікування
@@ -1991,6 +2012,7 @@ Library  openprocurement_client.utils
   ...      ${data.data.id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
+  [Return]  ${reply}
 
 
 Отримати інформацію із документа до скасування
