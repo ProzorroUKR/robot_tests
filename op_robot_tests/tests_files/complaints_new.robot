@@ -748,7 +748,7 @@ ${PLAN_TENDER}      ${True}
   ...     ${USERS.users['${viewer}'].broker}
   ...     stop_award_complaint
   ...     non-critical
-  Звірити відображення поля status скарги ${award_index} із stoped об'єкта awards для користувача ${viewer}
+  Звірити відображення поля status скарги ${award_index} із stopped об'єкта awards для користувача ${viewer}
 
 ##############################################################################################
 #             CANCELLATION COMPLAINT
