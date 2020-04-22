@@ -4,7 +4,7 @@ Suite Setup     Test Suite Setup
 Suite Teardown  Test Suite Teardown
 
 *** Variables ***
-@{USED_ROLES}       tender_owner  viewer
+@{USED_ROLES}       tender_owner  viewer  provider  provider1  provider2
 ${MOZ_INTEGRATION}  ${False}
 ${VAT_INCLUDED}     ${True}
 ${NUMBER_OF_MILESTONES}  ${1}
@@ -30,6 +30,50 @@ ${PLAN_TENDER}      ${True}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   :FOR  ${username}  IN  ${tender_owner}  ${viewer}
   \  Можливість знайти тендер по ідентифікатору для користувача ${username}
+
+
+Можливість подати пропозицію першим учасником
+  [Tags]  ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     make_bid_by_provider
+  ...     critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію користувачем ${provider}
+
+
+Можливість подати пропозицію другим учасником
+  [Tags]  ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...     provider1
+  ...     ${USERS.users['${provider1}'].broker}
+  ...     make_bid_by_provider1
+  ...     critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію користувачем ${provider1}
+
+
+Можливість подати пропозицію третім учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_by_provider2  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію користувачем ${provider2}
+
+
+Дочекатися кінця complaint періоду тендера
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Скасування тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      tender_complaintPeriond_stand_still
+  ...      critical
+  Дочекатись дати  ${USERS.users['${tender_owner}'].tender_data.data.complaintPeriod.endDate}
+  Sleep  30s
+  Оновити LAST_MODIFICATION_DATE
 
 ##############################################################################################
 #             LOT CANCELLATION
@@ -114,7 +158,7 @@ ${PLAN_TENDER}      ${True}
   Можливість скасувати тендер
 
 
-Дочекатися закічення complait періоду
+Дочекатися закічення complait періоду скасування тендера
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Скасування тендера
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
