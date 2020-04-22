@@ -61,8 +61,10 @@ Quinta:
             enquiry: [0, 20]
             tender:  [0, 20]
         openua:
+            accelerator: 1440
             tender:  [1, 30]
         openeu:
+            accelerator: 1440
             tender:  [1, 35]
         openua_defense:
             tender:  [0, 20]
@@ -87,7 +89,6 @@ Quinta:
         viewer:         Tender_Viewer
         dasu_user:      Dasu_User
         amcu_user:      Amcu_User
-        payment_user:   Payment_User
     timeout_on_wait: 15
 Etender:
     intervals:

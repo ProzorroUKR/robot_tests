@@ -1111,22 +1111,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Звірити поле тендера із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${USERS.users['${provider}'].lots_${lot_index}_question_data.question.data.${field}}  ${field}  ${USERS.users['${provider}'].lots_${lot_index}_question_data.question_id}
 
 ##############################################################################################
-#             COMPLAINTS/CLAIMS
+#             COMPLAINTS
 ##############################################################################################
-
-Можливість створити чернетку вимоги
-  ${claim}=  Підготувати дані для подання вимоги
-  ${claimID}=  Run As  ${provider}
-  ...      Створити чернетку вимоги про виправлення умов закупівлі
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${claim}
-  ${claim_data}=  Create Dictionary
-  ...      claim=${claim}
-  ...      complaintID=${claimID}
-  ${claim_data}=  munch_dict  arg=${claim_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  claim_data  ${claim_data}
-  Log  ${USERS.users['${provider}'].claim_data}
-
 
 Можливість створити чернетку скарги
   ${complaint}=  Підготувати дані для подання скарги
@@ -1134,28 +1120,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      Створити чернетку скарги про виправлення умов закупівлі
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
-  ${complaint_data}=  Create Dictionary
-  ...      complaint=${complaint}
-  ...      complaintID=${complaintID}
-  ${complaint_data}=  munch_dict  arg=${complaint_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaint_data}
+  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
   Log  ${USERS.users['${provider}'].complaint_data}
-
-
-Можливість створити чернетку вимоги про виправлення умов ${lot_index} лоту
-  ${claim}=  Підготувати дані для подання вимоги
-  ${lot_id}=  get_id_from_object  ${USERS.users['${provider}'].tender_data.data.lots[${lot_index}]}
-  ${complaintID}=  Run As  ${provider}
-  ...      Створити чернетку вимоги про виправлення умов лоту
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${claim}
-  ...      ${lot_id}
-  ${claim_data}=  Create Dictionary
-  ...      claim=${claim}
-  ...      complaintID=${complaintID}
-  ${claim_data}=  munch_dict  arg=${claim_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  claim_data  ${claim_data}
-  Log  ${USERS.users['${provider}'].claim_data}
 
 
 Можливість створити чернетку скарги про виправлення умов ${lot_index} лоту
@@ -1166,30 +1132,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
   ...      ${lot_id}
-  ${complaint_data}=  Create Dictionary
-  ...      complaint=${complaint}
-  ...      complaintID=${complaintID}
-  ${complaint_data}=  munch_dict  arg=${complaint_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaint_data}
+  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
   Log  ${USERS.users['${provider}'].complaint_data}
-
-
-Додати документ до вимоги
-  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
-  Run As  ${provider}
-  ...      Завантажити документацію до вимоги
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['claim_data']['complaintID']}
-  ...      ${file_path}
-  ${doc_id}=  get_id_from_string  ${file_name}
-  ${claim_doc}=  Create Dictionary
-  ...      doc_name=${file_name}
-  ...      doc_id=${doc_id}
-  ...      doc_content=${file_content}
-  ${claim_doc}=  munch_dict  arg=${claim_doc}
-  Set To Dictionary  ${USERS.users['${provider}'].claim_data}  documents  ${claim_doc}
-  Remove File  ${file_path}
-  Log  ${USERS.users['${provider}'].claim_data}
 
 
 Додати документ до скарги
@@ -1208,6 +1152,65 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${USERS.users['${provider}'].complaint_data}  documents  ${complaint_doc}
   Remove File  ${file_path}
   Log  ${USERS.users['${provider}'].complaint_data}
+
+
+Можливість створити чернетку скарги про виправлення кваліфікації ${qualification_index} учасника
+  ${complaint}=  Підготувати дані для подання скарги
+  ${complaintID}=  Run As  ${provider}
+  ...      Створити чернетку вимоги/скарги про виправлення кваліфікації учасника
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${complaint}
+  ...      ${qualification_index}
+  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${provider}'].complaint_data}
+
+
+Можливість створити чернетку скарги про виправлення визначення ${award_index} переможця
+  ${complaint}=  Підготувати дані для подання скарги
+  ${complaintID}=  Run As  ${provider}
+  ...      Створити чернетку вимоги/скарги про виправлення визначення переможця
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${complaint}
+  ...      ${award_index}
+  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${provider}'].complaint_data}
+
+
+Можливість створити чернетку скарги на скасування ${canсellations_index}
+  ${complaint}=  Підготувати дані для подання скарги
+  ${complaintID}=  Run As  ${provider}
+  ...      Створити чернетку вимоги/скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${complaint}
+  ...      ${canсellations_index}
+  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${provider}'].complaint_data}
+
+
+Звірити відображення поля ${field} скарги ${object_index} із ${data} об'єкта ${object} для користувача ${username}
+  Wait until keyword succeeds
+  ...      5 min
+  ...      60 sec
+  ...      Звірити поле скарги із значенням
+  ...      ${username}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${data}
+  ...      ${field}
+  ...      ${USERS.users['${provider}'].complaint_data['complaintID']}
+  ...      ${object_index}
+  ...      ${object}
+
+
+Звірити відображення поля ${field} скарги із ${data} для користувача ${username}
+  Wait until keyword succeeds
+  ...      5 min
+  ...      60 sec
+  ...      Звірити поле скарги із значенням
+  ...      ${username}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${data}
+  ...      ${field}
+  ...      ${USERS.users['${provider}'].complaint_data['complaintID']}
 
 
 Додати документ до скарги ${object_index} учасника в ${object}
@@ -1230,57 +1233,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${USERS.users['${provider}'].complaint_data}
 
 
-Можливість подати вимогу
-  ${data}=  Create Dictionary  status=claim
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${provider}
-  ...      Подати вимогу
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['claim_data']['complaintID']}
-  ...      ${confirmation_data}
-
-
 Можливість подати скаргу
-  ${data}=  Create Dictionary  status=pending
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${payment_user}
-  ...      Змінити статус скарги
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${confirmation_data}
-
-
-Можливість подати скаргу на визначення пре-кваліфікації ${qualification_index} учасника
-  ${data}=  Create Dictionary  status=pending
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${payment_user}
-  ...      Змінити статус скарги на визначення пре-кваліфікації учасника
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${qualification_index}
-  ...      ${confirmation_data}
-
-
-Можливість подати скаргу на визначення ${award_index} переможця
-  ${data}=  Create Dictionary  status=pending
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${payment_user}
-  ...      Змінити статус скарги на визначення переможця
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${award_index}
-  ...      ${confirmation_data}
-
-
-Можливість подати скаргу на скасування ${cancellations_index}
-  ${data}=  Create Dictionary  status=pending
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${payment_user}
-  ...      Змінити статус скарги на скасування
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${cancellations_index}
-  ...      ${confirmation_data}
+  Log  ${USERS.users['${provider}'].complaint_access_token}
+  ${complaint_token}=  set variable  ${USERS.users['${provider}'].complaint_access_token}
+  Log  ${USERS.users['${provider}']['complaint_data']['value']['amount']}
+  ${complaint_value}=  set variable  ${USERS.users['${provider}']['complaint_data']['value']['amount']}
+  Log  ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ${complaint_uaid}=  set variable  ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ${payment_data}=  Підготувати дані для оплати скарги  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  Run As  ${provider}
+  ...      Виконати оплату скарги
+  ...      ${payment_data}
 
 
 Прийняти скаргу до розгляду
@@ -1483,7 +1446,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${confirmation_data}
 
 
-Залишити скаргу на скасування ${cancellations_index}
+Залишити скаргу на скасування ${cancellations_index} без розгляду
   ${confirmation_data}=  Підготувати дані для відхилення скарги
   Set To Dictionary  ${confirmation_data.data}  status=invalid
   Run As  ${amcu_user}
@@ -1491,6 +1454,49 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${TENDER['TENDER_UAID']}
   ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
   ...      ${cancellations_index}
+  ...      ${confirmation_data}
+
+
+Помилково створена скарга
+  ${data}=  Create Dictionary  status=mistaken
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${provider}
+  ...      Змінити статус скарги
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${confirmation_data}
+
+
+Помилково створена скарга на визначення пре-кваліфікації ${qualification_index} учасника
+  ${data}=  Create Dictionary  status=mistaken
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${provider}
+  ...      Змінити статус скарги на визначення пре-кваліфікації учасника
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${qualification_index}
+  ...      ${confirmation_data}
+
+
+Помилково створена скарга на визначення ${award_index} переможця
+  ${data}=  Create Dictionary  status=mistaken
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${provider}
+  ...      Змінити статус скарги на визначення переможця
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${award_index}
+  ...      ${confirmation_data}
+
+
+Помилково створена скарга скасування ${canсellations_index}
+  ${data}=  Create Dictionary  status=mistaken
+  ${confirmation_data}=  Create Dictionary  data=${data}
+  Run As  ${provider}
+  ...      Змінити статус скарги на скасування
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
+  ...      ${award_index}
   ...      ${confirmation_data}
 
 
@@ -1548,47 +1554,65 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${canсellations_index}
   ...      ${confirmation_data}
 
+##############################################################################################
+#             CLAIMS
+##############################################################################################
 
-Помилково створена скарга
-  ${data}=  Create Dictionary  status=mistaken
+Можливість створити чернетку вимоги
+  ${claim}=  Підготувати дані для подання вимоги
+  ${claimID}=  Run As  ${provider}
+  ...      Створити чернетку вимоги про виправлення умов закупівлі
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${claim}
+  ${claim_data}=  Create Dictionary
+  ...      claim=${claim}
+  ...      complaintID=${claimID}
+  ${claim_data}=  munch_dict  arg=${claim_data}
+  Set To Dictionary  ${USERS.users['${provider}']}  claim_data  ${claim_data}
+  Log  ${USERS.users['${provider}'].claim_data}
+
+
+Можливість створити чернетку вимоги про виправлення умов ${lot_index} лоту
+  ${claim}=  Підготувати дані для подання вимоги
+  ${lot_id}=  get_id_from_object  ${USERS.users['${provider}'].tender_data.data.lots[${lot_index}]}
+  ${complaintID}=  Run As  ${provider}
+  ...      Створити чернетку вимоги про виправлення умов лоту
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${claim}
+  ...      ${lot_id}
+  ${claim_data}=  Create Dictionary
+  ...      claim=${claim}
+  ...      complaintID=${complaintID}
+  ${claim_data}=  munch_dict  arg=${claim_data}
+  Set To Dictionary  ${USERS.users['${provider}']}  claim_data  ${claim_data}
+  Log  ${USERS.users['${provider}'].claim_data}
+
+
+Додати документ до вимоги
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  Run As  ${provider}
+  ...      Завантажити документацію до вимоги
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${provider}']['claim_data']['complaintID']}
+  ...      ${file_path}
+  ${doc_id}=  get_id_from_string  ${file_name}
+  ${claim_doc}=  Create Dictionary
+  ...      doc_name=${file_name}
+  ...      doc_id=${doc_id}
+  ...      doc_content=${file_content}
+  ${claim_doc}=  munch_dict  arg=${claim_doc}
+  Set To Dictionary  ${USERS.users['${provider}'].claim_data}  documents  ${claim_doc}
+  Remove File  ${file_path}
+  Log  ${USERS.users['${provider}'].claim_data}
+
+
+Можливість подати вимогу
+  ${data}=  Create Dictionary  status=claim
   ${confirmation_data}=  Create Dictionary  data=${data}
   Run As  ${provider}
-  ...      Змінити статус скарги
+  ...      Подати вимогу
   ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${confirmation_data}
-
-
-Помилково створена скарга на визначення пре-кваліфікації ${qualification_index} учасника
-  ${data}=  Create Dictionary  status=mistaken
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${provider}
-  ...      Змінити статус скарги на визначення пре-кваліфікації учасника
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${qualification_index}
-  ...      ${confirmation_data}
-
-
-Помилково створена скарга на визначення ${award_index} переможця
-  ${data}=  Create Dictionary  status=mistaken
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${provider}
-  ...      Змінити статус скарги на визначення переможця
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${award_index}
-  ...      ${confirmation_data}
-
-
-Помилково створена скарга скасування ${canсellations_index}
-  ${data}=  Create Dictionary  status=mistaken
-  ${confirmation_data}=  Create Dictionary  data=${data}
-  Run As  ${provider}
-  ...      Змінити статус скарги на скасування
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${USERS.users['${provider}']['complaint_data']['complaintID']}
-  ...      ${award_index}
+  ...      ${USERS.users['${provider}']['claim_data']['complaintID']}
   ...      ${confirmation_data}
 
 
@@ -1617,34 +1641,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${USERS.users['${provider}']}  claim_data  ${claim_data}
 
 
-Можливість створити чернетку скарги про виправлення визначення ${award_index} переможця
-  ${complaint}=  Підготувати дані для подання скарги
-  ${complaintID}=  Run As  ${provider}
-  ...      Створити чернетку вимоги/скарги про виправлення визначення переможця
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${complaint}
-  ...      ${award_index}
-  ${complaint_data}=  Create Dictionary
-  ...      complaint=${complaint}
-  ...      complaintID=${complaintID}
-   ${complaint_data}=  munch_dict  arg=${complaint_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaint_data}
-
-
-Можливість створити чернетку скарги про виправлення кваліфікації ${qualification_index} учасника
-  ${complaint}=  Підготувати дані для подання скарги
-  ${complaintID}=  Run As  ${provider}
-  ...      Створити чернетку вимоги/скарги про виправлення кваліфікації учасника
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${complaint}
-  ...      ${qualification_index}
-  ${complaint_data}=  Create Dictionary
-  ...      complaint=${complaint}
-  ...      complaintID=${complaintID}
-   ${complaint_data}=  munch_dict  arg=${complaint_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaint_data}
-
-
 Можливість створити чернетку вимоги про виправлення кваліфікації ${qualification_index} учасника
   ${claim}=  Підготувати дані для подання вимоги
   ${complaintID}=  Run As  ${provider}
@@ -1657,20 +1653,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      complaintID=${complaintID}
   ${claim_data}=  munch_dict  arg=${claim_data}
   Set To Dictionary  ${USERS.users['${provider}']}  claim_data  ${claim_data}
-
-
-Можливість створити чернетку скарги на скасування ${canсellations_index}
-  ${complaint}=  Підготувати дані для подання скарги
-  ${complaintID}=  Run As  ${provider}
-  ...      Створити чернетку вимоги/скарги на скасування
-  ...      ${TENDER['TENDER_UAID']}
-  ...      ${complaint}
-  ...      ${canсellations_index}
-  ${complaint_data}=  Create Dictionary
-  ...      complaint=${complaint}
-  ...      complaintID=${complaintID}
-   ${complaint_data}=  munch_dict  arg=${complaint_data}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaint_data}
 
 
 Можливість створити вимогу про виправлення умов закупівлі із документацією
@@ -2120,6 +2102,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість скасувати цінову пропозицію користувачем ${username}
   Run As  ${username}  Скасувати цінову пропозицію  ${TENDER['TENDER_UAID']}
+
+
+Можливість скасувати ${cancellations_index} cancellation
+  Run As  ${tender_owner}  Скасувати cancellation  ${TENDER['TENDER_UAID']}  ${cancellations_index}
 
 ##############################################################################################
 #             Awarding

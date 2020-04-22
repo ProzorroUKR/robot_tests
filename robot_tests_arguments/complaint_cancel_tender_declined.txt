@@ -12,7 +12,4 @@
 -i tender_cancellation_complaint_draft
 -i cancel_complaint_pending
 -i accept_cancel_complaint
--i satisfy_cancel_complaint
--i cancellation_complaintPeriod_stand_still
--i cancellation_unsuccessful
--i resolved_cancel_complaint
+-i decline_cancel_complaint

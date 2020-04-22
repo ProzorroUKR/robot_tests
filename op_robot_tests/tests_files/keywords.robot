@@ -298,6 +298,12 @@ Get Broker Property By Username
   [Return]  ${complaint}
 
 
+Підготувати дані для оплати скарги
+  [Arguments]  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  ${payment_data}=  test_payment_data  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  [Return]  ${payment_data}
+
+
 Підготувати дані для прийняття скарги до розгляду
   ${confirmation_data}=  test_accept_complaint_data
   [Return]  ${confirmation_data}
@@ -883,8 +889,8 @@ Log differences between dicts
 
 
 Звірити поле скарги із значенням
-  [Arguments]  ${username}  ${tender_uaid}  ${given_value}  ${field_name}  ${complaintID}  ${award_index}=${None}
-  ${received_value}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  ${field_name}  ${award_index}
+  [Arguments]  ${username}  ${tender_uaid}  ${given_value}  ${field_name}  ${complaintID}  ${object_index}=${None}  ${object}=${None}
+  ${received_value}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  ${field_name}  ${object_index}  ${object}
   Порівняти об'єкти  ${given_value}  ${received_value}
 
 
@@ -1016,8 +1022,8 @@ Require Failure
 
 
 Звірити статус вимоги/скарги
-  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${left}  ${award_index}=${None}
-  ${right}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  status  ${award_index}
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${left}  ${object}  ${object_index}
+  ${right}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  status  ${object}  ${object_index}
   Порівняти об'єкти  ${left}  ${right}
 
 

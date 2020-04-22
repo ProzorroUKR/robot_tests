@@ -14,3 +14,6 @@ ${DASU_API_VERSION}   2.4
 
 ${DS_REGEXP}        ^https?:\/\/public-docs(?:-staging)?\.prozorro\.gov\.ua\/get\/([0-9A-Fa-f]{32})
 ${AUCTION_REGEXP}   ^https?:\/\/auction(?:-staging)?\.prozorro\.gov\.ua\/(esco-)?tenders\/([0-9A-Fa-f]{32})
+
+${PAYMENT_API}              https://integration-sandbox-2.prozorro.gov.ua/liqpay
+${PAYMENT_API_VERSION}      v1

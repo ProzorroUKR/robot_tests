@@ -453,6 +453,28 @@ def test_complaint_data():
     return munchify({'data': data})
 
 
+def test_payment_data(token, complaint_value, complaint_uaid):
+    data = {
+            "amount": str(complaint_value),
+            "currency": "UAH",
+            "description": generate_payment_description(token, complaint_uaid),
+            "type": "credit",
+            "date_oper": get_now().isoformat(),
+            "account": "UA723004380000026001503374077",
+            "okpo": "14360570",
+            "mfo": "123456",
+            "name": u"Плат.интер-эквайрин через LiqPay"
+    }
+    return data
+
+
+def generate_payment_description(token, complaint_uaid):
+    full_hash = hashlib.sha512(token).hexdigest()
+    short_hash = full_hash[0:8]
+    description = complaint_uaid + '-' + short_hash + ' [TESTING, ROBOT TESTS]'
+    return description
+
+
 def test_accept_complaint_data():
     data = {
         "status": "accepted",
