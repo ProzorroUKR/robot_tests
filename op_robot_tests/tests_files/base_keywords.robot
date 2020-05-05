@@ -2023,6 +2023,21 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
 
 
+Можливість подати цінову пропозицію на суму ${amount} користувачем ${username}
+  ${bid}=  Підготувати дані для подання пропозиції
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  Set To Dictionary  ${USERS.users['${username}'].bidresponses.bid.data.lotValues[0].value}  amount=${amount}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  ${features}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.features}  ${None}
+  ${features_ids}=  Run Keyword IF  ${features}
+  ...     Отримати ідентифікатори об’єктів  ${username}  features
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+
 Можливість подати цінову пропозицію на другому етапі рамкової угоди користувачем
   [Arguments]  ${username}  ${index}=${0}
   ${bid}=  Підготувати дані для подання пропозиції другого етапу рамкової угоди  ${index}
@@ -2085,6 +2100,18 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Remove File  ${file_path}
 
 
+Можливість завантажити документ для усунення невідповідності в пропозиції в ${object} ${object_index} користувачем ${username}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${doc_id}=  get_id_from_string  ${file_name}
+  ${bid_document_data}=  Create Dictionary
+  ...      doc_name=${file_name}
+  ...      doc_content=${file_content}
+  ...      doc_id=${doc_id}
+  Run As  ${username}  Завантажити документ в ставку для усунення невідповідності в пропозиції  ${file_path}  ${TENDER['TENDER_UAID']}  ${object}  ${object_index}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_document=${bid_document_data}
+  Remove File  ${file_path}
+
+
 Можливість змінити документацію цінової пропозиції користувачем ${username}
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
   ${doc_id}=  get_id_from_string  ${file_name}
@@ -2093,6 +2120,18 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      doc_content=${file_content}
   ...      doc_id=${doc_id}
   Run As  ${username}  Змінити документ в ставці  ${TENDER['TENDER_UAID']}  ${file_path}  ${USERS.users['${username}']['bid_document']['doc_id']}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_document_modified=${bid_document_modified_data}
+  Remove File  ${file_path}
+
+
+Можливість змінити документацію цінової пропозиції при усуненні невідповідності користувачем ${username}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${doc_id}=  get_id_from_string  ${file_name}
+  ${bid_document_modified_data}=  Create Dictionary
+  ...      doc_name=${file_name}
+  ...      doc_content=${file_content}
+  ...      doc_id=${doc_id}
+  Run As  ${username}  Змінити документ в ставці при усуненні невідповідності  ${TENDER['TENDER_UAID']}  ${file_path}  ${USERS.users['${username}']['bid_document']['doc_id']}
   Set To Dictionary  ${USERS.users['${username}']}  bid_document_modified=${bid_document_modified_data}
   Remove File  ${file_path}
 
@@ -2170,6 +2209,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      ${TENDER['TENDER_UAID']}
   ...      ${0}
   Run Keyword And Ignore Error  Remove From Dictionary  ${USERS.users['${viewer}'].tender_data.data.contracts[0]}  status
+
+
+Повідомлення в ${object} про невіповідність пропозиції ${object_index}
+  ${24h_data}=  Підготувати дані для повідомлення про невідповідність пропозиції
+  Run as  ${tender_owner}  Створити повідомлення по невідповідність
+  ...  ${TENDER['TENDER_UAID']}
+  ...  ${object}
+  ...  ${object_index}
+  ...  ${24h_data}
+
 
 ##############################################################################################
 #             Pre-Qualifications
