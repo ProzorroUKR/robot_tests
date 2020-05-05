@@ -423,6 +423,11 @@ Get Broker Property By Username
   [Return]  ${modification_data}
 
 
+Підготувати дані для повідомлення про невідповідність пропозиції
+  ${24h_data}=  test_24_hours_data
+  [Return]  ${24h_data}
+
+
 Адаптувати дані для оголошення тендера
   [Arguments]  ${tender_data}
   # munchify is used to make deep copy of ${tender_data}
