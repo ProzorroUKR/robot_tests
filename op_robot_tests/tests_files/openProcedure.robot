@@ -2036,6 +2036,17 @@ ${PLAN_TENDER}      ${True}
   Можливість подати цінову пропозицію користувачем ${provider}
 
 
+Можливість подати пропозицію з фіксованою сумою першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_fixed_amount_by_provider  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію на суму 500 користувачем ${provider}
+
+
 Можливість зменшити пропозицію на 5% першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
@@ -2077,6 +2088,17 @@ ${PLAN_TENDER}      ${True}
   Можливість подати цінову пропозицію користувачем ${provider1}
 
 
+Можливість подати пропозицію з фіксованою сумою другим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_fixed_amount_by_provider1  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію на суму 1000 користувачем ${provider1}
+
+
 Можливість зменшити пропозицію на 5% другим учасником
   [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...      provider1
@@ -2095,6 +2117,17 @@ ${PLAN_TENDER}      ${True}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію користувачем ${provider2}
+
+
+Можливість подати пропозицію з фіксованою сумою третім учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_fixed_amount_by_provider2  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію на суму 1500 користувачем ${provider2}
 
 ##############################################################################################
 #             ABOVETRHESHOLD  BIDDING
@@ -2391,6 +2424,42 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run Keyword And Expect Error  *  Можливість додати документацію до 0 лоту
+
+
+Дочекатись початку періоду пре-кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду пре-кваліфікації учасників
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      wait_active_pre-qualification_start
+  Дочекатись дати початку періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+
+Повідомити учасника про невідповідність в тендерній пропозиції
+  [Tags]   ${USERS.users['${tender_owner}'].broker}:
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_24h_milestone_pre-qualification
+  Повідомлення в qualifications про невіповідність пропозиції 0
+
+
+Можливість завантажити документ в пропозицію першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_bid_by_provider_24h_pre-qualification
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість завантажити документ для усунення невідповідності в пропозиції в qualifications 0 користувачем ${provider}
+
+
+Можливість змінити документацію цінової пропозиції першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_bid_by_provider_24h_pre-qualification
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити документацію цінової пропозиції під час кваліфікації користувачем ${provider}
 
 
 Відображення статусу першої пропозиції кваліфікації
