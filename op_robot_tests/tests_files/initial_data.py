@@ -1093,3 +1093,12 @@ def test_cancellation_data(procurement_method_type):
     else:
         result = random.choice(["noDemand", "unFixable", "forceMajeure", "expensesCut"])
     return munchify({"reasonType": result})
+
+
+def test_24_hours_data():
+    return munchify({
+        "data": {
+                "code": "24h",
+                "description": create_fake_sentence()
+        }
+    })

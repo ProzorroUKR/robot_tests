@@ -212,6 +212,41 @@ ${award_index}      ${0}
 ##############################################################################################
 #             QUALIFICATION
 ##############################################################################################
+Дочекатись початку періоду кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду кваліфікації учасників
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      wait_active_qualification_start
+  Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+
+Повідомити учасника про невідповідність в тендерній пропозиції
+  [Tags]   ${USERS.users['${tender_owner}'].broker}:
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_24h_milestone_qualification
+  Повідомлення в awards про невіповідність пропозиції 0
+
+
+Можливість завантажити документ в пропозицію першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_bid_by_provider_24h_qualification
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість завантажити документ для усунення невідповідності в пропозиції в awards 0 користувачем ${provider}
+
+
+Можливість змінити документацію цінової пропозиції першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_bid_by_provider_24h_qualification
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити документацію цінової пропозиції при усуненні невідповідності користувачем ${provider}
+
 
 Можливість дочекатися перевірки переможців по ЄДРПОУ
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Перевірка користувача по ЄДРПОУ
