@@ -17,7 +17,7 @@ ${TENDER_MEAT}      ${False}
 ${LOT_MEAT}         ${False}
 ${ITEM_MEAT}        ${False}
 ${MOZ_INTEGRATION}  ${False}
-${VAT_INCLUDED}     ${False}
+${VAT_INCLUDED}     ${True}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
@@ -220,3 +220,13 @@ ${PROFILE}          ${True}
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення дати tenderPeriod.endDate тендера для усіх користувачів
+
+
+Можливість пройти процедуру валідації
+  [Tags]   ${USERS.users['${viewer}'].broker}: Валідація тендера
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      successfully_tender_validation  level1
+  ...      critical
+  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
