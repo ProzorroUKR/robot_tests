@@ -22,6 +22,7 @@ mode_open = ["belowThreshold", "aboveThresholdUA", "aboveThresholdEU",
              "aboveThresholdUA.defense", "competitiveDialogueUA", "competitiveDialogueEU", "esco",
              "closeFrameworkAgreementUA"]
 mode_limited = ["reporting", "negotiation.quick", "negotiation"]
+mode_selective = ["priceQuotation"]
 violationType = ["corruptionDescription", "corruptionProcurementMethodType", "corruptionChanges",
                  "corruptionPublicDisclosure", "corruptionBiddingDocuments", "documentsForm",
                  "corruptionAwarded", "corruptionCancelled", "corruptionContracting"]
@@ -353,6 +354,8 @@ def test_tender_data_planning(params):
         data["tender"]["procurementMethod"] = "open"
     if params['mode'] in mode_limited:
         data["tender"]["procurementMethod"] = "limited"
+    if params['mode'] in mode_selective:
+        data["tender"]["procurementMethod"] = "selective"
     if params.get('number_of_breakdown'):
         value_data = breakdown_value_generation(params['number_of_breakdown'], data['budget']['amount'])
         for value in value_data:
