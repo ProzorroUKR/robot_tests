@@ -58,6 +58,7 @@ from .initial_data import (
     test_tender_data_planning,
     test_tender_data_openua_defense,
     test_tender_data_framework_agreement,
+    test_tender_data_pq,
     test_tender_data_selection,
     test_bid_competitive_data,
     test_monitoring_data,
@@ -377,6 +378,9 @@ def prepare_test_tender_data(procedure_intervals,
     elif mode == 'open_esco':
          return munchify({'data': test_tender_data_esco(
             tender_parameters, submissionMethodDetails, plan_data)})
+    elif mode == 'priceQuotation':
+        return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data)})
+
         # The previous line needs an explicit keyword argument because,
         # unlike previous functions, this one has three arguments.
     raise ValueError("Invalid mode for prepare_test_tender_data")

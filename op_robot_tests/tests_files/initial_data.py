@@ -983,6 +983,17 @@ def test_tender_data_esco(params, submissionMethodDetails, plan_data):
     return data
 
 
+def test_tender_data_pq(params, submissionMethodDetails, plan_data):
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
+    del data["minimalStep"]
+    data['procurementMethodType'] = 'priceQuotation'
+    if params['profile']:
+        data['profile'] = fake.valid_profile()
+    else:
+        data['profile'] = fake.invalid_profile()
+    return munchify(data)
+
+
 def test_milestone_data():
     return munchify({
         "code": random.choice(["prepayment", "postpayment"]),

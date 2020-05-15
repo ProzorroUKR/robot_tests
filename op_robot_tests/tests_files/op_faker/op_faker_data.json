@@ -8153,5 +8153,11 @@
         "dateOfInvoicing",
         "endDateOfTheReportingPeriod",
         "anotherEvent"
+    ],
+    "valid_profile_ids": [
+        "400496-33600000-683398-42000777"
+    ],
+    "invalid_profile_ids": [
+        "195333-32420000-214469-40000777"
     ]
 }

@@ -33,6 +33,8 @@ class OP_Provider(BaseProvider):
     rationale_types = _fake_data.rationale_types
     title_of_milestones = _fake_data.title_of_milestones
     procuringTenderers = _fake_data.procuringTenderers
+    valid_profile_ids = _fake_data.valid_profile_ids
+    invalid_profile_ids = _fake_data.invalid_profile_ids
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -224,3 +226,11 @@ class OP_Provider(BaseProvider):
     @classmethod
     def milestone_title(self):
         return self.random_element(self.title_of_milestones)
+
+    @classmethod
+    def valid_profile(self):
+        return self.random_element(self.valid_profile_ids)
+
+    @classmethod
+    def invalid_profile(self):
+        return self.random_element(self.invalid_profile_ids)
