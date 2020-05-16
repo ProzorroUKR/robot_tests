@@ -241,3 +241,45 @@ ${PROFILE}          ${True}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
+
+
+Можливість зменшити пропозицію на 5% першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      modify_bid_by_provider
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість зменшити пропозицію до 95 відсотків користувачем ${provider}
+
+
+Можливість завантажити документ в пропозицію першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_bid_by_provider
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+
+
+Можливість змінити документацію цінової пропозиції першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_bid_by_provider
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити документацію цінової пропозиції користувачем ${provider}
+
+
+Можливість подати пропозицію другим учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_by_provider1  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію priceQuotation користувачем ${provider1}
+

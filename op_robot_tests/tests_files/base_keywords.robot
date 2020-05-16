@@ -2055,7 +2055,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${bid}=  Підготувати дані для подання пропозиції priceQuotation  ${username}
   ${bidresponses}=  Create Dictionary  bid=${bid}
   Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
-  ${lots}=  Get Variable Value  ${USERS.users['${username}'].initial_data.data.lots}  ${None}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
   ${lots_ids}=  Run Keyword IF  ${lots}
   ...     Отримати ідентифікатори об’єктів  ${username}  lots
   ...     ELSE  Set Variable  ${None}
