@@ -1218,6 +1218,19 @@ Require Failure
   ...      active.qualification.stand-still
 
 
+Дочекатись зміни статусу unsuccessful
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      unsuccessful
+
+
 Дочекатись дати закінчення періоду подання скарг
   [Arguments]  ${username}
   Дочекатись дати  ${USERS.users['${username}'].tender_data.data.complaintPeriod.endDate}

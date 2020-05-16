@@ -1,0 +1,17 @@
+-v MODE:priceQuotation
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:0
+
+-v TENDER_MEAT:False
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-v PROFILE:True
+
+-i create_tender
+-i find_tender
+
+-i successfully_tender_validation
+
+-i unsuccefully_tender_without_bids
