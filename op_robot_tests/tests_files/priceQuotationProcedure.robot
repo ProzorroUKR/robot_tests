@@ -322,3 +322,13 @@ ${PROFILE}          ${True}
   ...  critical
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
 
+
+Відображення статусу завершення, якщо не було подано коректного профайлу
+  [Tags]   ${USERS.users['${viewer}'].broker}: Завершення тендера
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      unsuccessfully_tender_verification_wrong_profile  level1
+  ...      critical
+  Дочекатися припинення процесу  ${viewer}  ${TENDER['TENDER_UAID']}
+
