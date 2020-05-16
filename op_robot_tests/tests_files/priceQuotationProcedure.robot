@@ -283,3 +283,42 @@ ${PROFILE}          ${True}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider1}
 
+
+Можливість дочекатись дати початку періоду кваліфікації
+  [Tags]  ${USERS.users['${provider}'].broker}: Подання кваліфікації
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     awardPeriod_startDate
+  ...     critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Дочекатись дати початку періоду кваліфікації  ${provider}  ${TENDER['TENDER_UAID']}
+
+
+Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_add_doc_to_first_award
+  ...  critical
+  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
+  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії   ${file_path}   ${TENDER['TENDER_UAID']}   0
+  Remove File  ${file_path}
+
+
+Можливість відхилити постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_first_award
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість підтвердити другого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_second_award
+  ...  critical
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
+
