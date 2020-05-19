@@ -44,35 +44,6 @@ ${PROFILE}          ${True}
   Можливість знайти тендер по ідентифікатору для усіх користувачів
 
 
-Можливість додати документацію до тендера
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Додання документації
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      add_tender_doc  level3
-  ...      critical
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість додати документацію до тендера
-
-
-Відображення заголовку документації до тендера
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      add_tender_doc  level2
-  ...      non-critical
-  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  Звірити відображення поля title документа ${USERS.users['${tender_owner}']['tender_document']['doc_id']} із ${USERS.users['${tender_owner}'].tender_document.doc_name} для користувача ${viewer}
-
-
-Відображення вмісту документації до тендера
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      add_tender_doc  level2
-  ...      non-critical
-  Звірити відображення вмісту документа ${USERS.users['${tender_owner}'].tender_document.doc_id} із ${USERS.users['${tender_owner}'].tender_document.doc_content} для користувача ${viewer}
-
-
 Відображення заголовку тендера
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
   ...      viewer
