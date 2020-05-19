@@ -1,6 +1,5 @@
 *** Settings ***
 Resource        base_keywords.robot
-Resource        aboveThreshold_keywords.robot
 Suite Setup     Test Suite Setup
 Suite Teardown  Test Suite Teardown
 
@@ -233,11 +232,11 @@ ${PROFILE}          ${True}
 
 Можливість відхилити постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
-  ...  tender_owner
+  ...  provider
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  qualification_reject_first_award
   ...  critical
-  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+  Run As  ${provider}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
 
 
 Можливість підтвердити другого постачальника
