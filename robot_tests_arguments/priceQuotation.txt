@@ -13,7 +13,6 @@
 -i find_tender
 -i extend_tendering_period
 -i tender_view
--i tender_view_milestone
 -i tender_view_value
 -i tender_view_deliveryDate
 -i tender_view_quantity

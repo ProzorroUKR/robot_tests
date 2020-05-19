@@ -63,51 +63,6 @@ ${PROFILE}          ${True}
   Звірити відображення поля description тендера для користувача ${viewer}
 
 
-Відображення типу оплати
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_milestone  level2
-  ...      non-critical
-  Звірити відображення поля code усіх умов оплати для усіх користувачів
-
-
-Відображення події яка ініціює оплату
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_milestone  level2
-  ...      non-critical
-  Звірити відображення поля title усіх умов оплати для усіх користувачів
-
-
-Відображення розміру оплати
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_milestone  level2
-  ...      non-critical
-  Звірити відображення поля percentage усіх умов оплати для усіх користувачів
-
-
-Відображення к-ті днів періоду оплати
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_milestone  level2
-  ...      non-critical
-  Звірити відображення поля duration.days усіх умов оплати для усіх користувачів
-
-
-Відображення типу днів періоду оплати
-    [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_milestone  level2
-  ...      non-critical
-  Звірити відображення поля duration.type усіх умов оплати для усіх користувачів
-
-
 Відображення бюджету тендера
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
   ...      viewer
