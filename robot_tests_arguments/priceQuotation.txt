@@ -26,7 +26,6 @@
 -i make_bid_by_provider1
 
 -i awardPeriod_startDate
--i qualification_add_doc_to_first_award
 -i qualification_reject_first_award
 -i qualification_approve_second_award
 
