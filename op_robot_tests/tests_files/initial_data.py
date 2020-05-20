@@ -663,7 +663,7 @@ def test_bid_data_pq(data):
                 if requirement.get('expectedValue'):
                     value = requirement.get('expectedValue')
                 else:
-                    value = requirement.get('minValue', '1')
+                    value = requirement.get('minValue')
 
                 requirement = {
                     "requirement": {"id": requirement['id']},
