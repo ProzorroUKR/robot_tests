@@ -62,15 +62,6 @@ ${PROFILE}          ${True}
   Звірити відображення поля description тендера для користувача ${viewer}
 
 
-Відображення бюджету тендера
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_value  level1
-  ...      critical
-  Звірити відображення поля value.amount тендера для усіх користувачів
-
-
 Відображення валюти тендера
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
   ...      viewer
@@ -115,15 +106,6 @@ ${PROFILE}          ${True}
   ...      tender_view_quantity  level2
   ...      non-critical
   Звірити відображення поля quantity усіх предметів для користувача ${viewer}
-
-
-Відображення назви одиниці номенклатур тендера
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_unit_name  level2+
-  ...      non-critical
-  Звірити відображення поля unit.name усіх предметів для користувача ${viewer}
 
 
 Неможливість змінити дату закінчення періоду подання пропозиції на 1 день після публікації
