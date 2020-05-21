@@ -16,7 +16,6 @@
 -i tender_view_value
 -i tender_view_deliveryDate
 -i tender_view_quantity
--i tender_view_unit_name
 
 -i successfully_tender_validation
 
@@ -28,4 +27,9 @@
 -i awardPeriod_startDate
 -i qualification_reject_first_award
 -i qualification_approve_second_award
+
+-i modify_contract_amount_net
+-i modify_contract_value
+-i contract_sign
+-i agreement_registration
 

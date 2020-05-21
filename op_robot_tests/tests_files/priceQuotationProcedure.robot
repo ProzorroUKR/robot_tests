@@ -232,11 +232,11 @@ ${PROFILE}          ${True}
 
 Можливість відхилити постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
-  ...  provider
+  ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  qualification_reject_first_award
   ...  critical
-  Run As  ${provider}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
 
 
 Можливість підтвердити другого постачальника
@@ -266,4 +266,80 @@ ${PROFILE}          ${True}
   ...      unsuccefully_tender_without_bids  level1
   ...      critical
   Дочекатись зміни статусу unsuccessful  ${viewer}  ${TENDER['TENDER_UAID']}
+
+
+Можливість редагувати вартість угоди без урахування ПДВ
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_contract_amount_net
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  ${amount_net}=  create_fake_amount_net  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
+  Run As  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amountNet
+  ...      ${amount_net}
+
+
+Можливість редагувати вартість угоди
+  ${viewer_data}=  Get From Dictionary  ${USERS.users}  ${viewer}
+  ${tender_owner_data}=  Get From Dictionary  ${USERS.users}  ${tender_owner}
+  [Tags]   ${tender_owner_data.broker}: Редагування угоди
+  ...      tender_owner
+  ...      ${tender_owner_data.broker}
+  ...      modify_contract_value
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
+  ${amount}=  create_fake_amount  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
+  Run As  ${tender_owner}  Редагувати угоду
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${contract_index}
+  ...      value.amount
+  ...      ${amount}
+
+
+Можливість укласти угоду для закупівлі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес укладання угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      contract_sign  level1
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Run As  ${tender_owner}  Підтвердити підписання контракту  ${TENDER['TENDER_UAID']}  ${contract_index}
+
+
+Відображення статусу підписаної угоди з постачальником закупівлі
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      contract_sign
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  Run As  ${viewer}  Оновити сторінку з тендером  ${TENDER['TENDER_UAID']}
+  Звірити відображення поля contracts[${contract_index}].status тендера із active для користувача ${viewer}
+
+
+Відображення статусу успішного завершення тендера
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      agreement_registration
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити відображення поля status тендера із complete для користувача ${viewer}
 
