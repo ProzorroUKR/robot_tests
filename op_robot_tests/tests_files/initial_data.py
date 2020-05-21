@@ -670,7 +670,7 @@ def test_bid_data_pq(data):
                 }
                 bid.data.requirementResponses.append(requirement)
     bid.data['status'] = 'draft'
-    bid.data.update(test_bid_value(1000, True))
+    bid.data.update(test_bid_value(fake.random_int(min=1, max=int(data['value']['amount'])), True))
     return bid
 
 
