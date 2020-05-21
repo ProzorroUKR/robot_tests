@@ -663,8 +663,7 @@ def test_bid_data_pq(data):
                 if requirement.get('expectedValue'):
                     value = requirement.get('expectedValue')
                 else:
-                    value = requirement.get('minValue')
-
+                    value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
                 requirement = {
                     "requirement": {"id": requirement['id']},
                     "value": value
