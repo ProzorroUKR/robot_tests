@@ -18,6 +18,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
   ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
   ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
+  ${PROFILE}  Get Variable Value  ${PROFILE}  ${True}
   ${WRONG_TENDER_DATE}  Get Variable Value  ${WRONG_TENDER_DATE}  ${False}
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
