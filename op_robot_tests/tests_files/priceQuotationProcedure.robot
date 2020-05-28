@@ -7,6 +7,7 @@ Suite Teardown  Test Suite Teardown
 *** Variables ***
 ${MODE}             priceQuotation
 @{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer
+@{USED_PROVIDERS}   provider  provider1  provider2
 ${RESOURCE}         tenders
 
 ${NUMBER_OF_ITEMS}  ${1}
@@ -232,13 +233,28 @@ ${PROFILE}          ${True}
   Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
 
 
-Можливість підтвердити другого постачальника
+Можливість дискваліфікуватися постачальником
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
-  ...  tender_owner
-  ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_approve_second_award
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  disqualification_first_award
   ...  critical
-  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  0
+  Run As  ${user}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість кваліфікувати постачальником другої пропозиції
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  qualification_approve_second_award_by_provider
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  1
+  Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
 
 
 Відображення статусу завершення, якщо не було подано коректного профайлу
@@ -336,3 +352,13 @@ ${PROFILE}          ${True}
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Звірити відображення поля status тендера із complete для користувача ${viewer}
 
+
+*** Keywords ***
+Пошук постачальника пропозиції з awards по індексу
+    [Arguments]  ${index}
+    :FOR  ${user_role}  IN  @{USED_PROVIDERS}
+    \  ${user_name}=  Get Variable Value  ${BROKERS['${BROKER}'].roles['${user_role}']}
+    \  ${bid_id}=  Отримати дані із тендера  ${user_name}  ${TENDER['TENDER_UAID']}  awards[${index}].bid_id
+    \  ${bid_id_by_user}=  Get Variable Value  ${USERS.users['${user_name}'].bidresponses.bid.data.id}
+    \  Exit For Loop If  '${bid_id}' == '${bid_id_by_user}'
+    [Return]  ${user_name}
