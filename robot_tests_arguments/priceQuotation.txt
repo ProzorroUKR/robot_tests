@@ -9,6 +9,7 @@
 
 -v PROFILE:True
 
+-i create_tender_wrong_date
 -i create_tender
 -i find_tender
 -i extend_tendering_period

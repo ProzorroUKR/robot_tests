@@ -23,6 +23,17 @@ ${PLAN_TENDER}      ${True}
 ${PROFILE}          ${True}
 
 *** Test Cases ***
+Неможливість оголосити тендер з tenderPeriod:endDate < 2 робочих дні
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_wrong_date  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${WRONG_TENDER_DATE}  ${True}
+  Run Keyword And Expect Error  *  Можливість оголосити тендер
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
