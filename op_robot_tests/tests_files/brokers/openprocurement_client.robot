@@ -1687,6 +1687,25 @@ Library  openprocurement_client.utils
   [Return]  ${uploaded_file}
 
 
+Завантажити документ в ставку обгрунтування аномально низької ціни
+  [Arguments]  ${username}  ${path}  ${tender_uaid}  ${doc_name}=documents  ${doc_type}=${None}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${bid_id}=  set variable   ${tender.data.awards[0].bid_id}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}']['access_token']}
+  ${response}=  Call Method  ${USERS.users['${username}'].client}  upload_bid_document
+  ...      ${path}
+  ...      ${tender.data.id}
+  ...      ${bid_id}
+  ...      doc_type=${doc_type}
+  ...      access_token=${tender.access.token}
+  ...      subitem_name=${doc_name}
+  ${uploaded_file} =  Create Dictionary
+  ...      filepath=${path}
+  ...      upload_response=${response}
+  Log object data   ${uploaded_file}
+  [Return]  ${uploaded_file}
+
+
 Змінити документ в ставці
   [Arguments]  ${username}  ${tender_uaid}  ${path}  ${doc_id}  ${doc_type}=documents
   ${bid_id}=  Get Variable Value   ${USERS.users['${username}'].bidresponses['bid'].data.id}
@@ -1708,6 +1727,26 @@ Library  openprocurement_client.utils
 
 
 Змінити документ в ставці при усуненні невідповідності
+  [Arguments]  ${username}  ${tender_uaid}  ${path}  ${doc_id}  ${doc_type}=documents
+  ${bid_id}=  openprocurement_client.Отримати інформацію із пропозиції  ${username}  ${tender_uaid}  id
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}']['access_token']}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+  ${bid_doc}=  get_document_by_id  ${bid.data}  ${doc_id}
+  ${response}=  Call Method  ${USERS.users['${username}'].client}  update_bid_document
+  ...      ${path}
+  ...      ${tender.data.id}
+  ...      ${bid_id}
+  ...      ${bid_doc['id']}
+  ...      access_token=${tender.access.token}
+  ${uploaded_file} =  Create Dictionary
+  ...      filepath=${path}
+  ...      upload_response=${response}
+  Log object data   ${uploaded_file}
+  [Return]  ${uploaded_file}
+
+
+Змінити документ в ставці при обгрунтуванні аномально низької ціни
   [Arguments]  ${username}  ${tender_uaid}  ${path}  ${doc_id}  ${doc_type}=documents
   ${bid_id}=  openprocurement_client.Отримати інформацію із пропозиції  ${username}  ${tender_uaid}  id
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}

@@ -2112,6 +2112,21 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Remove File  ${file_path}
 
 
+Можливість завантажити обгрунтування аномально низької ціни до пропозиції учасником
+  [Arguments]  ${username}  ${doc_name}  ${doc_type}=${NONE}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${doc_id}=  get_id_from_string  ${file_name}
+  ${bid_document_data}=  Create Dictionary
+  ...      doc_name=${file_name}
+  ...      doc_content=${file_content}
+  ...      doc_id=${doc_id}
+  Run As  ${username}  Завантажити документ в ставку обгрунтування аномально низької ціни  ${file_path}  ${TENDER['TENDER_UAID']}  ${doc_name}  ${doc_type}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_document=${bid_document_data}
+  #Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bid_doc_upload}
+  #Set To Dictionary  ${USERS.users['${username}'].bidresponses}  bid_doc_upload=${bid_doc_upload}
+  Remove File  ${file_path}
+
+
 Можливість змінити документацію цінової пропозиції користувачем ${username}
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
   ${doc_id}=  get_id_from_string  ${file_name}
@@ -2132,6 +2147,18 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      doc_content=${file_content}
   ...      doc_id=${doc_id}
   Run As  ${username}  Змінити документ в ставці при усуненні невідповідності  ${TENDER['TENDER_UAID']}  ${file_path}  ${USERS.users['${username}']['bid_document']['doc_id']}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_document_modified=${bid_document_modified_data}
+  Remove File  ${file_path}
+
+
+Можливість змінити документацію обгрунтування аномально низької ціни користувачем ${username}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${doc_id}=  get_id_from_string  ${file_name}
+  ${bid_document_modified_data}=  Create Dictionary
+  ...      doc_name=${file_name}
+  ...      doc_content=${file_content}
+  ...      doc_id=${doc_id}
+  Run As  ${username}  Змінити документ в ставці при обгрунтуванні аномально низької ціни  ${TENDER['TENDER_UAID']}  ${file_path}  ${USERS.users['${username}']['bid_document']['doc_id']}
   Set To Dictionary  ${USERS.users['${username}']}  bid_document_modified=${bid_document_modified_data}
   Remove File  ${file_path}
 
