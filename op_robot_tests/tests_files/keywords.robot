@@ -350,7 +350,8 @@ Get Broker Property By Username
 
 Підготувати дані для подання пропозиції priceQuotation
   [Arguments]  ${username}
-  ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}
+  ${BID_OVER_LIMIT}=  Get Variable Value  ${BID_OVER_LIMIT}  ${False}
+  ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}  ${BID_OVER_LIMIT}
   [Return]  ${bid}
 
 

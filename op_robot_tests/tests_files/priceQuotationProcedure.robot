@@ -177,6 +177,17 @@ ${PROFILE}          ${True}
   Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
 
 
+Неможливість подати пропозицію з перевищеним лімітом
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      impossible_make_bid_with_over_amount
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  Set Test Variable  ${BID_OVER_LIMIT}  ${True}
+  Run Keyword And Expect Error  *  Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
+
+
 Можливість подати пропозицію першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider

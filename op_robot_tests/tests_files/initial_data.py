@@ -654,7 +654,7 @@ def test_bid_data_selection(data, index):
     return bid
 
 
-def test_bid_data_pq(data):
+def test_bid_data_pq(data, over_limit):
     bid = test_bid_data()
     bid.data.requirementResponses = []
     for criteria in data['criteria']:
@@ -671,6 +671,8 @@ def test_bid_data_pq(data):
                 bid.data.requirementResponses.append(requirement)
     bid.data['status'] = 'draft'
     bid.data.update(test_bid_value(fake.random_int(min=1, max=int(data['value']['amount'])), data['value']['valueAddedTaxIncluded']))
+    if over_limit:
+        bid.data['value']['amount'] = int(data['value']['amount']) + fake.random_int(min=1, max=1000)
     return bid
 
 

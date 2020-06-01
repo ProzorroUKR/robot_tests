@@ -22,6 +22,7 @@
 
 -i successfully_tender_validation
 
+-i impossible_make_bid_with_over_amount
 -i make_bid_by_provider
 -i add_doc_to_bid_by_provider
 -i add_doc_to_bid_by_provider
