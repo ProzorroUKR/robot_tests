@@ -101,24 +101,6 @@ ${PROFILE}          ${True}
   Звірити відображення поля value.valueAddedTaxIncluded тендера для користувача ${viewer}
 
 
-Відображення назви одиниці номенклатур тендера
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_unit_name  level2+
-  ...      non-critical
-  Звірити відображення поля unit.name усіх предметів для користувача ${viewer}
-
-
-Відображення коду одиниці виміру номенклатур тендера
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури тендера
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view_unit_code
-  ...      non-critical
-  Звірити відображення поля unit.code усіх предметів для користувача ${viewer}
-
-
 Відображення дати початку доставки номенклатур тендера
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури тендера
   ...      viewer
