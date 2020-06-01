@@ -263,6 +263,19 @@ ${PROFILE}          ${True}
   Run As  ${user}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
 
 
+Можливість кваліфікувати постачальником першої пропозиції
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  qualification_approve_first_award_by_provider
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  0
+  Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
+
+
 Можливість кваліфікувати постачальником другої пропозиції
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  provider
