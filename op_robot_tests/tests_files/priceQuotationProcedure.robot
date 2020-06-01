@@ -243,15 +243,6 @@ ${PROFILE}          ${True}
   Remove File  ${file_path}
 
 
-Можливість відхилити постачальника
-  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
-  ...  tender_owner
-  ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_reject_first_award
-  ...  critical
-  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
-
-
 Можливість дискваліфікуватися постачальником
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  provider
@@ -261,6 +252,15 @@ ${PROFILE}          ${True}
   ...  critical
   ${user}=  Пошук постачальника пропозиції з awards по індексу  0
   Run As  ${user}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість дискваліфікації другого постачальника, якщо 2 дні не було підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_second_award_after_2_days
+  ...  critical
+  Дочекатись зміни статусу рішення  ${tender_owner}  unsuccessful  1
 
 
 Можливість кваліфікувати постачальником першої пропозиції
