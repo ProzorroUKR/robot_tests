@@ -379,6 +379,46 @@ ${PROFILE}          ${True}
   Звірити відображення поля status тендера із complete для користувача ${viewer}
 
 
+Можливість скасувати тендер
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування тендера
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  tender_cancellation
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати тендер
+
+
+Відображення активного статусу скасування тендера
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_cancellation
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
+  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
+  ...      active
+  ...      cancellations[${cancellation_index}].status
+
+
+Відображення причини скасування тендера
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_cancellation
+  ${cancellation_index}=  Отримати останній індекс  cancellations  ${tender_owner}  ${viewer}
+  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
+  ...      ${USERS.users['${tender_owner}']['tender_cancellation_data']['cancellation_reason']}
+  ...      cancellations[${cancellation_index}].reason
+
+
+Відображення опису документа до скасування тендера
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_cancellation
+  Звірити відображення поля description документа ${USERS.users['${tender_owner}']['tender_cancellation_data']['document']['doc_id']} до скасування ${USERS.users['${tender_owner}']['tender_cancellation_data']['cancellation_id']} із ${USERS.users['${tender_owner}']['tender_cancellation_data']['description']} для користувача ${viewer}
+
+
 *** Keywords ***
 Пошук постачальника пропозиції з awards по індексу
     [Arguments]  ${index}
@@ -388,3 +428,20 @@ ${PROFILE}          ${True}
     \  ${bid_id_by_user}=  Get Variable Value  ${USERS.users['${user_name}'].bidresponses.bid.data.id}
     \  Exit For Loop If  '${bid_id}' == '${bid_id_by_user}'
     [Return]  ${user_name}
+
+
+Можливість скасувати тендер
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
+  Run As  ${tender_owner}
+  ...      Скасувати закупівлю
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
+  ...      ${cancellation_data['document']['doc_path']}
+  ...      ${cancellation_data['description']}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  tender_cancellation_data=${cancellation_data}
+
+
+Звірити відображення поля ${field} документа ${doc_id} до скасування ${cancel_id} із ${left} для користувача ${username}
+  ${right}=  Run As  ${username}  Отримати інформацію із документа до скасування  ${TENDER['TENDER_UAID']}  ${cancel_id}  ${doc_id}  ${field}
+  Порівняти об'єкти  ${left}  ${right}

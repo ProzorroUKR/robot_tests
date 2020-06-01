@@ -1919,7 +1919,7 @@ Library  openprocurement_client.utils
   ...  ${cancellation_id}
   ...  ${document_id}
   ...  ${new_description}
-  ${cancellation}=  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA', 'negotiation', 'negotiation.quick']
+  ${cancellation}=  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA', 'negotiation', 'negotiation.quick', 'priceQuotation']
   ...  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
   ...  ELSE  openprocurement_client.Перевести скасування закупівлі в період очікування  ${username}  ${tender_uaid}  ${cancellation_id}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  cancellation_data=${cancellation}
