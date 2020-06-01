@@ -21,6 +21,9 @@ ${VAT_INCLUDED}     ${True}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
+${BID_AMOUNT_1}     ${500}
+${BID_AMOUNT_2}     ${1000}
+${BID_AMOUNT_3}     ${1500}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -2044,7 +2047,7 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати цінову пропозицію на суму 500 користувачем ${provider}
+  Можливість подати цінову пропозицію на суму ${BID_AMOUNT_1} користувачем ${provider}
 
 
 Можливість зменшити пропозицію на 5% першим учасником
@@ -2096,7 +2099,7 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати цінову пропозицію на суму 1000 користувачем ${provider1}
+  Можливість подати цінову пропозицію на суму ${BID_AMOUNT_2} користувачем ${provider1}
 
 
 Можливість зменшити пропозицію на 5% другим учасником
@@ -2127,7 +2130,7 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати цінову пропозицію на суму 1500 користувачем ${provider2}
+  Можливість подати цінову пропозицію на суму ${BID_AMOUNT_3} користувачем ${provider2}
 
 ##############################################################################################
 #             ABOVETRHESHOLD  BIDDING
