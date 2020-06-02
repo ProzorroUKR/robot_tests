@@ -1867,6 +1867,15 @@ Library  openprocurement_client.utils
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
+
+Отримати інформацію із рішення
+  [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${award_index}=${None}
+  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${award}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.awards[${award_index}]}
+  ${field_value}=  Get Variable Value  ${award['status']}
+  [Return]  ${field_value}
+
+
 ##############################################################################
 #             Limited procurement
 ##############################################################################

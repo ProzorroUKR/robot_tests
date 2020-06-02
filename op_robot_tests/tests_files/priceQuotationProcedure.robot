@@ -228,7 +228,7 @@ ${PROFILE}          ${True}
   ...      ${USERS.users['${provider1}'].broker}
   ...      make_bid_by_provider2  level1
   ...      critical
-  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider2}
 
@@ -254,12 +254,26 @@ ${PROFILE}          ${True}
   Remove File  ${file_path}
 
 
+Неможливість кваліфікуватися замовником
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...     tender_owner
+  ...     ${USERS.users['${tender_owner}'].broker}
+  ...     impossible_approve_first_award_by_customer
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
+  Run Keyword And Expect Error  *  Run As  ${tender_owner}  Завантажити документ рішення кваліфікаційної комісії  ${file_path}  ${TENDER['TENDER_UAID']}  0
+  Run Keyword And Expect Error  *  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
+  Remove File  ${file_path}
+
+
 Можливість дискваліфікуватися постачальником
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  provider
   ...  provider1
   ...  provider2
-  ...  disqualification_first_award
+  ...  disqualification_first_award_by_provider
   ...  critical
   ${user}=  Пошук постачальника пропозиції з awards по індексу  0
   Run As  ${user}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
@@ -298,6 +312,95 @@ ${PROFILE}          ${True}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${user}=  Пошук постачальника пропозиції з awards по індексу  1
   Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
+
+
+Можливість кваліфікувати третього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  qualification_approve_third_award_by_provider
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  2
+  Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  2
+
+
+Неможливість відмовитися постачальником від третього підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  impossible_cancel_3_award_qualification_by_provider
+  ...  critical
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  2
+  Run Keyword And Expect Error  *  Run As  ${user}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  2
+
+
+Можливість відмовитися замовником від третього підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_3_award_qualification_by_customer
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  2
+
+
+Неможливість повторно кваліфікувати постачальником четверте підтвкрдження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  impossible_approve_fourth_award_by_provider
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  3
+  Run Keyword And Expect Error  *  Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  3
+
+
+Можливість підтвердженя постачальника замовником
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...     tender_owner
+  ...     ${USERS.users['${tender_owner}'].broker}
+  ...     qualification_approve_4_award_by_customer
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
+  Run As  ${tender_owner}  Завантажити документ рішення кваліфікаційної комісії  ${file_path}  ${TENDER['TENDER_UAID']}  3
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  3
+  Remove File  ${file_path}
+
+
+Можливість відмовитися замовником від четвертого підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_4_award_qualification_by_customer
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  3
+
+
+Можливість відхилити постачальника замовником
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_fifth_award
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  4
+
+
+Відображення статусу завершення тендеру
+  [Tags]   ${USERS.users['${viewer}'].broker}: Завершення тендера
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      unsuccefully_tender  level1
+  ...      critical
+  Дочекатись зміни статусу unsuccessful  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
 Відображення статусу завершення, якщо не було подано коректного профайлу
