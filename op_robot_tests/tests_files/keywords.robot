@@ -1242,7 +1242,7 @@ Require Failure
   [Arguments]  ${username}  ${status}  ${award_index}=${None}
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      2 min 15 sec
+  ...      8 min 15 sec
   ...      15 sec
   ...      Звірити статус рішення
   ...      ${username}
