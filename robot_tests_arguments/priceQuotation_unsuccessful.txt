@@ -1,0 +1,21 @@
+-v MODE:priceQuotation
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:0
+
+-v TENDER_MEAT:False
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-v PROFILE:True
+
+-i create_tender
+
+-i succefully_tender_verification
+-i make_bid_by_provider
+-i make_bid_by_provider1
+-i make_bid_by_provider2
+
+-i awardPeriod_startDate
+-i disqualification_first_award
+-i qualification_reject_second_award_after_2_days

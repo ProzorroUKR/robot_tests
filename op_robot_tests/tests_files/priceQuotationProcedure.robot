@@ -222,6 +222,17 @@ ${PROFILE}          ${True}
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider1}
 
 
+Можливість подати пропозицію третім учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_by_provider2  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію priceQuotation користувачем ${provider2}
+
+
 Можливість дочекатись дати початку періоду кваліфікації
   [Tags]  ${USERS.users['${provider}'].broker}: Подання кваліфікації
   ...     provider

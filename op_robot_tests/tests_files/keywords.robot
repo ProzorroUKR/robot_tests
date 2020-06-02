@@ -1034,6 +1034,12 @@ Require Failure
   Порівняти об'єкти  ${left}  ${right}
 
 
+Звірити статус рішення
+  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${award_index}=${None}
+  ${right}=  Run as  ${username}  Отримати інформацію із рішення  ${tender_uaid}  status  ${award_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
 Звірити статус cancellations
   [Arguments]  ${username}  ${tender_uaid}  ${left}  ${cancellation_index}
   ${right}=  Run as  ${username}  Отримати інформацію із cancellation  ${tender_uaid}  status  ${cancellation_index}
@@ -1230,6 +1236,19 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      unsuccessful
+
+
+Дочекатись зміни статусу рішення
+  [Arguments]  ${username}  ${status}  ${award_index}=${None}
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      2 min 15 sec
+  ...      15 sec
+  ...      Звірити статус рішення
+  ...      ${username}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${status}
+  ...      ${award_index}
 
 
 Дочекатись дати закінчення періоду подання скарг
