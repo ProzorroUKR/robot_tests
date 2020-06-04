@@ -1588,8 +1588,8 @@ Library  openprocurement_client.utils
 
 Подати цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${bid}  ${lots_ids}=${None}  ${features_ids}=${None}
-  ${verify_response}=  Run As  ${username}  Перевірити учасника за ЄДРПОУ  ${bid.data.tenderers[0].identifier.id}
-  Log  ${verify_response}
+#  ${verify_response}=  Run As  ${username}  Перевірити учасника за ЄДРПОУ  ${bid.data.tenderers[0].identifier.id}
+#  Log  ${verify_response}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${lots_ids}=  Run Keyword IF  ${lots_ids}  Set Variable  ${lots_ids}
   ...     ELSE  Create List

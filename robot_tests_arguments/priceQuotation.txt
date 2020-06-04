@@ -22,3 +22,5 @@
 -i tender_view_unit_name
 
 -i successfully_tender_validation
+
+-i make_bid_by_provider

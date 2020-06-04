@@ -35,6 +35,7 @@ from .initial_data import (
     test_bid_value,
     test_bid_value_esco,
     test_bid_data_selection,
+    test_bid_data_pq,
     test_change_data,
     test_claim_answer_data,
     test_claim_data,

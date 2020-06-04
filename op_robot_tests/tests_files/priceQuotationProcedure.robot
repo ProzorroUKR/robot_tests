@@ -230,3 +230,14 @@ ${PROFILE}          ${True}
   ...      successfully_tender_validation  level1
   ...      critical
   Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+
+
+Можливість подати пропозицію першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_by_provider  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію priceQuotation користувачем ${provider}

@@ -348,6 +348,12 @@ Get Broker Property By Username
   [Return]  ${USERS.users['${username}'].bidresponses.bid}
 
 
+Підготувати дані для подання пропозиції priceQuotation
+  [Arguments]  ${username}
+  ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}
+  [Return]  ${bid}
+
+
 Підготувати дані про постачальника
   [Arguments]  ${username}  ${lotIndex}=${-1}
   ${lotIndex}=  Convert To Integer  ${lotIndex}

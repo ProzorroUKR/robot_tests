@@ -2051,6 +2051,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
 
 
+Можливість подати цінову пропозицію priceQuotation користувачем ${username}
+  ${bid}=  Підготувати дані для подання пропозиції priceQuotation  ${username}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${username}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
+
+
 Неможливість подати цінову пропозицію без прив’язки до лоту користувачем ${username}
   ${bid}=  Підготувати дані для подання пропозиції
   ${values}=  Get Variable Value  ${bid.data.lotValues[0]}

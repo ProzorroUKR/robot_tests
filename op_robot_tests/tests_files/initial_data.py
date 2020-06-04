@@ -654,6 +654,27 @@ def test_bid_data_selection(data, index):
     return bid
 
 
+def test_bid_data_pq(data):
+    bid = test_bid_data()
+    bid.data.requirementResponses = []
+    for criteria in data['criteria']:
+        for requirements in criteria['requirementGroups']:
+            for requirement in requirements['requirements']:
+                if requirement.get('expectedValue'):
+                    value = requirement.get('expectedValue')
+                else:
+                    value = requirement.get('minValue', '1')
+
+                requirement = {
+                    "requirement": {"id": requirement['id']},
+                    "value": value
+                }
+                bid.data.requirementResponses.append(requirement)
+    bid.data['status'] = 'draft'
+    bid.data.update(test_bid_value(1000, True))
+    return bid
+
+
 def test_supplier_data():
     return munchify({
         "data": {
