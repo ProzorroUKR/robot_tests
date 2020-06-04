@@ -302,11 +302,19 @@ def test_tender_data_planning(params):
             }
         },
         "procuringEntity": {
+            "kind": "general",
             "identifier": {
                 "scheme": "UA-EDR",
                 "id": random.choice(["13313462", "00037256"]),
                 "legalName": random.choice([u"Київський Тестовий Ліцей", u"Київська Тестова міська клінічна лікарня"]),
             },
+            "address": {
+                "countryName": "Україна",
+                "postalCode": "01220",
+                "region": "м. Київ",
+                "streetAddress": "вул. Банкова, 11, корпус 1",
+                "locality": "м. Київ"
+            }
         },
         "tender": {
             "procurementMethod": "",
@@ -1026,10 +1034,18 @@ def invalid_gmdn_data():
 
 def test_buyers_data():
     buyers = {
+        "kind": "general",
         "identifier": {
             "scheme": "UA-EDR",
             "id": random.choice(["13313462", "00037256"]),
             "legalName": random.choice([u"Київський Тестовий Ліцей", u"Київська Тестова міська клінічна лікарня"]),
+        },
+        "address": {
+            "countryName": "Україна",
+            "postalCode": "01220",
+            "region": "м. Київ",
+            "streetAddress": "вул. Банкова, 11, корпус 1",
+            "locality": "м. Київ"
         }
     }
     return munchify(buyers)
