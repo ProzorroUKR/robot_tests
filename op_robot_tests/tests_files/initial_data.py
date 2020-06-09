@@ -373,22 +373,46 @@ def test_tender_data_limited(params, plan_data):
     data.update({"procurementMethodType": params['mode'], "procurementMethod": "limited"})
     if params['mode'] == "negotiation":
         cause_variants = (
-            "artContestIP",
-            "noCompetition",
+            "resolvingInsolvency",
+            "artPurchase",
+            "contestWinner",
+            "technicalReasons",
+            "intProperty",
+            "lastHope",
             "twiceUnsuccessful",
             "additionalPurchase",
             "additionalConstruction",
             "stateLegalServices"
         )
         cause = fake.random_element(cause_variants)
+        data.update({
+            "cause": cause,
+            "causeDescription": fake.description()
+        })
     elif params['mode'] == "negotiation.quick":
-        cause_variants = ('quick',)
-    if params['mode'] in ("negotiation", "negotiation.quick"):
+        cause_variants = (
+            "resolvingInsolvency",
+            "artPurchase",
+            "contestWinner",
+            "technicalReasons",
+            "intProperty",
+            "lastHope",
+            "twiceUnsuccessful",
+            "additionalPurchase",
+            "additionalConstruction",
+            "stateLegalServices",
+            "emergency",
+            "humanitarianAid",
+            "contractCancelled",
+            "activeComplaint"
+        )
         cause = fake.random_element(cause_variants)
         data.update({
             "cause": cause,
             "causeDescription": fake.description()
         })
+    #if params['mode'] in ("negotiation", "negotiation.quick"):
+        #cause = fake.random_element(cause_variants)
     return munchify(data)
 
 
