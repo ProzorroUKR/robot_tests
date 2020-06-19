@@ -302,7 +302,7 @@ def test_tender_data_planning(params):
             }
         },
         "procuringEntity": {
-            "kind": "general",
+            #"kind": "general",
             "identifier": {
                 "scheme": "UA-EDR",
                 "id": random.choice(["13313462", "00037256"]),
@@ -328,6 +328,12 @@ def test_tender_data_planning(params):
         "buyers": []
     }
     data["procuringEntity"]["name"] = data["procuringEntity"]["identifier"]["legalName"]
+    if params.get("mode") == "aboveThresholdUA.defense":
+        data["procuringEntity"]["kind"] = "defense"
+    elif params.get("mode") in ["belowThreshold", "reporting"]:
+        data["procuringEntity"]["kind"] = "other"
+    else:
+        data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
     buyers = test_buyers_data()
     buyers["name"] = buyers["identifier"]["legalName"]
     data['buyers'].append(buyers)
