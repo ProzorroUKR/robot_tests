@@ -182,8 +182,10 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_access_token=${USERS.users['${provider}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_access_token=${USERS.users['${provider1}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_access_token=${USERS.users['${provider1}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_bid_id=${USERS.users['${provider}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_bid_id=${USERS.users['${provider1}'].bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_bid_id=${USERS.users['${provider1}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...      tender_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
   ...      lot_file_properties=${USERS.users['${tender_owner}'].lots_documents[0].file_properties}

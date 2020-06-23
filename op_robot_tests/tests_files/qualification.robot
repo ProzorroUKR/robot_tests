@@ -228,7 +228,15 @@ ${award_index}      ${0}
   Повідомлення в awards про невіповідність пропозиції 0
 
 
-Можливість завантажити документ в пропозицію першим учасником
+Неможливість визначити переможця до завершення dueDate
+  [Tags]   ${USERS.users['${tender_owner}'].broker}:
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualification_approve_award_dueDate_error
+  run keyword and expect error  *  Підтвердити постачальника  ${tender_owner}  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість завантажити документ в пропозицію учасником 24 години
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
@@ -246,6 +254,26 @@ ${award_index}      ${0}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість змінити документацію цінової пропозиції при усуненні невідповідності користувачем ${provider}
+
+
+Можливість завантажити документ в пропозицію учасником аномально низька ціна
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_bid_by_provider_alp_qualification
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість завантажити обгрунтування аномально низької ціни до пропозиції учасником  ${provider}  documents  evidence
+
+
+Можливість змінити документацію цінової пропозиції учасником аномально низька ціна
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      change_doc_to_bid_by_provider_alp_qualification
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити документацію обгрунтування аномально низької ціни користувачем ${provider}
 
 
 Можливість дочекатися перевірки переможців по ЄДРПОУ
