@@ -332,7 +332,7 @@ Get Broker Property By Username
 
 
 Підготувати дані для подання пропозиції
-  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].initial_data.data}
+  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].tender_data.data}
   [Return]  ${bid}
 
 
