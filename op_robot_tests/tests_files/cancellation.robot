@@ -438,6 +438,55 @@ ${PLAN_TENDER}      ${True}
   ...      wait_active_qualification_start
   Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
 
+
+Можливість підтвердити постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_first_award
+  ...  critical
+  [Setup]  Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість підтвердити другого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_second_award
+  ...  critical
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
+
+
+Дочекатись початку періоду підписання угоди
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду підписання угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      wait_active_awarded_start
+  Дочекатись дати початку періоду підписання угоди  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+
+Відображення закінчення періоду подачі скарг на пропозицію
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      award_stand_still
+  ...      critical
+  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  :FOR  ${username}  IN  ${viewer}
+  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
+
+
+Дочекатися закічення stand still періоду
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес укладання угоди
+  ...      viewer
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      award_stand_still
+  ...      critical
+  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  ${standstillEnd}=  Get Variable Value  ${USERS.users['${viewer}'].tender_data.data.awards[${award_index}].complaintPeriod.endDate}
+  Дочекатись дати  ${standstillEnd}
+
 ##############################################################################################
 #             LOT CANCELLATION
 ##############################################################################################
