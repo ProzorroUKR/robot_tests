@@ -1206,6 +1206,19 @@ Require Failure
   ...      active.qualification
 
 
+Дочекатись дати початку періоду підписання угоди
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      active.awarded
+
+
 Дочекатись дати закінчення періоду кваліфікації
   [Arguments]  ${username}  ${tender_uaid}
   Дочекатись синхронізації з майданчиком  ${username}
