@@ -2294,6 +2294,7 @@ Library  openprocurement_client.utils
   ...      ${tender}
   ...      access_token=${tender.access.token}
   Log  ${reply}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${reply.data.id}${\n}  WARN
 
 ##############################################################################
 #             CONTRACT SIGNING
