@@ -10,11 +10,6 @@
 -i create_tender
 -i find_tender
 
--i make_bid_by_provider
--i make_bid_by_provider1
-
--i wait_active_qualification_start
-
 -i lot_cancellation
 -i lot_cancellation_view
 
