@@ -458,6 +458,15 @@ ${PLAN_TENDER}      ${True}
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
 
 
+Можливість підтвердити третього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_third_award
+  ...  critical
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  2
+
+
 Дочекатись початку періоду підписання угоди
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду підписання угоди
   ...      tender_owner
