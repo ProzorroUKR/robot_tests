@@ -1,4 +1,4 @@
--v MODE:openeu
+-v MODE:open_esco
 
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:2
@@ -6,6 +6,8 @@
 -v TENDER_MEAT:False
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
+
+-v FUNDING_KIND:budget
 
 -i create_tender
 -i find_tender
@@ -15,10 +17,13 @@
 -i make_bid_by_provider2
 
 -i tender_complaintPeriond_stand_still
+
+-i wait_active_pre-qualification_start
+
 -i lot_cancellation
 -i lot_cancellation_stand_still
 -i lot_cancellation_view
+
 -i tender_cancellation
 -i tender_cancellation_stand_still
 -i tender_cancellation_view
--i delete_lot

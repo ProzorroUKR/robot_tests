@@ -1,0 +1,13 @@
+-v MODE:openeu
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+-i create_tender
+-i find_tender
+-i tender_view
+
+-i tender_cancellation
+-i cancellation_status_view
+-i tender_cancellation_complaint_draft
+-i mistaken_cancel_complaint

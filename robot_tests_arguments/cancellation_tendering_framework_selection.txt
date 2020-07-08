@@ -1,14 +1,19 @@
--v MODE:reporting
+-v MODE:framework_selection
 
 -v NUMBER_OF_ITEMS:1
--v NUMBER_OF_LOTS:0
+-v NUMBER_OF_LOTS:1
 
 -v TENDER_MEAT:False
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
 
--i create_tender
+-i create_tender_stage2
+-i find_tender_tender_owner
 -i find_tender
+
+-i selection_make_bid_by_provider
+-i selection_make_bid_by_provider1
+
 -i tender_cancellation
 -i tender_cancellation_stand_still
 -i tender_cancellation_view

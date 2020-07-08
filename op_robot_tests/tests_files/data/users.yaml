@@ -6,6 +6,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:      e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -18,6 +19,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -30,6 +32,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -42,6 +45,7 @@ users:
             auctions: [test.quintagroup.com, bc698baa8b814908bc75405ed3d63548]
         api_key:  e9c3ccb8e8124f26941d5f9639a4ebc3
         auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: e9c3ccb8e8124f26941d5f9639a4ebc3
         broker:   Quinta
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
         browser:  phantomjs
@@ -67,6 +71,19 @@ users:
             tenders:      [test.quintagroup.com, test.quintagroup.com]
         auth_dasu: [robot_test_sas, 9987b551710b44699bf2ad10188bcf65]
         api_key:  9987b551710b44699bf2ad10188bcf65
+        broker:   Quinta
+        browser:  phantomjs
+        auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
+        position: [0, 0]
+        size:     [1400, 900]
+    Amcu_User:
+        auth_ds:
+            monitorings:  [test.quintagroup.com, test.quintagroup.com]
+            plans:        [test.quintagroup.com, test.quintagroup.com]
+            tenders:      [test.quintagroup.com, test.quintagroup.com]
+        auth_dasu: [test.quintagroup.com, e9c3ccb8e8124f26941d5f9639a4ebc3]
+        auth_amcu: 210945ed5de940b7bce976f411a1a290
+        api_key:  210945ed5de940b7bce976f411a1a290
         broker:   Quinta
         browser:  phantomjs
         auth_edr: [test.quintagroup.com, f5111c99a97a45348d8165ba8fcf0d62]
@@ -112,15 +129,15 @@ users:
         size:     [1366, 800]
     DZO_Owner:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroytenderowner@gmail.com
         password: R713Fe3mt
         browser:  Chrome
         position: [0, 0]
-        size:     [1920, 1080]
+        size:     [1920, 10080]
     DZO_Provider:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroyprovider11@byustudio.in.ua
         password: wC5tz3yt4
         browser:  Chrome
@@ -128,7 +145,7 @@ users:
         size:     [1920, 1080]
     DZO_Provider1:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroyprovider2@byustudio.in.ua
         password: QGaS4nu4E
         browser:  Chrome
@@ -136,7 +153,7 @@ users:
         size:     [1920, 1080]
     DZO_Provider2:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua"
+        homepage: "https://www.stage.dzo.com.ua"
         login:    prozorroyprovider3@byustudio.in.ua
         password: 1G796kCaE
         browser:  Chrome
@@ -144,10 +161,10 @@ users:
         size:     [1920, 1080]
     DZO_Viewer:
         broker:   DZO
-        homepage: "https://www.sandbox.dzo.com.ua/?test_mode=1"
+        homepage: "https://www.stage.dzo.com.ua/?test_mode=1"
         browser:  Chrome
         position: [0, 0]
-        size:     [1920, 1080]
+        size:     [1920, 10080]
     u25h8_Owner:
         broker:   b25h8
         homepage: "http://25h8.byustudio.in.ua"
@@ -223,7 +240,7 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Provider:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
@@ -231,7 +248,7 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Provider1:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
@@ -239,7 +256,7 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Provider2:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
@@ -247,13 +264,51 @@ users:
         password: 123456
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
     tenderonline_Viewer:
         broker:   tenderonline
         homepage: "http://test.tender-online.com.ua"
         browser:  Chrome
         position: [0, 0]
-        size:     [1366, 800]
+        size:     [1920, 1080]
+    GovAuction_Owner:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroytenderowner@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 10080]
+    GovAuction_Provider:
+        broker:  GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroyprovider1@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
+    GovAuction_Provider1:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroyprovider2@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
+    GovAuction_Provider2:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        login:    prozorroyprovider3@gmail.com
+        password: 123456
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
+    GovAuction_Viewer:
+        broker:   GovAuction
+        homepage: "http://test-tender.gov.auction"
+        browser:  Chrome
+        position: [0, 0]
+        size:     [1920, 1080]
     ztv_Owner:
         broker:   ztv
         homepage: "http://ztv.byustudio.in.ua/web/"
@@ -308,14 +363,14 @@ users:
         size:     [800, 700]
     PrivatMarket_Viewer:
         broker:   PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
+        homepage: "https://zakupivli24.pb.ua/prz-at/tender"
         email:    pbecommercetest2@ukr.net
         browser:  chrome
         position: [0, 0]
         size:     [1920, 1080]
     PrivatMarket_Provider:
         broker:   PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
+        homepage: "https://zakupivli24.pb.ua/prz-at/tender"
         email:    pbecommercetest2@ukr.net
         login:    380270010001
         password: password0001
@@ -324,7 +379,7 @@ users:
         size:     [1920, 1080]
     PrivatMarket_Provider1:
         broker:   PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
+        homepage: "https://zakupivli24.pb.ua/prz-at/tender"
         email:    pbecommercetest2@ukr.net
         login:    380270010002
         password: zakupivli24
@@ -333,7 +388,7 @@ users:
         size:     [1920, 1080]
     PrivatMarket_Owner:
         broker: PrivatMarket
-        homepage: "https://zakupivli24.pb.ua/prz-stage/tender"
+        homepage: "https://zakupivli24.pb.ua/prz-at/tender"
         email: pbecommercetest1@ukr.net
         login: 380270010003
         password: zakupivli24
@@ -493,7 +548,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -501,7 +556,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider1:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -509,7 +564,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider2:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -517,7 +572,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Provider3:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -525,7 +580,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     uatenders_Viewer:
         broker:   uatenders
         homepage: "http://staging.zakupki.com.ua/tender/list"
@@ -533,7 +588,7 @@ users:
         password: 121212
         browser:  Chrome
         position: [25, 0]
-        size:     [1280, 1024]
+        size:     [1380, 1024]
     ubiz_Owner:
         broker:   ubiz
         homepage: "http://test.ubiz.com.ua/prozorro"

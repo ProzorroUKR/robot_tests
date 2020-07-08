@@ -1,3 +1,4 @@
+coding: utf-8
 *** Settings ***
 Library  op_robot_tests.tests_files.service_keywords
 Library  String
@@ -181,8 +182,10 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_access_token=${USERS.users['${provider}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_access_token=${USERS.users['${provider1}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_access_token=${USERS.users['${provider1}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_bid_id=${USERS.users['${provider}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_bid_id=${USERS.users['${provider1}'].bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_bid_id=${USERS.users['${provider1}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...      tender_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
   ...      lot_file_properties=${USERS.users['${tender_owner}'].lots_documents[0].file_properties}
@@ -292,9 +295,25 @@ Get Broker Property By Username
 
 
 Підготувати дані для подання скарги
-  [Arguments]  ${lot}=${False}
-  ${complaint}=  test_complaint_data  ${lot}
+  #[Arguments]  ${lot}=${False}
+  ${complaint}=  test_complaint_data
   [Return]  ${complaint}
+
+
+Підготувати дані для оплати скарги
+  [Arguments]  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  ${payment_data}=  test_payment_data  ${complaint_token}  ${complaint_value}  ${complaint_uaid}
+  [Return]  ${payment_data}
+
+
+Підготувати дані для прийняття скарги до розгляду
+  ${confirmation_data}=  test_accept_complaint_data
+  [Return]  ${confirmation_data}
+
+
+Підготувати дані для відхилення скарги
+  ${reject_reason}=  test_reject_complaint_data
+  [Return]  ${reject_reason}
 
 
 Підготувати дані для відповіді на скаргу
@@ -313,7 +332,7 @@ Get Broker Property By Username
 
 
 Підготувати дані для подання пропозиції
-  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].initial_data.data}
+  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].tender_data.data}
   [Return]  ${bid}
 
 
@@ -342,6 +361,8 @@ Get Broker Property By Username
 
 
 Підготувати дані про скасування
+  [Arguments]  ${procurementMethodType}
+  ${cancellation_data}=  test_cancellation_data  ${procurementMethodType}
   ${cancellation_reason}=  create_fake_sentence
   ${cancellation_reason}=  field_with_id  c  ${cancellation_reason}
   ${cancellation_id}=  get_id_from_string  ${cancellation_reason}
@@ -355,6 +376,7 @@ Get Broker Property By Username
   ${new_description}=  create_fake_sentence
   ${cancellation_data}=  Create Dictionary
   ...      cancellation_reason=${cancellation_reason}
+  ...      cancellation_reasonType=${cancellation_data.reasonType}
   ...      cancellation_id=${cancellation_id}
   ...      document=${document}
   ...      description=${new_description}
@@ -401,6 +423,11 @@ Get Broker Property By Username
   Set To Dictionary  ${USERS.users['${tender_owner}']}  modification_data=${modification_data}
   Log  ${modification_data}
   [Return]  ${modification_data}
+
+
+Підготувати дані для повідомлення про невідповідність пропозиції
+  ${24h_data}=  test_24_hours_data
+  [Return]  ${24h_data}
 
 
 Адаптувати дані для оголошення тендера
@@ -869,8 +896,8 @@ Log differences between dicts
 
 
 Звірити поле скарги із значенням
-  [Arguments]  ${username}  ${tender_uaid}  ${given_value}  ${field_name}  ${complaintID}  ${award_index}=${None}
-  ${received_value}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  ${field_name}  ${award_index}
+  [Arguments]  ${username}  ${tender_uaid}  ${given_value}  ${field_name}  ${complaintID}  ${object_index}=${None}  ${object}=${None}
+  ${received_value}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  ${field_name}  ${object_index}  ${object}
   Порівняти об'єкти  ${given_value}  ${received_value}
 
 
@@ -1002,8 +1029,14 @@ Require Failure
 
 
 Звірити статус вимоги/скарги
-  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${left}  ${award_index}=${None}
-  ${right}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  status  ${award_index}
+  [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${left}  ${object}  ${object_index}
+  ${right}=  Run as  ${username}  Отримати інформацію із скарги  ${tender_uaid}  ${complaintID}  status  ${object}  ${object_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
+Звірити статус cancellations
+  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${cancellation_index}
+  ${right}=  Run as  ${username}  Отримати інформацію із cancellation  ${tender_uaid}  status  ${cancellation_index}
   Порівняти об'єкти  ${left}  ${right}
 
 
@@ -1173,6 +1206,19 @@ Require Failure
   ...      active.qualification
 
 
+Дочекатись дати початку періоду підписання угоди
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      active.awarded
+
+
 Дочекатись дати закінчення періоду кваліфікації
   [Arguments]  ${username}  ${tender_uaid}
   Дочекатись синхронізації з майданчиком  ${username}
@@ -1213,6 +1259,19 @@ Require Failure
   ...      ${complaintID}
   ...      ${status}
   ...      ${award_index}
+
+
+Дочекатись зміни статусу cancellations
+  [Arguments]  ${username}  ${tender_uaid}  ${status}  ${cancellation_index}
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      20 min
+  ...      60 sec
+  ...      Звірити статус cancellations
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      ${status}
+  ...      ${cancellation_index}
 
 
 Оновити LAST_MODIFICATION_DATE
