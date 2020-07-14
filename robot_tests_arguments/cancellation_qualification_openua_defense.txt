@@ -1,0 +1,27 @@
+-v MODE:openua_defense
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:2
+
+-v TENDER_MEAT:False
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-i create_tender
+-i find_tender
+
+-i make_bid_by_provider
+-i make_bid_by_provider1
+-i make_bid_by_provider2
+
+-i tender_complaintPeriond_stand_still
+
+-i wait_active_qualification_start
+
+-i lot_cancellation
+-i lot_cancellation_stand_still
+-i lot_cancellation_view
+
+-i tender_cancellation
+-i tender_cancellation_stand_still
+-i tender_cancellation_view

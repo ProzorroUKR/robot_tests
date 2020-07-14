@@ -332,7 +332,7 @@ Get Broker Property By Username
 
 
 Підготувати дані для подання пропозиції
-  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].initial_data.data}
+  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].tender_data.data}
   [Return]  ${bid}
 
 
@@ -1204,6 +1204,19 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      active.qualification
+
+
+Дочекатись дати початку періоду підписання угоди
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      active.awarded
 
 
 Дочекатись дати закінчення періоду кваліфікації
