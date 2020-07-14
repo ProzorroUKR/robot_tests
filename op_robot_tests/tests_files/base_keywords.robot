@@ -2038,6 +2038,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...     ELSE  Set Variable  ${None}
   Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
 
+
 Можливість подати цінову пропозицію на другому етапі рамкової угоди користувачем
   [Arguments]  ${username}  ${index}=${0}
   ${bid}=  Підготувати дані для подання пропозиції другого етапу рамкової угоди  ${index}
@@ -2048,6 +2049,24 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...     Отримати ідентифікатори об’єктів  ${username}  lots
   ...     ELSE  Set Variable  ${None}
   Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
+
+
+Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем
+  [Arguments]  ${username}  ${index}=${0}
+  ${edrpou}=  set variable  ${USERS.users['${username}'].tender_data.data['shortlistedFirms'][${index}]['identifier']['id']}
+  Log  ${edrpou}
+  ${bid}=  Підготувати дані для подання пропозиції для другого етапу конкурентного діалогу  ${username}  ${edrpou}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  ${features}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.features}  ${None}
+  ${features_ids}=  Run Keyword IF  ${features}
+  ...     Отримати ідентифікатори об’єктів  ${username}  features
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
 
 
 Можливість подати цінову пропозицію на другий етап користувачем ${username}

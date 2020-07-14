@@ -86,7 +86,8 @@ from .initial_data import (
     test_cancellation_data,
     test_cancel_pending_data,
     test_payment_data,
-    test_24_hours_data
+    test_24_hours_data,
+    test_bid_competitive_data_stage_2
 )
 from barbecue import chef
 from restkit import request
@@ -621,7 +622,7 @@ def get_object_by_id(data, given_object_id, slice_element, object_id):
     return sliced_object[0]
 
 
-def generate_test_bid_data(tender_data):
+def generate_test_bid_data(tender_data, edrpou=None):
     if tender_data.get('procurementMethodType', '') in (
             'aboveThresholdUA',
             'aboveThresholdUA.defense',
@@ -632,6 +633,12 @@ def generate_test_bid_data(tender_data):
             'esco'
         ):
         bid = test_bid_competitive_data()
+        bid.data.selfEligible = True
+        bid.data.selfQualified = True
+    elif tender_data.get('procurementMethodType', '') in (
+            'competitiveDialogueUA.stage2',
+            'competitiveDialogueEU.stage2'):
+        bid = test_bid_competitive_data_stage_2(edrpou)
         bid.data.selfEligible = True
         bid.data.selfQualified = True
     else:

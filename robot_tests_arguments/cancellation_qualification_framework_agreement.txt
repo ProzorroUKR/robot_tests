@@ -26,6 +26,10 @@
 
 -i wait_active_qualification_start
 
+-i lot_cancellation
+-i lot_cancellation_stand_still
+-i lot_cancellation_view
+
 -i tender_cancellation
 -i tender_cancellation_stand_still
 -i tender_cancellation_view
