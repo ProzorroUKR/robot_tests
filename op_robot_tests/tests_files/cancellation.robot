@@ -514,6 +514,17 @@ ${PLAN_TENDER}      ${True}
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  2
 
 
+Можливість затвердити остаточне рішення кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualification_approve_qualifications
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Затвердити постачальників  ${TENDER['TENDER_UAID']}
+
+
 Дочекатись початку періоду підписання угоди
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду підписання угоди
   ...      tender_owner
