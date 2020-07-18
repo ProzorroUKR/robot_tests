@@ -49,6 +49,27 @@ ${PLAN_TENDER}      ${True}
   Should Contain  ${value}  the profile value doesn't match id pattern
 
 
+Можливість оголосити тендер без 2-ї фази commit-у
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_without_2_phase_commit  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер без 2-ї фази commit-у
+
+
+Неможливість змінити tenderPeriod:endDate < 2 робочих дні
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      patch_tender_wrong_date  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${endDate}=  add_minutes_to_date  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod.startDate}  1
+  Перевірити неможливість зміни поля tenderPeriod.endDate тендера на значення ${endDate} для користувача ${tender_owner}
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
