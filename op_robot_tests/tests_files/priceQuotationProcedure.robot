@@ -44,6 +44,18 @@ ${PLAN_TENDER}      ${True}
   Можливість оголосити тендер
 
 
+Неможливість змінити статус з draft.publishing на active.tendering
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Неможливість редагувати тендер
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      impossible_change_tendering_status  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  active.tendering
+  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't switch tender from status (draft.publishing) to (active.tendering)
+
+
 Можливість знайти тендер по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      viewer  tender_owner  provider  provider1

@@ -8,3 +8,5 @@
 -v LOT_MEAT:False
 
 -i create_tender_wrong_date
+-i create_tender
+-i impossible_change_tendering_status
