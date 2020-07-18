@@ -1053,9 +1053,8 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     del data["minimalStep"]
     data['procurementMethodType'] = 'priceQuotation'
-    if params['profile']:
-        data['profile'] = fake.valid_profile()
-    else:
+    data['profile'] = fake.valid_profile()
+    if params.get('wrong_profile'):
         data['profile'] = fake.invalid_profile()
     if params['wrong_tender_date']:
         start_date = data['tenderPeriod']['startDate']
