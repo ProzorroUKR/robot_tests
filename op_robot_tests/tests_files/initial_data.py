@@ -376,6 +376,12 @@ def test_tender_data_planning(params):
             breakdown_element = test_breakdown_data()
             breakdown_element['value']['amount'] = value
             data['budget']['breakdown'].append(breakdown_element)
+    if params['mode'] == "priceQuotation":
+        for buyer in data['buyers']:
+            del buyer['kind']
+            del buyer['address']
+        del data['procuringEntity']['kind']
+        del data['procuringEntity']['address']
     return munchify(data)
 
 
