@@ -27,8 +27,25 @@
 -i disqualification_first_award_by_provider
 -i qualification_approve_second_award_by_provider
 
+-i contract_view
+-i modify_contract_invalid_amountNet_tender_vat_true
 -i modify_contract_amount_net
+-i contract_view_new_amountNet
 -i modify_contract_value
+-i contract_view_new_amount
+-i modify_contract_invalid_amount
+-i modify_contract
 -i contract_sign
+-i find_tender_contract
+-i find_contract
+-i access_contract
+-i submit_change
+-i view_change
+-i upload_change_document
+-i modify_change
+-i change_contract_amountNet
+-i change_contract_amount
+-i apply_change
+-i add_contract_doc
 -i agreement_registration
 
