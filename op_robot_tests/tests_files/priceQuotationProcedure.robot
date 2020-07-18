@@ -70,6 +70,16 @@ ${PLAN_TENDER}      ${True}
   Перевірити неможливість зміни поля tenderPeriod.endDate тендера на значення ${endDate} для користувача ${tender_owner}
 
 
+Неможливість змінити procuringEntity.kind на central
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      patch_tender_wrong_procuringEntity_kind  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Перевірити неможливість зміни поля procuringEntity.kind тендера на значення central для користувача ${tender_owner}
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner

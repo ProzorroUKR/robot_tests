@@ -1062,6 +1062,7 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     del data["minimalStep"]
     del data["title_en"]
     data['procurementMethodType'] = 'priceQuotation'
+    data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'other', 'social', 'special'])
     data['profile'] = fake.valid_profile()
     if params.get('wrong_profile'):
         data['profile'] = fake.invalid_profile()

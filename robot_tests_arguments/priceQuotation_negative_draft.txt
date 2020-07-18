@@ -9,3 +9,4 @@
 
 -i create_tender_without_2_phase_commit
 -i patch_tender_wrong_date
+-i patch_tender_wrong_procuringEntity_kind
