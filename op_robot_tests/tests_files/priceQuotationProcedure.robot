@@ -31,7 +31,22 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Set Test Variable  ${WRONG_TENDER_DATE}  ${True}
-  Run Keyword And Expect Error  *  Можливість оголосити тендер для негативних сценаріїв
+  ${value}=  Run Keyword And Expect Error  *  Можливість оголосити тендер з недоліками в параметрах
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  the tenderperiod cannot end earlier than 2 business days after the start
+
+
+Неможливість оголосити тендер з порожнім profile параметром
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_empty_profile  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${EMPTY_PROFILE}  ${True}
+  ${value}=  Run Keyword And Expect Error  *  Можливість оголосити тендер з недоліками в параметрах
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  the profile value doesn't match id pattern
 
 
 Можливість оголосити тендер

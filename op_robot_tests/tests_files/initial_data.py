@@ -1069,6 +1069,8 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
         start_date = data['tenderPeriod']['startDate']
         from op_robot_tests.tests_files.service_keywords import add_minutes_to_date
         data['tenderPeriod']['endDate'] = add_minutes_to_date(start_date, 1)
+    if params.get('empty_profile'):
+        data['profile'] = ""
     return munchify(data)
 
 
