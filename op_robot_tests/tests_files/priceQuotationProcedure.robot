@@ -64,6 +64,26 @@ ${PLAN_TENDER}      ${True}
   Звірити відображення поля title тендера для користувача ${viewer}
 
 
+Відображення заголовку тендера російською мовою
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view  level1
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити відображення поля title_ru тендера для користувача ${viewer}
+
+
+Відсутнє відображення заголовку тендера англійською мовою якщо при створенні не вказувались дані
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      tender_view  level1
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Run Keyword And Expect Error  *  Звірити відображення поля title_en тендера для користувача ${viewer}
+
+
 Відображення опису тендера
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера
   ...      viewer

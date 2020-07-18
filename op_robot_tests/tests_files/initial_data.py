@@ -1060,6 +1060,7 @@ def test_tender_data_esco(params, submissionMethodDetails, plan_data):
 def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     del data["minimalStep"]
+    del data["title_en"]
     data['procurementMethodType'] = 'priceQuotation'
     data['profile'] = fake.valid_profile()
     if params.get('wrong_profile'):
