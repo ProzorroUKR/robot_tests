@@ -698,25 +698,33 @@ def test_bid_data_selection(data, index):
     return bid
 
 
-def test_bid_data_pq(data, over_limit):
+def test_bid_data_pq(data, over_limit=False, missing_criteria=False, more_than_two_requirements=False, invalid_expected_value=False):
     bid = test_bid_data()
     bid.data.requirementResponses = []
-    for criteria in data['criteria']:
-        for requirements in criteria['requirementGroups']:
-            for requirement in requirements['requirements']:
-                if requirement.get('expectedValue'):
-                    value = requirement.get('expectedValue')
-                else:
-                    value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
-                requirement = {
-                    "requirement": {"id": requirement['id']},
-                    "value": value
-                }
-                bid.data.requirementResponses.append(requirement)
+    if 'criteria' in data:
+        for criteria in data['criteria']:
+            for requirements in criteria['requirementGroups']:
+                for requirement in requirements['requirements']:
+                    if requirement.get('expectedValue'):
+                        value = requirement.get('expectedValue')
+                        if invalid_expected_value:
+                            value = "invalid_value"
+                    else:
+                        value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
+                    requirement = {
+                        "requirement": {"id": requirement['id']},
+                        "value": value
+                    }
+                    bid.data.requirementResponses.append(requirement)
+                if not more_than_two_requirements:
+                    break
     bid.data['status'] = 'draft'
-    bid.data.update(test_bid_value(fake.random_int(min=1, max=int(data['value']['amount'])), data['value']['valueAddedTaxIncluded']))
+    bid.data.update(test_bid_value(fake.random_int(min=1, max=int(data['value']['amount'])),
+                                   data['value']['valueAddedTaxIncluded']))
     if over_limit:
         bid.data['value']['amount'] = int(data['value']['amount']) + fake.random_int(min=1, max=1000)
+    if missing_criteria:
+        del bid['data']['requirementResponses'][-1]
     return bid
 
 
