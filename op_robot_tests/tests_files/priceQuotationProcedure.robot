@@ -31,7 +31,7 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Set Test Variable  ${WRONG_TENDER_DATE}  ${True}
-  Run Keyword And Expect Error  *  Можливість оголосити тендер
+  Run Keyword And Expect Error  *  Можливість оголосити тендер для негативних сценаріїв
 
 
 Можливість оголосити тендер

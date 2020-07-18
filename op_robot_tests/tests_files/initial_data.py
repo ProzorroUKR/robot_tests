@@ -1056,7 +1056,7 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     data['profile'] = fake.valid_profile()
     if params.get('wrong_profile'):
         data['profile'] = fake.invalid_profile()
-    if params['wrong_tender_date']:
+    if params.get('wrong_tender_date'):
         start_date = data['tenderPeriod']['startDate']
         from op_robot_tests.tests_files.service_keywords import add_minutes_to_date
         data['tenderPeriod']['endDate'] = add_minutes_to_date(start_date, 1)
