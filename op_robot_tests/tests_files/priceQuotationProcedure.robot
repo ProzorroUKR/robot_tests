@@ -403,6 +403,20 @@ ${PLAN_TENDER}      ${True}
   Дочекатись дати початку періоду кваліфікації  ${provider}  ${TENDER['TENDER_UAID']}
 
 
+Відображення пропозиції з мінімальною ціною на розгляді
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      award_view_min_amount
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${min_bid_amount}=  Отримати мінімальне значення amount з поданих пропозицій
+  ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
+  Log  ${min_bid_amount}
+  Log  ${award}
+  Порівняти об'єкти  ${min_bid_amount}  ${award.value.amount}
+
+
 Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
@@ -1081,3 +1095,13 @@ ${PLAN_TENDER}      ${True}
 Звірити відображення поля ${field} документа ${doc_id} до скасування ${cancel_id} із ${left} для користувача ${username}
   ${right}=  Run As  ${username}  Отримати інформацію із документа до скасування  ${TENDER['TENDER_UAID']}  ${cancel_id}  ${doc_id}  ${field}
   Порівняти об'єкти  ${left}  ${right}
+
+
+Отримати мінімальне значення amount з поданих пропозицій
+  ${bids}=  Отримати дані із тендера  ${provider}  ${TENDER['TENDER_UAID']}  bids
+  ${values}=  Create List
+  :FOR  ${value}  IN  @{bids}
+  \  ${item}=  Get Variable Value  ${value['value']['amount']}
+  \  Append To List  ${values}  ${item}
+  ${min_amount}=  get_lowest_value_from_list  ${values}
+  [Return]  ${min_amount}
