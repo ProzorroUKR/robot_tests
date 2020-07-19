@@ -1078,6 +1078,8 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
         data['profile'] = fake.profiles_hidden()
     if params.get('profiles_shortlistedfirms_empty'):
         data['profile'] = fake.shortlistedfirms_empty()
+    if params.get('unknown_profile'):
+        data['profile'] = fake.tender_unknown_profile()
 
     return munchify(data)
 

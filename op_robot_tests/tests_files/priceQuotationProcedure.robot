@@ -135,6 +135,17 @@ ${PLAN_TENDER}      ${True}
   Можливість оголосити тендер з недоліками в параметрах
 
 
+Можливість оголосити тендер з неіснуючим профайлом
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_unknown_profile  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${UNKNOWN_PROFILE}  ${True}
+  Можливість оголосити тендер з недоліками в параметрах
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
@@ -650,6 +661,17 @@ ${PLAN_TENDER}      ${True}
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
   ...      В обраному профілі немає активних постачальників
   ...      unsuccessfulReason
+
+
+Відображення причини відхилення тендера, якщо профайл неіснуючий
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_unsuccessfully_reason_unknown_profile
+  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
+  ...      Обраний профіль не існує в системі Prozorro.Market
+  ...      unsuccessfulReason
+
 
 
 Неможливість подати пропозицію в статусі draft

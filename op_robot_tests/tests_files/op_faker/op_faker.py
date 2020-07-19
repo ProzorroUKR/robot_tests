@@ -38,6 +38,7 @@ class OP_Provider(BaseProvider):
     tender_wrong_status = _fake_data.wrong_status_when_create_tender
     profiles_hidden_status = _fake_data.profiles_hidden_status
     profiles_shortlistedfirms_empty = _fake_data.profiles_shortlistedfirms_empty
+    unknown_profile = _fake_data.unknown_profiles
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -249,3 +250,7 @@ class OP_Provider(BaseProvider):
     @classmethod
     def shortlistedfirms_empty(self):
         return self.random_element(self.profiles_shortlistedfirms_empty)
+
+    @classmethod
+    def tender_unknown_profile(self):
+        return self.random_element(self.unknown_profile)
