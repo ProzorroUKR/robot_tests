@@ -80,6 +80,27 @@ ${PLAN_TENDER}      ${True}
   Перевірити неможливість зміни поля procuringEntity.kind тендера на значення central для користувача ${tender_owner}
 
 
+Неможливість змінити статус з draft на один із інших, крім draft.publishing
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      impossible_change_tender_status_form_draft_to_another_except_draft_publishing  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  @{statuses}=  Create List
+  ...      draft.unsuccessful
+  ...      active.tendering
+  ...      active.qualification
+  ...      active.awarded
+  ...      complete
+  ...      cancelled
+  ...      unsuccessful
+  :FOR    ${status}    IN    @{statuses}
+  \  ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  ${status}
+  \  Convert To Lowercase  ${value}
+  \  Should Contain  ${value}  can't switch tender from status (draft) to (${status})
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner

@@ -10,3 +10,4 @@
 -i create_tender_without_2_phase_commit
 -i patch_tender_wrong_date
 -i patch_tender_wrong_procuringEntity_kind
+-i impossible_change_tender_status_form_draft_to_another_except_draft_publishing
