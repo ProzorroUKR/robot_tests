@@ -1072,6 +1072,8 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
         data['tenderPeriod']['endDate'] = add_minutes_to_date(start_date, 1)
     if params.get('empty_profile'):
         data['profile'] = ""
+    if params.get('tender_wrong_status'):
+        data['status'] = fake.wrong_status()
     return munchify(data)
 
 

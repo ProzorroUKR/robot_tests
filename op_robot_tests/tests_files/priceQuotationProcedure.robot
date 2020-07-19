@@ -49,14 +49,26 @@ ${PLAN_TENDER}      ${True}
   Should Contain  ${value}  the profile value doesn't match id pattern
 
 
-Можливість оголосити тендер без 2-ї фази commit-у
+Неможливість явно оголосити тендер з доступних статусів за виключенням draft
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_tender_without_2_phase_commit  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${TENDER_WRONG_STATUS}  ${True}
   Можливість оголосити тендер без 2-ї фази commit-у
+
+
+Відображення статуса тендера draft
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_view_status_draft
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  Звірити поле тендера із значенням  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  ...      draft
+  ...      status
 
 
 Неможливість змінити tenderPeriod:endDate < 2 робочих дні
