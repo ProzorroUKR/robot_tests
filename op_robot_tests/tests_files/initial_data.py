@@ -1074,6 +1074,9 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
         data['profile'] = ""
     if params.get('tender_wrong_status'):
         data['status'] = fake.wrong_status()
+    if params.get('profiles_hidden_status'):
+        data['profile'] = fake.profiles_hidden()
+
     return munchify(data)
 
 

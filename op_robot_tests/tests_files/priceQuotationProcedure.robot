@@ -113,6 +113,17 @@ ${PLAN_TENDER}      ${True}
   \  Should Contain  ${value}  can't switch tender from status (draft) to (${status})
 
 
+Можливість оголосити тендер з профайлом, статус якого hidden
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_hidden  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${PROFILES_HIDDEN_STATUS}  ${True}
+  Можливість оголосити тендер з недоліками в параметрах
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
@@ -608,6 +619,16 @@ ${PLAN_TENDER}      ${True}
   ...      unsuccessfully_tender_verification_wrong_profile  level1
   ...      critical
   Дочекатися припинення процесу  ${viewer}  ${TENDER['TENDER_UAID']}
+
+
+Відображення причини відхилення тендера, якщо профайл із hidden статусом
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_unsuccessfully_reason_profile_hidden
+  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
+  ...      Обраний профіль неактивний в системі Prozorro.Market
+  ...      unsuccessfulReason
 
 
 Неможливість подати пропозицію в статусі draft

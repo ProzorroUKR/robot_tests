@@ -227,6 +227,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${WRONG_TENDER_DATE}  Get Variable Value  ${WRONG_TENDER_DATE}  ${False}
   ${EMPTY_PROFILE}  Get Variable Value  ${EMPTY_PROFILE}  ${False}
   ${WRONG_PROFILE}  Get Variable Value  ${PROFILE}  ${True}
+  ${PROFILES_HIDDEN_STATUS}  Get Variable Value  ${PROFILES_HIDDEN_STATUS}  ${False}
   ${tender_parameters}=  Create Dictionary
   ...      mode=${MODE}
   ...      number_of_items=${NUMBER_OF_ITEMS}
@@ -244,6 +245,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      wrong_tender_date=${${WRONG_TENDER_DATE}}
   ...      empty_profile=${${EMPTY_PROFILE}}
   ...      wrong_profile=${${WRONG_PROFILE}}
+  ...      profiles_hidden_status=${${PROFILES_HIDDEN_STATUS}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
