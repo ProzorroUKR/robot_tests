@@ -280,6 +280,17 @@ ${PLAN_TENDER}      ${True}
   Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
 
 
+Неможливість змінити заголовок тендера під час прийому пропозицій
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Редагування тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_data_active_tendering
+  ...      critical
+  ${new_title}=  create_fake_title
+  Перевірити неможливість зміни поля title тендера на значення ${new_title} для користувача ${tender_owner}
+  Remove From Dictionary  ${USERS.users['${tender_owner}'].tender_data.data}  title
+
+
 Неможливість подати пропозицію з перевищеним лімітом
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
