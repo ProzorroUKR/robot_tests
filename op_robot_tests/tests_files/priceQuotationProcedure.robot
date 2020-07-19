@@ -442,6 +442,18 @@ ${PLAN_TENDER}      ${True}
   Remove File  ${file_path}
 
 
+Неможливість скасувати своє рішення на етапі кваліфікації
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  impossible_cancel_1_award_qualification_by_provider
+  ...  critical
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  0
+  Run Keyword And Expect Error  *  Run As  ${user}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  0
+
+
 Можливість дискваліфікуватися постачальником
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  provider

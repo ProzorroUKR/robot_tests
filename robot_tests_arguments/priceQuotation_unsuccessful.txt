@@ -16,6 +16,7 @@
 
 -i awardPeriod_startDate
 -i impossible_approve_first_award_by_customer
+-i impossible_cancel_1_award_qualification_by_provider
 -i disqualification_first_award_by_provider
 -i qualification_reject_second_award_after_2_days
 
