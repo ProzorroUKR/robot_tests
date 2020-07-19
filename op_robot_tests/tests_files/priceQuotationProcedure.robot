@@ -573,6 +573,30 @@ ${PLAN_TENDER}      ${True}
   Дочекатися припинення процесу  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
+Неможливість подати пропозицію в статусі draft
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      impossible_make_bid_when_draft
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  ${value}=  Run Keyword And Expect Error  *  Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't add bid in current (draft) tender status
+
+
+Неможливість подати пропозицію в статусі draft.unsuccessful
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      impossible_make_bid_when_draft_unsuccessful
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  ${value}=  Run Keyword And Expect Error  *  Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't add bid in current (draft.unsuccessful) tender status
+
+
 Відображення статусу завершення, якщо не було подано жодних пропозицій
   [Tags]   ${USERS.users['${viewer}'].broker}: Завершення тендера
   ...      viewer  tender_owner  provider  provider1

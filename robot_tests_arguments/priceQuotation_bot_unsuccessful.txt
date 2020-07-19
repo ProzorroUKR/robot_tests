@@ -10,3 +10,4 @@
 -i create_tender_invalid_profile
 -i find_tender
 -i unsuccessfully_tender_verification_wrong_profile
+-i impossible_make_bid_when_draft_unsuccessful
