@@ -124,6 +124,17 @@ ${PLAN_TENDER}      ${True}
   Можливість оголосити тендер з недоліками в параметрах
 
 
+Можливість оголосити тендер з пустим shortlistedfirms
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_shortlistedfirms_empty  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${PROFILES_SHORTLISTEDFIRMS_EMPTY}  ${True}
+  Можливість оголосити тендер з недоліками в параметрах
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
@@ -628,6 +639,16 @@ ${PLAN_TENDER}      ${True}
   ...  tender_unsuccessfully_reason_profile_hidden
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
   ...      Обраний профіль неактивний в системі Prozorro.Market
+  ...      unsuccessfulReason
+
+
+Відображення причини відхилення тендера, якщо shortlistedfirms пустий
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення скасування тендера
+  ...  viewer
+  ...  ${USERS.users['${viewer}'].broker}
+  ...  tender_unsuccessfully_reason_shortlistedfirms_empty
+  Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
+  ...      В обраному профілі немає активних постачальників
   ...      unsuccessfulReason
 
 

@@ -8165,6 +8165,9 @@
     "profiles_hidden_status": [
         "333222-33140000-555666-42000111"
     ],
+    "profiles_shortlistedfirms_empty": [
+        "333222-33140000-999888-42000111"
+    ],
     "wrong_status_when_create_tender": [
         "draft.unsuccessful",
         "draft.publishing",
