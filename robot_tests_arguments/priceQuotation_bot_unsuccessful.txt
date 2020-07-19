@@ -6,8 +6,7 @@
 -v TENDER_MEAT:False
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
--v PROFILE:False
 
--i create_tender
+-i create_tender_invalid_profile
 -i find_tender
 -i unsuccessfully_tender_verification_wrong_profile

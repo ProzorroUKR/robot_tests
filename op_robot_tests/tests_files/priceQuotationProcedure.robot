@@ -111,6 +111,17 @@ ${PLAN_TENDER}      ${True}
   Можливість оголосити тендер
 
 
+Можливість оголосити тендер з некоректним профайлом
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_invalid_profile  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${WROGN_PROFILE}  ${True}
+  Можливість оголосити тендер з недоліками в параметрах
+
+
 Неможливість змінити статус з draft.publishing на active.tendering
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Неможливість редагувати тендер
   ...      tender_owner
