@@ -7,10 +7,9 @@
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
 
+-i create_tender_wrong_date
+-i create_tender_empty_profile
 -i create_tender
--i find_tender
+-i impossible_change_tendering_status
 -i successfully_tender_validation
--i make_bid_by_provider
--i awardPeriod_startDate
--i qualification_approve_first_award_by_provider
--i tender_cancellation
+-i change_data_active_tendering

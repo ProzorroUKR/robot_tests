@@ -7,7 +7,6 @@
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
 
--i create_tender_invalid_profile
--i find_tender
+-i create_tender_unknown_profile
 -i unsuccessfully_tender_verification_wrong_profile
--i impossible_make_bid_when_draft_unsuccessful
+-i tender_unsuccessfully_reason_unknown_profile

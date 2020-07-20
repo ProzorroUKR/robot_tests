@@ -772,3 +772,7 @@ def edit_tender_data_for_plan_tender(data, mode, data_version):
     if data_version is 4:
         dict_data['data']['procurementMethodType'] = plan_tedner_test_data[data_version]
     return munchify(dict_data)
+
+
+def get_lowest_value_from_list(list_value):
+    return min(list_value)

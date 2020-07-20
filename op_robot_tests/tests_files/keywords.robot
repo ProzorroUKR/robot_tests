@@ -182,8 +182,10 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_access_token=${USERS.users['${provider}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_access_token=${USERS.users['${provider1}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_access_token=${USERS.users['${provider1}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_bid_id=${USERS.users['${provider}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_bid_id=${USERS.users['${provider1}'].bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_bid_id=${USERS.users['${provider1}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...      tender_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
   ...      lot_file_properties=${USERS.users['${tender_owner}'].lots_documents[0].file_properties}
@@ -330,7 +332,7 @@ Get Broker Property By Username
 
 
 Підготувати дані для подання пропозиції
-  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].initial_data.data}
+  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].tender_data.data}
   [Return]  ${bid}
 
 
@@ -351,7 +353,14 @@ Get Broker Property By Username
 Підготувати дані для подання пропозиції priceQuotation
   [Arguments]  ${username}
   ${BID_OVER_LIMIT}=  Get Variable Value  ${BID_OVER_LIMIT}  ${False}
-  ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}  ${BID_OVER_LIMIT}
+  ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}=  Get Variable Value  ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}  ${False}
+  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}=  Get Variable Value  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}  ${False}
+  ${BID_INVALID_EXPECTED_VALUE}=  Get Variable Value  ${BID_INVALID_EXPECTED_VALUE}  ${False}
+  ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}
+  ...      ${BID_OVER_LIMIT}
+  ...      ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}
+  ...      ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}
+  ...      ${BID_INVALID_EXPECTED_VALUE}
   [Return]  ${bid}
 
 
@@ -1215,6 +1224,19 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      active.qualification
+
+
+Дочекатись дати початку періоду підписання угоди
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      active.awarded
 
 
 Дочекатись дати закінчення періоду кваліфікації

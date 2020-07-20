@@ -1,7 +1,7 @@
--v MODE:priceQuotation
+-v MODE:belowThreshold
 
 -v NUMBER_OF_ITEMS:1
--v NUMBER_OF_LOTS:0
+-v NUMBER_OF_LOTS:2
 
 -v TENDER_MEAT:False
 -v ITEM_MEAT:False
@@ -9,6 +9,9 @@
 
 -i create_tender
 -i find_tender
--i succefully_tender_verification
--i make_bid_by_provider
+
+-i lot_cancellation
+-i lot_cancellation_view
+
 -i tender_cancellation
+-i tender_cancellation_view

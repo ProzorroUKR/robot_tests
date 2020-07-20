@@ -81,7 +81,7 @@ Quinta:
         framework_selection:
              accelerator: 360
         priceQuotation:
-            tender:  [0, 10]
+            tender:  [0, 15]
             accelerator: 1440
     keywords_file: openprocurement_client
     roles:
