@@ -437,6 +437,17 @@ ${PLAN_TENDER}      ${True}
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider2}
 
 
+Неможливість видалити пропозицію першим учасником під час прийому пропозицій
+  [Tags]   ${USERS.users['${provider1}'].broker}: Скасування пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      delete_bid_while_tendering_period_by_provider
+  ...      non-critical
+  ${value}=  Run Keyword And Expect Error  *  Можливість скасувати цінову пропозицію користувачем ${provider}
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't delete bid in price quotation tender
+
+
 Можливість дочекатись дати початку періоду кваліфікації
   [Tags]  ${USERS.users['${provider}'].broker}: Подання кваліфікації
   ...     provider
@@ -507,6 +518,17 @@ ${PLAN_TENDER}      ${True}
   ...  critical
   ${user}=  Пошук постачальника пропозиції з awards по індексу  0
   Run As  ${user}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+
+
+Неможливість видалити пропозицію учасником після закінчення прийому пропозицій
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      cancel_bid_after_tendering_period_by_provider
+  ...      non-critical
+  ${value}=  Run Keyword And Expect Error  *  Можливість скасувати цінову пропозицію користувачем ${provider}
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't delete bid in current (active.qualification) tender status
 
 
 Можливість дискваліфікації другого постачальника, якщо 2 дні не було підтвердження

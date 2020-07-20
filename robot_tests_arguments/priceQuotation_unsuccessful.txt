@@ -13,12 +13,14 @@
 -i impossible_make_bid
 -i make_bid_by_provider
 -i make_bid_by_provider1
+-i delete_bid_while_tendering_period_by_provider
 -i make_bid_by_provider2
 
 -i awardPeriod_startDate
 -i impossible_approve_first_award_by_customer
 -i impossible_cancel_1_award_qualification_by_provider
 -i disqualification_first_award_by_provider
+-i cancel_bid_after_tendering_period_by_provider
 -i qualification_reject_second_award_after_2_days
 
 -i qualification_approve_third_award_by_provider
