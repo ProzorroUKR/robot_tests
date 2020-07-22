@@ -624,6 +624,21 @@ def test_bid_competitive_data():
     return bid
 
 
+def test_bid_competitive_data_stage_2(id):
+    bid = munchify({
+        "data": {
+            "tenderers": [
+                fake.procuringTenderer()
+            ]
+        }
+    })
+    bid.data.tenderers[0].identifier.id = id
+    bid.data.tenderers[0].address.countryName_en = translate_country_en(bid.data.tenderers[0].address.countryName)
+    bid.data.tenderers[0].address.countryName_ru = translate_country_ru(bid.data.tenderers[0].address.countryName)
+    bid.data['status'] = 'draft'
+    return bid
+
+
 def test_bid_data():
     bid = munchify({
         "data": {

@@ -350,6 +350,12 @@ Get Broker Property By Username
   [Return]  ${USERS.users['${username}'].bidresponses.bid}
 
 
+Підготувати дані для подання пропозиції для другого етапу конкурентного діалогу
+  [Arguments]  ${username}  ${edrpou}
+  ${bid}=  generate_test_bid_data  ${USERS.users['${tender_owner}'].tender_data.data}  ${edrpou}
+  [Return]  ${bid}
+
+
 Підготувати дані про постачальника
   [Arguments]  ${username}  ${lotIndex}=${-1}
   ${lotIndex}=  Convert To Integer  ${lotIndex}
