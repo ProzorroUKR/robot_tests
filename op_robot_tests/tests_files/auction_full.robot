@@ -24,18 +24,18 @@ Library         Selenium2Library
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних аукціону
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view
+  ...      tender_view_auctionPeriod_startDate
   [Setup]  Дочекатись дати закінчення прийому пропозицій  ${viewer}  ${TENDER['TENDER_UAID']}
   Дочекатись дати початку періоду аукціону  ${viewer}  ${TENDER['TENDER_UAID']}
   Отримати дані із тендера  ${viewer}  ${TENDER['TENDER_UAID']}  auctionPeriod.startDate  ${TENDER['LOT_ID']}
 
 
-Можливість дочекатися початку аукціону
-  [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
-  ...      viewer
+Можливість дочекатись початку етапу аукціону
+  [Tags]   ${USERS.users['${viewer}'].broker}: Очікування початку періоду аукціону
+  ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      auction
-  Дочекатись дати початку аукціону  ${viewer}
+  ...      tender_view
+  Дочекатись дати початку періоду аукціону  ${viewer}  ${TENDER['TENDER_UAID']}
 
 
 Можливість вичитати посилання на аукціон для першого учасника
@@ -62,14 +62,40 @@ Library         Selenium2Library
   Можливість вичитати посилання на аукціон для ${viewer}
 
 
+Можливість дочекатися дати початку аукціону
+  [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      auction_period_start_date
+  Дочекатись дати початку аукціону  ${viewer}
+
+
+Можливість дочекатися початку аукціону (скорочене очікування)
+  [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      auction
+  Дочекатись завершення періоду очікування перед початком аукціону
+
+
 Можливість дочекатись першого раунду
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
   ...      viewer  provider  provider1
   ...      ${USERS.users['${viewer}'].broker}
   ...      ${USERS.users['${provider}'].broker}
   ...      ${USERS.users['${provider1}'].broker}
-  ...      auction
+  ...      auction_wait_pause_before_1_round
   Дочекатись завершення паузи перед першим раундом
+
+
+Можливість дочекатись першого раунду (скорочене очікування)
+  [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
+  ...      viewer  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      ${USERS.users['${provider}'].broker}
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      auction
+  Дочекатись завершення паузи перед першим раундом (скорочене очікування)
 
 
 Можливість проведення 1 го раунду аукціону для першого учасника
@@ -170,16 +196,27 @@ Library         Selenium2Library
   ...      ${USERS.users['${viewer}'].broker}
   ...      ${USERS.users['${provider}'].broker}
   ...      ${USERS.users['${provider1}'].broker}
-  ...      auction
+  ...      auction_wait_auctionPeriod_endDate
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Дочекатись дати закінчення аукціону
+
+
+Можливість дочекатися завершення аукціону (скорочене очікування)
+  [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
+  ...      viewer  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      ${USERS.users['${provider}'].broker}
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      auction
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Дочекатись закінчення аукціону (скорочене очікування)
 
 
 Відображення дати завершення аукціону
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних аукціону
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      tender_view
+  ...      tender_view_auctionPeriod_endDate
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Отримати дані із тендера  ${viewer}  ${TENDER['TENDER_UAID']}  auctionPeriod.endDate  ${TENDER['LOT_ID']}
 
@@ -193,6 +230,11 @@ Library         Selenium2Library
   Дочекатись дати  ${auctionStart}
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
+
+
+Дочекатись завершення періоду очікування перед початком аукціону
+  Відкрити сторінку аукціону для ${viewer}
+  Wait Until Keyword Succeeds  10 times  60 s  Page should not contain  до початку аукціону
 
 
 Можливість вичитати посилання на аукціон для ${username}
@@ -219,6 +261,11 @@ Library         Selenium2Library
   Дочекатись завершення паузи перед першим раундом для користувачів
 
 
+Дочекатись завершення паузи перед першим раундом (скорочене очікування)
+  Відкрити сторінку аукціону для ${viewer}
+  Дочекатись завершення паузи перед першим раундом для користувачів
+
+
 Дочекатись дати закінчення аукціону
   Переключитись на учасника  ${viewer}
   ${status}  ${_}=  Run Keyword And Ignore Error  Wait Until Keyword Succeeds  61 times  30 s  Page should contain  Аукціон завершився
@@ -242,6 +289,12 @@ Library         Selenium2Library
   ...      Page should contain  Аукціон завершився
   ...      AND
   ...      Close browser
+
+
+Дочекатись закінчення аукціону (скорочене очікування)
+  Переключитись на учасника  ${viewer}
+  Wait Until Keyword Succeeds  61 times  30 s  Page should contain  Аукціон завершився
+  Close browser
 
 
 Дочекатись паузи перед першим раундом глядачем
