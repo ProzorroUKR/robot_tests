@@ -378,6 +378,26 @@ ${PLAN_TENDER}      ${True}
   Отримати дані із поля tenderPeriod.endDate тендера другого етапу для усіх користувачів
 
 
+Відображення shortlistedFirms[0].identifier.id
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля shortlistedFirms[0].identifier.id тендера другого етапу для усіх користувачів
+
+
+Відображення shortlistedFirms[1].identifier.id
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля shortlistedFirms[1].identifier.id тендера другого етапу для усіх користувачів
+
+
 Можливість подати пропозицію першим учасником на другому етапі
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
@@ -386,7 +406,7 @@ ${PLAN_TENDER}      ${True}
   ...      critical
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати цінову пропозицію на другий етап користувачем ${provider}
+  Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем  ${provider}  ${0}
 
 
 Можливість подати пропозицію другим учасником на другому етапі
@@ -396,7 +416,15 @@ ${PLAN_TENDER}      ${True}
   ...      make_bid_by_provider1_second_stage
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати цінову пропозицію на другий етап користувачем ${provider1}
+  Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем  ${provider1}  ${1}
+
+
+Дочекатись початку періоду пре-кваліфікації на другому етапі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду пре-кваліфікації учасників
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      wait_active_pre-qualification_start_second_stage
+  Дочекатись дати початку періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
 
 
 Можливість підтвердити першу пропозицію кваліфікації на другому етапі
@@ -415,7 +443,26 @@ ${PLAN_TENDER}      ${True}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_second_bid_second_stage
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити -1 пропозицію кваліфікації
+  Можливість підтвердити 1 пропозицію кваліфікації
+
+
+Можливість підтвердити третю пропозицію кваліфікації на другому етапі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація на другому етапі
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_third_bid_second_stage
+  [Setup]  Дочекатись дати початку періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 2 пропозицію кваліфікації
+
+
+Можливість підтвердити четверту пропозицію кваліфікації на другогму етапі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація на другому етапі
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_fourth_bid_second_stage
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 3 пропозицію кваліфікації
 
 
 Можливість затвердити остаточне рішення кваліфікації на другому етапі
@@ -465,6 +512,17 @@ ${PLAN_TENDER}      ${True}
   ...  qualification_approve_third_award
   ...  critical
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  2
+
+
+Можливість затвердити остаточне рішення кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualification_approve_qualifications
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Затвердити постачальників  ${TENDER['TENDER_UAID']}
 
 
 Дочекатись початку періоду підписання угоди
