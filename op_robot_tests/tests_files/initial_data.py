@@ -376,6 +376,12 @@ def test_tender_data_planning(params):
             breakdown_element = test_breakdown_data()
             breakdown_element['value']['amount'] = value
             data['budget']['breakdown'].append(breakdown_element)
+    if params['mode'] == "priceQuotation":
+        for buyer in data['buyers']:
+            del buyer['kind']
+            del buyer['address']
+        del data['procuringEntity']['kind']
+        del data['procuringEntity']['address']
     return munchify(data)
 
 
@@ -692,25 +698,33 @@ def test_bid_data_selection(data, index):
     return bid
 
 
-def test_bid_data_pq(data, over_limit):
+def test_bid_data_pq(data, over_limit=False, missing_criteria=False, more_than_two_requirements=False, invalid_expected_value=False):
     bid = test_bid_data()
     bid.data.requirementResponses = []
-    for criteria in data['criteria']:
-        for requirements in criteria['requirementGroups']:
-            for requirement in requirements['requirements']:
-                if requirement.get('expectedValue'):
-                    value = requirement.get('expectedValue')
-                else:
-                    value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
-                requirement = {
-                    "requirement": {"id": requirement['id']},
-                    "value": value
-                }
-                bid.data.requirementResponses.append(requirement)
+    if 'criteria' in data:
+        for criteria in data['criteria']:
+            for requirements in criteria['requirementGroups']:
+                for requirement in requirements['requirements']:
+                    if requirement.get('expectedValue'):
+                        value = requirement.get('expectedValue')
+                        if invalid_expected_value:
+                            value = "invalid_value"
+                    else:
+                        value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
+                    requirement = {
+                        "requirement": {"id": requirement['id']},
+                        "value": value
+                    }
+                    bid.data.requirementResponses.append(requirement)
+                if not more_than_two_requirements:
+                    break
     bid.data['status'] = 'draft'
-    bid.data.update(test_bid_value(fake.random_int(min=1, max=int(data['value']['amount'])), data['value']['valueAddedTaxIncluded']))
+    bid.data.update(test_bid_value(fake.random_int(min=1, max=int(data['value']['amount'])),
+                                   data['value']['valueAddedTaxIncluded']))
     if over_limit:
         bid.data['value']['amount'] = int(data['value']['amount']) + fake.random_int(min=1, max=1000)
+    if missing_criteria:
+        del bid['data']['requirementResponses'][-1]
     return bid
 
 
@@ -1046,15 +1060,27 @@ def test_tender_data_esco(params, submissionMethodDetails, plan_data):
 def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     del data["minimalStep"]
+    del data["title_en"]
     data['procurementMethodType'] = 'priceQuotation'
-    if params['profile']:
-        data['profile'] = fake.valid_profile()
-    else:
+    data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'other', 'social', 'special'])
+    data['profile'] = fake.valid_profile()
+    if params.get('wrong_profile'):
         data['profile'] = fake.invalid_profile()
-    if params['wrong_tender_date']:
+    if params.get('wrong_tender_date'):
         start_date = data['tenderPeriod']['startDate']
         from op_robot_tests.tests_files.service_keywords import add_minutes_to_date
         data['tenderPeriod']['endDate'] = add_minutes_to_date(start_date, 1)
+    if params.get('empty_profile'):
+        data['profile'] = ""
+    if params.get('tender_wrong_status'):
+        data['status'] = fake.wrong_status()
+    if params.get('profiles_hidden_status'):
+        data['profile'] = fake.profiles_hidden()
+    if params.get('profiles_shortlistedfirms_empty'):
+        data['profile'] = fake.shortlistedfirms_empty()
+    if params.get('unknown_profile'):
+        data['profile'] = fake.tender_unknown_profile()
+
     return munchify(data)
 
 

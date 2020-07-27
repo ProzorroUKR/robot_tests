@@ -273,6 +273,29 @@ Library  openprocurement_client.utils
   [return]  ${tender.data.tenderID}
 
 
+Створити тендер без 2-ї фази commit-у
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_owner_access_token}
+  Log  ${ARTIFACT.tender_id}
+  ${tender}=  Call Method  ${USERS.users['${username}'].tender_create_client}  create_tender
+  ...      ${ARTIFACT.tender_id}
+  ...      ${tender_data}
+  ...      access_token=${ARTIFACT.tender_owner_access_token}
+  Log  ${tender}
+  ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${tender_uaid}=  Get Variable Value  ${tender.data.tenderID}
+  ${tender_id}=  Get Variable Value  ${tender.data.id}
+  :FOR  ${user}  IN  @{USED_ROLES}
+  \  Set To Dictionary  ${USERS.users['${${user}}'].id_map}  ${tender_uaid}  ${tender_id}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
+  Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
+  Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
+  Log   ${USERS.users['${username}'].tender_data}
+  [return]  ${tender.data.tenderID}
+
+
 Створити об'єкт моніторингу
   [Arguments]  ${username}  ${monitoring_data}
   ${monitoring}=  Call Method  ${USERS.users['${username}'].dasu_client}  create_monitoring  ${monitoring_data}
@@ -2304,6 +2327,7 @@ Library  openprocurement_client.utils
   ...      ${tender}
   ...      access_token=${tender.access.token}
   Log  ${reply}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${reply.data.id}${\n}  WARN
 
 ##############################################################################
 #             CONTRACT SIGNING
