@@ -1,0 +1,34 @@
+-v MODE:priceQuotation
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:0
+
+-v TENDER_MEAT:False
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-i create_tender
+
+-i successfully_tender_validation
+-i impossible_make_bid
+-i make_bid_by_provider
+-i make_bid_by_provider1
+-i delete_bid_while_tendering_period_by_provider
+-i make_bid_by_provider2
+
+-i awardPeriod_startDate
+-i impossible_approve_first_award_by_customer
+-i impossible_cancel_1_award_qualification_by_provider
+-i disqualification_first_award_by_provider
+-i cancel_bid_after_tendering_period_by_provider
+-i qualification_reject_second_award_after_2_days
+
+-i qualification_approve_third_award_by_provider
+-i impossible_cancel_3_award_qualification_by_provider
+-i qualification_cancel_3_award_qualification_by_customer
+-i impossible_approve_fourth_award_by_provider
+-i qualification_approve_4_award_by_customer
+-i qualification_cancel_4_award_qualification_by_customer
+-i qualification_reject_fifth_award
+
+-i unsuccefully_tender

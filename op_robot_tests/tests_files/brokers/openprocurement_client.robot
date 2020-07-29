@@ -237,6 +237,7 @@ Library  openprocurement_client.utils
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
+  ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
   Set To Dictionary  ${tender['data']}  status=${status}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
@@ -265,6 +266,29 @@ Library  openprocurement_client.utils
   ...      ${tender}
   ...      access_token=${tender.access.token}
   Log  ${tender}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
+  Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
+  Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
+  Log   ${USERS.users['${username}'].tender_data}
+  [return]  ${tender.data.tenderID}
+
+
+Створити тендер без 2-ї фази commit-у
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_owner_access_token}
+  Log  ${ARTIFACT.tender_id}
+  ${tender}=  Call Method  ${USERS.users['${username}'].tender_create_client}  create_tender
+  ...      ${ARTIFACT.tender_id}
+  ...      ${tender_data}
+  ...      access_token=${ARTIFACT.tender_owner_access_token}
+  Log  ${tender}
+  ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${tender_uaid}=  Get Variable Value  ${tender.data.tenderID}
+  ${tender_id}=  Get Variable Value  ${tender.data.id}
+  :FOR  ${user}  IN  @{USED_ROLES}
+  \  Set To Dictionary  ${USERS.users['${${user}}'].id_map}  ${tender_uaid}  ${tender_id}
   Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
@@ -1963,6 +1987,15 @@ Library  openprocurement_client.utils
   ...  access_token=${tender.access.token}
   Log  ${reply}
 
+
+Отримати інформацію із рішення
+  [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${award_index}=${None}
+  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${award}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.awards[${award_index}]}
+  ${field_value}=  Get Variable Value  ${award['status']}
+  [Return]  ${field_value}
+
+
 ##############################################################################
 #             Limited procurement
 ##############################################################################
@@ -2015,7 +2048,7 @@ Library  openprocurement_client.utils
   ...  ${cancellation_id}
   ...  ${document_id}
   ...  ${new_description}
-  ${cancellation}=  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA', 'negotiation', 'negotiation.quick']
+  ${cancellation}=  run keyword if  '${procurementMethodType}' in ['belowThreshold', 'reporting', 'closeFrameworkAgreementSelectionUA', 'negotiation', 'negotiation.quick', 'priceQuotation']
   ...  openprocurement_client.Підтвердити скасування закупівлі  ${username}  ${tender_uaid}  ${cancellation_id}
   ...  ELSE  openprocurement_client.Перевести скасування закупівлі в період очікування  ${username}  ${tender_uaid}  ${cancellation_id}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  cancellation_data=${cancellation}
