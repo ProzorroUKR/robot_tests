@@ -8153,5 +8153,33 @@
         "dateOfInvoicing",
         "endDateOfTheReportingPeriod",
         "anotherEvent"
+    ],
+    "valid_profile_ids": [
+        "999999-33140000-555666-42000111"
+    ],
+    "invalid_profile_ids": [
+        "333222-33140000-555666-42000111",
+        "333222-33140000-999888-42000111",
+        "999999-33140000-222111-42000111"
+    ],
+    "profiles_hidden_status": [
+        "333222-33140000-555666-42000111"
+    ],
+    "profiles_shortlistedfirms_empty": [
+        "333222-33140000-999888-42000111",
+        "999999-33140000-222111-42000111"
+    ],
+    "unknown_profiles": [
+        "834922-33600000-555555-55555555"
+    ],
+    "wrong_status_when_create_tender": [
+        "draft.unsuccessful",
+        "draft.publishing",
+        "active.tendering",
+        "active.qualification",
+        "active.awarded",
+        "cancelled",
+        "unsuccessful",
+        "complete"
     ]
 }
