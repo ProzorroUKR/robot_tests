@@ -35,6 +35,7 @@ from .initial_data import (
     test_bid_value,
     test_bid_value_esco,
     test_bid_data_selection,
+    test_bid_data_pq,
     test_change_data,
     test_claim_answer_data,
     test_claim_data,
@@ -58,6 +59,7 @@ from .initial_data import (
     test_tender_data_planning,
     test_tender_data_openua_defense,
     test_tender_data_framework_agreement,
+    test_tender_data_pq,
     test_tender_data_selection,
     test_bid_competitive_data,
     test_monitoring_data,
@@ -379,6 +381,9 @@ def prepare_test_tender_data(procedure_intervals,
     elif mode == 'open_esco':
          return munchify({'data': test_tender_data_esco(
             tender_parameters, submissionMethodDetails, plan_data)})
+    elif mode == 'priceQuotation':
+        return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data)})
+
         # The previous line needs an explicit keyword argument because,
         # unlike previous functions, this one has three arguments.
     raise ValueError("Invalid mode for prepare_test_tender_data")
@@ -774,3 +779,7 @@ def edit_tender_data_for_plan_tender(data, mode, data_version):
     if data_version is 4:
         dict_data['data']['procurementMethodType'] = plan_tedner_test_data[data_version]
     return munchify(dict_data)
+
+
+def get_lowest_value_from_list(list_value):
+    return min(list_value)
