@@ -303,7 +303,6 @@ def test_tender_data_planning(params):
             }
         },
         "procuringEntity": {
-            #"kind": "general",
             "identifier": {
                 "scheme": "UA-EDR",
                 "id": random.choice(["13313462", "00037256"]),
@@ -333,6 +332,8 @@ def test_tender_data_planning(params):
         data["procuringEntity"]["kind"] = "defense"
     elif params.get("mode") in ["belowThreshold", "reporting"]:
         data["procuringEntity"]["kind"] = "other"
+    elif params.get("mode") in ["priceQuotation"]:
+        data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
     else:
         data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
     buyers = test_buyers_data()
@@ -376,12 +377,6 @@ def test_tender_data_planning(params):
             breakdown_element = test_breakdown_data()
             breakdown_element['value']['amount'] = value
             data['budget']['breakdown'].append(breakdown_element)
-    if params['mode'] == "priceQuotation":
-        for buyer in data['buyers']:
-            del buyer['kind']
-            del buyer['address']
-        del data['procuringEntity']['kind']
-        del data['procuringEntity']['address']
     return munchify(data)
 
 
