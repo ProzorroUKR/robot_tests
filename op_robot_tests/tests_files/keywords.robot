@@ -356,6 +356,20 @@ Get Broker Property By Username
   [Return]  ${bid}
 
 
+Підготувати дані для подання пропозиції priceQuotation
+  [Arguments]  ${username}
+  ${BID_OVER_LIMIT}=  Get Variable Value  ${BID_OVER_LIMIT}  ${False}
+  ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}=  Get Variable Value  ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}  ${False}
+  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}=  Get Variable Value  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}  ${False}
+  ${BID_INVALID_EXPECTED_VALUE}=  Get Variable Value  ${BID_INVALID_EXPECTED_VALUE}  ${False}
+  ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}
+  ...      ${BID_OVER_LIMIT}
+  ...      ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}
+  ...      ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}
+  ...      ${BID_INVALID_EXPECTED_VALUE}
+  [Return]  ${bid}
+
+
 Підготувати дані про постачальника
   [Arguments]  ${username}  ${lotIndex}=${-1}
   ${lotIndex}=  Convert To Integer  ${lotIndex}
@@ -1040,6 +1054,12 @@ Require Failure
   Порівняти об'єкти  ${left}  ${right}
 
 
+Звірити статус рішення
+  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${award_index}=${None}
+  ${right}=  Run as  ${username}  Отримати інформацію із рішення  ${tender_uaid}  status  ${award_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
 Звірити статус cancellations
   [Arguments]  ${username}  ${tender_uaid}  ${left}  ${cancellation_index}
   ${right}=  Run as  ${username}  Отримати інформацію із cancellation  ${tender_uaid}  status  ${cancellation_index}
@@ -1238,6 +1258,32 @@ Require Failure
   ...      active.qualification.stand-still
 
 
+Дочекатись зміни статусу unsuccessful
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      40 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      unsuccessful
+
+
+Дочекатись зміни статусу рішення
+  [Arguments]  ${username}  ${status}  ${award_index}=${None}
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      8 min 15 sec
+  ...      15 sec
+  ...      Звірити статус рішення
+  ...      ${username}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${status}
+  ...      ${award_index}
+
+
 Дочекатись дати закінчення періоду подання скарг
   [Arguments]  ${username}
   Дочекатись дати  ${USERS.users['${username}'].tender_data.data.complaintPeriod.endDate}
@@ -1344,3 +1390,16 @@ Require Failure
   ${contract_data}=  munch_dict  arg=${contract_data}
   Log  ${contract_data}
   [Return]  ${contract_data}
+
+
+Дочекатися припинення процесу
+  [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      10 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      draft.unsuccessful

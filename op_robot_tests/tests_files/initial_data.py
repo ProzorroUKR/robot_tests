@@ -22,6 +22,7 @@ mode_open = ["belowThreshold", "aboveThresholdUA", "aboveThresholdEU",
              "aboveThresholdUA.defense", "competitiveDialogueUA", "competitiveDialogueEU", "esco",
              "closeFrameworkAgreementUA"]
 mode_limited = ["reporting", "negotiation.quick", "negotiation"]
+mode_selective = ["priceQuotation"]
 violationType = ["corruptionDescription", "corruptionProcurementMethodType", "corruptionChanges",
                  "corruptionPublicDisclosure", "corruptionBiddingDocuments", "documentsForm",
                  "corruptionAwarded", "corruptionCancelled", "corruptionContracting"]
@@ -302,7 +303,6 @@ def test_tender_data_planning(params):
             }
         },
         "procuringEntity": {
-            #"kind": "general",
             "identifier": {
                 "scheme": "UA-EDR",
                 "id": random.choice(["13313462", "00037256"]),
@@ -332,6 +332,8 @@ def test_tender_data_planning(params):
         data["procuringEntity"]["kind"] = "defense"
     elif params.get("mode") in ["belowThreshold", "reporting"]:
         data["procuringEntity"]["kind"] = "other"
+    elif params.get("mode") in ["priceQuotation"]:
+        data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
     else:
         data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
     buyers = test_buyers_data()
@@ -367,6 +369,8 @@ def test_tender_data_planning(params):
         data["tender"]["procurementMethod"] = "open"
     if params['mode'] in mode_limited:
         data["tender"]["procurementMethod"] = "limited"
+    if params['mode'] in mode_selective:
+        data["tender"]["procurementMethod"] = "selective"
     if params.get('number_of_breakdown'):
         value_data = breakdown_value_generation(params['number_of_breakdown'], data['budget']['amount'])
         for value in value_data:
@@ -704,6 +708,36 @@ def test_bid_data_selection(data, index):
     return bid
 
 
+def test_bid_data_pq(data, over_limit=False, missing_criteria=False, more_than_two_requirements=False, invalid_expected_value=False):
+    bid = test_bid_data()
+    bid.data.requirementResponses = []
+    if 'criteria' in data:
+        for criteria in data['criteria']:
+            for requirements in criteria['requirementGroups']:
+                for requirement in requirements['requirements']:
+                    if requirement.get('expectedValue'):
+                        value = requirement.get('expectedValue')
+                        if invalid_expected_value:
+                            value = "invalid_value"
+                    else:
+                        value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
+                    requirement = {
+                        "requirement": {"id": requirement['id']},
+                        "value": value
+                    }
+                    bid.data.requirementResponses.append(requirement)
+                if not more_than_two_requirements:
+                    break
+    bid.data['status'] = 'draft'
+    bid.data.update(test_bid_value(fake.random_int(min=1, max=int(data['value']['amount'])),
+                                   data['value']['valueAddedTaxIncluded']))
+    if over_limit:
+        bid.data['value']['amount'] = int(data['value']['amount']) + fake.random_int(min=1, max=1000)
+    if missing_criteria:
+        del bid['data']['requirementResponses'][-1]
+    return bid
+
+
 def test_supplier_data():
     return munchify({
         "data": {
@@ -1031,6 +1065,33 @@ def test_tender_data_esco(params, submissionMethodDetails, plan_data):
     for index in range(params['number_of_items']):
         del data['items'][index]['deliveryDate']
     return data
+
+
+def test_tender_data_pq(params, submissionMethodDetails, plan_data):
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
+    del data["minimalStep"]
+    del data["title_en"]
+    data['procurementMethodType'] = 'priceQuotation'
+    data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'other', 'social', 'special'])
+    data['profile'] = fake.valid_profile()
+    if params.get('wrong_profile'):
+        data['profile'] = fake.invalid_profile()
+    if params.get('wrong_tender_date'):
+        start_date = data['tenderPeriod']['startDate']
+        from op_robot_tests.tests_files.service_keywords import add_minutes_to_date
+        data['tenderPeriod']['endDate'] = add_minutes_to_date(start_date, 1)
+    if params.get('empty_profile'):
+        data['profile'] = ""
+    if params.get('tender_wrong_status'):
+        data['status'] = fake.wrong_status()
+    if params.get('profiles_hidden_status'):
+        data['profile'] = fake.profiles_hidden()
+    if params.get('profiles_shortlistedfirms_empty'):
+        data['profile'] = fake.shortlistedfirms_empty()
+    if params.get('unknown_profile'):
+        data['profile'] = fake.tender_unknown_profile()
+
+    return munchify(data)
 
 
 def test_milestone_data():

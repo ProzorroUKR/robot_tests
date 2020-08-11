@@ -217,6 +217,94 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 
+Можливість оголосити тендер з недоліками в параметрах
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
+  ${WRONG_TENDER_DATE}  Get Variable Value  ${WRONG_TENDER_DATE}  ${False}
+  ${EMPTY_PROFILE}  Get Variable Value  ${EMPTY_PROFILE}  ${False}
+  ${WRONG_PROFILE}  Get Variable Value  ${PROFILE}  ${True}
+  ${PROFILES_HIDDEN_STATUS}  Get Variable Value  ${PROFILES_HIDDEN_STATUS}  ${False}
+  ${PROFILES_SHORTLISTEDFIRMS_EMPTY}  Get Variable Value  ${PROFILES_SHORTLISTEDFIRMS_EMPTY}  ${False}
+  ${UNKNOWN_PROFILE}  Get Variable Value  ${UNKNOWN_PROFILE}  ${False}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      vat_included=${${VAT_INCLUDED}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
+  ...      plan_tender=${${PLAN_TENDER}}
+  ...      wrong_tender_date=${${WRONG_TENDER_DATE}}
+  ...      empty_profile=${${EMPTY_PROFILE}}
+  ...      wrong_profile=${${WRONG_PROFILE}}
+  ...      profiles_hidden_status=${${PROFILES_HIDDEN_STATUS}}
+  ...      profiles_shortlistedfirms_empty=${${PROFILES_SHORTLISTEDFIRMS_EMPTY}}
+  ...      unknown_profile=${${UNKNOWN_PROFILE}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
+  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
+  \  ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
+  \  Run Keyword If  ${status}   Exit For Loop
+  ${plan_data}=  знайти план за ідентифікатором  ${ARTIFACT.tender_uaid}  ${username}
+  Log  ${plan_data}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}  ${ARTIFACT.tender_uaid}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
+Можливість оголосити тендер без 2-ї фази commit-у
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_uaid}
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
+  ${TENDER_WRONG_STATUS}  Get Variable Value  ${TENDER_WRONG_STATUS}  ${False}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      vat_included=${${VAT_INCLUDED}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
+  ...      plan_tender=${${PLAN_TENDER}}
+  ...      tender_wrong_status=${${TENDER_WRONG_STATUS}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
+  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
+  \  ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
+  \  Run Keyword If  ${status}   Exit For Loop
+  ${plan_data}=  знайти план за ідентифікатором  ${ARTIFACT.tender_uaid}  ${username}
+  Log  ${plan_data}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер без 2-ї фази commit-у  ${adapted_data}  ${ARTIFACT.tender_uaid}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
 Можливість створити об'єкт моніторингу
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${accelerator}=  Get Variable Value  ${accelerator}
@@ -2082,6 +2170,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...     Отримати ідентифікатори об’єктів  ${username}  features
   ...     ELSE  Set Variable  ${None}
   Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+
+
+Можливість подати цінову пропозицію priceQuotation користувачем ${username}
+  ${bid}=  Підготувати дані для подання пропозиції priceQuotation  ${username}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
 
 
 Неможливість подати цінову пропозицію без прив’язки до лоту користувачем ${username}
