@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -
 import os
 import random
+from random import randint
 import hashlib
 from datetime import timedelta
 from tempfile import NamedTemporaryFile
@@ -11,6 +12,8 @@ from faker.providers.company.ru_RU import Provider as CompanyProviderRuRu
 from munch import munchify
 from op_faker import OP_Provider
 from .local_time import get_now, TZ
+from datetime import datetime
+import string
 
 fake_en = Factory.create(locale='en_US')
 fake_ru = Factory.create(locale='ru_RU')
@@ -501,11 +504,13 @@ def test_payment_data(token, complaint_value, complaint_uaid):
             "currency": "UAH",
             "description": generate_payment_description(token, complaint_uaid),
             "type": "credit",
-            "date_oper": get_now().isoformat(),
+            "date_oper": generate_payment_date_operation(),
             "account": "UA723004380000026001503374077",
             "okpo": "14360570",
             "mfo": "123456",
-            "name": u"Плат.интер-эквайрин через LiqPay"
+            "name": u"Плат.интер-эквайрин через LiqPay",
+            "source": random.choice(["account", "card"]),
+            "odb_ref": generate_payment_transaction_id()
     }
     return data
 
@@ -515,6 +520,22 @@ def generate_payment_description(token, complaint_uaid):
     short_hash = full_hash[0:8]
     description = complaint_uaid + '-' + short_hash + ' [TESTING, ROBOT TESTS]'
     return description
+
+
+def generate_payment_transaction_id():
+    string_1 = ''.join((random.choice(string.ascii_uppercase)) for i in range(4))
+    string_2 = str(randint(1000, 9999))
+    string_3 = ''.join((random.choice(string.ascii_uppercase)) for i in range(1))
+    string_4 = str(randint(0, 9))
+    string_5 = ''.join((random.choice(string.ascii_uppercase)) for i in range(3))
+    string_6 = ''.join((random.choice(string.ascii_uppercase)) for i in range(1))
+    final_string = string_1 + string_2 + string_3 + string_4 + string_5 + '.' + string_6
+    return final_string
+
+
+def generate_payment_date_operation():
+    date = (datetime.now().replace(microsecond=0).strftime('%d.%m.%Y %H:%M:%S'))
+    return date
 
 
 def test_accept_complaint_data():
