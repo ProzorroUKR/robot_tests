@@ -24,6 +24,7 @@ ${PLAN_TENDER}      ${True}
 ${BID_AMOUNT_1}     ${500}
 ${BID_AMOUNT_2}     ${1000}
 ${BID_AMOUNT_3}     ${1500}
+${ARTICLE_17}       ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -2037,6 +2038,19 @@ ${BID_AMOUNT_3}     ${1500}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію користувачем ${provider}
+
+
+Можливість подати пропозицію першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_with_criteria_by_provider  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft користувачем ${provider}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
 
 
 Можливість подати пропозицію з фіксованою сумою першим учасником

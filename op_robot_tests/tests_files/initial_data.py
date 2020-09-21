@@ -1245,3 +1245,33 @@ def test_24_hours_data():
                 "description": create_fake_sentence()
         }
     })
+
+
+def test_article_17_data():
+    criteria = fake.criteria_article_17()
+    return munchify({
+        "data": criteria
+    })
+
+
+def test_data_bid_criteria():
+    return munchify({
+        "data": [{
+            "description": "Requirement response description",
+            "evidences": [
+                {
+                    "relatedDocument": {
+                        "id": "",
+                        "title": ""
+                    },
+                    "type": "document",
+                    "title": "Evidence of Requirement response"
+                }
+            ],
+            "requirement": {
+                "id": "",
+                "title": ""
+            },
+            "title": "Requirement response title"
+        }]
+    })
