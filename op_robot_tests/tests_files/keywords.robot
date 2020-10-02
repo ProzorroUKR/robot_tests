@@ -457,7 +457,15 @@ Get Broker Property By Username
 
 
 Підготувати дані для відповіді на критерії в пропозиції
-  ${bid_criteria}=  test_data_bid_criteria
+  [Arguments]  ${username}  ${tender_data}  ${bid_data}  ${bid_data_document}
+  @{criteria}=  get_from_object  ${tender_data.data}  criteria
+  ${len_of_criteria}=  Get Length  ${criteria}
+  Log  ${len_of_criteria}
+  ${bid_criteria}=  test_bid_criteria
+  ...  ${tender_data}
+  ...  ${len_of_criteria}
+  ...  ${bid_data}
+  ...  ${bid_data_document}
   Log  ${bid_criteria}
   [Return]  ${bid_criteria}
 
