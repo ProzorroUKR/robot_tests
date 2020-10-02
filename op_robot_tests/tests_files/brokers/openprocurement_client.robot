@@ -2,6 +2,7 @@ coding: utf-8
 *** Settings ***
 Library  openprocurement_client_helper.py
 Library  openprocurement_client.utils
+Library  Collections
 
 
 *** Keywords ***
@@ -1742,6 +1743,9 @@ Library  openprocurement_client.utils
   ...      doc_type=${doc_type}
   ...      access_token=${tender.access.token}
   ...      subitem_name=${doc_name}
+  Log  ${response}
+  Set to Dictionary  ${USERS.users['${username}']}  documents=${response}
+  Log  ${USERS.users['${username}'].documents}
   ${uploaded_file} =  Create Dictionary
   ...      filepath=${path}
   ...      upload_response=${response}
@@ -1881,6 +1885,20 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_uaid}  ${field}
   ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
   [return]  ${bid.data.${field}}
+
+
+Завантажити відповіді на критерії закупівлі
+  [Arguments]  ${username}  ${tender_uaid}  ${bid_criteria}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${bid_id}=  Get Variable Value   ${USERS.users['${username}'].bidresponses['bid'].data.id}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid_criteria_response
+  ...  ${tender.data.id}
+  ...  ${bid_criteria}
+  ...  ${bid_id}
+  ...  ${token}
+  ${reply}=  munch_dict  arg=${reply}
+  [return]  ${reply}
 
 
 ##############################################################################
