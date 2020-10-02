@@ -2132,10 +2132,28 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...     Отримати ідентифікатори об’єктів  ${username}  features
   ...     ELSE  Set Variable  ${None}
   Run As  ${username}  Подати цінову пропозицію в статусі draft  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
 
 
 Можливість додати до пропозиції відповідь на критерії користувачем ${username}
-  ${criteria}=  Підготувати дані для відповіді на критерії в пропозиції
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
+  Log  ${USERS.users['${tender_owner}'].tender_data}
+  Log  ${USERS.users['${username}'].documents}
+  ${bid_criteria}=  Підготувати дані для відповіді на критерії в пропозиції
+  ...  ${username}
+  ...  ${USERS.users['${tender_owner}'].tender_data}
+  ...  ${USERS.users['${username}'].bidresponses['bid']}
+  ...  ${USERS.users['${username}'].documents}
+  Run As  ${username}  Завантажити відповіді на критерії закупівлі  ${TENDER['TENDER_UAID']}  ${bid_criteria}
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
+
+
+Можливість активувати пропозицію коритувачем ${username}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  closeFrameworkAgreementUA  esco
+  ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
+  ${field}=  Set variable  status
+  Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${status}
 
 
 Можливість подати цінову пропозицію на суму ${amount} користувачем ${username}
@@ -2232,7 +2250,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${value}=  mult_and_round  ${value}  ${percent}  ${divider}  precision=${2}
   Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${value}
 
-
 Можливість завантажити документ в пропозицію користувачем ${username}
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
   ${doc_id}=  get_id_from_string  ${file_name}
@@ -2242,6 +2259,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      doc_id=${doc_id}
   Run As  ${username}  Завантажити документ в ставку  ${file_path}  ${TENDER['TENDER_UAID']}
   Set To Dictionary  ${USERS.users['${username}']}  bid_document=${bid_document_data}
+  Log  ${USERS.users['${username}'].bid_document}
   Remove File  ${file_path}
 
 
