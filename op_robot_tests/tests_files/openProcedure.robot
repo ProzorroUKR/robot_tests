@@ -2068,6 +2068,20 @@ ${ARTICLE_17}       ${False}
   Можливість активувати пропозицію коритувачем ${provider1}
 
 
+Можливість подати пропозицію третім учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_with_criteria_by_provider2  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft користувачем ${provider2}
+  Можливість завантажити документ в пропозицію користувачем ${provider2}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider2}
+  Можливість активувати пропозицію коритувачем ${provider2}
+
+
 Можливість подати пропозицію з фіксованою сумою першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
