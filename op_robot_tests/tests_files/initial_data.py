@@ -14,6 +14,7 @@ from op_faker import OP_Provider
 from .local_time import get_now, TZ
 from datetime import datetime
 import string
+from copy import deepcopy
 
 fake_en = Factory.create(locale='en_US')
 fake_ru = Factory.create(locale='ru_RU')
@@ -1245,3 +1246,53 @@ def test_24_hours_data():
                 "description": create_fake_sentence()
         }
     })
+
+
+def test_article_17_data():
+    criteria = fake.criteria_article_17()
+    return munchify({
+        "data": criteria
+    })
+
+
+def test_data_bid_criteria():
+    bid = munchify({
+        "data": []
+    })
+    mock = {
+            "description": "Requirement response description",
+            "value": "true",
+            "evidences": [
+                {
+                    "relatedDocument": {
+                        "id": "",
+                        "title": ""
+                    },
+                    "type": "document",
+                    "title": "Evidence of Requirement response"
+                }
+            ],
+            "requirement": {
+                "id": "",
+                "title": ""
+            },
+            "title": "Requirement response title"
+        }
+    return bid, mock
+
+
+def test_bid_criteria(tender_data, criteria_len, bid_data, bid_document):
+    bid, mock = test_data_bid_criteria()
+    mock = deepcopy(mock)
+    for criteria in tender_data["data"]['criteria']:
+        if criteria.get('source') == 'tenderer':
+            for requirement in criteria['requirementGroups'][0]['requirements']:
+                mock = deepcopy(mock)
+                mock["requirement"]["id"] = requirement["id"]
+                mock["requirement"]["title"] = requirement["title"]
+                mock["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
+                mock["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
+                bid.data.append(mock)
+        else:
+            pass
+    return bid

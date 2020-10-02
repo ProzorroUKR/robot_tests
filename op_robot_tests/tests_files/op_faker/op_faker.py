@@ -39,6 +39,7 @@ class OP_Provider(BaseProvider):
     profiles_hidden_status = _fake_data.profiles_hidden_status
     profiles_shortlistedfirms_empty = _fake_data.profiles_shortlistedfirms_empty
     unknown_profile = _fake_data.unknown_profiles
+    criteria = _fake_data.criteria
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -254,3 +255,7 @@ class OP_Provider(BaseProvider):
     @classmethod
     def tender_unknown_profile(self):
         return self.random_element(self.unknown_profile)
+
+    @classmethod
+    def criteria_article_17(self):
+        return deepcopy(self.criteria)
