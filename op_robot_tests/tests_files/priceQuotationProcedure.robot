@@ -21,6 +21,7 @@ ${VAT_INCLUDED}     ${True}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
+${ARTICLE_17}       ${False}
 
 *** Test Cases ***
 Неможливість оголосити тендер з tenderPeriod:endDate < 2 робочих дні
