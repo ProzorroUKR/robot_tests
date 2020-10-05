@@ -24,6 +24,7 @@ ${cancellations_index}  ${0}
 ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
+${ARTICLE_17}       ${False}
 
 *** Test Cases ***
 
@@ -72,6 +73,20 @@ ${PLAN_TENDER}      ${True}
   Можливість подати цінову пропозицію користувачем ${provider}
 
 
+Можливість подати пропозицію першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_with_criteria_by_provider  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft користувачем ${provider}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
+  Можливість активувати пропозицію коритувачем ${provider}
+
+
 Можливість подати пропозицію другим учасником
   [Tags]  ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...     provider1
@@ -81,6 +96,20 @@ ${PLAN_TENDER}      ${True}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію користувачем ${provider1}
+
+
+Можливість подати пропозицію другим учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_with_criteria_by_provider1  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft користувачем ${provider1}
+  Можливість завантажити документ в пропозицію користувачем ${provider1}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider1}
+  Можливість активувати пропозицію коритувачем ${provider1}
 
 ##############################################################################################
 #             TENDER/LOT COMPLAINT
