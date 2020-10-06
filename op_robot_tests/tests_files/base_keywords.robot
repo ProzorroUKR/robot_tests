@@ -2156,6 +2156,22 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${status}
 
 
+Можливість подати цінову пропозицію в статусі draft на друший етап користувачем ${username}
+  ${bid}=  Підготувати дані для подання пропозиції для другого етапу  ${username}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  ${features}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.features}  ${None}
+  ${features_ids}=  Run Keyword IF  ${features}
+  ...     Отримати ідентифікатори об’єктів  ${username}  features
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію в статусі draft  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
+
+
 Можливість подати цінову пропозицію на суму ${amount} користувачем ${username}
   ${bid}=  Підготувати дані для подання пропозиції
   ${bidresponses}=  Create Dictionary  bid=${bid}
@@ -2249,6 +2265,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${value}=  Run As  ${username}  Отримати інформацію із пропозиції  ${TENDER['TENDER_UAID']}  ${field}
   ${value}=  mult_and_round  ${value}  ${percent}  ${divider}  precision=${2}
   Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${value}
+
 
 Можливість завантажити документ в пропозицію користувачем ${username}
   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
