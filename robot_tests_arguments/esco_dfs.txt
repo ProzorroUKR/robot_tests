@@ -9,6 +9,8 @@
 
 -v FUNDING_KIND:budget
 
+-v ARTICLE_17:True
+
 -i create_tender
 -i find_tender
 -i tender_view
@@ -24,9 +26,9 @@
 -i answer_question_to_tender
 -i modify_tender_after_questions
 
--i make_bid_by_provider
+-i make_bid_with_criteria_by_provider
   -i add_doc_to_bid_by_provider
--i make_bid_by_provider1
+-i make_bid_with_criteria_by_provider1
 
 -i open_modify_tender_in_tendering_period
   -i open_confirm_first_bid

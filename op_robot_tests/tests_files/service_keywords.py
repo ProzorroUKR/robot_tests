@@ -89,7 +89,10 @@ from .initial_data import (
     test_cancel_pending_data,
     test_payment_data,
     test_24_hours_data,
-    test_bid_competitive_data_stage_2
+    test_bid_competitive_data_stage_2,
+    test_article_17_data,
+    test_data_bid_criteria,
+    test_bid_criteria
 )
 from barbecue import chef
 from restkit import request
@@ -638,13 +641,13 @@ def generate_test_bid_data(tender_data, edrpou=None):
             'esco'
         ):
         bid = test_bid_competitive_data()
-        bid.data.selfEligible = True
+        #bid.data.selfEligible = True
         bid.data.selfQualified = True
     elif tender_data.get('procurementMethodType', '') in (
             'competitiveDialogueUA.stage2',
             'competitiveDialogueEU.stage2'):
         bid = test_bid_competitive_data_stage_2(edrpou)
-        bid.data.selfEligible = True
+        #bid.data.selfEligible = True
         bid.data.selfQualified = True
     else:
         bid = test_bid_data()

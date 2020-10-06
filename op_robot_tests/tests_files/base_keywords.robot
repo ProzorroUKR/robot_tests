@@ -32,6 +32,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
   ...      plan_tender=${${PLAN_TENDER}}
+  ...      article_17=${${ARTICLE_17}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -43,7 +44,14 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер  ${adapted_data}  ${ARTIFACT.tender_uaid}
+  ${article_17_data}=  Run keyword If  ${ARTICLE_17} == True  Підготувати дані по критеріям статті 17
+  ${TENDER_UAID}=  Run keyword If  ${ARTICLE_17} == True  Run As  ${tender_owner}  Створити тендер з критеріями
+  ...  ${adapted_data}
+  ...  ${ARTIFACT.tender_uaid}
+  ...  ${article_17_data}
+  ...  ELSE   Run As  ${tender_owner}  Створити тендер
+  ...  ${adapted_data}
+  ...  ${ARTIFACT.tender_uaid}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
@@ -2111,6 +2119,59 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
 
 
+Можливість подати цінову пропозицію в статусі draft користувачем ${username}
+  ${bid}=  Підготувати дані для подання пропозиції
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  ${features}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.features}  ${None}
+  ${features_ids}=  Run Keyword IF  ${features}
+  ...     Отримати ідентифікатори об’єктів  ${username}  features
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію в статусі draft  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
+
+
+Можливість додати до пропозиції відповідь на критерії користувачем ${username}
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
+  Log  ${USERS.users['${tender_owner}'].tender_data}
+  Log  ${USERS.users['${username}'].documents}
+  ${bid_criteria}=  Підготувати дані для відповіді на критерії в пропозиції
+  ...  ${username}
+  ...  ${USERS.users['${tender_owner}'].tender_data}
+  ...  ${USERS.users['${username}'].bidresponses['bid']}
+  ...  ${USERS.users['${username}'].documents}
+  Run As  ${username}  Завантажити відповіді на критерії закупівлі  ${TENDER['TENDER_UAID']}  ${bid_criteria}
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
+
+
+Можливість активувати пропозицію коритувачем ${username}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  closeFrameworkAgreementUA  esco
+  ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
+  ${field}=  Set variable  status
+  Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${status}
+
+
+Можливість подати цінову пропозицію в статусі draft на друший етап користувачем ${username}
+  ${bid}=  Підготувати дані для подання пропозиції для другого етапу  ${username}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  ${features}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.features}  ${None}
+  ${features_ids}=  Run Keyword IF  ${features}
+  ...     Отримати ідентифікатори об’єктів  ${username}  features
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію в статусі draft  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+  Log  ${USERS.users['${username}'].bidresponses['bid']}
+
+
 Можливість подати цінову пропозицію на суму ${amount} користувачем ${username}
   ${bid}=  Підготувати дані для подання пропозиції
   ${bidresponses}=  Create Dictionary  bid=${bid}
@@ -2215,6 +2276,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      doc_id=${doc_id}
   Run As  ${username}  Завантажити документ в ставку  ${file_path}  ${TENDER['TENDER_UAID']}
   Set To Dictionary  ${USERS.users['${username}']}  bid_document=${bid_document_data}
+  Log  ${USERS.users['${username}'].bid_document}
   Remove File  ${file_path}
 
 

@@ -3,6 +3,8 @@
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:2
 
+-v ARTICLE_17:True
+
 -i create_tender
 -i find_tender
 -i tender_view

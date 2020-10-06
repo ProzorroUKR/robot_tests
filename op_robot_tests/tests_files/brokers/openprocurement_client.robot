@@ -2,6 +2,7 @@ coding: utf-8
 *** Settings ***
 Library  openprocurement_client_helper.py
 Library  openprocurement_client.utils
+Library  Collections
 
 
 *** Keywords ***
@@ -233,6 +234,40 @@ Library  openprocurement_client.utils
   ...      access_token=${ARTIFACT.tender_owner_access_token}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
+  ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
+  ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
+  ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
+  Set To Dictionary  ${tender['data']}  status=${status}
+  ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
+  ...      ${tender.data.id}
+  ...      ${tender}
+  ...      access_token=${tender.access.token}
+  Log  ${tender}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
+  Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
+  Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
+  Log   ${USERS.users['${username}'].tender_data}
+  [return]  ${tender.data.tenderID}
+
+
+Створити тендер з критеріями
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${article_17_data}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT.tender_owner_access_token}
+  Log  ${ARTIFACT.tender_id}
+  ${tender}=  Call Method  ${USERS.users['${username}'].tender_create_client}  create_tender
+  ...      ${ARTIFACT.tender_id}
+  ...      ${tender_data}
+  ...      access_token=${ARTIFACT.tender_owner_access_token}
+  Log  ${tender}
+  ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${tender_criteria}=  Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${article_17_data}
+  ...      access_token=${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
@@ -1646,6 +1681,31 @@ Library  openprocurement_client.utils
   Log  ${reply}
 
 
+Подати цінову пропозицію в статусі draft
+  [Arguments]  ${username}  ${tender_uaid}  ${bid}  ${lots_ids}=${None}  ${features_ids}=${None}
+  ${verify_response}=  Run As  ${username}  Перевірити учасника за ЄДРПОУ  ${bid.data.tenderers[0].identifier.id}
+  Log  ${verify_response}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${lots_ids}=  Run Keyword IF  ${lots_ids}  Set Variable  ${lots_ids}
+  ...     ELSE  Create List
+  : FOR    ${index}    ${lot_id}    IN ENUMERATE    @{lots_ids}
+  \    ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
+  \    ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
+  \    Set To Dictionary  ${bid.data.lotValues[${index}]}  relatedLot=${lot_id}
+  ${features_ids}=  Run Keyword IF  ${features_ids}  Set Variable  ${features_ids}
+  ...     ELSE  Create List
+  : FOR    ${index}    ${feature_id}    IN ENUMERATE    @{features_ids}
+  \    ${feature_index}=  get_object_index_by_id  ${tender.data.features}  ${feature_id}
+  \    ${code}=  Get Variable Value  ${tender.data.features[${feature_index}].code}
+  \    Set To Dictionary  ${bid.data.parameters[${index}]}  code=${code}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender.data.id}  ${bid}
+  Log  ${reply}
+  Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply.access.token}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  Set To Dictionary   ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
+
+
 Змінити цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
@@ -1683,6 +1743,9 @@ Library  openprocurement_client.utils
   ...      doc_type=${doc_type}
   ...      access_token=${tender.access.token}
   ...      subitem_name=${doc_name}
+  Log  ${response}
+  Set to Dictionary  ${USERS.users['${username}']}  documents=${response}
+  Log  ${USERS.users['${username}'].documents}
   ${uploaded_file} =  Create Dictionary
   ...      filepath=${path}
   ...      upload_response=${response}
@@ -1822,6 +1885,20 @@ Library  openprocurement_client.utils
   [Arguments]  ${username}  ${tender_uaid}  ${field}
   ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
   [return]  ${bid.data.${field}}
+
+
+Завантажити відповіді на критерії закупівлі
+  [Arguments]  ${username}  ${tender_uaid}  ${bid_criteria}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${bid_id}=  Get Variable Value   ${USERS.users['${username}'].bidresponses['bid'].data.id}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid_criteria_response
+  ...  ${tender.data.id}
+  ...  ${bid_criteria}
+  ...  ${bid_id}
+  ...  ${token}
+  ${reply}=  munch_dict  arg=${reply}
+  [return]  ${reply}
 
 
 ##############################################################################
@@ -2308,6 +2385,20 @@ Library  openprocurement_client.utils
   ...      ${tender}
   ...      access_token=${tender.access.token}
   Log  ${reply}
+
+
+Додати критерії в тендер другого етапу
+  [Arguments]  ${username}  ${tender_uaid}
+  Log  ${USERS.users['${username}'].access_token}
+  ${internalid}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
+  Log  ${internalid}
+  ${article_17_data}=  Підготувати дані по критеріям статті 17
+  Log  ${article_17_data}
+  ${tender_criteria}=  Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${internalid}
+  ...      ${article_17_data}
+  ...      ${USERS.users['${username}'].access_token}
+  Log  ${tender_criteria}
 
 
 Активувати другий етап

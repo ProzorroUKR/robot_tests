@@ -3,12 +3,14 @@
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:1
 
+-v ARTICLE_17:True
+
 -i create_tender
 -i find_tender
 -i tender_view
 
--i make_bid_by_provider
--i make_bid_by_provider1
+-i make_bid_with_criteria_by_provider
+-i make_bid_with_criteria_by_provider1
 
 -i awardPeriod_startDate
 -i qualification_approve_first_award
