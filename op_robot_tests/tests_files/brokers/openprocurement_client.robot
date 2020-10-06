@@ -2387,6 +2387,20 @@ Library  Collections
   Log  ${reply}
 
 
+Додати критерії в тендер другого етапу
+  [Arguments]  ${username}  ${tender_uaid}
+  Log  ${USERS.users['${username}'].access_token}
+  ${internalid}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
+  Log  ${internalid}
+  ${article_17_data}=  Підготувати дані по критеріям статті 17
+  Log  ${article_17_data}
+  ${tender_criteria}=  Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${internalid}
+  ...      ${article_17_data}
+  ...      ${USERS.users['${username}'].access_token}
+  Log  ${tender_criteria}
+
+
 Активувати другий етап
   [Documentation]
   ...      [Arguments] Username and tender uaid

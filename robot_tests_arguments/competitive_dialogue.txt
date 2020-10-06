@@ -103,8 +103,8 @@
 
 -i activate_second_stage
 
--i make_bid_by_provider_second_stage
--i make_bid_by_provider1_second_stage
+-i make_bid_with_criteria_by_provider_second_stage
+-i make_bid_with_criteria_by_provider1_second_stage
 
 #-i qualifications_check_by_edrpou
 
