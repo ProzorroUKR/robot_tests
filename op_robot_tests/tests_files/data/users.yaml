@@ -445,28 +445,44 @@ users:
         browser:  chrome
         position: [640, 0]
         size:     [1920, 1080]
-    Publicbid_Owner:
-        broker:   Publicbid
-        homepage: "http://217.76.194.185:56034/"
-        login:    owner_pb@yopmail.com
-        password: P@ssw0rd
+    publicbid_Owner:
+        broker:   publicbid
+        homepage: "http://staging.public-bid.com.ua/user/tenders"
+        login:    test-user-02@public-bid.com.ua
+        password: 'TestPasswordProzorro'
         browser:  chrome
         position: [0, 0]
-        size:     [1000, 720]
-    Publicbid_Viewer:
-        broker:   Publicbid
-        homepage: "http://217.76.194.185:56034/"
+        size:     [1000, 800]
+    publicbid_Provider:
+        broker:   publicbid
+        homepage: "http://staging.public-bid.com.ua/user/bids"
+        login:    test-user-03@public-bid.com.ua
+        password: 'TestPasswordProzorro'
         browser:  chrome
-        position: [0, 450]
-        size:     [1000, 720]
-    Publicbid_Provider1:
-        broker:   Publicbid
-        homepage: "http://217.76.194.185:56034/"
-        login:    provider_pb@yopmail.com
-        password: P@ssw0rd
+        position: [0, 0]
+        size:     [1000, 800]
+    publicbid_Provider1:
+        broker:   publicbid
+        homepage: "http://staging.public-bid.com.ua/user/bids"
+        login:    test-user-04@public-bid.com.ua
+        password: 'TestPasswordProzorro'
         browser:  chrome
-        position: [450, 0]
-        size:     [1000, 720]
+        position: [0, 0]
+        size:     [1000, 800]
+    publicbid_Provider2:
+        broker:   publicbid
+        homepage: "http://staging.public-bid.com.ua/user/bids"
+        login:    test-user-05@public-bid.com.ua
+        password: 'TestPasswordProzorro'
+        browser:  chrome
+        position: [0, 0]
+        size:     [1000, 800]
+    publicbid_Viewer:
+        broker:   publicbid
+        homepage: "http://staging.public-bid.com.ua/user/tenders"
+        browser:  chrome
+        position: [0, 0]
+        size:     [1000, 800]
     upetem_Owner:
         broker:   upetem
         homepage: "https://80.92.239.165/"

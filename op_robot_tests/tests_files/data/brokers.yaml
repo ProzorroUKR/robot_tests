@@ -357,17 +357,43 @@ Prom:
         provider1:       Prom_Provider1
         provider2:       Prom_Provider2
     timeout_on_wait: 300
-Publicbid:
+publicbid:
     intervals:
         default:
-            enquiry: [1, 10]
-            tender:  [1, 12]
+            enquiry: [0, 25]
+            tender:  [0, 25]
+            accelerator: 1440
+        belowThreshold:
+            enquiry: [0, 25]
+            tender:  [0, 25]
+            accelerator: 1440
+        openua:
+            tender:  [0, 30]
+            accelerator: 1440
+        openeu:
+            tender:  [0, 35]
+            accelerator: 1440
+        open_competitive_dialogue:
+            tender:  [0, 40]
+            accelerator: 1440
+        open_esco:
+             enquiry: [0, 25]
+             tender:  [0, 35]
+             accelerator: 1440
+        open_framework:
+             tender:  [0, 40]
+             accelerator: 1440
     keywords_file: publicbid
+    basepage: 'http://staging.public-bid.com.ua'
+    homepage: 'http://staging.public-bid.com.ua/tenders'
+    syncpage: 'http://staging.public-bid.com.ua/develop/sync?psw=369369'
     roles:
-        provider:       Publicbid_Provider1
-        tender_owner:   Publicbid_Owner
-        viewer:         Publicbid_Viewer
-    timeout_on_wait: 120
+        provider:       publicbid_Provider
+        provider1:      publicbid_Provider1
+        provider2:      publicbid_Provider2
+        tender_owner:   publicbid_Owner
+        viewer:         publicbid_Viewer
+    timeout_on_wait: 1
 upetem:
     intervals:
         default:
