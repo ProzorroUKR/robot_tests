@@ -19,5 +19,3 @@ __pycache__/
 
 # Robot framework artifact
 op_robot_tests/tests_files/data/artifact.yaml
-
-/.idea
