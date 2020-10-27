@@ -40,21 +40,12 @@
 -i openeu_add_eligibility_bid_doc_by_provider
 
 -i pre-qualification_view
+-i pre-qualifications_check_by_edrpou
 -i pre-qualification_approve_first_bid
 -i pre-qualification_approve_second_bid
 -i pre-qualification_approve_qualifications
 
 -i qualification_add_doc_to_first_award
+-i qualifications_check_by_edrpou
 -i qualification_approve_first_award
 -i awards_check_by_dfs
-
--i contract_stand_still
--i contract_view
--i contract_view_dateSigned
--i modify_contract_amount_net
--i modify_contract
--i add_doc_to_contract
--i add_doc_to_contract_content
--i contract_doc_documentOf
--i add_doc_to_contract_title
--i contract_sign
