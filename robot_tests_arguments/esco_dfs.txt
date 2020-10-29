@@ -14,30 +14,15 @@
 -i create_tender
 -i find_tender
 -i tender_view
-  -i esco_tender_view
-  -i open_tender_view
--i meat_view
--i lot_view
-  -i esco_lot_view
-
--i extend_tendering_period
--i add_tender_doc
--i ask_question_to_tender
--i answer_question_to_tender
--i modify_tender_after_questions
+-i esco_tender_view
+-i open_tender_view
 
 -i make_bid_with_criteria_by_provider
-  -i add_doc_to_bid_by_provider
 -i make_bid_with_criteria_by_provider1
 
 -i open_modify_tender_in_tendering_period
   -i open_confirm_first_bid
   -i open_confirm_second_bid
-
--i openeu_make_bid_doc_private_by_provider
--i openeu_add_financial_bid_doc_by_provider
--i openeu_add_qualification_bid_doc_by_provider
--i openeu_add_eligibility_bid_doc_by_provider
 
 -i pre-qualification_view
 -i pre-qualifications_check_by_edrpou
