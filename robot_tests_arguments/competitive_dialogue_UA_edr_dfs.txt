@@ -15,24 +15,13 @@
 -i create_tender
 -i find_tender
 -i tender_view
--i tender_view_milestone
--i tender_view_value
--i tender_view_minimalStep
--i tender_view_deliveryDate
--i tender_view_quantity
--i tender_view_unit_name
--i tender_view_unit_code
--i tender_view_coordinates
--i lot_view
--i lot_view_value
--i lot_view_minimalStep
 
 -i make_bid_with_criteria_by_provider
 -i make_bid_with_criteria_by_provider1
 -i make_bid_with_criteria_by_provider2
 
 -i open_tender_view
-
+-i pre-qualifications_check_by_edrpou
 -i pre-qualification_approve_first_bid
 -i pre-qualification_approve_second_bid
 -i pre-qualification_approve_third_bid
@@ -55,29 +44,6 @@
 -i make_bid_with_criteria_by_provider1_second_stage
 
 -i qualification_add_doc_to_first_award
+-i qualifications_check_by_edrpou
 -i qualification_approve_first_award
 -i awards_check_by_dfs
-
--i contract_stand_still
--i contract_view
--i modify_contract_amount_net
--i modify_contract_value
--i modify_contract
--i add_doc_to_contract
--i contract_doc_documentOf
--i contract_sign
-
--i find_contract
--i access_contract
--i submit_change
--i view_change
--i upload_change_document
--i modify_change
--i change_contract_amountNet
--i change_contract_amount
--i apply_change
--i add_contract_doc
--i termination_reasons
--i amount_paid
--i change_amount_paid
--i contract_termination

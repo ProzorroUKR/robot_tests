@@ -1,0 +1,36 @@
+-v MODE:open_esco
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-v FUNDING_KIND:budget
+
+-v ARTICLE_17:True
+
+-i create_tender
+-i find_tender
+-i tender_view
+-i esco_tender_view
+-i open_tender_view
+
+-i make_bid_with_criteria_by_provider
+-i make_bid_with_criteria_by_provider1
+
+-i open_modify_tender_in_tendering_period
+  -i open_confirm_first_bid
+  -i open_confirm_second_bid
+
+-i pre-qualification_view
+-i pre-qualifications_check_by_edrpou
+-i pre-qualification_approve_first_bid
+-i pre-qualification_approve_second_bid
+-i pre-qualification_approve_qualifications
+
+-i qualification_add_doc_to_first_award
+-i qualifications_check_by_edrpou
+-i qualification_approve_first_award
+-i awards_check_by_dfs
