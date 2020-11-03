@@ -2528,6 +2528,15 @@ ${ARTICLE_17}       ${False}
   Звірити відображення поля qualifications[1].status тендера із pending для користувача ${tender_owner}
 
 
+Можливість дочекатися перевірки учасників по ЄДРПОУ
+  [Tags]   ${USERS.users['${viewer}'].broker}: Перевірка користувачів по ЄДРПОУ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualifications_check_by_edrpou
+  [Setup]  Дочекатись дати початку періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Дочекатися перевірки прекваліфікацій  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+
 Можливість завантажити документ у кваліфікацію пропозиції першого учасника
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
   ...      tender_owner
@@ -2538,13 +2547,14 @@ ${ARTICLE_17}       ${False}
   Можливість завантажити документ у кваліфікацію 0 пропозиції
 
 
-Можливість дочекатися перевірки учасників по ЄДРПОУ
-  [Tags]   ${USERS.users['${viewer}'].broker}: Перевірка користувачів по ЄДРПОУ
+Можливість відповісти на критерії Замовника у кваліфікацію пропозиції першого учасника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      pre-qualifications_check_by_edrpou
-  [Setup]  Дочекатись дати початку періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
-  Дочекатися перевірки прекваліфікацій  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  ...      pre-qualification_add_criteria_response_first_bid
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відповісти на критерії Замовника 0 пропозиції
 
 
 Можливість підтвердити першу пропозицію кваліфікації
@@ -2566,6 +2576,16 @@ ${ARTICLE_17}       ${False}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість завантажити документ у кваліфікацію 1 пропозиції
+
+
+Можливість відповісти на критерії Замовника у кваліфікацію пропозиції першого учасника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_add_criteria_response_second_bid
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відповісти на критерії Замовника 1 пропозиції
 
 
 Можливість відхилити другу пропозицію кваліфікації
