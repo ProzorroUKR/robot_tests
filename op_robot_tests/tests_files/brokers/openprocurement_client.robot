@@ -2267,8 +2267,20 @@ Library  Collections
   Log  ${reply}
 
 ##############################################################################
-#             OpenUA procedure
+#             PRE-QUALIFICATION
 ##############################################################################
+
+Завантажити відповіді на критерії в пре-кваліфікації
+  [Arguments]  ${username}  ${tender.data.id}  ${qualification_criteria}  ${qualification.data.id}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_qualification_criteria_response
+  ...  ${tender.data.id}
+  ...  ${qualification_criteria}
+  ...  ${qualification.data.id}
+  ...  ${token}
+  ${reply}=  munch_dict  arg=${reply}
+  [return]  ${reply}
+
 
 Підтвердити кваліфікацію
   [Documentation]
@@ -2367,6 +2379,10 @@ Library  Collections
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
+
+##############################################################################
+#             SECOND STAGE
+##############################################################################
 
 Перевести тендер на статус очікування обробки мостом
   [Documentation]

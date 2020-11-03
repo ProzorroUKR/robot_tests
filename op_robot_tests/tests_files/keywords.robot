@@ -470,6 +470,15 @@ Get Broker Property By Username
   [Return]  ${bid_criteria}
 
 
+Підготувати дані для відповіді на критерії в пре-кваліфікації
+  [Arguments]  ${tender_data}  ${qualiifcation_document}
+  ${qualification_criteria}=  test_qualification_criteria
+  ...  ${tender_data}
+  ...  ${qualiifcation_document}
+  Log  ${qualification_criteria}
+  [Return]  ${qualification_criteria}
+
+
 Адаптувати дані для оголошення тендера
   [Arguments]  ${tender_data}
   # munchify is used to make deep copy of ${tender_data}
