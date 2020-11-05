@@ -1902,9 +1902,8 @@ Library  Collections
 
 
 ##############################################################################
-#             Qualification operations
+#             QUALIFICATION
 ##############################################################################
-
 
 Отримати список документів по прекваліфікації
   [Documentation]
@@ -1991,6 +1990,18 @@ Library  Collections
   ...      ${tender.data.awards[${award_num}].id}
   ...      access_token=${tender.access.token}
   Log  ${doc}
+
+
+Завантажити відповіді на критерії в кваліфікацію
+  [Arguments]  ${username}  ${tender.data.id}  ${award_criteria}  ${award.data.id}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_award_criteria_response
+  ...  ${tender.data.id}
+  ...  ${award_criteria}
+  ...  ${award.data.id}
+  ...  ${token}
+  ${reply}=  munch_dict  arg=${reply}
+  [return]  ${reply}
 
 
 Підтвердити постачальника

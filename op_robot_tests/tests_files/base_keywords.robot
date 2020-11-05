@@ -2490,6 +2490,22 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${document}=  openprocurement_client.Отримати останній документ кваліфікації з типом registerFiscal  ${username}  ${tender_uaid}  ${award_id}
   Порівняти об'єкти  ${document['documentType']}  registerFiscal
 
+
+Відповісти на критерії Замовника ${award_num} постачальника
+  ${tender}=  Пошук тендера по ідентифікатору  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Log  ${tender}
+  Log  ${tender.data.id}
+  ${award_document}=  create dictionary  data=${tender.data.awards[${award_num}].documents[0]}
+  Log  ${award_document}
+  ${award_criteria}=  Підготувати дані для відповіді на критерії в кваліфікації постачальника
+  ...  ${tender}
+  ...  ${award_document}
+  Log  ${award_criteria}
+  ${award}=  Create Dictionary  data=${tender.data.awards[${award_num}]}
+  Log  ${award.data.id}
+  ${criteria}=  Завантажити відповіді на критерії в кваліфікацію  ${tender_owner}  ${tender.data.id}  ${award_criteria}  ${award.data.id}
+  Log  ${criteria}
+
 ##############################################################################################
 #             PLAN
 ##############################################################################################
