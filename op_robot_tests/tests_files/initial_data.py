@@ -1298,7 +1298,7 @@ def test_bid_criteria(tender_data, criteria_len, bid_data, bid_document):
     return bid
 
 
-def test_data_qualification_criteria():
+def test_data_qualification_award_criteria():
     bid = munchify({
         "data": []
     })
@@ -1325,7 +1325,7 @@ def test_data_qualification_criteria():
 
 
 def test_qualification_criteria(tender_data, qualification_document):
-    bid, mock = test_data_qualification_criteria()
+    bid, mock = test_data_qualification_award_criteria()
     mock = deepcopy(mock)
     for criteria in tender_data["data"]['criteria']:
         if criteria.get('source') == 'procuringEntity':
@@ -1335,6 +1335,23 @@ def test_qualification_criteria(tender_data, qualification_document):
                 mock["requirement"]["title"] = requirement["title"]
                 mock["evidences"][0]["relatedDocument"]["id"] = qualification_document["data"]["id"]
                 mock["evidences"][0]["relatedDocument"]["title"] = qualification_document["data"]["title"]
+                bid.data.append(mock)
+        else:
+            pass
+    return bid
+
+
+def test_awards_criteria(tender_data, award_document):
+    bid, mock = test_data_qualification_award_criteria()
+    mock = deepcopy(mock)
+    for criteria in tender_data["data"]['criteria']:
+        if criteria.get('source') == 'procuringEntity':
+            for requirement in criteria['requirementGroups'][0]['requirements']:
+                mock = deepcopy(mock)
+                mock["requirement"]["id"] = requirement["id"]
+                mock["requirement"]["title"] = requirement["title"]
+                mock["evidences"][0]["relatedDocument"]["id"] = award_document["data"]["id"]
+                mock["evidences"][0]["relatedDocument"]["title"] = award_document["data"]["title"]
                 bid.data.append(mock)
         else:
             pass
