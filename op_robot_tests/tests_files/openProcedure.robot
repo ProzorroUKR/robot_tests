@@ -2578,7 +2578,7 @@ ${ARTICLE_17}       ${False}
   Можливість завантажити документ у кваліфікацію 1 пропозиції
 
 
-Можливість відповісти на критерії Замовника у кваліфікацію пропозиції першого учасника
+Можливість відповісти на критерії Замовника у кваліфікацію пропозиції другого учасника
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -2615,7 +2615,17 @@ ${ARTICLE_17}       ${False}
   ...      pre-qualification_approve_second_bid  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити -1 пропозицію кваліфікації
+  Можливість підтвердити 1 пропозицію кваліфікації
+
+
+#Можливість підтвердити третю пропозицію кваліфікації
+  #[Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  #...      tender_owner
+  #...      ${USERS.users['${tender_owner}'].broker}
+  #...      pre-qualification_approve_third_bid  level1
+  #...      critical
+  #[Teardown]  Оновити LAST_MODIFICATION_DATE
+  #Можливість підтвердити -2 пропозицію кваліфікації
 
 
 Можливість підтвердити третю пропозицію кваліфікації
@@ -2625,7 +2635,7 @@ ${ARTICLE_17}       ${False}
   ...      pre-qualification_approve_third_bid  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити -2 пропозицію кваліфікації
+  Можливість підтвердити 2 пропозицію кваліфікації
 
 
 Можливість затвердити остаточне рішення кваліфікації
@@ -2939,10 +2949,23 @@ ${ARTICLE_17}       ${False}
   ...      make_bid_with_criteria_by_provider1_second_stage
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-    Можливість подати цінову пропозицію в статусі draft на друший етап користувачем ${provider1}
+  Можливість подати цінову пропозицію в статусі draft на друший етап користувачем ${provider1}
   Можливість завантажити документ в пропозицію користувачем ${provider1}
   Можливість додати до пропозиції відповідь на критерії користувачем ${provider1}
   Можливість активувати пропозицію коритувачем ${provider1}
+
+
+Можливість подати пропозицію третім учасником на другому етапі
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції на другий етап
+  ...      provider1
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      make_bid_with_criteria_by_provider2_second_stage
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft на друший етап користувачем ${provider2}
+  Можливість завантажити документ в пропозицію користувачем ${provider2}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider2}
+  Можливість активувати пропозицію коритувачем ${provider2}
 
 
 Можливість підтвердити першу пропозицію кваліфікації на другому етапі
@@ -2955,13 +2978,52 @@ ${ARTICLE_17}       ${False}
   Можливість підтвердити 0 пропозицію кваліфікації
 
 
+Можливість завантажити документ у кваліфікацію пропозиції другого учасника на другогму етапі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_add_doc_to_second_bid_second_stage
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість завантажити документ у кваліфікацію 1 пропозиції
+
+
+Можливість відповісти на критерії Замовника у кваліфікацію пропозиції другого учасника на другогму етапі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_add_criteria_response_second_bid_second_stage
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відповісти на критерії Замовника 1 пропозиції
+
+
+Можливість відхилити другу пропозицію кваліфікації на другогму етапі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_reject_second_bid_second_stage
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість відхилити 1 пропозиції кваліфікації
+
+
 Можливість підтвердити другу пропозицію кваліфікації на другогму етапі
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація на другому етапі
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_second_bid_second_stage
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити -1 пропозицію кваліфікації
+  Можливість підтвердити 1 пропозицію кваліфікації
+
+
+Можливість підтвердити третю пропозицію кваліфікації на другогму етапі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація на другому етапі
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_third_bid_second_stage
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 2 пропозицію кваліфікації
 
 
 Можливість затвердити остаточне рішення кваліфікації на другому етапі
