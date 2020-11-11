@@ -91,3 +91,19 @@ Resource           base_keywords.robot
   Run as  ${tender_owner}  Отримати тендер другого етапу та зберегти його  ${TENDER['TENDER_UAID']}
   Run As  ${tender_owner}  Додати критерії в тендер другого етапу  ${TENDER['TENDER_UAID']}
   Run As  ${tender_owner}  Активувати другий етап  ${TENDER['TENDER_UAID']}
+
+
+Відповісти на критерії Замовника ${qualification_num} пропозиції
+  ${tender}=  Пошук тендера по ідентифікатору  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Log  ${tender}
+  Log  ${tender.data.id}
+  ${qualification_document}=  create dictionary  data=${tender.data.qualifications[${qualification_num}].documents[0]}
+  Log  ${qualification_document}
+  ${qualification_criteria}=  Підготувати дані для відповіді на критерії в пре-кваліфікації
+  ...  ${tender}
+  ...  ${qualification_document}
+  Log  ${qualification_criteria}
+  ${qualification}=  Create Dictionary  data=${tender.data.qualifications[${qualification_num}]}
+  Log  ${qualification.data.id}
+  ${criteria}=  Завантажити відповіді на критерії в пре-кваліфікації  ${tender_owner}  ${tender.data.id}  ${qualification_criteria}  ${qualification.data.id}
+  Log  ${criteria}

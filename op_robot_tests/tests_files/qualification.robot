@@ -24,6 +24,9 @@ ${award_index}      ${0}
   :FOR  ${username}  IN  ${viewer}  ${tender_owner}
   \   ${resp}=  Run As  ${username}  Пошук тендера по ідентифікатору   ${TENDER['TENDER_UAID']}
 
+##############################################################################################
+#             CLAIMS
+##############################################################################################
 
 Можливість створити вимогу про виправлення визначення переможця, додати до неї документацію і подати її користувачем
   [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження
@@ -210,8 +213,9 @@ ${award_index}      ${0}
   Звірити відображення поля cancellationReason вимоги про виправлення визначення ${award_index} переможця із ${USERS.users['${provider}'].claim_data.cancellation.data.cancellationReason} для користувача ${viewer}
 
 ##############################################################################################
-#             QUALIFICATION
+#             24 HOURS/ALP
 ##############################################################################################
+
 Дочекатись початку періоду кваліфікації
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду кваліфікації учасників
   ...      tender_owner
@@ -275,6 +279,9 @@ ${award_index}      ${0}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість змінити документацію обгрунтування аномально низької ціни користувачем ${provider}
 
+##############################################################################################
+#             QUALIFICATION
+##############################################################################################
 
 Можливість дочекатися перевірки переможців по ЄДРПОУ
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Перевірка користувача по ЄДРПОУ
@@ -297,6 +304,16 @@ ${award_index}      ${0}
   Remove File  ${file_path}
 
 
+Можливість відповісти на критерії Замовника у кваліфікацію першого постачальника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualification_add_criteria_response_first_award
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відповісти на критерії Замовника 0 постачальника
+
+
 Можливість підтвердити постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
@@ -314,6 +331,15 @@ ${award_index}      ${0}
   ...  qualification_cancel_first_award_qualification
   ...  critical
   Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість відхилити першого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_first_award
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
 
 
 Можливість відхилити постачальника
@@ -336,6 +362,16 @@ ${award_index}      ${0}
   Remove File  ${file_path}
 
 
+Можливість відповісти на критерії Замовника у кваліфікацію другого постачальника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualification_add_criteria_response_second_award
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відповісти на критерії Замовника 1 постачальника
+
+
 Можливість підтвердити другого постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
@@ -354,6 +390,16 @@ ${award_index}      ${0}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
   Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії   ${file_path}   ${TENDER['TENDER_UAID']}   2
   Remove File  ${file_path}
+
+
+Можливість відповісти на критерії Замовника у кваліфікацію третього постачальника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualification_add_criteria_response_third_award
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Відповісти на критерії Замовника 2 постачальника
 
 
 Можливість підтвердити третього постачальника
