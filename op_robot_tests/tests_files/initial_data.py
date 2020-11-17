@@ -1290,8 +1290,11 @@ def test_bid_criteria(tender_data, criteria_len, bid_data, bid_document):
                 mock = deepcopy(mock)
                 mock["requirement"]["id"] = requirement["id"]
                 mock["requirement"]["title"] = requirement["title"]
-                mock["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
-                mock["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
+                if criteria.get('title') == u'Мова (мови), якою (якими) повинні готуватися тендерні пропозиції':
+                    del mock["evidences"][0]
+                else:
+                    mock["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
+                    mock["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
                 bid.data.append(mock)
         else:
             pass
