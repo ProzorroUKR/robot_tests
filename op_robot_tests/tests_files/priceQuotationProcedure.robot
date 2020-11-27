@@ -34,7 +34,7 @@ ${ARTICLE_17}       ${False}
   Set Test Variable  ${WRONG_TENDER_DATE}  ${True}
   ${value}=  Run Keyword And Expect Error  *  Можливість оголосити тендер з недоліками в параметрах
   ${value}=  Convert To Lowercase  ${value}
-  Should Contain  ${value}  the tenderperiod cannot end earlier than 2 business days after the start
+  Should Contain  ${value}  tenderperiod must be at least 2 full business days long
 
 
 Неможливість оголосити тендер з порожнім profile параметром
