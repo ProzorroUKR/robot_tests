@@ -35,8 +35,8 @@
 
 -i save_tender_second_stage
 
--i make_bid_by_provider_second_stage
--i make_bid_by_provider1_second_stage
+-i make_bid_with_criteria_by_provider_second_stage
+-i make_bid_with_criteria_by_provider1_second_stage
 
 -i wait_active_pre-qualification_start_second_stage
 
