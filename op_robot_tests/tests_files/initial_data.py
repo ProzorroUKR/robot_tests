@@ -500,6 +500,7 @@ def test_complaint_data():
 
 
 def test_payment_data(token, complaint_value, complaint_uaid):
+    complaint_value = format(complaint_value, '.2f')
     data = {
             "amount": str(complaint_value),
             "currency": "UAH",
