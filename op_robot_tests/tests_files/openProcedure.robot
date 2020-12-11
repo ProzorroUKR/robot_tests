@@ -386,7 +386,7 @@ ${ARTICLE_17}       ${False}
   ...      ${USERS.users['${viewer}'].broker}
   ...      tender_view_value  level2
   ...      non-critical
-  Звірити відображення поля value.valueAddedTaxIncluded усіх лотів для усіх користувачів
+  Звірити відображення поля value.valueAddedTaxIncluded тендера для користувача ${viewer}
 
 
 Відображення ідентифікатора тендера
