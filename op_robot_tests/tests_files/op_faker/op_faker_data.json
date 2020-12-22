@@ -512,7 +512,7 @@
             "additionalIdentifiers": [],
                 "address": {
                     "countryName": "Сполучені Штати Америки",
-                    "locality": "Washington",
+                    "locality": "Вашингтон",
                     "postalCode": "20433",
                     "region": "DC",
                     "streetAddress": "1818 H Street, NW"
@@ -535,7 +535,7 @@
             "additionalIdentifiers": [],
                 "address": {
                     "countryName": "Швейцарська Конфедерація",
-                    "locality": "Geneva",
+                    "locality": "Женева",
                     "postalCode": "1218",
                     "region": "Grand-Saconnex",
                     "streetAddress": "Global Health Campus, Chemin du Pommier 40"
