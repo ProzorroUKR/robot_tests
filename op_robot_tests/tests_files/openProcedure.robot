@@ -2449,11 +2449,11 @@ ${ARTICLE_17}       ${False}
 
 
 ##############################################################################################
-#             OPENEU  Pre-Qualification
+#             PRE-QUALIFICATION
 ##############################################################################################
 
 Неможливість додати документацію до тендера під час кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Додання документації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Додання документації пре-кваліфікація
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_tender
@@ -2463,7 +2463,7 @@ ${ARTICLE_17}       ${False}
 
 
 Неможливість додати документацію до лоту під час кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Додання документації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Додання документації пре-кваліфікація
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_lot
@@ -2473,7 +2473,7 @@ ${ARTICLE_17}       ${False}
 
 
 Дочекатись початку періоду пре-кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду пре-кваліфікації учасників
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду пре-кваліфікації Учасників
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      wait_active_pre-qualification_start
@@ -2481,7 +2481,7 @@ ${ARTICLE_17}       ${False}
 
 
 Повідомити учасника про невідповідність в тендерній пропозиції
-  [Tags]   ${USERS.users['${tender_owner}'].broker}:
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Усунути невідповідність протягом 24 годин (повідомлення)
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_24h_milestone_pre-qualification
@@ -2489,7 +2489,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість завантажити документ в пропозицію першим учасником
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  [Tags]   ${USERS.users['${provider}'].broker}: Усунути невідповідність протягом 24 годин (завантажити документ)
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
   ...      add_doc_to_bid_by_provider_24h_pre-qualification
@@ -2499,7 +2499,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість змінити документацію цінової пропозиції першим учасником
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  [Tags]   ${USERS.users['${provider}'].broker}: Усунути невідповідність протягом 24 годин (змінити документ)
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
   ...      add_doc_to_bid_by_provider_24h_pre-qualification
@@ -2509,7 +2509,7 @@ ${ARTICLE_17}       ${False}
 
 
 Відображення статусу першої пропозиції кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_view
@@ -2519,7 +2519,7 @@ ${ARTICLE_17}       ${False}
 
 
 Відображення статусу другої пропозиції кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_view
@@ -2538,7 +2538,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість завантажити документ у кваліфікацію пропозиції першого учасника
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ в пре-кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_first_bid
@@ -2548,7 +2548,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість відповісти на критерії Замовника у кваліфікацію пропозиції першого учасника
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відповідь на критерії Замовника в пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_criteria_response_first_bid
@@ -2558,7 +2558,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість підтвердити першу пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_first_bid  level1
@@ -2569,7 +2569,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість завантажити документ у кваліфікацію пропозиції другого учасника
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_doc_to_second_bid
@@ -2579,7 +2579,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість відповісти на критерії Замовника у кваліфікацію пропозиції другого учасника
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_add_criteria_response_second_bid
@@ -2589,7 +2589,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість відхилити другу пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_reject_second_bid
@@ -2599,7 +2599,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість скасувати рішення кваліфікації для другої пропопозиції
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_cancel_second_bid_qualification
@@ -2609,13 +2609,23 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість підтвердити другу пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_second_bid  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість підтвердити 1 пропозицію кваліфікації
+
+
+Можливість підтвердити другу пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_second_bid_framawork  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 2 пропозицію кваліфікації
 
 
 #Можливість підтвердити третю пропозицію кваліфікації
@@ -2629,7 +2639,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість підтвердити третю пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_third_bid  level1
@@ -2638,8 +2648,18 @@ ${ARTICLE_17}       ${False}
   Можливість підтвердити 2 пропозицію кваліфікації
 
 
+Можливість підтвердити третю пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_third_bid_framework  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 3 пропозицію кваліфікації
+
+
 Можливість затвердити остаточне рішення кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_qualifications  level1
@@ -2650,7 +2670,7 @@ ${ARTICLE_17}       ${False}
 
 
 Відображення статусу блокування перед початком аукціону
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_view
@@ -2660,7 +2680,7 @@ ${ARTICLE_17}       ${False}
 
 
 Відображення дати закінчення періоду блокування перед початком аукціону
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_view
@@ -2670,7 +2690,7 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість дочекатися початку періоду очікування
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес очікування оскаржень
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес очікування оскаржень на пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      stage2_pending_status_view
