@@ -23,7 +23,7 @@ ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
 ${BID_AMOUNT_1}     ${500}
 ${BID_AMOUNT_2}     ${1000}
-${BID_AMOUNT_3}     ${1500}
+${BID_AMOUNT_3}     ${1100}
 ${ARTICLE_17}       ${False}
 
 *** Test Cases ***
@@ -2093,6 +2093,20 @@ ${ARTICLE_17}       ${False}
   Можливість подати цінову пропозицію на суму ${BID_AMOUNT_1} користувачем ${provider}
 
 
+Можливість подати пропозицію з фіксованою сумою першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_fixed_amount_with_criteria_by_provider  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft на суму ${BID_AMOUNT_1} користувачем ${provider}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
+  Можливість активувати пропозицію коритувачем ${provider}
+
+
 Можливість зменшити пропозицію на 5% першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
@@ -2145,6 +2159,20 @@ ${ARTICLE_17}       ${False}
   Можливість подати цінову пропозицію на суму ${BID_AMOUNT_2} користувачем ${provider1}
 
 
+Можливість подати пропозицію з фіксованою сумою другим учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_fixed_amount_with_criteria_by_provider1  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft на суму ${BID_AMOUNT_2} користувачем ${provider1}
+  Можливість завантажити документ в пропозицію користувачем ${provider1}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider1}
+  Можливість активувати пропозицію коритувачем ${provider1}
+
+
 Можливість зменшити пропозицію на 5% другим учасником
   [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...      provider1
@@ -2166,12 +2194,26 @@ ${ARTICLE_17}       ${False}
 
 
 Можливість подати пропозицію з фіксованою сумою третім учасником
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
   ...      provider
-  ...      ${USERS.users['${provider}'].broker}
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      make_bid_fixed_amount_with_criteria_by_provider2  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft на суму ${BID_AMOUNT_3} користувачем ${provider2}
+  Можливість завантажити документ в пропозицію користувачем ${provider2}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider2}
+  Можливість активувати пропозицію коритувачем ${provider2}
+
+
+Можливість подати пропозицію з фіксованою сумою третім учасником
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider2}'].broker}
   ...      make_bid_fixed_amount_by_provider2  level1
   ...      critical
-  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію на суму ${BID_AMOUNT_3} користувачем ${provider2}
 
