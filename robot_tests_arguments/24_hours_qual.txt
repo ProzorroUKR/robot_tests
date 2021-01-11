@@ -7,12 +7,14 @@
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
 
+-v ARTICLE_17:True
+
 -i create_tender
 -i find_tender
 
--i make_bid_fixed_amount_by_provider
--i make_bid_fixed_amount_by_provider1
--i make_bid_fixed_amount_by_provider2
+-i make_bid_fixed_amount_with_criteria_by_provider
+-i make_bid_fixed_amount_with_criteria_by_provider1
+-i make_bid_fixed_amount_with_criteria_by_provider2
 
 -i wait_active_pre-qualification_start
 -i create_24h_milestone_pre-qualification
