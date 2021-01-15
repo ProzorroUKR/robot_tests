@@ -24,7 +24,7 @@ fake = fake_uk
 used_identifier_id = []
 mode_open = ["belowThreshold", "aboveThresholdUA", "aboveThresholdEU",
              "aboveThresholdUA.defense", "competitiveDialogueUA", "competitiveDialogueEU", "esco",
-             "closeFrameworkAgreementUA"]
+             "closeFrameworkAgreementUA", "simple.defense"]
 mode_limited = ["reporting", "negotiation.quick", "negotiation"]
 mode_selective = ["priceQuotation"]
 violationType = ["corruptionDescription", "corruptionProcurementMethodType", "corruptionChanges",
@@ -332,7 +332,7 @@ def test_tender_data_planning(params):
         "buyers": []
     }
     data["procuringEntity"]["name"] = data["procuringEntity"]["identifier"]["legalName"]
-    if params.get("mode") == "aboveThresholdUA.defense":
+    if params.get("mode") in ["aboveThresholdUA.defense", "simple.defense"]:
         data["procuringEntity"]["kind"] = "defense"
     elif params.get("mode") in ["belowThreshold", "reporting"]:
         data["procuringEntity"]["kind"] = "other"
@@ -849,9 +849,9 @@ def test_change_document_data(document, change_id):
 
 
 def test_tender_data_openua(params, submissionMethodDetails, plan_data):
-    # We should not provide any values for `enquiryPeriod` when creating
-    # an openUA or openEU procedure. That field should not be present at all.
-    # Therefore, we pass a nondefault list of periods to `test_tender_data()`.
+    """We should not provide any values for `enquiryPeriod` when creating
+    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdUA'
     data['procuringEntity']['kind'] = 'general'
@@ -869,9 +869,9 @@ def test_tender_data_openua_defense(params, submissionMethodDetails, plan_data):
 
 
 def test_tender_data_openeu(params, submissionMethodDetails, plan_data):
-    # We should not provide any values for `enquiryPeriod` when creating
-    # an openUA or openEU procedure. That field should not be present at all.
-    # Therefore, we pass a nondefault list of periods to `test_tender_data()`.
+    """We should not provide any values for `enquiryPeriod` when creating
+    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdEU'
     data['title_en'] = "[TESTING]"
@@ -899,9 +899,9 @@ def test_tender_data_framework_agreement(params, submissionMethodDetails, plan_d
 
 
 def test_tender_data_competitive_dialogue(params, submissionMethodDetails, plan_data):
-    # We should not provide any values for `enquiryPeriod` when creating
-    # an openUA or openEU procedure. That field should not be present at all.
-    # Therefore, we pass a nondefault list of periods to `test_tender_data()`.
+    """We should not provide any values for `enquiryPeriod` when creating
+    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     if params.get('dialogue_type') == 'UA':
         data['procurementMethodType'] = 'competitiveDialogueUA'
@@ -932,6 +932,16 @@ def test_tender_data_selection(procedure_intervals, params, submissionMethodDeta
     del data['value']
     del data['minimalStep']
     return munchify({'data': data})
+
+
+def test_tender_data_simple_defense(params, submissionMethodDetails, plan_data):
+    """We should not provide any values for `enquiryPeriod` when creating
+    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
+    data['procurementMethodType'] = 'simple.defense'
+    data['procuringEntity']['kind'] = 'defense'
+    return data
 
 
 def test_change_data():

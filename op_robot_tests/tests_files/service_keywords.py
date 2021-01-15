@@ -94,7 +94,8 @@ from .initial_data import (
     test_data_bid_criteria,
     test_bid_criteria,
     test_qualification_criteria,
-    test_awards_criteria
+    test_awards_criteria,
+    test_tender_data_simple_defense
 )
 from barbecue import chef
 from restkit import request
@@ -388,6 +389,9 @@ def prepare_test_tender_data(procedure_intervals,
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'priceQuotation':
         return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data)})
+    elif mode == "open_simple_defense":
+        return munchify({'data': test_tender_data_simple_defense(
+            tender_parameters, submissionMethodDetails, plan_data)})
 
         # The previous line needs an explicit keyword argument because,
         # unlike previous functions, this one has three arguments.
@@ -644,7 +648,8 @@ def generate_test_bid_data(tender_data, edrpou=None):
         bid = test_bid_competitive_data()
         bid.data.selfQualified = True
     elif tender_data.get('procurementMethodType', '') in (
-            'aboveThresholdUA.defense'):
+            'aboveThresholdUA.defense',
+            'simple.defense'):
         bid = test_bid_competitive_data()
         bid.data.selfEligible = True
         bid.data.selfQualified = True
