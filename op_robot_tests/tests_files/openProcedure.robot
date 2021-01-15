@@ -2664,6 +2664,16 @@ ${ARTICLE_17}       ${False}
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_second_bid_after_cancel  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 2 пропозицію кваліфікації
+
+
+Можливість підтвердити другу пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      pre-qualification_approve_second_bid_framawork  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
