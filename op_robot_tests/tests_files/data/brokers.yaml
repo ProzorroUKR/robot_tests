@@ -524,15 +524,32 @@ proztorg:
 uub:
     intervals:
         default:
-            enquiry: [0, 8]
+            accelerator: 14400
             tender:  [0, 10]
-        openua:
+        open_competitive_dialogue:
+            accelerator: 14400
+            tender:  [0, 10]
+        open_esco:
+             accelerator: 14400
+             tender:  [0, 10]
+        belowThreshold:
+            accelerator: 3000
+            enquiry: [0, 8]
+            tender:  [0, 8]
+        negotiation:
+            accelerator: 7440
+            enquiry: [0, 8]
+            tender:  [0, 8]
+        open_framework:
+             accelerator: 14400
+             tender:  [0, 10]
+        openua_defense:
             accelerator: 1440
-            tender:  [0, 15]
-        openeu:
-            tender:  [0, 30]
-            accelerator: 1440
+            tender:  [0, 12]
     keywords_file: uub
+    login_page: 'https://prozorrotest.uub.com.ua/Login.aspx'
+    tenders_page: 'https://prozorrotest.uub.com.ua/PositionList.aspx'
+    plans_page: 'https://prozorrotest.uub.com.ua/PlanList.aspx'
     roles:
         tender_owner:   uub_Owner
         provider:       uub_Provider
