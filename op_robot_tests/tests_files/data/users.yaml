@@ -721,6 +721,14 @@ users:
         browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
+    uub_Provider2:
+        broker:   uub
+        homepage: "https://prozorrotest.uub.com.ua/Login.aspx"
+        default_page: "https://prozorrotest.uub.com.ua/PositionList.aspx"
+        login:    UUB_Provider2@1.ua
+        browser:  chrome
+        position: [0, 0]
+        size:     [1366, 800]
     uub_Viewer:
         broker:   uub
         homepage: "https://prozorrotest.uub.com.ua/Login.aspx"

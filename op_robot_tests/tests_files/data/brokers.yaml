@@ -563,6 +563,7 @@ uub:
         tender_owner:   uub_Owner
         provider:       uub_Provider
         provider1:      uub_Provider1
+        provider2:      uub_Provider2
         viewer:         uub_Viewer
     timeout_on_wait: 15
 APStender:
