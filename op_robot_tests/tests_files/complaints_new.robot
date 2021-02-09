@@ -111,6 +111,17 @@ ${ARTICLE_17}       ${False}
   Можливість додати до пропозиції відповідь на критерії користувачем ${provider1}
   Можливість активувати пропозицію коритувачем ${provider1}
 
+
+Можливість подати пропозицію третім учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_by_provider2  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію користувачем ${provider2}
+
 ##############################################################################################
 #             TENDER/LOT COMPLAINT
 ##############################################################################################
@@ -584,7 +595,7 @@ ${ARTICLE_17}       ${False}
   Дочекатись дати початку періоду кваліфікації  ${provider}  ${TENDER['TENDER_UAID']}
 
 
-Можливість підтвердити учасника
+Можливість підтвердити першого учасника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...     tender_owner
   ...     ${USERS.users['${tender_owner}'].broker}
@@ -596,6 +607,78 @@ ${ARTICLE_17}       ${False}
   Run As  ${tender_owner}  Завантажити документ рішення кваліфікаційної комісії  ${file_path}  ${TENDER['TENDER_UAID']}  0
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
   Remove File  ${file_path}
+
+
+Можливість вперше скасувати рішення кваліфікації учасника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_first_time
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  ${first_cancel_index}
+
+
+Можливість вперше відхилити постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_first_time
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  ${first_reject_index}
+
+
+Можливість підтвердити другого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_second_participant
+  ...  critical
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  ${second_approve_index}
+
+
+Можливість вдруге скасувати рішення кваліфікації
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_second_time
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  ${second_cancel_index}
+
+
+Можливість вдруге відхилити постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_second_time
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  ${second_reject_index}
+
+
+Можливість підтвердити третього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_third_participant
+  ...  critical
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  ${third_approve_index}
+
+
+Можливість втретє скасувати рішення кваліфікації
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_third_time
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  ${third_cancel_index}
+
+
+Можливість втретє відхилити постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_third_time
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  ${third_reject_index}
 
 
 Можливість створити чернетку скарги про виправлення визначення переможця
@@ -616,6 +699,28 @@ ${ARTICLE_17}       ${False}
   ...     award_complaint_draft
   ...     non-critical
   Звірити відображення поля status скарги ${award_index} із draft об'єкта awards для користувача ${provider}
+
+
+Неможливість створити скаргу спрощена процедура для оборони
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження визначення переможця
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     defense_award_complaint_error
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  run keyword and expect error  *  Можливість створити чернетку скарги про виправлення визначення ${award_index} переможця
+
+
+Можливість створити чернетку скарги про виправлення визначення переможця
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження визначення переможця
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     second_award_complaint_draft
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити чернетку скарги про виправлення визначення 1 переможця
 
 
 Можливість додати документ до скарги про виправлення визначення переможця
