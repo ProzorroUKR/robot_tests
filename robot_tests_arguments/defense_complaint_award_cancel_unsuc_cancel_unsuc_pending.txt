@@ -1,0 +1,27 @@
+-v MODE:open_simple_defense
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:1
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-v AWARD_INDEX:4
+-v second_reject_index:3
+
+-i create_tender
+-i find_tender
+
+-i make_bid_by_provider
+-i make_bid_by_provider1
+-i make_bid_by_provider2
+
+-i awardPeriod_startDate
+-i qualification_approve_first_award
+-i qualification_cancel_first_award_qualification
+-i qualification_reject_second_award
+-i qualification_approve_second_award
+-i qualification_cancel_second_award_qualification
+-i qualification_reject_second_time
+-i defense_award_complaint_error
