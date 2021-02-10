@@ -8,6 +8,10 @@
 -v LOT_MEAT:False
 
 -v AWARD_INDEX:4
+-v first_cancel_index:0
+-v first_reject_index:1
+-v second_approve_index:2
+-v second_cancel_index:2
 -v second_reject_index:3
 
 -i create_tender
@@ -19,9 +23,9 @@
 
 -i awardPeriod_startDate
 -i qualification_approve_first_award
--i qualification_cancel_first_award_qualification
--i qualification_reject_second_award
--i qualification_approve_second_award
--i qualification_cancel_second_award_qualification
+-i qualification_cancel_first_time
+-i qualification_reject_first_time
+-i qualification_approve_second_participant
+-i qualification_cancel_second_time
 -i qualification_reject_second_time
 -i defense_award_complaint_error
