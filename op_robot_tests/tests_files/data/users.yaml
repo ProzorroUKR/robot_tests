@@ -341,26 +341,26 @@ users:
         size:     [1366, 800]
     Newtend_Owner:
         broker:   Newtend
-        homepage: "http://dev23.newtend.com/opc/tenders"
-        login:    ten2312@mailinator.com
-        password: 123123
+        homepage: "https://dev23.newtend.com/"
+        login:    test.gov.comp.1@gmail.com
+        password: test.gov.comp.1
         browser:  chrome
         position: [0, 0]
         size:     [1200, 1200]
     Newtend_Provider1:
         broker:   Newtend
-        homepage: "http://dev23.newtend.com/opc/tenders"
-        login:    ten2316@mailinator.com
-        password: 123123
+        homepage: "https://dev23.newtend.com/"
+        login:    test.priv.comp.1@gmail.com
+        password: test.priv.comp.1
         browser:  chrome
-        position: [700, 0]
-        size:     [800, 700]
+        position: [0, 0]
+        size:     [1200, 1200]
     Newtend_Viewer:
         broker:   Newtend
-        homepage: "http://dev23.newtend.com/opc"
+        homepage: "https://dev23.newtend.com/"
         browser:  chrome
-        position: [800, 400]
-        size:     [800, 700]
+        position: [0, 0]
+        size:     [1200, 1200]
     PrivatMarket_Viewer:
         broker:   PrivatMarket
         homepage: "https://zakupivli24.pb.ua/prz-at/tender"
