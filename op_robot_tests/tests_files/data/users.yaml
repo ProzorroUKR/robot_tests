@@ -356,13 +356,13 @@ users:
         position: [0, 0]
         size:     [1200, 1200]
     Newtend_Provider1:
-        broker: Newtend
+        broker:   Newtend
         homepage: "https://dev23.newtend.com/"
-        login: test.priv.comp.2@gmail.com
+        login:    test.priv.comp.2@gmail.com
         password: test.priv.comp.2
-        browser: chrome
-        position: [ 0, 0 ]
-        size: [ 1200, 1200 ]
+        browser:  chrome
+        position: [0, 0]
+        size:     [1200, 1200]
     Newtend_Viewer:
         broker:   Newtend
         homepage: "https://dev23.newtend.com/"
@@ -707,34 +707,42 @@ users:
         size:     [1000, 500]
     uub_Owner:
         broker:   uub
-        homepage: "https://prozorro.uub.com.ua/Registration.aspx?CN=-1"
-        default_page: "https://prozorro.uub.com.ua/PositionList.aspx?CN=-1"
+        homepage: "https://prozorrotest.uub.com.ua/Login.aspx"
+        default_page: "https://prozorrotest.uub.com.ua/PositionList.aspx"
         login:    UUB_Owner@1.ua
-        browser:  firefox
+        browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
     uub_Provider:
         broker:   uub
-        homepage: "https://prozorro.uub.com.ua/Registration.aspx?CN=-2"
-        default_page: "https://prozorro.uub.com.ua/PositionList.aspx?CN=-2"
+        homepage: "https://prozorrotest.uub.com.ua/Login.aspx"
+        default_page: "https://prozorrotest.uub.com.ua/PositionList.aspx"
         login:    UUB_Provider@1.ua
-        browser:  firefox
+        browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
     uub_Provider1:
         broker:   uub
-        homepage: "https://prozorro.uub.com.ua/Registration.aspx?CN=-3"
-        default_page: "https://prozorro.uub.com.ua/PositionList.aspx?CN=-3"
+        homepage: "https://prozorrotest.uub.com.ua/Login.aspx"
+        default_page: "https://prozorrotest.uub.com.ua/PositionList.aspx"
         login:    UUB_Provider1@1.ua
-        browser:  firefox
+        browser:  chrome
+        position: [0, 0]
+        size:     [1366, 800]
+    uub_Provider2:
+        broker:   uub
+        homepage: "https://prozorrotest.uub.com.ua/Login.aspx"
+        default_page: "https://prozorrotest.uub.com.ua/PositionList.aspx"
+        login:    UUB_Provider2@1.ua
+        browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
     uub_Viewer:
         broker:   uub
-        homepage: "https://prozorro.uub.com.ua/Registration.aspx?CN=-4"
-        default_page: "https://prozorro.uub.com.ua/PositionList.aspx?CN=-4"
+        homepage: "https://prozorrotest.uub.com.ua/Login.aspx"
+        default_page: "https://prozorrotest.uub.com.ua/PositionList.aspx"
         login:    UUB_Viewer@1.ua
-        browser:  firefox
+        browser:  chrome
         position: [0, 0]
         size:     [1366, 800]
     aps_Owner:
