@@ -291,7 +291,7 @@ Newtend:
     keywords_file: newtend
     roles:
         provider:       Newtend_Provider
-	provider:       Newtend_Provider1
+        provider:       Newtend_Provider1
         tender_owner:   Newtend_Owner
         viewer:         Newtend_Viewer
     timeout_on_wait: 60
