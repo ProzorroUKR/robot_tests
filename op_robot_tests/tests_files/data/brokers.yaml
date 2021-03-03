@@ -53,9 +53,6 @@ Default:
              tender:  [0, 30]
         framework_selection:
              accelerator: 360
-        open_simple_defense:
-             accelerator: 1440
-             tender:  [0, 10]
     # Synchronization delay, in seconds
     timeout_on_wait: 300
 Quinta:
@@ -86,9 +83,6 @@ Quinta:
         priceQuotation:
             tender:  [0, 15]
             accelerator: 1440
-        open_simple_defense:
-             accelerator: 1440
-             tender:  [0, 10]
     keywords_file: openprocurement_client
     roles:
         provider:       Tender_User
@@ -290,6 +284,7 @@ ztv:
 Newtend:
     keywords_file: newtend
     roles:
+        provider:       Newtend_Provider
         provider:       Newtend_Provider1
         tender_owner:   Newtend_Owner
         viewer:         Newtend_Viewer
@@ -530,40 +525,19 @@ proztorg:
 uub:
     intervals:
         default:
-            accelerator: 14400
-            tender:  [0, 10]
-        open_competitive_dialogue:
-            accelerator: 14400
-            tender:  [0, 10]
-        open_esco:
-             accelerator: 14400
-             tender:  [0, 10]
-        belowThreshold:
-            accelerator: 3000
             enquiry: [0, 8]
-            tender:  [0, 8]
-        negotiation:
-            accelerator: 7440
-            enquiry: [0, 8]
-            tender:  [0, 8]
-        open_framework:
-             accelerator: 14400
-             tender:  [0, 10]
-        openua_defense:
+            tender:  [0, 10]
+        openua:
             accelerator: 1440
-            tender:  [0, 12]
-        open_simple_defense:
-             accelerator: 1440
-             tender:  [0, 10]
+            tender:  [0, 15]
+        openeu:
+            tender:  [0, 30]
+            accelerator: 1440
     keywords_file: uub
-    login_page: 'https://prozorrotest.uub.com.ua/Login.aspx'
-    tenders_page: 'https://prozorrotest.uub.com.ua/PositionList.aspx'
-    plans_page: 'https://prozorrotest.uub.com.ua/PlanList.aspx'
     roles:
         tender_owner:   uub_Owner
         provider:       uub_Provider
         provider1:      uub_Provider1
-        provider2:      uub_Provider2
         viewer:         uub_Viewer
     timeout_on_wait: 15
 APStender:
