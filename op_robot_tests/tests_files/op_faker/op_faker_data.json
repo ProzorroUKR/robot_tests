@@ -8764,7 +8764,7 @@
                 "type": "NATIONAL_LEGISLATION"
             }
     ],
-           "requirementGroups": [
+        "requirementGroups": [
             {
                 "description": "Учасник підтверджує, що",
                 "requirements": [

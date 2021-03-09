@@ -90,7 +90,7 @@ from .initial_data import (
     test_payment_data,
     test_24_hours_data,
     test_bid_competitive_data_stage_2,
-    test_article_17_data,
+    test_criteria_data,
     test_data_bid_criteria,
     test_bid_criteria,
     test_qualification_criteria,

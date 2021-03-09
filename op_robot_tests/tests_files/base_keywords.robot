@@ -32,7 +32,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
   ...      plan_tender=${${PLAN_TENDER}}
-  ...      article_17=${${ARTICLE_17}}
+  ...      criteria=${${CRITERIA}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -44,11 +44,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  ${article_17_data}=  Run keyword If  ${ARTICLE_17} == True  Підготувати дані по критеріям статті 17
-  ${TENDER_UAID}=  Run keyword If  ${ARTICLE_17} == True  Run As  ${tender_owner}  Створити тендер з критеріями
+  ${criteria_data}=  Run keyword If  ${CRITERIA} == True  Підготувати дані по критеріям статті 17
+  ${TENDER_UAID}=  Run keyword If  ${CRITERIA} == True  Run As  ${tender_owner}  Створити тендер з критеріями
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
-  ...  ${article_17_data}
+  ...  ${criteria_data}
   ...  ELSE   Run As  ${tender_owner}  Створити тендер
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}

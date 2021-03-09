@@ -253,7 +253,7 @@ Library  Collections
 
 
 Створити тендер з критеріями
-  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${article_17_data}
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${criteria_data}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
@@ -266,7 +266,7 @@ Library  Collections
   ${access_token}=  Get Variable Value  ${tender.access.token}
   ${tender_criteria}=  Call Method  ${USERS.users['${username}'].client}  create_criteria
   ...      ${tender.data.id}
-  ...      ${article_17_data}
+  ...      ${criteria_data}
   ...      access_token=${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}

@@ -1259,8 +1259,8 @@ def test_24_hours_data():
     })
 
 
-def test_article_17_data():
-    criteria = fake.criteria_article_17()
+def test_criteria_data():
+    criteria = fake.criteria_data()
     return munchify({
         "data": criteria
     })

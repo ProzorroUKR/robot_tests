@@ -451,9 +451,9 @@ Get Broker Property By Username
 
 
 Підготувати дані по критеріям статті 17
-  ${article_17_data}=  test_article_17_data
-  Log  ${article_17_data}
-  [Return]  ${article_17_data}
+  ${criteria_data}=  test_criteria_data
+  Log  ${criteria_data}
+  [Return]  ${criteria_data}
 
 
 Підготувати дані для відповіді на критерії в пропозиції
