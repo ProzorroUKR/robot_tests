@@ -33,6 +33,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      gmdn_index=${${GMDN_INDEX}}
   ...      plan_tender=${${PLAN_TENDER}}
   ...      criteria=${${CRITERIA}}
+  ...      criteria_lot=${${CRITERIA_LOT}}
+  ...      criteria_item=${${CRITERIA_ITEM}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -44,11 +46,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  ${criteria_data}=  Run keyword If  ${CRITERIA} == True  Підготувати дані по критеріям статті 17
+  #${criteria_data}=  Run keyword If  ${CRITERIA} == True  Підготувати дані по критеріям статті 17
   ${TENDER_UAID}=  Run keyword If  ${CRITERIA} == True  Run As  ${tender_owner}  Створити тендер з критеріями
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
-  ...  ${criteria_data}
+  #...  ${criteria_data}
+  ...  ${CRITERIA_LOT}
+  ...  ${CRITERIA_ITEM}
   ...  ELSE   Run As  ${tender_owner}  Створити тендер
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
@@ -1040,6 +1044,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${feature_index}=  get_object_index_by_id  ${USERS.users['${tender_owner}'].tender_data.data['features']}  ${feature_id}
   :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
   \  Remove From List  ${USERS.users['${username}'].tender_data.data['features']}  ${feature_index}
+
+
+##############################################################################################
+#             CONTRACTS
+##############################################################################################
 
 
 Звірити відображення поля ${field} зміни до договору для користувача ${username}
@@ -2368,6 +2377,20 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість скасувати ${cancellations_index} cancellation
   Run As  ${tender_owner}  Скасувати cancellation  ${TENDER['TENDER_UAID']}  ${cancellations_index}
+
+
+Можливість скасувати ${index} лот
+  ${cancellation_data}=  Підготувати дані про скасування  ${USERS.users['${tender_owner}'].initial_data.data.procurementMethodType}
+  ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data.lots[${index}]}
+  Run As  ${tender_owner}
+  ...      Скасувати лот
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${lot_id}
+  ...      ${cancellation_data['cancellation_reason']}
+  ...      ${cancellation_data['cancellation_reasonType']}
+  ...      ${cancellation_data['document']['doc_path']}
+  ...      ${cancellation_data['description']}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  lot_cancellation_data=${cancellation_data}
 
 ##############################################################################################
 #             Awarding

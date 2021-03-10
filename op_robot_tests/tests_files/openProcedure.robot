@@ -25,6 +25,8 @@ ${BID_AMOUNT_1}     ${500}
 ${BID_AMOUNT_2}     ${1000}
 ${BID_AMOUNT_3}     ${1100}
 ${CRITERIA}         ${False}
+${CRITERIA_LOT}     ${False}
+${CRITERIA_ITEM}    ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -3116,3 +3118,24 @@ ${CRITERIA}         ${False}
   ...      document_service
   ...      critical
   Можливість перевірити завантаження документів через Document Service
+
+##############################################################################################
+#             LOT CANCELLATION
+##############################################################################################
+
+Можливість скасувати критерій закупівлі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}:
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      make_criteria_lot
+  ...      critical
+  Можливіть скасувати ${criteria_index} критерій тендера
+
+
+Можливість скасувати лот
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування лота
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  lot_cancellation
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати 0 лот

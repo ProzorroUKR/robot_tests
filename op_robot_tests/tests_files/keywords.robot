@@ -451,7 +451,11 @@ Get Broker Property By Username
 
 
 Підготувати дані по критеріям статті 17
-  ${criteria_data}=  test_criteria_data
+  [Arguments]  ${criteria_lot}  ${criteria_item}  ${tender}
+  Log  ${criteria_lot}
+  Log  ${criteria_item}
+  Log  ${tender}
+  ${criteria_data}=  test_criteria_data  ${criteria_lot}  ${criteria_item}  ${tender}
   Log  ${criteria_data}
   [Return]  ${criteria_data}
 
