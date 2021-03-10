@@ -1259,8 +1259,14 @@ def test_24_hours_data():
     })
 
 
-def test_criteria_data():
+def test_criteria_data(criteria_lot,  criteria_item, tender_data):
     criteria = fake.criteria_data()
+    if criteria_lot:
+        criteria[-1]["relatesTo"] = "lot"
+        criteria[-1]["relatedItem"] = tender_data['data']['lots'][0]["id"]
+    if criteria_item:
+        criteria[-1]["relatesTo"] = "item"
+        criteria[-1]["relatedItem"] = tender_data['data']['items'][0]["id"]
     return munchify({
         "data": criteria
     })
