@@ -456,6 +456,12 @@ Get Broker Property By Username
   [Return]  ${article_17_data}
 
 
+Підготувати дані по критеріям гарантії
+  ${criteria_guarantee_data}=  test_criteria_guarantee_data
+  Log  ${criteria_guarantee_data}
+  [Return]  ${criteria_guarantee_data}
+
+
 Підготувати дані для відповіді на критерії в пропозиції
   [Arguments]  ${username}  ${tender_data}  ${bid_data}  ${bid_data_document}
   @{criteria}=  get_from_object  ${tender_data.data}  criteria

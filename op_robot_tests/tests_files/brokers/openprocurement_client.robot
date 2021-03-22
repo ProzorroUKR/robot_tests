@@ -253,7 +253,7 @@ Library  Collections
 
 
 Створити тендер з критеріями
-  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${article_17_data}
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${CRITERIA_GUARANTEE}  #${article_17_data}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
@@ -264,9 +264,16 @@ Library  Collections
   ...      access_token=${ARTIFACT.tender_owner_access_token}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${article_17_data}=  Підготувати дані по критеріям статті 17
   ${tender_criteria}=  Call Method  ${USERS.users['${username}'].client}  create_criteria
   ...      ${tender.data.id}
   ...      ${article_17_data}
+  ...      access_token=${tender.access.token}
+  Log  ${CRITERIA_GUARANTEE}
+  ${criteria_guarantee_data}=  Run keyword If  ${CRITERIA_GUARANTEE} == True  Підготувати дані по критеріям гарантії
+  ${tender_criteria_guarantee}=  Run keyword If  ${CRITERIA_GUARANTEE} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${criteria_guarantee_data}
   ...      access_token=${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
