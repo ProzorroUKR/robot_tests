@@ -207,6 +207,35 @@ Library  Collections
   ${participationUrl}=  Get Variable Value  ${object_with_url['participationUrl']}
   [Return]  ${participationUrl}
 
+
+Отримати поточного Переможця тендера
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT}
+  ${provider}=   get variable value  ${provider_bid_id}   ${ARTIFACT.provider_bid_id}
+  Log  ${provider}
+  ${provider1}=  get variable value  ${provider1_bid_id}  ${ARTIFACT.provider1_bid_id}
+  Log  ${provider1}
+  ${provider2}=  get variable value  ${provider2_bid_id}  ${ARTIFACT.provider2_bid_id}
+  Log  ${provider2}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Log  ${tender}
+  ${award}=  Get Variable Value  ${USERS.users['${tender_owner}'].tender_data.data.awards[${award_index}]}
+  Log  ${award}
+  ${award.bid_id}=  Encode String To Bytes  ${award.bid_id}  UTF-8
+  Log  ${award.bid_id}
+  ${status_1}=  run keyword and return status  Should Be Equal  ${provider}  ${award.bid_id}
+  log  ${status_1}
+  ${status_2}=  run keyword and return status  Should Be Equal  ${provider1}  ${award.bid_id}
+  log  ${status_2}
+  ${status_3}=  run keyword and return status  Should Be Equal  ${provider2}  ${award.bid_id}
+  log  ${status_3}
+  ${username}=    run keyword if  ${status_1} == ${True}  set variable  Tender_User
+  ...     ELSE IF  ${status_2} == ${True}  set variable  Tender_User1
+  ...     ELSE  set variable  Tender_User2
+  Log  ${username}
+  [Return]  ${username}
+
 ##############################################################################
 #             Tender operations
 ##############################################################################
@@ -223,7 +252,7 @@ Library  Collections
 
 
 Створити тендер
-  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${CRITERIA_GUARANTEE}=None
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
@@ -234,6 +263,11 @@ Library  Collections
   ...      access_token=${ARTIFACT.tender_owner_access_token}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${criteria_guarantee_data}=  Run keyword If  ${CRITERIA_GUARANTEE} == True  Підготувати дані по критеріям гарантії
+  ${tender_criteria_guarantee}=  Run keyword If  ${CRITERIA_GUARANTEE} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${criteria_guarantee_data}
+  ...      access_token=${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
@@ -1907,6 +1941,27 @@ Library  Collections
   ${reply}=  munch_dict  arg=${reply}
   [return]  ${reply}
 
+
+Завантажити відповідь на критерій гарантії виконання контракту
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_response}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Log  ${tender}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+  Log  ${bid}
+  ${bid_id}=  openprocurement_client.Отримати інформацію із пропозиції  ${username}  ${tender_uaid}  id
+  Log  ${bid_id}
+  ${req_id}=  get_from_object  ${bid.data}  requirementResponses[-1].id
+  Log  ${req_id}
+  ${token}=  Get Variable Value  ${USERS.users['${username}'].access_token}
+  Log  ${token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid_criteria_contract_guarantee_response
+  ...  ${tender.data.id}
+  ...  ${contract_response}
+  ...  ${bid_id}
+  ...  ${req_id}
+  ...  ${token}
+  ${reply}=  munch_dict  arg=${reply}
+  [Return]  ${reply}
 
 ##############################################################################
 #             QUALIFICATION
