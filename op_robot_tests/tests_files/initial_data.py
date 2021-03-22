@@ -189,10 +189,6 @@ def test_tender_data(params,
             "currency": u"UAH",
             "valueAddedTaxIncluded": vat_included
         },
-        "guarantee": {
-            "amount": value_amount * 0.75,
-            "currency": u"UAH",
-        },
         "minimalStep": {
             "amount": round(random.uniform(0.005, 0.03) * value_amount, 2),
             "currency": u"UAH",
@@ -201,6 +197,9 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
+    if params.get("mode") in ["belowThreshold", "aboveThresholdUA", "aboveThresholdEU", "esco"]:
+        data["guarantee"]["amount"] = value_amount * 0.75
+        data["guarantee"]["currency"] = u"UAH"
     if params.get("mode") == "open_framework":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") == "open_competitive_dialogue":
@@ -1270,6 +1269,13 @@ def test_article_17_data():
     })
 
 
+def test_criteria_guarantee_data():
+    criteria = fake.criteria_bid_contract_guarantee()
+    return munchify({
+        "data": criteria
+    })
+
+
 def test_data_bid_criteria():
     bid = munchify({
         "data": []
@@ -1302,20 +1308,20 @@ def test_bid_criteria(tender_data, criteria_len, bid_data, bid_document):
     for criteria in tender_data["data"]['criteria']:
         if criteria.get('source') == 'tenderer':
             for requirement in criteria['requirementGroups'][0]['requirements']:
-                mock = deepcopy(mock)
-                mock["requirement"]["id"] = requirement["id"]
-                mock["requirement"]["title"] = requirement["title"]
+                mock_tenderer = deepcopy(mock)
+                mock_tenderer["requirement"]["id"] = requirement["id"]
+                mock_tenderer["requirement"]["title"] = requirement["title"]
+                mock_tenderer["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
+                mock_tenderer["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
                 if criteria.get('title') == u'Мова (мови), якою (якими) повинні готуватися тендерні пропозиції':
-                    del mock["evidences"][0]
-                else:
-                    mock["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
-                    mock["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
-                bid.data.append(mock)
+                    del mock_tenderer["evidences"][0]
+                bid.data.append(mock_tenderer)
         elif criteria.get('source') == 'winner':
             for requirement in criteria['requirementGroups'][0]['requirements']:
                 mock = deepcopy(mock)
                 mock["requirement"]["id"] = requirement["id"]
                 mock["requirement"]["title"] = requirement["title"]
+                del mock["evidences"][0]
             bid.data.append(mock)
         else:
             pass
