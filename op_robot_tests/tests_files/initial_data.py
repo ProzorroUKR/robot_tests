@@ -197,9 +197,8 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
-    if params.get("mode") in ["belowThreshold", "aboveThresholdUA", "aboveThresholdEU", "esco"]:
-        data["guarantee"]["amount"] = value_amount * 0.75
-        data["guarantee"]["currency"] = u"UAH"
+    if params.get("mode") in ["belowThreshold", "openua", "openeu", "esco"]:
+        data["guarantee"] = test_data_guarantee(value_amount)
     if params.get("mode") == "open_framework":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") == "open_competitive_dialogue":
@@ -1273,6 +1272,13 @@ def test_criteria_guarantee_data():
     criteria = fake.criteria_bid_contract_guarantee()
     return munchify({
         "data": criteria
+    })
+
+
+def test_data_guarantee(value_amount):
+    return munchify({
+            "amount": value_amount * 0.75,
+            "currency": u"UAH"
     })
 
 
