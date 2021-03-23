@@ -25,6 +25,7 @@ ${BID_AMOUNT_1}     ${500}
 ${BID_AMOUNT_2}     ${1000}
 ${BID_AMOUNT_3}     ${1100}
 ${ARTICLE_17}       ${False}
+${CRITERIA_GUARANTEE}  ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер

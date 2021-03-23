@@ -182,10 +182,10 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_access_token=${USERS.users['${provider}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_access_token=${USERS.users['${provider1}'].access_token}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_access_token=${USERS.users['${provider1}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_access_token=${USERS.users['${provider2}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_bid_id=${USERS.users['${provider}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_bid_id=${USERS.users['${provider1}'].bid_id}
-  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_bid_id=${USERS.users['${provider1}'].bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_bid_id=${USERS.users['${provider2}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...      tender_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
   ...      lot_file_properties=${USERS.users['${tender_owner}'].lots_documents[0].file_properties}
@@ -231,6 +231,8 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  access_token=${ARTIFACT.provider1_access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider}']}  bid_id=${ARTIFACT.provider_bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  bid_id=${ARTIFACT.provider1_bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider2}']}  access_token=${ARTIFACT.provider2_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider2}']}  bid_id=${ARTIFACT.provider2_bid_id}
   Set Suite Variable  ${MODE}
   Set Suite Variable  ${lot_index}
   Set Suite Variable  ${TENDER}
@@ -456,6 +458,12 @@ Get Broker Property By Username
   [Return]  ${article_17_data}
 
 
+Підготувати дані по критеріям гарантії
+  ${criteria_guarantee_data}=  test_criteria_guarantee_data
+  Log  ${criteria_guarantee_data}
+  [Return]  ${criteria_guarantee_data}
+
+
 Підготувати дані для відповіді на критерії в пропозиції
   [Arguments]  ${username}  ${tender_data}  ${bid_data}  ${bid_data_document}
   @{criteria}=  get_from_object  ${tender_data.data}  criteria
@@ -486,6 +494,13 @@ Get Broker Property By Username
   ...  ${award_document}
   Log  ${award_criteria}
   [Return]  ${award_criteria}
+
+
+Підготувати дані по гарантії виконання контракту
+  [Arguments]  ${bid_doc_id}  ${bid_doc_title}
+  ${contract_response}=  test_contract_criteria_response_data  ${bid_doc_id}  ${bid_doc_title}
+  Log  ${contract_response}
+  [Return]  ${contract_response}
 
 
 Адаптувати дані для оголошення тендера
