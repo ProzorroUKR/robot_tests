@@ -9,6 +9,8 @@
 
 -v ARTICLE_17:True
 
+-v CRITERIA_GUARANTEE:True
+
 
 -i create_tender
 -i find_tender
@@ -79,6 +81,9 @@
 -i qualification_reject_first_award
 -i qualification_add_doc_to_second_award
 -i qualification_approve_second_award
+
+-i wait_active_awarding_start
+-i qualification_add_contract_guarantee_document
 
 -i contract_stand_still
 -i contract_view
