@@ -220,7 +220,7 @@ Library  Collections
   Log  ${provider2}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${tender_owner}  ${TENDER['TENDER_UAID']}
   Log  ${tender}
-  ${award}=  Get Variable Value  ${USERS.users['${tender_owner}'].tender_data.data.awards[${award_index}]}
+  ${award}=  Get Variable Value  ${USERS.users['${tender_owner}'].tender_data.data.awards[-1]}
   Log  ${award}
   ${award.bid_id}=  Encode String To Bytes  ${award.bid_id}  UTF-8
   Log  ${award.bid_id}
