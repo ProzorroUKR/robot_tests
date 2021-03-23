@@ -22,6 +22,7 @@ ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
 ${ARTICLE_17}       ${False}
+${CRITERIA_GUARANTEE}  ${False}
 
 *** Test Cases ***
 Неможливість оголосити тендер з tenderPeriod:endDate < 2 робочих дні
