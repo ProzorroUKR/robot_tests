@@ -4,7 +4,7 @@ Suite Setup     Test Suite Setup
 Suite Teardown  Test Suite Teardown
 
 *** Variables ***
-@{USED_ROLES}   tender_owner  viewer  provider
+@{USED_ROLES}   tender_owner  viewer  provider  provider1  provider2
 
 ${award_index}      ${0}
 
@@ -454,3 +454,23 @@ ${award_index}      ${0}
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Дочекатися перевірки кваліфікацій ДФС  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+##############################################################################################
+#             AWARDING
+##############################################################################################
+
+Дочекатись початку періоду підписання угоди
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Очікування початку періоду підписання угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      wait_active_awarding_start
+  Дочекатись дати початку періоду підписання угоди  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+
+Можливість додати підтверждення гарантії контракту
+  [Tags]   Процес кваліфікації
+  ...      qualification_add_contract_guarantee_document
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${username}=   Отримати поточного Переможця тендера
+  Можливість завантажити підтвердження виконання контракту в пропозицію учасника  ${username}  ${TENDER['TENDER_UAID']}
