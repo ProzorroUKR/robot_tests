@@ -197,6 +197,8 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
+    if params.get("mode") in ["belowThreshold", "openua", "openeu", "esco"]:
+        data["guarantee"] = test_data_guarantee(value_amount)
     if params.get("mode") == "open_framework":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") == "open_competitive_dialogue":
@@ -1272,6 +1274,20 @@ def test_criteria_data(criteria_lot,  criteria_item, tender_data):
     })
 
 
+def test_criteria_guarantee_data():
+    criteria = fake.criteria_bid_contract_guarantee()
+    return munchify({
+        "data": criteria
+    })
+
+
+def test_data_guarantee(value_amount):
+    return munchify({
+            "amount": value_amount * 0.75,
+            "currency": u"UAH"
+    })
+
+
 def test_data_bid_criteria():
     bid = munchify({
         "data": []
@@ -1304,15 +1320,21 @@ def test_bid_criteria(tender_data, criteria_len, bid_data, bid_document):
     for criteria in tender_data["data"]['criteria']:
         if criteria.get('source') == 'tenderer':
             for requirement in criteria['requirementGroups'][0]['requirements']:
+                mock_tenderer = deepcopy(mock)
+                mock_tenderer["requirement"]["id"] = requirement["id"]
+                mock_tenderer["requirement"]["title"] = requirement["title"]
+                mock_tenderer["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
+                mock_tenderer["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
+                if criteria.get('title') == u'Мова (мови), якою (якими) повинні готуватися тендерні пропозиції':
+                    del mock_tenderer["evidences"][0]
+                bid.data.append(mock_tenderer)
+        elif criteria.get('source') == 'winner':
+            for requirement in criteria['requirementGroups'][0]['requirements']:
                 mock = deepcopy(mock)
                 mock["requirement"]["id"] = requirement["id"]
                 mock["requirement"]["title"] = requirement["title"]
-                if criteria.get('title') == u'Мова (мови), якою (якими) повинні готуватися тендерні пропозиції':
-                    del mock["evidences"][0]
-                else:
-                    mock["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
-                    mock["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
-                bid.data.append(mock)
+                del mock["evidences"][0]
+            bid.data.append(mock)
         else:
             pass
     return bid
@@ -1376,3 +1398,31 @@ def test_awards_criteria(tender_data, award_document):
         else:
             pass
     return bid
+
+
+def test_data_contract_criteria_response():
+    return munchify({
+        "data": {
+            "title": "виконання умог договору",
+            "description": "документ, що підтверджує забезпечення виконання умов договору",
+            "type": "document",
+            "relatedDocument": {
+                "id": "",
+                "title": ""
+            }
+        }
+    })
+
+
+def test_contract_criteria_response_data(bid_doc_id, bid_doc_title):
+    return munchify({
+        "data": {
+            "title": "виконання умог договору",
+            "description": "документ, що підтверджує забезпечення виконання умов договору",
+            "type": "document",
+            "relatedDocument": {
+                "id": bid_doc_id,
+                "title": bid_doc_title
+            }
+        }
+    })

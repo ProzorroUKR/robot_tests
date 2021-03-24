@@ -40,6 +40,7 @@ class OP_Provider(BaseProvider):
     profiles_shortlistedfirms_empty = _fake_data.profiles_shortlistedfirms_empty
     unknown_profile = _fake_data.unknown_profiles
     criteria = _fake_data.criteria
+    criteria_guarant = _fake_data.criteria_guarantee
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -259,3 +260,7 @@ class OP_Provider(BaseProvider):
     @classmethod
     def criteria_data(self):
         return deepcopy(self.criteria)
+
+    @classmethod
+    def criteria_bid_contract_guarantee(self):
+        return deepcopy(self.criteria_guarant)

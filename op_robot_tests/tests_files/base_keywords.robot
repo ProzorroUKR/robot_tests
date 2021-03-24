@@ -32,7 +32,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
   ...      plan_tender=${${PLAN_TENDER}}
-  ...      criteria=${${CRITERIA}}
+  ...      article_17=${${ARTICLE_17}}
+  ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
   ...      criteria_lot=${${CRITERIA_LOT}}
   ...      criteria_item=${${CRITERIA_ITEM}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
@@ -46,16 +47,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  #${criteria_data}=  Run keyword If  ${CRITERIA} == True  Підготувати дані по критеріям статті 17
   ${TENDER_UAID}=  Run keyword If  ${CRITERIA} == True  Run As  ${tender_owner}  Створити тендер з критеріями
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
-  #...  ${criteria_data}
+  ...  ${CRITERIA_GUARANTEE}
   ...  ${CRITERIA_LOT}
   ...  ${CRITERIA_ITEM}
   ...  ELSE   Run As  ${tender_owner}  Створити тендер
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
+  ...  ${CRITERIA_GUARANTEE}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
@@ -2366,6 +2367,21 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${username}  Змінити документ в ставці при обгрунтуванні аномально низької ціни  ${TENDER['TENDER_UAID']}  ${file_path}  ${USERS.users['${username}']['bid_document']['doc_id']}
   Set To Dictionary  ${USERS.users['${username}']}  bid_document_modified=${bid_document_modified_data}
   Remove File  ${file_path}
+
+
+Можливість завантажити підтвердження виконання контракту в пропозицію учасника
+  [Arguments]  ${username}  ${tender_uaid}
+  Log  ${username}
+  Log  ${tender_uaid}
+  Log Many  ${USERS.users['${username}'].id_map}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+  Log  ${bid}
+  ${bid_doc_id}=  get_from_object  ${bid.data}  documents[0].id
+  Log  ${bid_doc_id}
+  ${bid_doc_title}=  get_from_object  ${bid.data}  documents[0].title
+  Log   ${bid_doc_title}
+  ${contract_response}=  Підготувати дані по гарантії виконання контракту  ${bid_doc_id}  ${bid_doc_title}
+  Run As  ${username}  Завантажити відповідь на критерій гарантії виконання контракту  ${tender_uaid}  ${contract_response}
 
 ##############################################################################################
 #             Cancellations

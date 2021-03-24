@@ -95,7 +95,9 @@ from .initial_data import (
     test_bid_criteria,
     test_qualification_criteria,
     test_awards_criteria,
-    test_tender_data_simple_defense
+    test_tender_data_simple_defense,
+    test_contract_criteria_response_data,
+    test_criteria_guarantee_data
 )
 from barbecue import chef
 from restkit import request

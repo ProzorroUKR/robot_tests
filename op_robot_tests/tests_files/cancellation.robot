@@ -13,6 +13,7 @@ ${ROAD_INDEX}       ${False}
 ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
 ${ARTICLE_17}       ${False}
+${CRITERIA_GUARANTEE}  ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер
