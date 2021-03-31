@@ -6,7 +6,7 @@ ${BROKER}        Quinta
 ${DS_HOST_URL}   https://upload-docs-staging.prozorro.gov.ua
 ${ROLE}          viewer
 ${EDR_HOST_URL}  https://lb-edr-staging.prozorro.gov.ua
-${EDR_VERSION}   0
+${EDR_VERSION}   1.0
 
 ${DASU_RESOURCE}      monitorings
 ${DASU_API_HOST_URL}  https://audit-api-staging.prozorro.gov.ua
