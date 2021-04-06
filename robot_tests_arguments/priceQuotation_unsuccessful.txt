@@ -27,8 +27,6 @@
 -i impossible_cancel_3_award_qualification_by_provider
 -i qualification_cancel_3_award_qualification_by_customer
 -i impossible_approve_fourth_award_by_provider
--i qualification_approve_4_award_by_customer
--i qualification_cancel_4_award_qualification_by_customer
--i qualification_reject_fifth_award
+-i qualification_reject_4_award
 
--i unsuccefully_tender
+-i unsuccefully_tende

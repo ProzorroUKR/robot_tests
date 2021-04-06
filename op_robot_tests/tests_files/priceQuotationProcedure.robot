@@ -373,7 +373,7 @@ ${CRITERIA_GUARANTEE}  ${False}
   Set Test Variable  ${BID_INVALID_EXPECTED_VALUE}  ${True}
   ${value}=  Run Keyword And Expect Error  *  Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
   ${value}=  Convert To Lowercase  ${value}
-  Should Contain  ${value}  does not match expected value
+  Should Contain  ${value}  failed to convert to a decimal
 
 
 Можливість подати пропозицію першим учасником
@@ -642,9 +642,9 @@ ${CRITERIA_GUARANTEE}  ${False}
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_reject_fifth_award
+  ...  qualification_reject_4_award
   ...  critical
-  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  4
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  3
 
 
 Відображення статусу завершення тендеру
@@ -672,8 +672,9 @@ ${CRITERIA_GUARANTEE}  ${False}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  tender_unsuccessfully_reason_profile_hidden
+  ${reason}=  Текст причини відхилення hidden
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
-  ...      Обраний профіль неактивний в системі Prozorro.Market
+  ...      ${reason}
   ...      unsuccessfulReason
 
 
@@ -682,8 +683,9 @@ ${CRITERIA_GUARANTEE}  ${False}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  tender_unsuccessfully_reason_shortlistedfirms_empty
+  ${reason}=  Текст причини відхилення empty
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
-  ...      В обраному профілі немає активних постачальників
+  ...      ${reason}
   ...      unsuccessfulReason
 
 
@@ -692,8 +694,9 @@ ${CRITERIA_GUARANTEE}  ${False}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  tender_unsuccessfully_reason_unknown_profile
+  ${reason}=  Текст причини відхилення unknown
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
-  ...      Обраний профіль не існує в системі Prozorro.Market
+  ...      ${reason}
   ...      unsuccessfulReason
 
 

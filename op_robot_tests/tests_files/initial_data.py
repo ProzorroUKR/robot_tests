@@ -1420,3 +1420,17 @@ def test_contract_criteria_response_data(bid_doc_id, bid_doc_title):
             }
         }
     })
+
+
+def test_pricequotation_unsuccessfulReason_data(unsuccessfulReason):
+    reason = []
+    if unsuccessfulReason == "hidden":
+        text = u'Обраний профіль неактивний в системі Prozorro.Market'
+        reason.append(text)
+    if unsuccessfulReason == "unknown":
+        text = u'Обраний профіль не існує в системі Prozorro.Market'
+        reason.append(text)
+    if unsuccessfulReason == "empty":
+        text = u'В обраному профілі немає активних постачальників'
+        reason.append(text)
+    return reason
