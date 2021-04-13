@@ -263,7 +263,7 @@ Library  Collections
   ...      access_token=${ARTIFACT.tender_owner_access_token}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
-  ${criteria_guarantee_data}=  Run keyword If  ${CRITERIA_GUARANTEE} == True  Підготувати дані по критеріям гарантії
+  ${criteria_guarantee_data}=  Run keyword If  ${CRITERIA_GUARANTEE} == True  Підготувати дані по критеріям гарантії  ${criteria_lot}  ${tender}
   ${tender_criteria_guarantee}=  Run keyword If  ${CRITERIA_GUARANTEE} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
   ...      ${tender.data.id}
   ...      ${criteria_guarantee_data}
@@ -287,7 +287,7 @@ Library  Collections
 
 
 Створити тендер з критеріями
-  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${CRITERIA_GUARANTEE}  ${criteria_lot}  ${criteria_item}
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${criteria_guarantee}  ${criteria_lot}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
@@ -298,14 +298,14 @@ Library  Collections
   ...      access_token=${ARTIFACT.tender_owner_access_token}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
-  ${article_17_data}=  Підготувати дані по критеріям статті 17  ${criteria_lot}  ${criteria_item}  ${tender}
+  ${article_17_data}=  Підготувати дані по критеріям статті 17
   ${tender_criteria}=  Call Method  ${USERS.users['${username}'].client}  create_criteria
   ...      ${tender.data.id}
-  ...      ${criteria_data}
+  ...      ${article_17_data}
   ...      access_token=${tender.access.token}
-  Log  ${CRITERIA_GUARANTEE}
-  ${criteria_guarantee_data}=  Run keyword If  ${CRITERIA_GUARANTEE} == True  Підготувати дані по критеріям гарантії
-  ${tender_criteria_guarantee}=  Run keyword If  ${CRITERIA_GUARANTEE} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
+  Log  ${criteria_guarantee}
+  ${criteria_guarantee_data}=  Run keyword If  ${criteria_guarantee} == True  Підготувати дані по критеріям гарантії  ${criteria_lot}  ${tender}
+  ${tender_criteria_guarantee}=  Run keyword If  ${criteria_guarantee} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
   ...      ${tender.data.id}
   ...      ${criteria_guarantee_data}
   ...      access_token=${tender.access.token}
@@ -2957,3 +2957,66 @@ Library  Collections
   ${internalid}=  openprocurement_client.Отримати internal id плану по UAid  ${username}  ${tender_uaid}
   ${plan}=  openprocurement_client.Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}  ${save_key}
   [return]  ${plan}
+
+##############################################################################
+#             CRITERIA OPERATIONS
+##############################################################################
+
+Змінити стутус вимоги критерія
+  [Documentation]  Змінити статус критерія
+  [Arguments]  ${username}  ${tender_uaid}  ${status_data}  ${criteria_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  Log  ${tender.data.id}
+  Log  ${tender.data.criteria[${criteria_index}].id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_requirement
+  ...   ${tender.data.id}
+  ...   ${status_data}
+  ...   ${tender.data.criteria[${criteria_index}].id}
+  ...   ${tender.data.criteria[${criteria_index}].requirementGroups[0].id}
+  ...   ${tender.data.criteria[${criteria_index}].requirementGroups[0].requirements[0].id}
+  ...   access_token=${tender.access.token}
+  Log  ${reply}
+
+
+Змінити eligibleEvidences критерія
+  [Documentation]  Змінити eligibleEvidences критерія
+  [Arguments]  ${username}  ${tender_uaid}  ${evidence_data}  ${criteria_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору
+  ...      ${username}
+  ...      ${tender_uaid}
+  Log  ${tender.data.id}
+  Log  ${tender.data.criteria[${criteria_index}].id}
+  Log  ${tender.data.criteria[${criteria_index}].requirementGroups[0].id}
+  Log  ${tender.data.criteria[${criteria_index}].requirementGroups[0].requirements[0].id}
+  Log  ${tender.data.criteria[${criteria_index}].requirementGroups[0].requirements[0].eligibleEvidences[0].id}
+  Log  ${tender.access.token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_evidence
+  ...  ${tender.data.id}
+  ...  ${evidence_data}
+  ...  ${tender.data.criteria[${criteria_index}].id}
+  ...  ${tender.data.criteria[${criteria_index}].requirementGroups[0].id}
+  ...  ${tender.data.criteria[${criteria_index}].requirementGroups[0].requirements[0].id}
+  ...   access_token=${tender.access.token}
+  Log  ${reply}
+
+
+Отримати інформацію із criteria
+  [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${criteria_index}  ${requirement_group_index}  ${requirement_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${criteria}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.criteria[${criteria_index}]}  ${USERS.users['${username}'].tender_data.data.criteria}
+  Log  ${criteria}
+  ${field_value}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.criteria[${criteria_index}].requirementGroups[${requirement_group_index}].requirements[${requirement_index}]['${field_name}']}
+  Log  ${field_value}
+  [Return]  ${field_value}
+
+
+Отримати дані із criteria
+  [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${criteria_index}  ${requirement_group_index}  ${requirement_index}
+  ${status}  ${field_value}=  Run keyword and ignore error
+  ...      Get from object
+  ...      ${USERS.users['${username}'].tender_data.data.criteria[${criteria_index}].requirementGroups[${requirement_group_index}].requirements[${requirement_index}]}
+  ...      ${field_name}
+  Run Keyword if  '${status}' == 'PASS'  Return from keyword   ${field_value}
+  Fail  Field not found: ${field_name}

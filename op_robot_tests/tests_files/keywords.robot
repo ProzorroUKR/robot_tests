@@ -453,17 +453,14 @@ Get Broker Property By Username
 
 
 Підготувати дані по критеріям статті 17
-  [Arguments]  ${criteria_lot}  ${criteria_item}  ${tender}
-  Log  ${criteria_lot}
-  Log  ${criteria_item}
-  Log  ${tender}
-  ${criteria_data}=  test_criteria_data  ${criteria_lot}  ${criteria_item}  ${tender}
+  ${criteria_data}=  test_criteria_data
   Log  ${criteria_data}
   [Return]  ${criteria_data}
 
 
 Підготувати дані по критеріям гарантії
-  ${criteria_guarantee_data}=  test_criteria_guarantee_data
+  [Arguments]  ${criteria_lot}  ${tender}
+  ${criteria_guarantee_data}=  test_criteria_guarantee_data  ${criteria_lot}  ${tender}
   Log  ${criteria_guarantee_data}
   [Return]  ${criteria_guarantee_data}
 
@@ -505,6 +502,12 @@ Get Broker Property By Username
   ${contract_response}=  test_contract_criteria_response_data  ${bid_doc_id}  ${bid_doc_title}
   Log  ${contract_response}
   [Return]  ${contract_response}
+
+
+Підготувати дані про зміну evidence критерія
+  ${change_evidence_data}=  test_change_evidence_data
+  Log  ${change_evidence_data}
+  [Return]  ${change_evidence_data}
 
 
 Адаптувати дані для оголошення тендера
@@ -1120,6 +1123,12 @@ Require Failure
 Звірити статус cancellations
   [Arguments]  ${username}  ${tender_uaid}  ${left}  ${cancellation_index}
   ${right}=  Run as  ${username}  Отримати інформацію із cancellation  ${tender_uaid}  status  ${cancellation_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
+Звірити статус вимоги критреія
+  [Arguments]  ${username}  ${tender_uaid}  ${left}  ${criteria_index}  ${requirement_group_index}  ${requirement_index}
+  ${right}=  Run as  ${username}  Отримати інформацію із criteria  ${tender_uaid}  status  ${criteria_index}  ${requirement_group_index}  ${requirement_index}
   Порівняти об'єкти  ${left}  ${right}
 
 

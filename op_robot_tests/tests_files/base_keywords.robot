@@ -35,7 +35,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      article_17=${${ARTICLE_17}}
   ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
   ...      criteria_lot=${${CRITERIA_LOT}}
-  ...      criteria_item=${${CRITERIA_ITEM}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -47,12 +46,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
-  ${TENDER_UAID}=  Run keyword If  ${CRITERIA} == True  Run As  ${tender_owner}  Створити тендер з критеріями
+  ${TENDER_UAID}=  Run keyword If  ${ARTICLE_17} == True  Run As  ${tender_owner}  Створити тендер з критеріями
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
   ...  ${CRITERIA_GUARANTEE}
   ...  ${CRITERIA_LOT}
-  ...  ${CRITERIA_ITEM}
   ...  ELSE   Run As  ${tender_owner}  Створити тендер
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
@@ -2586,3 +2584,77 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${divider}=  Convert To Number  0.01
   ${value}=  mult_and_round  ${USERS.users['${tender_owner}'].tender_data.data.budget.amount}  ${percent}  ${divider}  precision=${2}
   Можливість змінити поле budget.amount плану на ${value}
+
+##############################################################################################
+#             CRITERIA
+##############################################################################################
+
+Можливість скасувати ${critereia_index} критерій
+  ${data}=  Create Dictionary         status=cancelled
+  ${status_data}=  Create Dictionary  data=${data}
+  ${status_data}=  munch_dict         arg=${status_data}
+  Run As  ${tender_owner}  Змінити стутус вимоги критерія
+  ...  ${TENDER['TENDER_UAID']}
+  ...  ${status_data}
+  ...  ${critereia_index}
+
+
+Можливість активувати ${critereia_index} критерій
+  ${data}=  Create Dictionary         status=active
+  ${status_data}=  Create Dictionary  data=${data}
+  ${status_data}=  munch_dict         arg=${status_data}
+  Run As  ${tender_owner}  Змінити стутус вимоги критерія
+  ...  ${TENDER['TENDER_UAID']}
+  ...  ${status_data}
+  ...  ${critereia_index}
+
+
+Можливість змінити eligibleEvidences ${criteria_index} критерія
+  ${evidence_data}=  Підготувати дані про зміну evidence критерія
+  Run As  ${tender_owner}  Змінити eligibleEvidences критерія
+  ...  ${TENDER['TENDER_UAID']}
+  ...  ${evidence_data}
+  ...  ${criteria_index}
+
+
+Можливість звірити статус ${status} ${criteria_index} критерія ${requirement_group_index} групи вимог ${requirement_index} вимоги
+  Wait until keyword succeeds
+  ...      5 min
+  ...      30 sec
+  ...      Звірити статус вимоги критреія
+  ...      ${tender_owner}
+  ...      ${TENDER['TENDER_UAID']}
+  ...      ${status}
+  ...      ${criteria_index}
+  ...      ${requirement_group_index}
+  ...      ${requirement_index}
+
+
+Отримати дані із поля ${field_name} ${criteria_index} критерія ${requirement_group_index} групи вимог ${requirement_index} вимоги
+  Отримати дані із criteria
+  ...  ${tender_owner}
+  ...  ${TENDER['TENDER_UAID']}
+  ...  ${field_name}
+  ...  ${criteria_index}
+  ...  ${requirement_group_index}
+  ...  ${requirement_index}
+
+
+Можливість звірити поля ${field_name} ${criteria_index} критерія ${requirement_group_index} групи вимог ${first_requirement_index} та ${second_requirement_index} вимог
+  ${left}=  Отримати дані із criteria
+  ...  ${tender_owner}
+  ...  ${TENDER['TENDER_UAID']}
+  ...  ${field_name}
+  ...  ${criteria_index}
+  ...  ${requirement_group_index}
+  ...  ${first_requirement_index}
+  Log  ${left}
+  ${right}=  Отримати дані із criteria
+  ...  ${tender_owner}
+  ...  ${TENDER['TENDER_UAID']}
+  ...  ${field_name}
+  ...  ${criteria_index}
+  ...  ${requirement_group_index}
+  ...  ${second_requirement_index}
+  Log  ${right}
+  Порівняти об'єкти  ${left}  ${right}
