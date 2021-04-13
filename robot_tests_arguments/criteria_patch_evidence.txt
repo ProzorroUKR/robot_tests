@@ -1,0 +1,22 @@
+-v MODE:openua
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:2
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-v ARTICLE_17: True
+
+-v CRITERIA_GUARANTEE:True
+
+-v CRITERIA_LOT:True
+
+-i create_tender
+-i find_tender
+
+-i patch_criteria_other_evidence
+-i patch_criteria_other_evidence_view
+-i patch_criteria_exclusion_evidence
+-i patch_criteria_exclusion_evidence_view
