@@ -26,6 +26,7 @@ ${BID_AMOUNT_2}     ${1000}
 ${BID_AMOUNT_3}     ${1100}
 ${ARTICLE_17}       ${False}
 ${CRITERIA_GUARANTEE}  ${False}
+${CRITERIA_LOT}     ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -3117,3 +3118,114 @@ ${CRITERIA_GUARANTEE}  ${False}
   ...      document_service
   ...      critical
   Можливість перевірити завантаження документів через Document Service
+
+##############################################################################################
+#             CRITERIA
+##############################################################################################
+
+Можливість архівувати критерій
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Архівування критерія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  cancel_criteria
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати -2 критерій
+
+
+Можилвість активувати критерій
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Активація критерія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  active_criteria
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість активувати -2 критерій
+
+
+Можливість внести зміни в evidence критерія OTHER
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Внесення змін в eligibleEvidences критерія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_other_evidence
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити eligibleEvidences -1 критерія
+
+
+Можливість перевірити зміну статуса на cancelled критерія OTHER
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення зміни статуса вимоги критреія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_other_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість звірити статус cancelled -1 критерія 0 групи вимог 0 вимоги
+
+
+Можливість перевірити статус active нової вимоги критерія OTHER
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення статуса нової вимоги критреія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_other_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість звірити статус active -1 критерія 0 групи вимог 1 вимоги
+
+
+Відображення наявності поля dateModified вимоги критерія OTHER
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення наявності поля dateModified вимоги критреія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_other_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Отримати дані із поля dateModified -1 критерія 0 групи вимог 0 вимоги
+
+
+Можливість перевірити чи однакові id у скасованої та нової вимоги критерія OTHER
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Перевірити що id у скасованої та нової вимоги критерія однакові
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_other_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість звірити поля id -1 критерія 0 групи вимог 0 та 1 вимог
+
+
+Можливість внести зміни в evidence критерія EXCLUSION
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Внесення змін в eligibleEvidences критерія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_exclusion_evidence
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити eligibleEvidences 0 критерія
+
+
+Можливість перевірити зміну статуса на cancelled критерія EXCLUSION
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення зміни статуса вимоги критреія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_exclusion_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість звірити статус cancelled 0 критерія 0 групи вимог 0 вимоги
+
+
+Можливість перевірити статус active нової вимоги критерія EXCLUSION
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення статуса нової вимоги критреія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_exclusion_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість звірити статус active 0 критерія 0 групи вимог 1 вимоги
+
+
+Відображення наявності поля dateModified вимоги критерія EXCLUSION
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення наявності поля dateModified вимоги критреія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_exclusion_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Отримати дані із поля dateModified 0 критерія 0 групи вимог 0 вимоги
+
+
+Можливість перевірити чи однакові id у скасованої та нової вимоги критерія EXCLUSION
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Перевірити що id у скасованої та нової вимоги критерія однакові
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  patch_criteria_exclusion_evidence_view
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість звірити поля id 0 критерія 0 групи вимог 0 та 1 вимог

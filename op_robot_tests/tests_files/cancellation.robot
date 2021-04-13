@@ -14,6 +14,7 @@ ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
 ${ARTICLE_17}       ${False}
 ${CRITERIA_GUARANTEE}  ${False}
+${CRITERIA_LOT}        ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -637,6 +638,29 @@ ${CRITERIA_GUARANTEE}  ${False}
   ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
   ${standstillEnd}=  Get Variable Value  ${USERS.users['${viewer}'].tender_data.data.awards[${award_index}].complaintPeriod.endDate}
   Дочекатись дати  ${standstillEnd}
+
+
+##############################################################################################
+#             CANCEL LOT WITH CRITERIA
+##############################################################################################
+
+Неможливість скасувати лот до якого прив'язаний критерій
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування лота
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  lot_cancellation_criteria_error
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість скасувати 0 лот
+
+
+Змінити статус критерія
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Архівування критерія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  cancel_criteria
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати -2 критерій
+
 
 ##############################################################################################
 #             LOT CANCELLATION
