@@ -1341,8 +1341,8 @@ Require Failure
   [Arguments]  ${username}  ${status}  ${award_index}=${None}
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      8 min 15 sec
-  ...      15 sec
+  ...      15 min
+  ...      30 sec
   ...      Звірити статус рішення
   ...      ${username}
   ...      ${TENDER['TENDER_UAID']}
@@ -1469,3 +1469,9 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      draft.unsuccessful
+
+
+Текст причини відхилення ${text}
+  ${reason}=  test_pricequotation_unsuccessfulReason_data  ${text}
+  [Return]  ${reason}
+

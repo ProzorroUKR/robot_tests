@@ -1437,3 +1437,18 @@ def test_change_evidence_data():
                 }]
             }
     })
+
+
+def test_pricequotation_unsuccessfulReason_data(unsuccessfulReason):
+    reason = []
+    if unsuccessfulReason == "hidden":
+        text = u'Обраний профіль неактивний в системі Prozorro.Market'
+        reason.append(text)
+    if unsuccessfulReason == "unknown":
+        text = u'Обраний профіль не існує в системі Prozorro.Market'
+        reason.append(text)
+    if unsuccessfulReason == "empty":
+        text = u'В обраному профілі немає активних постачальників'
+        reason.append(text)
+    return reason
+
