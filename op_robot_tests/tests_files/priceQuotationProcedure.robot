@@ -23,6 +23,7 @@ ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
 ${ARTICLE_17}       ${False}
 ${CRITERIA_GUARANTEE}  ${False}
+${CRITERIA_LOT}     ${False}
 
 *** Test Cases ***
 Неможливість оголосити тендер з tenderPeriod:endDate < 2 робочих дні

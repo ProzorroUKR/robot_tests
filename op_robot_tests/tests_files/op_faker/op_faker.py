@@ -258,7 +258,7 @@ class OP_Provider(BaseProvider):
         return self.random_element(self.unknown_profile)
 
     @classmethod
-    def criteria_article_17(self):
+    def criteria_data(self):
         return deepcopy(self.criteria)
 
     @classmethod

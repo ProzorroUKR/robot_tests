@@ -26,6 +26,7 @@ ${GMDN_INDEX}       ${False}
 ${PLAN_TENDER}      ${True}
 ${ARTICLE_17}       ${False}
 ${CRITERIA_GUARANTEE}  ${False}
+${CRITERIA_LOT}        ${False}
 
 *** Test Cases ***
 
@@ -889,6 +890,24 @@ ${CRITERIA_GUARANTEE}  ${False}
 #             CANCELLATION COMPLAINT
 ##############################################################################################
 
+Неможливість скасувати лот до якого прив'язаний критерій
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування лота
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  lot_cancellation_criteria_error
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Можливість скасувати 0 лот
+
+
+Змінити статус критерія
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Архівування критерія
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  cancel_criteria
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість скасувати -2 критерій
+
+
 Можливість скасувати лот
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Скасування лота
   ...  tender_owner
@@ -931,6 +950,17 @@ ${CRITERIA_GUARANTEE}  ${False}
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість створити чернетку скарги на скасування ${cancellations_index}
+
+
+Можливість створити чернетку скарги на скасування лота після скасування критерія
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження скасування лота
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     lot_cancellation_complaint_draft_after_cancel_criteria
+  ...     critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити чернетку скарги на скасування -1
 
 
 Можливість створити чернетку скарги на скасування тендера
