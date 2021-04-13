@@ -97,7 +97,8 @@ Suite Teardown  Test Suite Teardown
 Можливість вичитати посилання на аукціон для ${username}
   ${url}=  Run As  ${username}  Отримати посилання на аукціон для глядача  ${TENDER['TENDER_UAID']}  ${TENDER['LOT_ID']}
   Should Be True  '${url}'
-  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
+  ${status}=  Run Keyword And Return Status  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
+  Run Keyword If  ${status} == ${False}  Should Match Regexp  ${url}  ${OLD_SANDBOX_AUCTION_REGEXP}
   Log  URL аукціону для глядача: ${url}
 
 
