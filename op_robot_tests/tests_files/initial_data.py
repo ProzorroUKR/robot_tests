@@ -197,8 +197,6 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
-    if params.get("mode") in ["belowThreshold", "openua", "openeu", "esco"]:
-        data["guarantee"] = test_data_guarantee(value_amount)
     if params.get("mode") == "open_framework":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") == "open_competitive_dialogue":
@@ -259,6 +257,10 @@ def test_tender_data(params,
         for i in range(params['number_of_items']):
             new_item = test_item_data(cpv_group)
             data['items'].append(new_item)
+    if params.get('criteria_guarantee'):
+        data["guarantee"] = test_data_guarantee(value_amount)
+    if params.get('criteria_lot'):
+        data['lots'][0]["guarantee"] = test_data_guarantee(value_amount)
     milestones = params.get('number_of_milestones')
     if milestones:
         data['milestones'] = []
@@ -1261,21 +1263,18 @@ def test_24_hours_data():
     })
 
 
-def test_criteria_data(criteria_lot,  criteria_item, tender_data):
+def test_criteria_data():
     criteria = fake.criteria_data()
-    if criteria_lot:
-        criteria[-1]["relatesTo"] = "lot"
-        criteria[-1]["relatedItem"] = tender_data['data']['lots'][0]["id"]
-    if criteria_item:
-        criteria[-1]["relatesTo"] = "item"
-        criteria[-1]["relatedItem"] = tender_data['data']['items'][0]["id"]
     return munchify({
         "data": criteria
     })
 
 
-def test_criteria_guarantee_data():
+def test_criteria_guarantee_data(criteria_lot, tender_data):
     criteria = fake.criteria_bid_contract_guarantee()
+    if criteria_lot:
+        criteria[0]["relatesTo"] = "lot"
+        criteria[0]["relatedItem"] = tender_data['data']['lots'][0]["id"]
     return munchify({
         "data": criteria
     })
@@ -1283,7 +1282,7 @@ def test_criteria_guarantee_data():
 
 def test_data_guarantee(value_amount):
     return munchify({
-            "amount": value_amount * 0.75,
+            "amount": round(value_amount * 0.75, 2),
             "currency": u"UAH"
     })
 
@@ -1425,4 +1424,16 @@ def test_contract_criteria_response_data(bid_doc_id, bid_doc_title):
                 "title": bid_doc_title
             }
         }
+    })
+
+
+def test_change_evidence_data():
+    return munchify({
+            "data": {
+                "eligibleEvidences": [{
+                    "title": "Змінений заголовок прийнятного доказу критерія",
+                    "title_en": "Changed en title for eligible evidences of criteria",
+                    "description": "Змінений опис прийнятного доказу критерія"
+                }]
+            }
     })
