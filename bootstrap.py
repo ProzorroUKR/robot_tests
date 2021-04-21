@@ -77,7 +77,7 @@ parser.add_option("--setuptools-version",
                   help="Use a specific setuptools version")
 parser.add_option("--setuptools-to-dir",
                   default=eggsdir,
-                  help=("Allow for re-use of existing directory")
+                  help="Allow for re-use of existing directory")
 parser.add_option("--trusted-host",
                   default='repo-staging.dc.prozorro.gov.ua')
 parser.add_option("-v")
