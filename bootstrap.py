@@ -79,6 +79,10 @@ parser.add_option("--setuptools-to-dir",
                   default=eggsdir,
                   help=("Allow for re-use of existing directory of "
                         "setuptools versions"))
+parser.add_option("--trusted-host",
+                  default="repo-staging.dc.prozorro.gov.ua",
+                  help=("Allow for re-use of existing directory of "
+                        "setuptools versions"))
 
 options, args = parser.parse_args()
 if options.version:
