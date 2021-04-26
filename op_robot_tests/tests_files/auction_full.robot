@@ -241,7 +241,8 @@ Library         Selenium2Library
   ${url}=  Run Keyword If  '${username}' == '${viewer}'  Run As  ${viewer}  Отримати посилання на аукціон для глядача  ${TENDER['TENDER_UAID']}  ${TENDER['LOT_ID']}
   ...      ELSE  Run As  ${username}  Отримати посилання на аукціон для учасника  ${TENDER['TENDER_UAID']}  ${TENDER['LOT_ID']}
   Should Be True  '${url}'
-  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
+  ${status}=  Run Keyword And Return Status  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
+  Run Keyword If  ${status} == ${False}  Should Match Regexp  ${url}  ${OLD_SANDBOX_AUCTION_REGEXP}
   Log  URL: ${url}
   [return]  ${url}
 
@@ -334,7 +335,7 @@ Library         Selenium2Library
   Wait Until Keyword Succeeds  62 times  5 s  Page should not contain  → 1
   ${new_date}=  Get Current Date
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
-  Should Be True  ${time} < 310 and ${time} > 250
+  Should Be True  ${time} < 310 and ${time} > 240
   Переключитись на учасника  ${provider}
   Page should not contain  → 1
   Переключитись на учасника  ${provider1}
