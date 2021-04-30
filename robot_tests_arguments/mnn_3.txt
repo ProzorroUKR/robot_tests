@@ -66,6 +66,9 @@
 -i ask_question_to_item_after_tendering_period
 -i ask_question_to_lot_after_tendering_period
 
+-i auction_url_viewer
+-i auction_url_provider
+-i auction_url_provider1
 -i auction
 
 -i qualification_add_doc_to_first_award
