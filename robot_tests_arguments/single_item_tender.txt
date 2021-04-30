@@ -28,7 +28,9 @@
 -i add_doc_to_bid_by_provider
 -i make_bid_by_provider1
 
--i auction_url
+-i auction_url_viewer
+-i auction_url_provider
+-i auction_url_provider1
 
 -i auction
 
