@@ -212,11 +212,11 @@ Library  Collections
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT}
-  ${provider}=   get variable value  ${provider_bid_id}   ${ARTIFACT.provider_bid_id}
+  ${provider}=   run keyword and ignore error  get variable value  ${provider_bid_id}   ${ARTIFACT.provider_bid_id}
   Log  ${provider}
-  ${provider1}=  get variable value  ${provider1_bid_id}  ${ARTIFACT.provider1_bid_id}
+  ${provider1}=  run keyword and ignore error  get variable value  ${provider1_bid_id}  ${ARTIFACT.provider1_bid_id}
   Log  ${provider1}
-  ${provider2}=  get variable value  ${provider2_bid_id}  ${ARTIFACT.provider2_bid_id}
+  ${provider2}=  run keyword and ignore error  get variable value  ${provider2_bid_id}  ${ARTIFACT.provider2_bid_id}
   Log  ${provider2}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${tender_owner}  ${TENDER['TENDER_UAID']}
   Log  ${tender}
