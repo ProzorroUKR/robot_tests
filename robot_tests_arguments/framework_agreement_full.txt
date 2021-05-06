@@ -63,7 +63,10 @@
 -i pre-qualification_approve_qualifications
 
 
--i auction_url
+-i auction_url_viewer
+-i auction_url_provider
+-i auction_url_provider1
+-i auction_url_provider2
 -i auction
 
 -i qualification_add_doc_to_first_award

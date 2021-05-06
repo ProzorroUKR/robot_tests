@@ -1035,7 +1035,8 @@ Require Failure
   ...      15 s
   ...      Run As  ${username}  Отримати посилання на аукціон для учасника  ${TENDER['TENDER_UAID']}
   Should Be True  '${url}'
-  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
+  ${status}=  Run Keyword And Return Status  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
+  Run Keyword If  ${status} == ${False}  Should Match Regexp  ${url}  ${OLD_SANDBOX_AUCTION_REGEXP}
   Log  URL аукціону для учасника: ${url}
 
 

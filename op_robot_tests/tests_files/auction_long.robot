@@ -6,7 +6,7 @@ Suite Teardown  Test Suite Teardown
 Library         Selenium2Library
 
 *** Variables ***
-@{USED_ROLES}  viewer  provider  provider1
+@{USED_ROLES}  viewer  provider  provider1  provider2
 
 *** Test Cases ***
 Можливість знайти закупівлю по ідентифікатору
@@ -42,7 +42,7 @@ Library         Selenium2Library
   [Tags]   ${USERS.users['${provider}'].broker}: Процес аукціону
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      auction
+  ...      auction_url_provider
   Можливість вичитати посилання на аукціон для ${provider}
 
 
@@ -50,15 +50,23 @@ Library         Selenium2Library
   [Tags]   ${USERS.users['${provider1}'].broker}: Процес аукціону
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      auction
+  ...      auction_url_provider1
   Можливість вичитати посилання на аукціон для ${provider1}
+
+
+Можливість вичитати посилання на аукціон для третього учасника
+  [Tags]   ${USERS.users['${provider2}'].broker}: Процес аукціону
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      auction_url_provider2
+  Можливість вичитати посилання на аукціон для ${provider2}
 
 
 Можливість вичитати посилання на аукціон для глядача
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      auction
+  ...      auction_url_viewer
   Можливість вичитати посилання на аукціон для ${viewer}
 
 
@@ -215,7 +223,7 @@ Library         Selenium2Library
   ${status}=  Run Keyword And Return Status  Should Match Regexp  ${url}  ${AUCTION_REGEXP}
   Run Keyword If  ${status} == ${False}  Should Match Regexp  ${url}  ${OLD_SANDBOX_AUCTION_REGEXP}
   Log  URL: ${url}
-  [return]  ${url}
+  [Return]  ${url}
 
 
 Відкрити сторінку аукціону для ${username}
@@ -252,13 +260,17 @@ Library         Selenium2Library
   ...      Run Keywords
   ...      Wait Until Keyword Succeeds  15 times  30 s  Page should not contain  Очікуємо на розкриття імен учасників
   ...      AND
-  ...      Переключитись на учасника  ${provider}
+  ...      Run Keyword And Ignore Error  Переключитись на учасника  ${provider}
   ...      AND
-  ...      Page should contain  Аукціон завершився
+  ...      Run Keyword And Ignore Error  Page should contain  Аукціон завершився
   ...      AND
-  ...      Переключитись на учасника  ${provider1}
+  ...      Run Keyword And Ignore Error  Переключитись на учасника  ${provider1}
   ...      AND
-  ...      Page should contain  Аукціон завершився
+  ...      Run Keyword And Ignore Error  Page should contain  Аукціон завершився
+  ...      AND
+  ...      Run Keyword And Ignore Error  Переключитись на учасника  ${provider2}
+  ...      AND
+  ...      Run Keyword And Ignore Error  Page should contain  Аукціон завершився
   ...      AND
   ...      Close browser
 
@@ -282,17 +294,23 @@ Library         Selenium2Library
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  30 times  5s  Page should contain  → ${round_number}
   ${date}=  Get Current Date
-  Переключитись на учасника  ${provider}
-  Page should contain  → ${round_number}
-  Переключитись на учасника  ${provider1}
-  Page should contain  → ${round_number}
+  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+  \   ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+  \   Run Keyword If  '${status}' == 'PASS'   Page should contain  → ${round_number}
+  #Переключитись на учасника  ${provider}
+  #Page should contain  → ${round_number}
+  #Переключитись на учасника  ${provider1}
+  #Page should contain  → ${round_number}
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  30 times  5 s  Page should not contain  → ${round_number}
   ${new_date}=  Get Current Date
-  Переключитись на учасника  ${provider}
-  Page should not contain  → ${round_number}
-  Переключитись на учасника  ${provider1}
-  Page should not contain  → ${round_number}
+  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+  \   ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+  \   Run Keyword If  '${status}' == 'PASS'   Page should not contain  → ${round_number}
+  #Переключитись на учасника  ${provider}
+  #Page should not contain  → ${round_number}
+  #Переключитись на учасника  ${provider1}
+  #Page should not contain  → ${round_number}
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
   Should Be True  ${time} < 140 and ${time} > 100
 
@@ -300,17 +318,21 @@ Library         Selenium2Library
 Дочекатись завершення паузи перед першим раундом для користувачів
   Wait Until Keyword Succeeds  30 times  5s  Page should contain  → 1
   ${date}=  Get Current Date
-  Відкрити сторінку аукціону для ${provider}
-  Відкрити сторінку аукціону для ${provider1}
+  Run Keyword And Ignore Error  Відкрити сторінку аукціону для ${provider}
+  Run Keyword And Ignore Error  Відкрити сторінку аукціону для ${provider1}
+  Run Keyword And Ignore Error  Відкрити сторінку аукціону для ${provider2}
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  62 times  5 s  Page should not contain  → 1
   ${new_date}=  Get Current Date
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
   Should Be True  ${time} < 310 and ${time} > 250
-  Переключитись на учасника  ${provider}
-  Page should not contain  → 1
-  Переключитись на учасника  ${provider1}
-  Page should not contain  → 1
+  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+  \   ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+  \   Run Keyword If  '${status}' == 'PASS'   Page should not contain  → 1
+  #Переключитись на учасника  ${provider}
+  #Page should not contain  → 1
+  #Переключитись на учасника  ${provider1}
+  #Page should not contain  → 1
 
 
 Дочекатись закінчення стадії ставок глядачем
@@ -401,8 +423,8 @@ Library         Selenium2Library
 
 
 Вибрати учасника, який може зробити ставку
-  :FOR    ${username}    IN    ${provider}  ${provider1}
-  \   Переключитись на учасника   ${username}
+  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+  \   Run Keyword And Ignore Error  Переключитись на учасника   ${username}
   \   ${status}  ${_}=  Run Keyword And Ignore Error  Page Should Contain  до закінчення вашої черги
   \   Run Keyword If  '${status}' == 'PASS'    Exit For Loop
 

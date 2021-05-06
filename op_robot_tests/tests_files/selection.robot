@@ -666,7 +666,7 @@ ${PLAN_TENDER}      ${False}
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      auction_url
+  ...      auction_url_viewer
   ...      critical
   [Setup]  Дочекатись дати початку періоду аукціону  ${viewer}  ${TENDER['TENDER_UAID']}
   Можливість отримати посилання на аукціон для глядача
@@ -676,7 +676,7 @@ ${PLAN_TENDER}      ${False}
   [Tags]   ${USERS.users['${provider}'].broker}: Процес аукціону
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      auction_url
+  ...      auction_url_provider
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   Можливість отримати посилання на аукціон для учасника ${provider}
@@ -686,7 +686,18 @@ ${PLAN_TENDER}      ${False}
   [Tags]   ${USERS.users['${provider1}'].broker}: Процес аукціону
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      auction_url
+  ...      auction_url_provider1
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider1}
   Можливість отримати посилання на аукціон для учасника ${provider1}
+
+
+Можливість вичитати посилання на аукціон для третього учасника
+  [Tags]   ${USERS.users['${provider2}'].broker}: Процес аукціону
+  ...      provider1
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      auction_url_provider2
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${provider2}
+  Можливість отримати посилання на аукціон для учасника ${provider2}
+
