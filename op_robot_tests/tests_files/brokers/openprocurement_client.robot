@@ -212,11 +212,11 @@ Library  Collections
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT}
-  ${provider}=   run keyword and ignore error  get variable value  ${provider_bid_id}   ${ARTIFACT.provider_bid_id}
+  ${provider}=   run keyword and continue on failure  get variable value  ${provider_bid_id}   ${ARTIFACT.provider_bid_id}
   Log  ${provider}
-  ${provider1}=  run keyword and ignore error  get variable value  ${provider1_bid_id}  ${ARTIFACT.provider1_bid_id}
+  ${provider1}=  run keyword and continue on failure  get variable value  ${provider1_bid_id}  ${ARTIFACT.provider1_bid_id}
   Log  ${provider1}
-  ${provider2}=  run keyword and ignore error  get variable value  ${provider2_bid_id}  ${ARTIFACT.provider2_bid_id}
+  ${provider2}=  run keyword and continue on failure  get variable value  ${provider2_bid_id}  ${ARTIFACT.provider2_bid_id}
   Log  ${provider2}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${tender_owner}  ${TENDER['TENDER_UAID']}
   Log  ${tender}
@@ -232,7 +232,8 @@ Library  Collections
   log  ${status_3}
   ${username}=    run keyword if  ${status_1} == ${True}  set variable  Tender_User
   ...     ELSE IF  ${status_2} == ${True}  set variable  Tender_User1
-  ...     ELSE  set variable  Tender_User2
+  ...     ELSE IF  ${status_3} == ${True}  set variable  Tender_User2
+  ...     ELSE  Log To Console  - не співпадає award та bid id
   Log  ${username}
   [Return]  ${username}
 
