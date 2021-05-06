@@ -53,9 +53,6 @@
 -i make_bid_with_criteria_by_provider_second_stage
 -i make_bid_with_criteria_by_provider1_second_stage
 
--i auction_url_provider
--i auction_url_provider1
--i auction_url_viewer
 -i auction
 
 -i qualification_add_doc_to_first_award
