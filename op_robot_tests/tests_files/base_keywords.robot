@@ -608,6 +608,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} документа ${doc_id} із ${left} для користувача ${username}
+  Sleep  30s
   ${right}=  Run As  ${username}  Отримати інформацію із документа  ${TENDER['TENDER_UAID']}  ${doc_id}  ${field}
   Порівняти об'єкти  ${left}  ${right}
 
