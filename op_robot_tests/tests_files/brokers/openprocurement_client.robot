@@ -253,7 +253,7 @@ Library  Collections
 
 
 Створити тендер
-  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${CRITERIA_GUARANTEE}=None
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${criteria_guarantee}  ${criteria_lot}  ${criteria_llc}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
@@ -268,6 +268,11 @@ Library  Collections
   ${tender_criteria_guarantee}=  Run keyword If  ${CRITERIA_GUARANTEE} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
   ...      ${tender.data.id}
   ...      ${criteria_guarantee_data}
+  ...      access_token=${tender.access.token}
+  ${criteria_llc_data}=  Run keyword If  ${criteria_llc} == True  Підготувати дані по критеріям життєвого циклу  ${criteria_lot}  ${tender}
+  ${tender_criteria_llc}=  Run keyword If  ${criteria_llc} == True  Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${criteria_llc_data}
   ...      access_token=${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
@@ -284,11 +289,11 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
   Log   ${USERS.users['${username}'].tender_data}
-  [return]  ${tender.data.tenderID}
+  [Return]  ${tender.data.tenderID}
 
 
 Створити тендер з критеріями
-  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${criteria_guarantee}  ${criteria_lot}
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${criteria_guarantee}  ${criteria_lot}  ${criteria_llc}
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
@@ -310,6 +315,11 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${criteria_guarantee_data}
   ...      access_token=${tender.access.token}
+  ${criteria_llc_data}=  Run keyword If  ${criteria_llc} == True  Підготувати дані по критеріям життєвого циклу  ${criteria_lot}  ${tender}
+  ${tender_criteria_llc}=  Run keyword If  ${criteria_llc} == True  Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${criteria_llc_data}
+  ...      access_token=${tender.access.token}
   ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
@@ -325,7 +335,7 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
   Log   ${USERS.users['${username}'].tender_data}
-  [return]  ${tender.data.tenderID}
+  [Return]  ${tender.data.tenderID}
 
 
 Створити тендер другого етапу

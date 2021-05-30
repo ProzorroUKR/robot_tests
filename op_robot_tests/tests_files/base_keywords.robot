@@ -35,6 +35,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      article_17=${${ARTICLE_17}}
   ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
   ...      criteria_lot=${${CRITERIA_LOT}}
+  ...      criteria_llc=${${CRITERIA_LLC}}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -51,10 +52,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...  ${ARTIFACT.tender_uaid}
   ...  ${CRITERIA_GUARANTEE}
   ...  ${CRITERIA_LOT}
+  ...  ${CRITERIA_LLC}
   ...  ELSE   Run As  ${tender_owner}  Створити тендер
   ...  ${adapted_data}
   ...  ${ARTIFACT.tender_uaid}
   ...  ${CRITERIA_GUARANTEE}
+  ...  ${CRITERIA_LOT}
+  ...  ${CRITERIA_LLC}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
