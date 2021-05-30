@@ -99,7 +99,8 @@ from .initial_data import (
     test_contract_criteria_response_data,
     test_criteria_guarantee_data,
     test_change_evidence_data,
-    test_pricequotation_unsuccessfulReason_data
+    test_pricequotation_unsuccessfulReason_data,
+    test_criteria_llc_data,
 )
 from barbecue import chef
 from restkit import request
