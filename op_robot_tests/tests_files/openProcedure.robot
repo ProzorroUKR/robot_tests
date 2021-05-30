@@ -27,6 +27,7 @@ ${BID_AMOUNT_3}     ${1100}
 ${ARTICLE_17}       ${False}
 ${CRITERIA_GUARANTEE}  ${False}
 ${CRITERIA_LOT}     ${False}
+${CRITERIA_LLC}     ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер

@@ -197,6 +197,8 @@ def test_tender_data(params,
         "items": [],
         "features": []
     }
+    if params.get("criteria_llc"):
+        data["awardCriteria"] = "lifeCycleCost"
     if params.get("mode") == "open_framework":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") == "open_competitive_dialogue":
@@ -1280,6 +1282,18 @@ def test_criteria_guarantee_data(criteria_lot, tender_data):
     })
 
 
+def test_criteria_llc_data(criteria_lot, tender_data):
+    criteria = fake.criteria_llc_data()
+    number_of_criteria = len(criteria)
+    if criteria_lot:
+        for index in range(number_of_criteria):
+            criteria[index]["relatesTo"] = "lot"
+            criteria[index]["relatedItem"] = tender_data['data']['lots'][0]["id"]
+    return munchify({
+        "data": criteria
+    })
+
+
 def test_data_guarantee(value_amount):
     return munchify({
             "amount": round(value_amount * 0.75, 2),
@@ -1324,6 +1338,8 @@ def test_bid_criteria(tender_data, criteria_len, bid_data, bid_document):
                 mock_tenderer["requirement"]["title"] = requirement["title"]
                 mock_tenderer["evidences"][0]["relatedDocument"]["id"] = bid_document["data"]["id"]
                 mock_tenderer["evidences"][0]["relatedDocument"]["title"] = bid_document["data"]["title"]
+                if criteria["legislation"][0]["identifier"]["id"] == "1894":
+                    mock_tenderer["value"] = str(round(random.uniform(1000, 2000), 2))
                 if criteria.get('title') == u'Мова (мови), якою (якими) повинні готуватися тендерні пропозиції':
                     del mock_tenderer["evidences"][0]
                 bid.data.append(mock_tenderer)
