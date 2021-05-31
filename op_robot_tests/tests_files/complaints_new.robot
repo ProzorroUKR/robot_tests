@@ -21,12 +21,13 @@ ${lot_index}        ${0}
 ${award_index}      ${0}
 ${qualification_index}  ${0}
 ${cancellations_index}  ${0}
-${ROAD_INDEX}       ${False}
-${GMDN_INDEX}       ${False}
-${PLAN_TENDER}      ${True}
-${ARTICLE_17}       ${False}
-${CRITERIA_GUARANTEE}  ${False}
-${CRITERIA_LOT}        ${False}
+${ROAD_INDEX}           ${False}
+${GMDN_INDEX}           ${False}
+${PLAN_TENDER}          ${True}
+${ARTICLE_17}           ${False}
+${CRITERIA_GUARANTEE}   ${False}
+${CRITERIA_LOT}         ${False}
+${CRITERIA_LLC}         ${False}
 
 *** Test Cases ***
 

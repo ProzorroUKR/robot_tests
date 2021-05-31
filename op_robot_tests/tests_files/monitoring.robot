@@ -23,6 +23,7 @@ ${PLAN_TENDER}      ${True}
 ${ARTICLE_17}       ${False}
 ${CRITERIA_GUARANTEE}  ${False}
 ${CRITERIA_LOT}     ${False}
+${CRITERIA_LLC}     ${False}
 
 *** Test Cases ***
 Можливість оголосити тендер

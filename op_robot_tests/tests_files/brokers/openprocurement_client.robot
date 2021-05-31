@@ -253,7 +253,7 @@ Library  Collections
 
 
 Створити тендер
-  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${criteria_guarantee}  ${criteria_lot}  ${criteria_llc}
+  [Arguments]  ${username}  ${tender_data}  ${plan_uaid}  ${criteria_guarantee}=None  ${criteria_lot}=None  ${criteria_llc}=None
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Log  ${ARTIFACT.tender_owner_access_token}
