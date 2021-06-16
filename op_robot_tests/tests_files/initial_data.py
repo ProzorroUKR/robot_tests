@@ -1245,7 +1245,7 @@ def breakdown_value_generation(number_of_breakdown, plan_value):
 
 
 def test_cancellation_data(procurement_method_type):
-    if procurement_method_type == "aboveThresholdUA.defense":
+    if procurement_method_type == "simple.defense":
         result = random.choice(["noDemand", "unFixable", "expensesCut"])
     elif procurement_method_type in ["negotiation", "negotiation.quick"]:
         result = random.choice(["noObjectiveness", "unFixable", "noDemand", "expensesCut", "dateViolation"])
@@ -1467,4 +1467,30 @@ def test_pricequotation_unsuccessfulReason_data(unsuccessfulReason):
         text = u'В обраному профілі немає активних постачальників'
         reason.append(text)
     return reason
+
+
+def test_price_change_data(value):
+    return munchify({
+        "data": {
+            "value": {
+                "amount": value
+            }
+        }
+    })
+
+
+def test_price_change_lot_data(value, related_lot):
+    return munchify({
+        "data": {
+            "lotValues": [
+                {
+                    "relatedLot": related_lot,
+                    "value": {
+                        "amount": value
+                    }
+                }
+            ]
+        }
+    })
+
 
