@@ -2293,7 +2293,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${field}=  Set variable if  ${NUMBER_OF_LOTS} == 0  value.amount  lotValues[0].value.amount
   ${value}=  Run As  ${username}  Отримати інформацію із пропозиції  ${TENDER['TENDER_UAID']}  ${field}
   ${value}=  mult_and_round  ${value}  ${percent}  ${divider}  precision=${2}
-  Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${value}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${TENDER['TENDER_UAID']}
+  Log  ${bid.data.lotValues[0].relatedLot}
+  ${patch_bid_data}=  run keyword if  ${NUMBER_OF_LOTS} == 0
+  ...  Підготувати дані про зміну цінової пропозиції в без лотовій процедурі  ${value}
+  ...  ELSE  Підготувати дані про зміну цінової пропозиції в лотовій процедурі  ${value}  ${bid.data.lotValues[0].relatedLot}
+  Log  ${patch_bid_data}
+  Run as  ${username}  Змінити вартість в ціновії пропозиції  ${TENDER['TENDER_UAID']}   ${patch_bid_data}
 
 
 Можливість завантажити документ в пропозицію користувачем ${username}

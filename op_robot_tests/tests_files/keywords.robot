@@ -517,6 +517,20 @@ Get Broker Property By Username
   [Return]  ${change_evidence_data}
 
 
+Підготувати дані про зміну цінової пропозиції в лотовій процедурі
+  [Arguments]  ${value}  ${relatedLot}
+  ${patch_bid_data}=  test_price_change_lot_data  ${value}  ${relatedLot}
+  Log  ${patch_bid_data}
+  [Return]  ${patch_bid_data}
+
+
+Підготувати дані про зміну цінової пропозиції в без лотовій процедурі
+  [Arguments]  ${value}
+  ${patch_bid_data}=  test_price_change_data  ${value}
+  Log  ${patch_bid_data}
+  [Return]  ${patch_bid_data}
+
+
 Адаптувати дані для оголошення тендера
   [Arguments]  ${tender_data}
   # munchify is used to make deep copy of ${tender_data}
