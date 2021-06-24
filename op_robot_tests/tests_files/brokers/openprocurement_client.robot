@@ -1761,12 +1761,31 @@ Library  Collections
 Змінити цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
-  Set_To_Object  ${bid.data}   ${fieldname}   ${fieldvalue}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}']['access_token']}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+  ${data}=  Create Dictionary
+  ...  ${fieldname}=${fieldvalue}
+  Log  ${data}
+  ${patch_bid_data}=   Create dictionary  data=${data}
+  Log  ${patch_bid_data}
+  ${patch_bid_data}=  munch_dict  arg=${patch_bid_data}
+  Log  ${patch_bid_data}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_bid
   ...     ${tender.data.id}
-  ...     ${bid}
+  ...     ${patch_bid_data}
+  ...     ${bid.data.id}
+  ...     access_token=${tender.access.token}
+  Log  ${reply}
+
+
+Змінити вартість в ціновії пропозиції
+  [Arguments]  ${username}  ${tender_uaid}  ${patch_bid_data}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}']['access_token']}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_bid
+  ...     ${tender.data.id}
+  ...     ${patch_bid_data}
   ...     ${bid.data.id}
   ...     access_token=${tender.access.token}
   Log  ${reply}
@@ -3031,3 +3050,21 @@ Library  Collections
   ...      ${field_name}
   Run Keyword if  '${status}' == 'PASS'  Return from keyword   ${field_value}
   Fail  Field not found: ${field_name}
+
+
+##################################################################################################
+
+
+Отримати список документів по пропозиції
+  [Documentation]
+  ...       [Arguments] Username, tender uaid, award id
+  ...       [Description] Return all bids documents by id
+  ...       [Return] Reply from API
+  [Arguments]  ${username}  ${tender_uaid}  ${bid_id}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${doc_list}=  Call Method  ${USERS.users['${username}'].client}  get_bid_documents
+  ...      ${tender.data.id}
+  ...      ${bid_id}
+  ...      access_token=${tender.access.token}
+  Log  ${doc_list}
+  [Return]  ${doc_list}
