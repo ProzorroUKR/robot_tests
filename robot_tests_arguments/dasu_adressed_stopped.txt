@@ -14,20 +14,20 @@
 -i create_monitoring
 -i find_monitoring
 -i monitoring_view
--i active_monitoring
 
+-i active_monitoring
 -i add_party
 -i create_post
 -i answer_tender_owner
 -i answer_view
 
--i declined
+-i addressed
 
 -i appeal
+-i liability
 
--i eliminationPeriod_endDate
-
--i closed
+-i stopped
+-i cancellation_view
 
 -i appeal_number
 -i appeal_view

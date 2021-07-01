@@ -17,17 +17,23 @@
 
 -i active_monitoring
 -i add_party
-
 -i create_post
-
 -i answer_tender_owner
 -i answer_view
+
 -i addressed
+
+-i appeal
+-i appeal_number
+-i appeal_view
+-i liability
+-i liability_number
+-i liability_view
+
 -i post_view
 -i conclusion_view
 -i report_view
 -i resolution_view
--i appeal_view
 
 -i eliminationPeriod_endDate
 
