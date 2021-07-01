@@ -24,9 +24,6 @@
 -i declined
 
 -i appeal
-
--i stopped
--i cancellation_view
-
 -i appeal_number
 -i appeal_view
+
