@@ -549,6 +549,21 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${tender_owner}  Зазначити, що порушення було оскаржено в суді  ${MONITORING['MONITORING_UAID']}  ${appeal}  ${file_path}
 
 
+Можливість додати номер провадження до оскарження в суді
+  ${appeal}=  Підготувати дані про номер провадження
+  Run As  ${tender_owner}  Додати провадження до повідомлення про оскарження в суді  ${MONITORING['MONITORING_UAID']}  ${appeal}
+
+
+Можливість додати протокол про притягнення до адміністративної відповідальності
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  Run As  ${dasu_user}  Додати адмін протокол  ${MONITORING['MONITORING_UAID']}  ${file_path}
+
+
+Можливість додати номер провадження в протокол про притягнення до адміністративної відповідальності
+  ${liability}=  Підготувати дані про номер провадження
+  Run As  ${dasu_user}  Додати провадження до адмін протоколу  ${MONITORING['MONITORING_UAID']}  ${liability}
+
+
 Можливість оприлюднути рішення про усунення порушення
   ${report_data}=  test_elimination_report
   ...      ${USERS.users['${dasu_user}'].monitoring_data.data.conclusion.violationType[0]}
