@@ -20,6 +20,7 @@
 -i create_post
 -i answer_tender_owner
 -i answer_view
+-i post_view
 
 -i addressed
 
