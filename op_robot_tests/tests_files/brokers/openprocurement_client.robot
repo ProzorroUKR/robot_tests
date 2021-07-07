@@ -2620,6 +2620,22 @@ Library  Collections
   Log  ${reply}
 
 
+Встановити ціну за одиницю товару в контракті
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_data}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Log  ${tender}
+  Log  ${contract_data}
+  ${tender_id}=  Set Variable  ${tender.data.id}
+  ${contract_id}=  Set Variable  ${contract_data.data.id}
+  ${access_token}=  Set Variable  ${tender.access.token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+  ...      ${tender_id}
+  ...      ${contract_data}
+  ...      contract_id=${contract_id}
+  ...      access_token=${access_token}
+  Log  ${reply}
+
+
 Встановити ціну за одиницю для контракту
   [Arguments]  ${username}  ${tender_uaid}  ${contract_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}

@@ -37,6 +37,7 @@
 -i contract_view_new_amount
 -i modify_contract_invalid_amount
 -i modify_contract
+-i contract_unit_price
 -i contract_sign
 -i find_tender_contract
 -i find_contract
