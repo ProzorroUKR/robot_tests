@@ -531,6 +531,18 @@ Get Broker Property By Username
   [Return]  ${patch_bid_data}
 
 
+Підготувати дані про номер провадження
+  ${appeal}=  test_monitoring_proceed_number_data
+  Log  ${appeal}
+  [Return]  ${appeal}
+
+
+Підготувати дані про адмін протокол
+  ${liability}=  test_monitoring_liability_data
+  Log  ${liability}
+  [Return]  ${liability}
+
+
 Адаптувати дані для оголошення тендера
   [Arguments]  ${tender_data}
   # munchify is used to make deep copy of ${tender_data}

@@ -1500,3 +1500,24 @@ def test_unit_price_amount(amount):
     })
 
 
+def test_monitoring_proceed_number_data():
+    return munchify({
+        "data": {
+            "proceeding": {
+                "dateProceedings": "2019-04-01T00:00:00+02:00",
+                 "proceedingNumber": "0123456789"
+            }
+        }
+    })
+
+
+def test_monitoring_liability_data():
+    return munchify({
+            "reportNumber": "1234567890",
+            "legislation": {
+                "article": [
+                    "8.10"
+                ]
+            }
+    })
+

@@ -667,21 +667,22 @@ ${CRITERIA_LLC}     ${False}
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оскарження в суді
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      addressed
+  ...      appeal
   ...      critical
   [Setup]  Дочекатись синхронізації з ДАСУ  ${tender_owner}
   [Teardown]  Оновити DASU_LAST_MODIFICATION_DATE
   Можливість зазначити, що порушення було оскаржено в суді
 
 
-Відображення опису висновку, оскарженого в суді
-  [Tags]   ${USERS.users['${dasu_user}'].broker}: Оскарження в суді
+Можливість додати протокол про притягнення до адміністративної відповідальності
+  [Tags]   ${USERS.users['${dasu_user}'].broker}: Протокол про адмін відповідальність
   ...      dasu_user
   ...      ${USERS.users['${dasu_user}'].broker}
-  ...      appeal_view
+  ...      liability
   ...      critical
   [Setup]  Дочекатись синхронізації з ДАСУ  ${dasu_user}
-  Отримати дані із поля appeal.description об'єкта моніторингу для користувача ${dasu_user}
+  [Teardown]  Оновити DASU_LAST_MODIFICATION_DATE
+  Можливість додати протокол про притягнення до адміністративної відповідальності
 
 
 Відображення дати закінчення періоду ліквідаації
@@ -791,3 +792,65 @@ ${CRITERIA_LLC}     ${False}
   ...      critical
   [Setup]  Дочекатись синхронізації з ДАСУ  ${tender_owner}
   Звірити статус об'єкта моніторингу  ${tender_owner}  ${MONITORING['MONITORING_UAID']}  closed
+
+
+Можливість додати номер провадження до повідомлення про оскарження в суді
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оскарження в суді
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      appeal_number
+  ...      critical
+  [Setup]  Дочекатись синхронізації з ДАСУ  ${tender_owner}
+  [Teardown]  Оновити DASU_LAST_MODIFICATION_DATE
+  Можливість додати номер провадження до оскарження в суді
+
+
+Відображення опису висновку, оскарженого в суді
+  [Tags]   ${USERS.users['${dasu_user}'].broker}: Оскарження в суді
+  ...      dasu_user
+  ...      ${USERS.users['${dasu_user}'].broker}
+  ...      appeal_view
+  ...      critical
+  [Setup]  Дочекатись синхронізації з ДАСУ  ${dasu_user}
+  Отримати дані із поля appeal.description об'єкта моніторингу для користувача ${dasu_user}
+
+
+Відображення номеру відкритого провадження (оскарження в суді)
+  [Tags]   ${USERS.users['${dasu_user}'].broker}: Оскарження в суді
+  ...      dasu_user
+  ...      ${USERS.users['${dasu_user}'].broker}
+  ...      appeal_view
+  ...      critical
+  [Setup]  Дочекатись синхронізації з ДАСУ  ${dasu_user}
+  Отримати дані із поля appeal.proceeding.proceedingNumber об'єкта моніторингу для користувача ${dasu_user}
+
+
+Можливість додати номер провадження в протокол про притягнення до адміністративної відповідальності
+  [Tags]   ${USERS.users['${dasu_user}'].broker}: Протокол про адмін відповідальність
+  ...      dasu_user
+  ...      ${USERS.users['${dasu_user}'].broker}
+  ...      liability_number
+  ...      critical
+  [Setup]  Дочекатись синхронізації з ДАСУ  ${dasu_user}
+  [Teardown]  Оновити DASU_LAST_MODIFICATION_DATE
+  Можливість додати номер провадження в протокол про притягнення до адміністративної відповідальності
+
+
+Відображення номеру протоколу
+  [Tags]   ${USERS.users['${dasu_user}'].broker}: Оскарження в суді
+  ...      dasu_user
+  ...      ${USERS.users['${dasu_user}'].broker}
+  ...      liability_view
+  ...      critical
+  [Setup]  Дочекатись синхронізації з ДАСУ  ${dasu_user}
+  Отримати дані із поля liabilities[0].reportNumber об'єкта моніторингу для користувача ${dasu_user}
+
+
+Відображення номеру відкритого провадження (адмін протокол)
+  [Tags]   ${USERS.users['${dasu_user}'].broker}: Оскарження в суді
+  ...      dasu_user
+  ...      ${USERS.users['${dasu_user}'].broker}
+  ...      liability_view
+  ...      critical
+  [Setup]  Дочекатись синхронізації з ДАСУ  ${dasu_user}
+  Отримати дані із поля liabilities[0].proceeding.proceedingNumber об'єкта моніторингу для користувача ${dasu_user}

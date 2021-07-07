@@ -24,10 +24,6 @@
 -i declined
 
 -i appeal
-
--i eliminationPeriod_endDate
-
--i closed
-
 -i appeal_number
 -i appeal_view
+

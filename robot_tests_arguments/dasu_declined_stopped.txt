@@ -25,9 +25,8 @@
 
 -i appeal
 
--i eliminationPeriod_endDate
-
--i closed
+-i stopped
+-i cancellation_view
 
 -i appeal_number
 -i appeal_view

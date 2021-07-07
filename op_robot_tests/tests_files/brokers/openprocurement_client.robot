@@ -556,9 +556,45 @@ Library  Collections
   Append To List  ${documents}  ${reply.data}
   Set To Dictionary  ${appeal_data.data}  documents=${documents}
   Log  ${appeal_data}
+  ${appeal}=  Call Method  ${USERS.users['${username}'].dasu_client}  create_appeal  ${USERS.users['${username}'].monitoring}  ${appeal_data}
+  Log  ${appeal}
+  [Return]  ${appeal}
+
+
+Додати провадження до повідомлення про оскарження в суді
+  [Arguments]  ${username}  ${monitoring_uaid}  ${appeal_data}
   ${appeal}=  Call Method  ${USERS.users['${username}'].dasu_client}  patch_appeal  ${USERS.users['${username}'].monitoring}  ${appeal_data}
   Log  ${appeal}
-  [return]  ${appeal}
+  [Return]  ${appeal}
+
+
+Додати адмін протокол
+  [Arguments]  ${username}  ${monitoring_uaid}  ${file_path}
+  ${monitoring}=  openprocurement_client.Пошук об'єкта моніторингу по ідентифікатору  ${username}  ${monitoring_uaid}
+  Log  ${monitoring.data.id}
+  ${liability_data}=  Підготувати дані про адмін протокол
+  ${liability_data}=  Create Dictionary  data=${liability_data}
+  ${reply}=  Call Method  ${USERS.users['${username}'].dasu_client}  upload_obj_document  ${filepath}
+  ${documents}=  Create List
+  Append To List  ${documents}  ${reply.data}
+  Set To Dictionary  ${liability_data.data}  documents=${documents}
+  Log  ${liability_data}
+  ${liability}=  Call Method  ${USERS.users['${username}'].dasu_client}  create_liability  ${liability_data}  ${monitoring.data.id}
+  Log  ${liability}
+  [Return]  ${liability}
+
+
+Додати провадження до адмін протоколу
+  [Arguments]  ${username}  ${monitoring_uaid}  ${liability_data}
+  ${monitoring}=  openprocurement_client.Пошук об'єкта моніторингу по ідентифікатору  ${username}  ${monitoring_uaid}
+  Log  ${monitoring.data.id}
+  Log  ${monitoring.data.liabilities[0].id}
+  ${liability}=  Call Method  ${USERS.users['${username}'].dasu_client}  patch_liability
+  ...  ${liability_data}
+  ...  ${monitoring.data.id}
+  ...  ${monitoring.data.liabilities[0].id}
+  Log  ${liability}
+  [Return]  ${liability}
 
 
 Надати пояснення замовником з власної ініціативи
