@@ -102,7 +102,8 @@ from .initial_data import (
     test_pricequotation_unsuccessfulReason_data,
     test_criteria_llc_data,
     test_price_change_data,
-    test_price_change_lot_data
+    test_price_change_lot_data,
+    test_document_data
 )
 from barbecue import chef
 from restkit import request
@@ -643,7 +644,7 @@ def get_object_by_id(data, given_object_id, slice_element, object_id):
     return sliced_object[0]
 
 
-def generate_test_bid_data(tender_data, edrpou=None):
+def generate_test_bid_data(tender_data, doc_format=None, doc_title=None, doc_url=None, doc_hash=None, edrpou=None):
     if tender_data.get('procurementMethodType', '') in (
             'aboveThresholdUA',
             'aboveThresholdEU',
@@ -687,6 +688,10 @@ def generate_test_bid_data(tender_data, edrpou=None):
         for feature in tender_data['features']:
             parameter = {"value": fake.random_element(elements=(0.05, 0.01, 0)), "code": feature.get('code', '')}
             bid.data.parameters.append(parameter)
+    if doc_title:
+        bid.data.documents = []
+        document = test_document_data(doc_format, doc_title, doc_url, doc_hash)
+        bid.data.documents.append(document)
     return bid
 
 

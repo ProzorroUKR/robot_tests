@@ -1494,3 +1494,15 @@ def test_price_change_lot_data(value, related_lot):
     })
 
 
+def test_document_data(doc_format, doc_title, doc_url, doc_hash):
+    document = {
+        "documentOf": "tender",
+        "format": doc_format,
+        "hash": doc_hash,
+        "language": "uk",
+        "title": doc_title,
+        "url": doc_url
+    }
+    return munchify(document)
+
+
