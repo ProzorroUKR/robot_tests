@@ -338,6 +338,24 @@ Get Broker Property By Username
   [Return]  ${bid}
 
 
+Підготувати дані для подання пропозиції з документом
+  [Arguments]  ${doc_format}  ${doc_title}  ${doc_url}  ${doc_hash}
+  ${bid}=  generate_test_bid_data
+  ...  ${USERS.users['${tender_owner}'].tender_data.data}
+  ...  ${doc_format}
+  ...  ${doc_title}
+  ...  ${doc_url}
+  ...  ${doc_hash}
+  [Return]  ${bid}
+
+
+Підготувати документ
+  [Arguments]  ${document}
+  ${documents}=  test_document  ${document}
+  Log  ${documents}
+  [Return]  ${documents}
+
+
 Підготувати дані для подання пропозиції другого етапу рамкової угоди
   [Arguments]  ${index}=${0}
   ${bid}=  test_bid_data_selection  ${USERS.users['${provider2}'].tender_data.data}  ${index}

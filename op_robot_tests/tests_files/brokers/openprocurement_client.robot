@@ -66,6 +66,8 @@ Library  Collections
   Log  ${API_HOST_URL}
   Log  ${API_VERSION}
   Log  ${DS_HOST_URL}
+  Log  ${EDR_HOST_URL}
+  Log  ${EDR_VERSION}
   ${auth_ds_all}=  get variable value  ${USERS.users.${username}.auth_ds}
   ${auth_ds}=  set variable  ${auth_ds_all.${RESOURCE}}
   Log  ${auth_ds}
@@ -76,18 +78,21 @@ Library  Collections
   ...  PLANS
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
+  Log  ${plan_api_wrapper}
   ${tender_api_wrapper}=  prepare_api_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  TENDERS
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
+  Log  ${tender_api_wrapper}
   ${tender_create_wrapper}=  prepare_tender_create_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  PLANS
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
+  Log  ${tender_create_wrapper}
   ${dasu_api_wraper}=  prepare_dasu_api_wrapper
   ...  ${DASU_RESOURCE}
   ...  ${DASU_API_HOST_URL}
@@ -95,23 +100,37 @@ Library  Collections
   ...  ${USERS.users['${username}'].auth_dasu[0]}
   ...  ${USERS.users['${username}'].auth_dasu[1]}
   ...  ${ds_config}
+  Log  ${dasu_api_wraper}
   ${amcu_api_wrapper}=  prepare_amcu_api_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  TENDERS
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
+  Log  ${amcu_api_wrapper}
   ${agreement_wrapper}=  prepare_agreement_api_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  AGREEMENTS
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
+  Log  ${agreement_wrapper}
   ${payment_wrapper}=  prepare_payment_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  PUSH
   ...  ${PAYMENT_API}
   ...  ${PAYMENT_API_VERSION}
+  Log  ${payment_wrapper}
+  ${ds_wrapper}=  prepare_ds_api_wrapper
+  ...  ${DS_HOST_URL}
+  ...  ${auth_ds}
+  Log  ${ds_wrapper}
+  ${edr_wrapper}=  prepare_edr_wrapper
+  ...  ${EDR_HOST_URL}
+  ...  ${EDR_VERSION}
+  ...  ${USERS.users['${username}'].auth_edr[0]}
+  ...  ${USERS.users['${username}'].auth_edr[1]}
+  Log  ${edr_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  plan_client=${plan_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  tender_create_client=${tender_create_wrapper}
@@ -120,17 +139,10 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${EMPTY}
   Set To Dictionary  ${USERS.users['${username}']}  amcu_client=${amcu_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  payment_client=${payment_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  ds_client=${ds_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  edr_client=${edr_wrapper}
   ${id_map}=  Create Dictionary
   Set To Dictionary  ${USERS.users['${username}']}  id_map=${id_map}
-  Log  ${EDR_HOST_URL}
-  Log  ${EDR_VERSION}
-  ${edr_wrapper}=  prepare_edr_wrapper
-  ...  ${EDR_HOST_URL}
-  ...  ${EDR_VERSION}
-  ...  ${USERS.users['${username}'].auth_edr[0]}
-  ...  ${USERS.users['${username}'].auth_edr[1]}
-  Log  ${edr_wrapper}
-  Set To Dictionary  ${USERS.users['${username}']}  edr_client=${edr_wrapper}
   #Variables for contracting_management module
   ${contract_api_wrapper}=  prepare_contract_api_wrapper  ${USERS.users['${username}'].api_key}  CONTRACTS  ${api_host_url}  ${api_version}  ${ds_config}
   Set To Dictionary  ${USERS.users['${username}']}  contracting_client=${contract_api_wrapper}
@@ -1758,6 +1770,42 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
 
 
+Подати цінову пропозицію з документом в статусі draft
+  [Arguments]  ${username}  ${tender_uaid}  ${bid}  ${lots_ids}=${None}  ${features_ids}=${None}
+  ${verify_response}=  Run As  ${username}  Перевірити учасника за ЄДРПОУ  ${bid.data.tenderers[0].identifier.id}
+  Log  ${verify_response}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${lots_ids}=  Run Keyword IF  ${lots_ids}  Set Variable  ${lots_ids}
+  ...     ELSE  Create List
+  : FOR    ${index}    ${lot_id}    IN ENUMERATE    @{lots_ids}
+  \    ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
+  \    ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
+  \    Set To Dictionary  ${bid.data.lotValues[${index}]}  relatedLot=${lot_id}
+  ${features_ids}=  Run Keyword IF  ${features_ids}  Set Variable  ${features_ids}
+  ...     ELSE  Create List
+  : FOR    ${index}    ${feature_id}    IN ENUMERATE    @{features_ids}
+  \    ${feature_index}=  get_object_index_by_id  ${tender.data.features}  ${feature_id}
+  \    ${code}=  Get Variable Value  ${tender.data.features[${feature_index}].code}
+  \    Set To Dictionary  ${bid.data.parameters[${index}]}  code=${code}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender.data.id}  ${bid}
+  Log  ${reply}
+  Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply.access.token}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  Set To Dictionary   ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
+  Log  ${reply.data.documents}
+  Log  ${reply.data.documents[0].id}
+  Log  ${reply.data.documents[0].title}
+  ${data}=  Create dictionary
+  ...   id=${reply.data.documents[0].id}
+  ...   title=${reply.data.documents[0].title}
+  ${documents}=  Create dictionary  data=${data}
+  ${documents}=  munch_dict  arg=${documents}
+  Log  ${documents}
+  Set to Dictionary  ${USERS.users['${username}']}  documents=${documents}
+  Log  ${USERS.users['${username}'].documents}
+
+
 Змінити цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
@@ -3068,3 +3116,20 @@ Library  Collections
   ...      access_token=${tender.access.token}
   Log  ${doc_list}
   [Return]  ${doc_list}
+
+
+Отримати всі пропозиції на тендер
+  [Arguments]  ${username}  ${tender_uaid}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${bids}=  Call Method  ${USERS.users['${username}'].client}  get_bids
+  ...  ${tender.data.id}
+  ...  access_token=${tender.access.token}
+  Log  ${bids}
+  [Return]  ${bids}
+
+
+Зареєструвати та завантажити документ в DS
+  [Arguments]  ${username}  ${file_path}
+  ${document}=  Call Method  ${USERS.users['${username}'].client}  register_and_upload_document  ${file_path}
+  Log  ${document}
+  [Return]  ${document}

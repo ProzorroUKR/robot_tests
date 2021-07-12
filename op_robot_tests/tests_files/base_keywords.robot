@@ -10,6 +10,8 @@ ${ERROR_MESSAGE}=  Calling method 'get_tender' failed: ResourceGone: {"status": 
 
 ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status": "error", "errors": [{"location": "url", "name": "plan_id", "description": "Archived"}]}
 
+${doc_in_draft_bid}  ${True}
+
 *** Keywords ***
 Можливість оголосити тендер
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_plan.yaml
@@ -2148,6 +2150,36 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${USERS.users['${username}'].bidresponses['bid']}
 
 
+Можливість подати цінову пропозицію в статусі draft з документом користувачем ${username}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${document}=  Run As  ${username}  Зареєструвати та завантажити документ в DS  ${file_path}
+  Log  ${document}
+  ${document}=  munch_dict  arg=${document}
+  Log  ${document}
+  Log  ${document.data.hash}
+  Log  ${document.data.title}
+  Log  ${document.data.format}
+  Log  ${document.data.url}
+  ${bid}=  Підготувати дані для подання пропозиції з документом
+  ...  ${document.data.format}
+  ...  ${document.data.title}
+  ...  ${document.data.url}
+  ...  ${document.data.hash}
+  Log  ${bid}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  ${features}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.features}  ${None}
+  ${features_ids}=  Run Keyword IF  ${features}
+  ...     Отримати ідентифікатори об’єктів  ${username}  features
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію з документом в статусі draft  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+  Log Dictionary  ${USERS.users['${username}'].bidresponses}
+
+
 Можливість додати до пропозиції відповідь на критерії користувачем ${username}
   Log  ${USERS.users['${username}'].bidresponses['bid']}
   Log  ${USERS.users['${tender_owner}'].tender_data}
@@ -2294,7 +2326,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${value}=  Run As  ${username}  Отримати інформацію із пропозиції  ${TENDER['TENDER_UAID']}  ${field}
   ${value}=  mult_and_round  ${value}  ${percent}  ${divider}  precision=${2}
   ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${TENDER['TENDER_UAID']}
-  Log  ${bid.data.lotValues[0].relatedLot}
   ${patch_bid_data}=  run keyword if  ${NUMBER_OF_LOTS} == 0
   ...  Підготувати дані про зміну цінової пропозиції в без лотовій процедурі  ${value}
   ...  ELSE  Підготувати дані про зміну цінової пропозиції в лотовій процедурі  ${value}  ${bid.data.lotValues[0].relatedLot}
@@ -2669,3 +2700,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...  ${second_requirement_index}
   Log  ${right}
   Порівняти об'єкти  ${left}  ${right}
+
+
+Можливість отримати документи пропозиції користувачем ${username}
+    ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${TENDER['TENDER_UAID']}
+    Log  ${bid.data.id}
+    Отримати список документів по пропозиції  ${username}  ${TENDER['TENDER_UAID']}  ${bid.data.id}
+
+
+Можливість отримати всі пропозиції на тендер користувачем ${username}
+  Отримати всі пропозиції на тендер  ${username}  ${TENDER['TENDER_UAID']}
