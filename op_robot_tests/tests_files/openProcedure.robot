@@ -2058,6 +2058,25 @@ ${CRITERIA_LLC}     ${False}
 
 
 Можливість подати пропозицію другим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_with_criteria_by_provider1_document  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft з документом користувачем ${provider1}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider1}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider1}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider1}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  Можливість активувати пропозицію коритувачем ${provider1}
+  openprocurement_client.Отримати пропозицію  ${provider1}  ${TENDER['TENDER_UAID']}
+  ${doc_list}=  Можливість отримати документи пропозиції користувачем ${provider1}
+  Log  ${doc_list}
+
+Можливість подати пропозицію другим учасником
   [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
@@ -2138,6 +2157,16 @@ ${CRITERIA_LLC}     ${False}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість змінити документацію цінової пропозиції користувачем ${provider}
+
+
+Можливість змінити документацію цінової пропозиції третім учасником
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      add_doc_to_bid_by_provider2
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити документацію цінової пропозиції користувачем ${provider2}
 
 
 Можливість подати пропозицію другим учасником
@@ -2232,6 +2261,16 @@ ${CRITERIA_LLC}     ${False}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість змінити документацію цінової пропозиції з публічної на приватну учасником ${provider}
+
+
+Можливість змінити документацію цінової пропозиції з публічної на приватну
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      openeu_make_bid_doc_private_by_provider2
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість змінити документацію цінової пропозиції з публічної на приватну учасником ${provider2}
 
 
 Можливість завантажити фінансовий документ до пропозиції першим учасником
@@ -2393,9 +2432,9 @@ ${CRITERIA_LLC}     ${False}
 
 
 Можливість підтвердити цінову пропозицію після зміни умов третьому учаснику
-  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
   ...      provider2
-  ...      ${USERS.users['${provider1}'].broker}
+  ...      ${USERS.users['${provider2}'].broker}
   ...      open_confirm_third_bid
   ...      non-critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
@@ -2420,6 +2459,51 @@ ${CRITERIA_LLC}     ${False}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
   Require Failure  ${viewer}  Отримати інформацію із тендера  ${TENDER['TENDER_UAID']}  bids
+
+
+Можливість подати пропозицію в скасувати в draft першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_with_criteria_by_provider_draft_cancel  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft користувачем ${provider}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  ${doc_list}=  Можливість отримати документи пропозиції користувачем ${provider}
+  Log  ${doc_list}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  Можливість скасувати цінову пропозицію користувачем ${provider}
+
+
+Можливість подати пропозицію і скасувати першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_with_criteria_by_provider_cancel  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft користувачем ${provider}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  ${doc_list}=  Можливість отримати документи пропозиції користувачем ${provider}
+  Log  ${doc_list}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
+  Можливість активувати пропозицію коритувачем ${provider}
+  Можливість скасувати цінову пропозицію користувачем ${provider}
 
 ##############################################################################################
 #             AFTER BIDDING

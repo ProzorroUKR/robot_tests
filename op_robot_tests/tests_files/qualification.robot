@@ -474,3 +474,11 @@ ${award_index}      ${0}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${username}=   Отримати поточного Переможця тендера
   Можливість завантажити підтвердження виконання контракту в пропозицію учасника  ${username}  ${TENDER['TENDER_UAID']}
+
+
+Можливість отримати всі пропозиції по тендеру
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати всі бідт тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      get_all_tender_bids
+  Можливість отримати всі пропозиції на тендер користувачем ${tender_owner}
