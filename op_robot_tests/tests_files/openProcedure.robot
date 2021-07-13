@@ -2797,6 +2797,16 @@ ${CRITERIA_LLC}     ${False}
   Можливість підтвердити 3 пропозицію кваліфікації
 
 
+Можливість підтвердити четверту пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_fourth_bid  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 3 пропозицію кваліфікації
+
+
 Можливість затвердити остаточне рішення кваліфікації
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner

@@ -1826,7 +1826,7 @@ Library  Collections
   Log  ${reply}
 
 
-Змінити вартість в ціновії пропозиції
+Змінити вартість в ціновій пропозиції
   [Arguments]  ${username}  ${tender_uaid}  ${patch_bid_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}']['access_token']}

@@ -536,8 +536,8 @@ Get Broker Property By Username
 
 
 Підготувати дані про зміну цінової пропозиції в лотовій процедурі
-  [Arguments]  ${value}  ${relatedLot}
-  ${patch_bid_data}=  test_price_change_lot_data  ${value}  ${relatedLot}
+  [Arguments]  ${value}  ${bid}
+  ${patch_bid_data}=  test_price_change_lot  ${USERS.users['${tender_owner}'].tender_data.data}  ${bid}  ${value}
   Log  ${patch_bid_data}
   [Return]  ${patch_bid_data}
 

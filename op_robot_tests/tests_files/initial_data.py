@@ -1479,19 +1479,25 @@ def test_price_change_data(value):
     })
 
 
-def test_price_change_lot_data(value, related_lot):
-    return munchify({
-        "data": {
-            "lotValues": [
-                {
-                    "relatedLot": related_lot,
-                    "value": {
-                        "amount": value
-                    }
-                }
-            ]
+def test_price_change_lot_data(related_lot, value):
+    bid = {
+        "relatedLot": related_lot,
+        "value": {
+            "amount": value}
         }
-    })
+    return bid
+
+
+def test_price_change_lot(tender_data, bid_data, value):
+    bid = munchify({'data': {}})
+    number_of_lots = len(tender_data['lots'])
+    bid.data.lotValues = []
+    for lot in range(number_of_lots):
+        bid_change_data = test_price_change_lot_data(tender_data['lots'][lot]["id"],
+                                                     bid_data['data']['lotValues'][lot]['value']['amount'])
+        bid.data.lotValues.append(bid_change_data)
+    bid.data.lotValues[0]['value']['amount'] = value
+    return bid
 
 
 def test_document_data(doc_format, doc_title, doc_url, doc_hash):

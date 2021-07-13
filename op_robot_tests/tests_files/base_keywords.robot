@@ -2326,11 +2326,12 @@ ${doc_in_draft_bid}  ${True}
   ${value}=  Run As  ${username}  Отримати інформацію із пропозиції  ${TENDER['TENDER_UAID']}  ${field}
   ${value}=  mult_and_round  ${value}  ${percent}  ${divider}  precision=${2}
   ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${TENDER['TENDER_UAID']}
+  Log  ${bid}
   ${patch_bid_data}=  run keyword if  ${NUMBER_OF_LOTS} == 0
   ...  Підготувати дані про зміну цінової пропозиції в без лотовій процедурі  ${value}
-  ...  ELSE  Підготувати дані про зміну цінової пропозиції в лотовій процедурі  ${value}  ${bid.data.lotValues[0].relatedLot}
+  ...  ELSE  Підготувати дані про зміну цінової пропозиції в лотовій процедурі  ${value}  ${bid}
   Log  ${patch_bid_data}
-  Run as  ${username}  Змінити вартість в ціновії пропозиції  ${TENDER['TENDER_UAID']}   ${patch_bid_data}
+  Run as  ${username}  Змінити вартість в ціновій пропозиції  ${TENDER['TENDER_UAID']}   ${patch_bid_data}
 
 
 Можливість завантажити документ в пропозицію користувачем ${username}

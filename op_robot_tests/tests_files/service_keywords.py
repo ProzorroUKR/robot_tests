@@ -102,7 +102,7 @@ from .initial_data import (
     test_pricequotation_unsuccessfulReason_data,
     test_criteria_llc_data,
     test_price_change_data,
-    test_price_change_lot_data,
+    test_price_change_lot,
     test_document_data
 )
 from barbecue import chef
