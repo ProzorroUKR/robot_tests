@@ -184,10 +184,9 @@ Suite Teardown  Test Suite Teardown
   ...      change_contract_amount
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
-  ${amount}=  create_fake_amount
-  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
-  ...      ${award.value.valueAddedTaxIncluded}
-  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  Log  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ${number}=  Set Variable  ${5000}
+  ${amount}=  Evaluate  ${number}+${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
 
@@ -200,10 +199,9 @@ Suite Teardown  Test Suite Teardown
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
-  ${amount_both_fields}=  create_fake_amount
-  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
-  ...      ${award.value.valueAddedTaxIncluded}
-  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  Log  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ${number}=  Set Variable  ${5000}
+  ${amount_both_fields}=  Evaluate  ${number}+${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   Set to dictionary  ${USERS.users['${tender_owner}']}  amount=${amount_both_fields}
   Run As  ${tender_owner}  Одночасно Редагувати два поля договору  ${CONTRACT_UAID}  value.amount  ${amount_both_fields}  value.amountNet  ${amount_both_fields}
 
