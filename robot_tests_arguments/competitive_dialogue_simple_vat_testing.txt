@@ -12,12 +12,6 @@
 -i create_tender
 -i find_tender
 -i tender_view
--i tender_view_milestone
--i tender_view_value
--i tender_view_minimalStep
--i tender_view_deliveryDate
--i tender_view_quantity
--i tender_view_unit_name
 -i lot_view
 -i lot_view_value
 -i lot_view_minimalStep
@@ -27,8 +21,6 @@
 -i make_bid_with_criteria_by_provider2
 
 -i open_tender_view
-
-#-i pre-qualifications_check_by_edrpou
 
 -i pre-qualification_approve_first_bid
 -i pre-qualification_approve_second_bid
@@ -51,14 +43,10 @@
 -i make_bid_with_criteria_by_provider_second_stage
 -i make_bid_with_criteria_by_provider1_second_stage
 
-#-i qualifications_check_by_edrpou
-
 -i pre-qualification_approve_first_bid_second_stage
 -i pre-qualification_approve_second_bid_second_stage
 
 -i pre-qualification_approve_qualifications_second_stage
-
-#-i auction
 
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
