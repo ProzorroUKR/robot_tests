@@ -416,8 +416,9 @@ Suite Teardown  Test Suite Teardown
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${contract_data}=  Розрахувати ціну за одиницю товару  ${tender_owner}  ${TENDER['TENDER_UAID']}
-  Run As  ${tender_owner}  Встановити ціну за одиницю товару в контракті  ${TENDER['TENDER_UAID']}  ${contract_data}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${contract_data}=  Розрахувати ціну за одиницю товару  ${tender_owner}  ${TENDER['TENDER_UAID']}  ${contract_index}
+  Run As  ${tender_owner}  Встановити ціну за одиницю товару в контракті  ${TENDER['TENDER_UAID']}  ${contract_data}  ${contract_index}
 
 
 Можливість укласти угоду для закупівлі

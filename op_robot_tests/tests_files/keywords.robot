@@ -1494,10 +1494,9 @@ Require Failure
 
 
 Розрахувати ціну за одиницю товару
-  [Arguments]  ${username}  ${tender_uaid}
-  ${contract_number}=  Set Variable  ${0}
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}
+  ${contract_number}=  Set Variable  ${contract_index}
   ${contract_data}=  Create Dictionary  data=${USERS.users['${username}'].tender_data.data.contracts[${contract_number}]}
-  Log  ${contract_data}
   ${quantity}=  Set Variable  ${0}
   :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
   \  ${quantity}=  Evaluate  ${quantity}+${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
