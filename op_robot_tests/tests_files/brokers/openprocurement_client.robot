@@ -2621,12 +2621,13 @@ Library  Collections
 
 
 Встановити ціну за одиницю товару в контракті
-  [Arguments]  ${username}  ${tender_uaid}  ${contract_data}
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_data}  ${contract_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Log  ${tender}
   Log  ${contract_data}
+  Log  ${tender['data']['contracts'][${contract_index}]['id']}
   ${tender_id}=  Set Variable  ${tender.data.id}
-  ${contract_id}=  Set Variable  ${contract_data.data.id}
+  ${contract_id}=  Set Variable  ${tender['data']['contracts'][${contract_index}]['id']}
   ${access_token}=  Set Variable  ${tender.access.token}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender_id}
