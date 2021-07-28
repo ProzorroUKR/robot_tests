@@ -408,6 +408,19 @@ Suite Teardown  Test Suite Teardown
   Звірити відображення поля documentOf документа ${USERS.users['${tender_owner}']['contract_doc']['id']} із tender для користувача ${viewer}
 
 
+Можливість вказати ціну за одиницю
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Вказати ціну за одиницю
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      contract_unit_price  level1
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${contract_data}=  Розрахувати ціну за одиницю товару  ${tender_owner}  ${TENDER['TENDER_UAID']}  ${contract_index}
+  Run As  ${tender_owner}  Встановити ціну за одиницю товару в контракті  ${TENDER['TENDER_UAID']}  ${contract_data}  ${contract_index}
+
+
 Можливість укласти угоду для закупівлі
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес укладання угоди
   ...      tender_owner

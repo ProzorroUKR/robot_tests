@@ -13,14 +13,6 @@
 -i create_tender
 -i find_tender
 -i tender_view
--i tender_view_milestone
--i tender_view_value
--i tender_view_minimalStep
--i tender_view_deliveryDate
--i tender_view_quantity
--i tender_view_unit_name
--i tender_view_unit_code
--i tender_view_coordinates
 -i lot_view
 -i lot_view_value
 -i lot_view_minimalStep
@@ -36,15 +28,13 @@
 -i pre-qualification_approve_second_bid
 -i pre-qualification_approve_qualifications
 
--i auction
-
-#-i qualifications_check_by_edrpou
 -i qualification_approve_first_award
 
 -i contract_sign
 -i contract_stand_still
 
 -i modify_contract
+-i contract_unit_price
 -i add_doc_to_contract
 -i contract_doc_documentOf
 -i contract_sign

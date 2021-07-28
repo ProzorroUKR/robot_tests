@@ -1494,6 +1494,12 @@ def test_price_change_lot_data(value, related_lot):
     })
 
 
+def test_unit_price_amount(amount):
+    return munchify({
+        "amount": amount
+    })
+
+
 def test_monitoring_proceed_number_data():
     return munchify({
         "data": {
