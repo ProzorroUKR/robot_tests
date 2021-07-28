@@ -22,9 +22,7 @@
 
 -i qualification_approve_first_award
 
--i contract_sign
 -i contract_stand_still
-
 -i modify_contract
 -i contract_unit_price
 -i add_doc_to_contract
@@ -42,5 +40,4 @@
 -i add_contract_doc
 -i termination_reasons
 -i amount_paid
-
 -i contract_termination
