@@ -472,5 +472,5 @@ ${award_index}      ${0}
   ...      qualification_add_contract_guarantee_document
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${username}=   Отримати поточного Переможця тендера
+  ${username}=   Отримати поточного переможця тендерної поцедури  ${TENDER['TENDER_UAID']}  ${provider}  ${provider1}  ${provider2}
   Можливість завантажити підтвердження виконання контракту в пропозицію учасника  ${username}  ${TENDER['TENDER_UAID']}

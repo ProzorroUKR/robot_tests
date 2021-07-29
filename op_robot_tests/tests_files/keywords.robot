@@ -1528,3 +1528,21 @@ Require Failure
   ${reason}=  test_pricequotation_unsuccessfulReason_data  ${text}
   [Return]  ${reason}
 
+
+Отримати поточного переможця тендерної поцедури
+  [Arguments]  ${tender_uaid}  @{usernames}
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Log  ${ARTIFACT}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${tender_owner}  ${tender_uaid}
+  Log  ${tender}
+  ${award}=  Get Variable Value  ${USERS.users['${tender_owner}'].tender_data.data.awards[-1]}
+  Log  ${award}
+  :FOR  ${username}  IN  @{usernames}
+  \  ${status}  ${bid}=  Run Keyword And Ignore Error
+  \  ...  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+  \  Run Keyword if  '${status}' == 'PASS'  Log  ${bid.data.id}
+  \  ${status}=  Run Keyword And Return Status   Should Be Equal  ${bid.data.id}  ${award.bid_id}
+  \  Run Keyword If  '${status}' == 'True'  Exit For Loop
+  [Return]  ${username}
+
