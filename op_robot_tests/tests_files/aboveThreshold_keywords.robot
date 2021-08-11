@@ -33,8 +33,10 @@ Resource           base_keywords.robot
 
 
 Можливість підтвердити цінову пропозицію учасником ${username}
-  ${status}=  Run Keyword IF  '${MODE}'=='openeu'  Set Variable  pending
-  ...                     ELSE IF  '${MODE}'=='openua' or '${MODE}'=='openua_defense'  Set Variable  active
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  Log  ${procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  closeFrameworkAgreementUA  esco
+  ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
   Run As  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  status  ${status}
 
 ##############################################################################################
