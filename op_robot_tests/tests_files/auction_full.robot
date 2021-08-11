@@ -9,6 +9,13 @@ Library         Selenium2Library
 @{USED_ROLES}  viewer  provider  provider1
 
 *** Test Cases ***
+Залогувати інформацію про браузер та драйвер в консоль
+  [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      find_tender
+  Вивести інформацію про браузер та драйвер
+
+
 Можливість знайти закупівлю по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      ${USERS.users['${viewer}'].broker}
@@ -452,3 +459,8 @@ Library         Selenium2Library
 Перевірити чи ставка була прийнята
   ${last_amount}=  convert_amount  ${USERS['${CURRENT_USER}']['last_amount']}
   Page Should Contain  ${last_amount}
+
+
+Вивести інформацію про браузер та драйвер
+   ${info}=  log_webdriver_info
+   Log to console  ${info}

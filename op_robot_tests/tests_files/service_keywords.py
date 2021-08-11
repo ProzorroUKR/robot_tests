@@ -105,7 +105,8 @@ from .initial_data import (
     test_price_change_lot_data,
     test_unit_price_amount,
     test_monitoring_proceed_number_data,
-    test_monitoring_liability_data
+    test_monitoring_liability_data,
+    log_webdriver_info
 )
 from barbecue import chef
 from restkit import request
@@ -395,7 +396,7 @@ def prepare_test_tender_data(procedure_intervals,
             accelerator=accelerator,
             )})
     elif mode == 'open_esco':
-         return munchify({'data': test_tender_data_esco(
+        return munchify({'data': test_tender_data_esco(
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'priceQuotation':
         return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data)})
