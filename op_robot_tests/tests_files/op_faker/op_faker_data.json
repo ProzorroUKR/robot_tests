@@ -842,7 +842,35 @@
             }
         }
     ],
-    "addresses": [
+    "cpb": [
+        {
+            "address": {
+                "countryName": "Україна",
+                "locality": "Київ",
+                "postalCode": "01601",
+                "region": "м. Київ",
+                "streetAddress": "Бульварно-Кудрявська, 22"
+            },
+            "contactPoint": {
+                "email": "cpb.org.ua@gmail.com",
+                "faxNumber": "+380635780480",
+                "telephone": "+380966892062",
+                "url": "http://cpb.org.ua",
+                "name_en": "Nina Abaimova",
+                "name_uk": "Абаімова Ніна Сергіївна"
+            },
+            "identifier": {
+                "id": "40996564",
+                "scheme": "UA-EDR",
+                "legalName_en": "STATE INSTITUTION \"PROFESSIONAL PROCUREMENT\"",
+                "legalName": "ДЕРЖАВНА УСТАНОВА \"ПРОФЕСІЙНІ ЗАКУПІВЛІ\""
+            },
+            "name_en": "STATE INSTITUTION \"PROFESSIONAL PROCUREMENT\"",
+            "name": "ДЕРЖАВНА УСТАНОВА \"ПРОФЕСІЙНІ ЗАКУПІВЛІ\""
+        }
+    ],
+
+    "addresses_list": [
         {
             "deliveryLocation": {
                 "latitude": 50.443563,
@@ -1988,7 +2016,7 @@
             }
         }
     ],
-    "classifications":[
+    "classifications": [
         {
             "additionalClassifications": [
                 {
@@ -7674,13 +7702,7 @@
         "30192130-1",
         "30197600-2",
         "30199000-0",
-        "99999999-9",
-        "34920000-2",
-        "71246000-4",
-        "63712320-2",
-        "33110000-4",
-        "33792000-8",
-        "38945000-7"
+        "99999999-9"
     ],
     "moz_cpvs": [
         "33615100-5",
@@ -7695,12 +7717,10 @@
         "34920000-2",
         "34921000-9",
         "34921100-0",
-        "71246000-4",
         "71247000-1",
         "71248000-8",
         "63712310-9",
-        "63712311-6",
-        "63712320-2"
+        "63712311-6"
     ],
     "gmdn_cpvs": [
         "33110000-4",
