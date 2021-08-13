@@ -9,7 +9,7 @@ from uuid import uuid4
 from faker import Factory
 from faker.providers.company.en_US import Provider as CompanyProviderEnUs
 from faker.providers.company.ru_RU import Provider as CompanyProviderRuRu
-from munch import munchify
+from munch import munchify, unmunchify
 from op_faker import OP_Provider
 from .local_time import get_now, TZ
 from datetime import datetime
@@ -1528,3 +1528,75 @@ def log_webdriver_info():
     browser_version = "chrome version - " + driver.capabilities['version']
     driver_version = "chromedriver version - " + driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
     return browser_version, driver_version
+
+
+def test_buyer_1_data():
+    buyer = {
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "11223344",
+                "legalName": "Перший Тестовий buyer"
+            },
+            "name": "Перший Тестовий buyer",
+            "address": {
+                "postalCode": "01111",
+                "countryName": "Україна",
+                "streetAddress": "вулиця Тестова, 333, 8",
+                "region": "м. Київ",
+                "locality": "м. Київ"
+            }
+    }
+    return munchify(buyer)
+
+
+def test_buyer_2_data():
+    buyer = {
+        "identifier": {
+            "scheme": "UA-EDR",
+            "id": "55667788",
+            "legalName": "Другий Тестовий buyer"
+        },
+        "name": "Другий Тестовий buyer",
+        "address": {
+            "postalCode": "01111",
+            "countryName": "Україна",
+            "streetAddress": "вулиця Тестова, 333, 8",
+            "region": "м. Київ",
+            "locality": "м. Київ"
+        }
+    }
+    return munchify(buyer)
+
+
+def test_buyer_3_data():
+    buyer = {
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "99887744",
+                "legalName": "Третій Тестовий buyer"
+            },
+            "name": "Третій Тестовий buyer",
+            "address": {
+                "postalCode": "01111",
+                "countryName": "Україна",
+                "streetAddress": "вулиця Тестова, 333, 8",
+                "region": "м. Київ",
+                "locality": "м. Київ"
+            }
+    }
+    return munchify(buyer)
+
+
+def edit_data_for_buyers(data, buyer):
+    dict_data = unmunchify(data)
+    if buyer == 'buyer_1':
+        buyer = test_buyer_1_data()
+    if buyer == 'buyer_2':
+        buyer = test_buyer_2_data()
+    if buyer == 'buyer_3':
+        buyer = test_buyer_3_data()
+    kind = dict_data['buyers'][0]['kind']
+    buyer['kind'] = kind
+    dict_data['buyers'].pop(0)
+    dict_data['buyers'].append(buyer)
+    return munchify(dict_data)
