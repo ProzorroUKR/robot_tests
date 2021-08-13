@@ -23,7 +23,7 @@ class OP_Provider(BaseProvider):
     procuringEntities = _fake_data.procuringEntities
     funders = _fake_data.funders
     funders_scheme_list = _fake_data.funders_scheme
-    addresses = _fake_data.addresses
+    addresses = _fake_data.addresses_list
     classifications = _fake_data.classifications
     cpvs = _fake_data.cpvs
     moz_cpvs = _fake_data.moz_cpvs
@@ -42,6 +42,7 @@ class OP_Provider(BaseProvider):
     criteria = _fake_data.criteria
     criteria_guarant = _fake_data.criteria_guarantee
     criteria_llc = _fake_data.criteria_llc
+    cpb = _fake_data.cpb
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -150,6 +151,10 @@ class OP_Provider(BaseProvider):
             return self.random_element(gmdn_cpvs)
         else:
             return self.random_element(self.gmdn_cpvs)
+
+    @classmethod
+    def address_data(self):
+        return self.random_element(self.addresses)
 
     @classmethod
     def fake_item(self, cpv_group=None):
@@ -269,3 +274,8 @@ class OP_Provider(BaseProvider):
     @classmethod
     def criteria_llc_data(self):
         return deepcopy(self.criteria_llc)
+
+    @classmethod
+    def cpb_data(self):
+        return deepcopy(self.random_element(self.cpb))
+
