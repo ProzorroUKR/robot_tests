@@ -3042,7 +3042,7 @@ ${CRITERIA_LLC}     ${False}
 
 Можливість подати пропозицію третім учасником на другому етапі
   [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції на другий етап
-  ...      provider1
+  ...      provider2
   ...      ${USERS.users['${provider2}'].broker}
   ...      make_bid_with_criteria_by_provider2_second_stage
   ...      critical
