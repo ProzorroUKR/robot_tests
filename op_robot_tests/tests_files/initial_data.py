@@ -313,20 +313,6 @@ def test_tender_data_planning(params):
                 "endDate": get_now().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
             }
         },
-        "procuringEntity": {
-            "identifier": {
-                "scheme": "UA-EDR",
-                "id": random.choice(["13313462", "00037256"]),
-                "legalName": random.choice([u"Київський Тестовий Ліцей", u"Київська Тестова міська клінічна лікарня"]),
-            },
-            "address": {
-                "countryName": "Україна",
-                "postalCode": "01220",
-                "region": "м. Київ",
-                "streetAddress": "вул. Банкова, 11, корпус 1",
-                "locality": "м. Київ"
-            }
-        },
         "tender": {
             "procurementMethod": "",
             "procurementMethodType": params['mode'],
@@ -338,8 +324,19 @@ def test_tender_data_planning(params):
         "items": [],
         "buyers": []
     }
+    # use kind variable when create procuringEntity  - for now only if we want create plan where procuringEntity is cpb
+    if params.get('kind') == "central":
+        data["procuringEntity"] = fake.cpb_data()
+        data["procuringEntity"]["kind"] = "central"
+    else:
+        data["procuringEntity"] = fake.procuringEntity()
     data["procuringEntity"]["name"] = data["procuringEntity"]["identifier"]["legalName"]
-    if params.get("mode") in ["aboveThresholdUA.defense", "simple.defense"]:
+    # procuringEntity contactPoint is a rogue filed for plan - we delete it to avoid error
+    del data["procuringEntity"]["contactPoint"]
+    # determine procuringEntity  according to plan procurement method type or kind variable
+    if params.get('kind'):
+        data["procuringEntity"]["kind"] = params.get('kind')
+    elif params.get("mode") in ["aboveThresholdUA.defense", "simple.defense"]:
         data["procuringEntity"]["kind"] = "defense"
     elif params.get("mode") in ["belowThreshold", "reporting"]:
         data["procuringEntity"]["kind"] = "other"
@@ -347,10 +344,22 @@ def test_tender_data_planning(params):
         data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
     else:
         data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
+    # create buyer - determine buyer kind according to plan procurement method type
     buyers = test_buyers_data()
     buyers["name"] = buyers["identifier"]["legalName"]
+    if params.get("mode") in ["simple.defense"]:
+        buyers["kind"] = "defense"
+    elif params.get("mode") in ["belowThreshold", "reporting"]:
+        buyers["kind"] = "other"
+    elif params.get("mode") in ["priceQuotation"]:
+        buyers["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
+    else:
+        buyers["kind"] = random.choice(["general", "special", "central", "authority", "social"])
     data['buyers'].append(buyers)
-    if params.get('moz_integration'):
+    # determine cpv group - to know which cpv code to use
+    if params.get('cpv_group'):
+        id_cpv = params['cpv_group']
+    elif params.get('moz_integration'):
         id_cpv = 336
     elif params.get('road_index'):
         id_cpv = fake.road_cpv()[:4]

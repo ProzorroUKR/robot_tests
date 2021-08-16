@@ -106,7 +106,8 @@ from .initial_data import (
     test_unit_price_amount,
     test_monitoring_proceed_number_data,
     test_monitoring_liability_data,
-    log_webdriver_info
+    log_webdriver_info,
+    edit_data_for_buyers
 )
 from barbecue import chef
 from restkit import request
