@@ -107,6 +107,9 @@
 -i pre-qualification_approve_qualifications_second_stage
 
 -i auction
+-i auction_provider_url
+-i auction_provider2_url
+-i auction_viewer_url
 
 -i qualification_add_doc_to_first_award
 -i qualification_add_criteria_response_first_award
