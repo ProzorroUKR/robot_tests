@@ -15,6 +15,7 @@ from .local_time import get_now, TZ
 from datetime import datetime
 import string
 from copy import deepcopy
+from selenium import webdriver
 
 fake_en = Factory.create(locale='en_US')
 fake_ru = Factory.create(locale='ru_RU')
@@ -1521,3 +1522,9 @@ def test_monitoring_liability_data():
             }
     })
 
+
+def log_webdriver_info():
+    driver = webdriver.Chrome()
+    browser_version = "chrome version - " + driver.capabilities['version']
+    driver_version = "chromedriver version - " + driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
+    return browser_version, driver_version

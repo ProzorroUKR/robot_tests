@@ -6,9 +6,18 @@ Suite Teardown  Test Suite Teardown
 Library         Selenium2Library
 
 *** Variables ***
-@{USED_ROLES}  viewer  provider  provider1
+@{USED_ROLES}  viewer  provider  provider1  provider2
+
+${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scope']/div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
 
 *** Test Cases ***
+Залогувати інформацію про браузер та драйвер в консоль
+  [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      find_tender
+  Вивести інформацію про браузер та драйвер
+
+
 Можливість знайти закупівлю по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      ${USERS.users['${viewer}'].broker}
@@ -42,7 +51,7 @@ Library         Selenium2Library
   [Tags]   ${USERS.users['${provider}'].broker}: Процес аукціону
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      auction
+  ...      auction_provider_url
   Можливість вичитати посилання на аукціон для ${provider}
 
 
@@ -50,15 +59,23 @@ Library         Selenium2Library
   [Tags]   ${USERS.users['${provider1}'].broker}: Процес аукціону
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      auction
+  ...      auction_provider1_url
   Можливість вичитати посилання на аукціон для ${provider1}
+
+
+Можливість вичитати посилання на аукціон для третього учасника
+  [Tags]   ${USERS.users['${provider2}'].broker}: Процес аукціону
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      auction_provider2_url
+  Можливість вичитати посилання на аукціон для ${provider2}
 
 
 Можливість вичитати посилання на аукціон для глядача
   [Tags]   ${USERS.users['${viewer}'].broker}: Процес аукціону
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      auction
+  ...      auction_viewer_url
   Можливість вичитати посилання на аукціон для ${viewer}
 
 
@@ -373,9 +390,9 @@ Library         Selenium2Library
 
 Поставити максимально можливу ставку
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
   ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Get Text  id=max_bid_amount_price
+  ...        ELSE  Get Text  ${xpath_max_bid_amount_no_meat}
   ${last_amount}=  convert_amount_string_to_float  ${last_amount}
   ${value}=  Convert To Number  0.01
   ${last_amount}=  subtraction  ${last_amount}  ${value}
@@ -384,9 +401,9 @@ Library         Selenium2Library
 
 Поставити ставку в ${percent} відсотків від максимальної
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
   ${max_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Get Text  id=max_bid_amount_price
+  ...        ELSE  Get Text  ${xpath_max_bid_amount_no_meat}
   ${max_amount}=  convert_amount_string_to_float  ${max_amount}
   ${max_amount}=  Convert To Number  ${max_amount}  2
   ${percent}=  convert_amount_string_to_float  ${percent}
@@ -398,9 +415,9 @@ Library         Selenium2Library
 
 Поставити ставку більшу від максимальної на ${extra_amount} грн
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
   ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Get Text  id=max_bid_amount_price
+  ...        ELSE  Get Text  ${xpath_max_bid_amount_no_meat}
   ${last_amount}=  convert_amount_string_to_float  ${last_amount}
   ${extra_amount}=  convert_amount_string_to_float  ${extra_amount}
   ${last_amount}=  Evaluate  ${last_amount}+${extra_amount}
@@ -438,17 +455,22 @@ Library         Selenium2Library
 
 Поставити малу ставку в ${last_amount} грн
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
   Поставити ставку  ${last_amount}  Ви збираєтеся значно понизити свою ставку на
   Поставити ставку  ${last_amount}  Заявку прийнято
 
 
 Поставити нульову ставку
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-  ...        ELSE  Wait Until Page Contains Element  id=max_bid_amount_price
+  ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
   Поставити ставку  0  Ви збираєтеся значно понизити свою ставку на
   
 
 Перевірити чи ставка була прийнята
   ${last_amount}=  convert_amount  ${USERS['${CURRENT_USER}']['last_amount']}
   Page Should Contain  ${last_amount}
+
+
+Вивести інформацію про браузер та драйвер
+   ${info}=  log_webdriver_info
+   Log to console  ${info}
