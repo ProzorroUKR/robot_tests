@@ -34,6 +34,11 @@ Test Suite Teardown Plan
   Run Keyword And Ignore Error  Створити артефакт план
 
 
+Test Case Teardown Plan
+  Close all browsers
+  Run Keyword And Ignore Error  Створити артефакт план
+
+
 Set Suite Variable With Default Value
   [Arguments]  ${suite_var}  ${def_value}
   ${tmp}=  Get Variable Value  ${${suite_var}}  ${def_value}
@@ -249,7 +254,7 @@ Get Broker Property By Username
   ${TENDER}=  Create Dictionary
   Set Global Variable  ${TENDER}
   Log  ${tender_data}
-  [return]  ${tender_data}
+  [Return]  ${tender_data}
 
 
 Підготувати дані для створення плану
@@ -259,7 +264,20 @@ Get Broker Property By Username
   ${TENDER}=  Create Dictionary
   Set Global Variable  ${TENDER}
   Log  ${tender_data}
-  [return]  ${tender_data}
+  [Return]  ${tender_data}
+
+
+Підготувати дані для створення плану з buyers
+  [Arguments]  ${tender_parameters}  ${buyer}
+  Log  ${buyer}
+  ${data}=  test_tender_data_planning  ${tender_parameters}
+  ${plan_data}=  edit_data_for_buyers  ${data}  ${buyer}
+  Log  ${plan_data}
+  ${tender_data}=  Create Dictionary  data=${plan_data}
+  Log  ${tender_data}
+  ${TENDER}=  Create Dictionary
+  Set Global Variable  ${TENDER}
+  [Return]  ${tender_data}
 
 
 Підготувати дані для створення предмету закупівлі
