@@ -8,7 +8,9 @@ Library         Selenium2Library
 *** Variables ***
 @{USED_ROLES}  viewer  provider  provider1  provider2
 
-${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scope']/div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+${xpath_max_bid_amount_meat}        xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+${xpath_max_bid_amount_llc}         xpath=//*[@class='price-inform-block ng-scope']/div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid_amount_price']
 
 *** Test Cases ***
 Залогувати інформацію про браузер та драйвер в консоль
@@ -328,16 +330,20 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scop
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  30 times  5s  Page should contain  → ${round_number}
   ${date}=  Get Current Date
-  Переключитись на учасника  ${provider}
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider}
   Page should contain  → ${round_number}
-  Переключитись на учасника  ${provider1}
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider1}
+  Page should contain  → ${round_number}
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider2}
   Page should contain  → ${round_number}
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  30 times  5 s  Page should not contain  → ${round_number}
   ${new_date}=  Get Current Date
-  Переключитись на учасника  ${provider}
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider}
   Page should not contain  → ${round_number}
-  Переключитись на учасника  ${provider1}
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider1}
+  Page should not contain  → ${round_number}
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider2}
   Page should not contain  → ${round_number}
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
   Should Be True  ${time} < 140 and ${time} > 100
@@ -346,17 +352,20 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scop
 Дочекатись завершення паузи перед першим раундом для користувачів
   Wait Until Keyword Succeeds  30 times  5s  Page should contain  → 1
   ${date}=  Get Current Date
-  Відкрити сторінку аукціону для ${provider}
-  Відкрити сторінку аукціону для ${provider1}
+  Run Keyword And Ignore Error  Відкрити сторінку аукціону для ${provider}
+  Run Keyword And Ignore Error  Відкрити сторінку аукціону для ${provider1}
+  Run Keyword And Ignore Error  Відкрити сторінку аукціону для ${provider2}
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  62 times  5 s  Page should not contain  → 1
   ${new_date}=  Get Current Date
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
   Should Be True  ${time} < 310 and ${time} > 220
-  Переключитись на учасника  ${provider}
-  Page should not contain  → 1
-  Переключитись на учасника  ${provider1}
-  Page should not contain  → 1
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider}
+  Run Keyword And Ignore Error  Page should not contain  → 1
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider1}
+  Run Keyword And Ignore Error  Page should not contain  → 1
+  Run Keyword And Ignore Error  Переключитись на учасника  ${provider2}
+  Run Keyword And Ignore Error  Page should not contain  → 1
 
 
 Дочекатись закінчення стадії ставок глядачем
@@ -389,9 +398,11 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scop
 
 
 Поставити максимально можливу ставку
-  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_llc}
   ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
-  ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Get Text  ${xpath_max_bid_amount_llc}
   ...        ELSE  Get Text  ${xpath_max_bid_amount_no_meat}
   ${last_amount}=  convert_amount_string_to_float  ${last_amount}
   ${value}=  Convert To Number  0.01
@@ -400,9 +411,11 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scop
 
 
 Поставити ставку в ${percent} відсотків від максимальної
-  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_llc}
   ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
-  ${max_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ${max_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Get Text  ${xpath_max_bid_amount_llc}
   ...        ELSE  Get Text  ${xpath_max_bid_amount_no_meat}
   ${max_amount}=  convert_amount_string_to_float  ${max_amount}
   ${max_amount}=  Convert To Number  ${max_amount}  2
@@ -414,9 +427,11 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scop
 
 
 Поставити ставку більшу від максимальної на ${extra_amount} грн
-  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_llc}
   ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
-  ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Get Text  ${xpath_max_bid_amount_llc}
   ...        ELSE  Get Text  ${xpath_max_bid_amount_no_meat}
   ${last_amount}=  convert_amount_string_to_float  ${last_amount}
   ${extra_amount}=  convert_amount_string_to_float  ${extra_amount}
@@ -447,21 +462,23 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@class='price-inform-block ng-scop
 
 
 Вибрати учасника, який може зробити ставку
-  :FOR    ${username}    IN    ${provider}  ${provider1}
-  \   Переключитись на учасника   ${username}
+  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+  \   Run Keyword And Ignore Error  Переключитись на учасника   ${username}
   \   ${status}  ${_}=  Run Keyword And Ignore Error  Page Should Contain  до закінчення вашої черги
   \   Run Keyword If  '${status}' == 'PASS'    Exit For Loop
 
 
 Поставити малу ставку в ${last_amount} грн
-  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_llc}
   ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
   Поставити ставку  ${last_amount}  Ви збираєтеся значно понизити свою ставку на
   Поставити ставку  ${last_amount}  Заявку прийнято
 
 
 Поставити нульову ставку
-  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+  Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_meat}
+  ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_llc}
   ...        ELSE  Wait Until Page Contains Element  ${xpath_max_bid_amount_no_meat}
   Поставити ставку  0  Ви збираєтеся значно понизити свою ставку на
   
