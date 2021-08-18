@@ -9,6 +9,8 @@
 
 -v CRITERIA_GUARANTEE:True
 
+-v CRITERIA_LLC:False
+
 -i create_tender
 -i plan_status_complete_view
 -i find_tender

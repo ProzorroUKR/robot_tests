@@ -11,6 +11,7 @@
 
 -v ARTICLE_17:True
 
+-v CRITERIA_LLC:False
 
 -i create_tender
 -i find_tender
