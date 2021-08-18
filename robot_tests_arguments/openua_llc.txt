@@ -20,10 +20,10 @@
 -i make_bid_with_criteria_by_provider
 -i make_bid_with_criteria_by_provider1
 
--i auction_url_provider
--i auction_url_provider1
--i auction_url_viewer
 -i auction
+-i auction_provider_url
+-i auction_provider1_url
+-i auction_viewer_url
 
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
