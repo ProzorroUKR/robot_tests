@@ -2324,7 +2324,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${value}=  Run As  ${username}  Отримати інформацію із пропозиції  ${TENDER['TENDER_UAID']}  ${field}
   ${value}=  mult_and_round  ${value}  ${percent}  ${divider}  precision=${2}
   ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${TENDER['TENDER_UAID']}
-  Log  ${bid.data.lotValues[0].relatedLot}
   ${patch_bid_data}=  run keyword if  ${NUMBER_OF_LOTS} == 0
   ...  Підготувати дані про зміну цінової пропозиції в без лотовій процедурі  ${value}
   ...  ELSE  Підготувати дані про зміну цінової пропозиції в лотовій процедурі  ${value}  ${bid.data.lotValues[0].relatedLot}
