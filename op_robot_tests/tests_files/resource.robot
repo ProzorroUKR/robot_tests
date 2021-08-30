@@ -13,9 +13,9 @@ ${DASU_API_HOST_URL}  https://audit-api-staging.prozorro.gov.ua
 ${DASU_API_VERSION}   2.5
 
 ${DS_REGEXP}        ^https?:\/\/public-docs(?:-staging)?\.prozorro\.gov\.ua\/get\/([0-9A-Fa-f]{32})
-${AUCTION_REGEXP}   ^https?:\/\/auction(?:-staging)?\.prozorro\.gov\.ua\/(esco-)?tenders\/([0-9A-Fa-f]{32})
+${AUCTION_REGEXP}   ^https?:\/\/auction(?:-new-staging)?\.prozorro\.gov\.ua\/(esco-)?tenders\/([0-9A-Fa-f]{32})
 
-${OLD_SANDBOX_AUCTION_REGEXP}   ^https?:\/\/auction(?:-sandbox-2-old)?\.prozorro\.gov\.ua\/(esco-)?tenders\/([0-9A-Fa-f]{32})
+${OLD_SANDBOX_AUCTION_REGEXP}   ^https?:\/\/auction(?:-staging)?\.prozorro\.gov\.ua\/(esco-)?tenders\/([0-9A-Fa-f]{32})
 
 ${PAYMENT_API}              https://integration-staging.prozorro.gov.ua/liqpay
 ${PAYMENT_API_VERSION}      v1
