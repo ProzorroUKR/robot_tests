@@ -1751,22 +1751,17 @@ Library  Collections
   \    Set To Dictionary  ${bid.data.parameters[${index}]}  code=${code}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender.data.id}  ${bid}
   Log  ${reply}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
+  Set To Dictionary  ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
+  Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply['access']['token']}
   Set To Dictionary  ${USERS.users['${username}']}  bid_access_token=${reply.access.token}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].bid_access_token}
   ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
   ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  closeFrameworkAgreementUA  esco
   ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
-  Set To Dictionary  ${reply['data']}  status=${status}
-  ${reply_active}=  Call Method  ${USERS.users['${username}'].client}  patch_bid
-  ...     ${tender.data.id}
-  ...     ${reply}
-  ...     ${reply.data.id}
-  ...     access_token=${tender.access.token}
-  Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply['access']['token']}
-  Set To Dictionary   ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
+  ${field}=  Set variable  status
+  ${reply_active}=  Run as  ${username}  Змінити цінову пропозицію  ${tender_uaid}  ${field}  ${status}
   Log  ${reply_active}
-  Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
-  Log  ${reply}
 
 
 Подати цінову пропозицію в статусі draft
