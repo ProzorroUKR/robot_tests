@@ -106,7 +106,8 @@ from .initial_data import (
     test_unit_price_amount,
     test_monitoring_proceed_number_data,
     test_monitoring_liability_data,
-    log_webdriver_info
+    log_webdriver_info,
+    test_bid_value_stage1
 )
 from barbecue import chef
 from restkit import request
@@ -659,7 +660,6 @@ def generate_test_bid_data(tender_data, edrpou=None):
         bid = test_bid_competitive_data()
         bid.data.selfQualified = True
     elif tender_data.get('procurementMethodType', '') in (
-            'aboveThresholdUA.defense',
             'simple.defense'):
         bid = test_bid_competitive_data()
         bid.data.selfEligible = True
@@ -676,9 +676,16 @@ def generate_test_bid_data(tender_data, edrpou=None):
         for lot in tender_data['lots']:
             if tender_data.get('procurementMethodType', '') == 'esco':
                 value = test_bid_value_esco(tender_data)
+                value['relatedLot'] = lot.get('id', '')
+            if tender_data.get('procurementMethodType', '') in (
+                    'competitiveDialogueUA',
+                    'competitiveDialogueEU',
+            ):
+                relatedLot = lot.get('id', '')
+                value = test_bid_value_stage1(relatedLot)
             else:
                 value = test_bid_value(lot['value']['amount'], lot['value']['valueAddedTaxIncluded'])
-            value['relatedLot'] = lot.get('id', '')
+                value['relatedLot'] = lot.get('id', '')
             bid.data.lotValues.append(value)
     else:
         if tender_data.get('procurementMethodType', '') == 'esco':
