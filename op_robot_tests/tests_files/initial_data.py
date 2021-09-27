@@ -722,6 +722,12 @@ def test_bid_value_esco(tender_data):
     })
 
 
+def test_bid_value_stage1(relatedLot):
+    return munchify({
+        "relatedLot": relatedLot
+    })
+
+
 def test_bid_data_selection(data, index):
     bid = munchify({
         "data": {
