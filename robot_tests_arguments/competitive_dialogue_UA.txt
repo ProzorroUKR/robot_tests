@@ -5,9 +5,9 @@
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:1
 
--v TENDER_MEAT:False
--v ITEM_MEAT:False
+-v TENDER_MEAT:True
 -v LOT_MEAT:False
+-v ITEM_MEAT:False
 
 -v ARTICLE_17:True
 
@@ -28,9 +28,9 @@
 -i lot_view_value
 -i lot_view_minimalStep
 
--i make_bid_with_criteria_by_provider
--i make_bid_with_criteria_by_provider1
--i make_bid_with_criteria_by_provider2
+-i make_bid_with_criteria_by_provider_first_stage
+-i make_bid_with_criteria_by_provider1_first_stage
+-i make_bid_with_criteria_by_provider2_first_stage
 
 -i open_tender_view
 

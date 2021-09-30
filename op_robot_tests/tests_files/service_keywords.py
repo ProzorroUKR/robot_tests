@@ -649,55 +649,96 @@ def get_object_by_id(data, given_object_id, slice_element, object_id):
 
 
 def generate_test_bid_data(tender_data, edrpou=None):
-    if tender_data.get('procurementMethodType', '') in (
-            'aboveThresholdUA',
-            'aboveThresholdEU',
-            'competitiveDialogueUA',
-            'competitiveDialogueEU',
-            'closeFrameworkAgreementUA',
-            'esco'
-        ):
+    if tender_data.get('procurementMethodType', '') in ('aboveThresholdUA', 'aboveThresholdEU', 'closeFrameworkAgreementUA'):
         bid = test_bid_competitive_data()
         bid.data.selfQualified = True
-    elif tender_data.get('procurementMethodType', '') in (
-            'simple.defense'):
+        if 'lots' in tender_data:
+            bid.data.lotValues = []
+            for lot in tender_data['lots']:
+                value = test_bid_value(lot['value']['amount'], lot['value']['valueAddedTaxIncluded'])
+                value['relatedLot'] = lot.get('id', '')
+                bid.data.lotValues.append(value)
+        else:
+            bid.data.update(test_bid_value(tender_data['value']['amount'], tender_data['value']['valueAddedTaxIncluded']))
+        if 'features' in tender_data:
+            bid.data.parameters = []
+            for feature in tender_data['features']:
+                parameter = {"value": fake.random_element(elements=(0.05, 0.01, 0)), "code": feature.get('code', '')}
+                bid.data.parameters.append(parameter)
+    elif tender_data.get('procurementMethodType', '') == 'esco':
+        bid = test_bid_competitive_data()
+        bid.data.selfQualified = True
+        if 'lots' in tender_data:
+            bid.data.lotValues = []
+            for lot in tender_data['lots']:
+                    value = test_bid_value_esco(tender_data)
+                    value['relatedLot'] = lot.get('id', '')
+                    bid.data.lotValues.append(value)
+        else:
+            value = test_bid_value(tender_data)
+            bid.data.update(value)
+        if 'features' in tender_data:
+            bid.data.parameters = []
+            for feature in tender_data['features']:
+                parameter = {"value": fake.random_element(elements=(0.05, 0.01, 0)), "code": feature.get('code', '')}
+                bid.data.parameters.append(parameter)
+    elif tender_data.get('procurementMethodType', '') in ('competitiveDialogueUA', 'competitiveDialogueEU'):
+        bid = test_bid_competitive_data()
+        bid.data.selfQualified = True
+        if 'lots' in tender_data:
+            bid.data.lotValues = []
+            for lot in tender_data['lots']:
+                relatedLot = lot.get('id', '')
+                value = test_bid_value_stage1(relatedLot)
+                bid.data.lotValues.append(value)
+    elif tender_data.get('procurementMethodType', '') == 'simple.defense':
         bid = test_bid_competitive_data()
         bid.data.selfEligible = True
         bid.data.selfQualified = True
-    elif tender_data.get('procurementMethodType', '') in (
-            'competitiveDialogueUA.stage2',
-            'competitiveDialogueEU.stage2'):
-        bid = test_bid_competitive_data_stage_2(edrpou)
-        bid.data.selfQualified = True
-    else:
-        bid = test_bid_data()
-    if 'lots' in tender_data:
-        bid.data.lotValues = []
-        for lot in tender_data['lots']:
-            if tender_data.get('procurementMethodType', '') == 'esco':
-                value = test_bid_value_esco(tender_data)
-                value['relatedLot'] = lot.get('id', '')
-            if tender_data.get('procurementMethodType', '') in (
-                    'competitiveDialogueUA',
-                    'competitiveDialogueEU',
-            ):
-                relatedLot = lot.get('id', '')
-                value = test_bid_value_stage1(relatedLot)
-            else:
+        if 'lots' in tender_data:
+            bid.data.lotValues = []
+            for lot in tender_data['lots']:
                 value = test_bid_value(lot['value']['amount'], lot['value']['valueAddedTaxIncluded'])
                 value['relatedLot'] = lot.get('id', '')
-            bid.data.lotValues.append(value)
-    else:
-        if tender_data.get('procurementMethodType', '') == 'esco':
-            value = test_bid_value(tender_data)
-            bid.data.update(value)
+                bid.data.lotValues.append(value)
         else:
             bid.data.update(test_bid_value(tender_data['value']['amount'], tender_data['value']['valueAddedTaxIncluded']))
-    if 'features' in tender_data:
-        bid.data.parameters = []
-        for feature in tender_data['features']:
-            parameter = {"value": fake.random_element(elements=(0.05, 0.01, 0)), "code": feature.get('code', '')}
-            bid.data.parameters.append(parameter)
+        if 'features' in tender_data:
+            bid.data.parameters = []
+            for feature in tender_data['features']:
+                parameter = {"value": fake.random_element(elements=(0.05, 0.01, 0)), "code": feature.get('code', '')}
+                bid.data.parameters.append(parameter)
+    elif tender_data.get('procurementMethodType', '') in ('competitiveDialogueUA.stage2', 'competitiveDialogueEU.stage2'):
+        bid = test_bid_competitive_data_stage_2(edrpou)
+        bid.data.selfQualified = True
+        if 'lots' in tender_data:
+            bid.data.lotValues = []
+            for lot in tender_data['lots']:
+                value = test_bid_value(lot['value']['amount'], lot['value']['valueAddedTaxIncluded'])
+                value['relatedLot'] = lot.get('id', '')
+                bid.data.lotValues.append(value)
+        else:
+            bid.data.update(test_bid_value(tender_data['value']['amount'], tender_data['value']['valueAddedTaxIncluded']))
+        if 'features' in tender_data:
+            bid.data.parameters = []
+            for feature in tender_data['features']:
+                parameter = {"value": fake.random_element(elements=(0.05, 0.01, 0)), "code": feature.get('code', '')}
+                bid.data.parameters.append(parameter)
+    else:
+        bid = test_bid_data()
+        if 'lots' in tender_data:
+            bid.data.lotValues = []
+            for lot in tender_data['lots']:
+                value = test_bid_value(lot['value']['amount'], lot['value']['valueAddedTaxIncluded'])
+                value['relatedLot'] = lot.get('id', '')
+                bid.data.lotValues.append(value)
+        else:
+            bid.data.update(test_bid_value(tender_data['value']['amount'], tender_data['value']['valueAddedTaxIncluded']))
+        if 'features' in tender_data:
+            bid.data.parameters = []
+            for feature in tender_data['features']:
+                parameter = {"value": fake.random_element(elements=(0.05, 0.01, 0)), "code": feature.get('code', '')}
+                bid.data.parameters.append(parameter)
     return bid
 
 
