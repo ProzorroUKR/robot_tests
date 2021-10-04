@@ -224,6 +224,14 @@ ${award_index}      ${0}
   Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
 
 
+Дочекатись перевірки кваліфікації на наявність milestones
+  [Tags]   ${USERS.users['${tender_owner}'].broker}:
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      wait_to_check_milestones
+  Дочекатися перевірки наявності milestones  ${tender_owner}  ${TENDER['TENDER_UAID']}
+
+
 Повідомити учасника про невідповідність в тендерній пропозиції
   [Tags]   ${USERS.users['${tender_owner}'].broker}:
   ...      tender_owner
