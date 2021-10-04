@@ -65,6 +65,8 @@
 -i auction_provider2_url
 -i auction_viewer_url
 
+-i wait_active_qualification_start
+-i wait_to_check_milestones
 -i qualification_add_doc_to_first_award
 -i qualification_add_criteria_response_first_award
 -i qualification_reject_first_award
