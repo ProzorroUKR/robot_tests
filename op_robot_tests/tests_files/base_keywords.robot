@@ -2626,6 +2626,22 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${criteria}=  Завантажити відповіді на критерії в кваліфікацію  ${tender_owner}  ${tender.data.id}  ${award_criteria}  ${award.data.id}
   Log  ${criteria}
 
+
+Дочекатися перевірки наявності milestones
+    [Arguments]  ${username}  ${tender_uaid}
+    Перевірити наявність milestones в кваліфікації  ${username}  ${tender_uaid}
+
+
+Перевірити наявність milestones в кваліфікації
+    [Arguments]  ${username}  ${tender_uaid}
+    ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+    :FOR  ${award}  IN  @{tender.data.awards}
+    \   Log  ${award}
+    \   Run Keyword And Ignore Error  Log  ${award.milestones[0].dueDate}
+    \   ${due_date}=  Get variable value  ${award.milestones[0].dueDate}
+    \   Log  ${due_date}
+    \   Run keyword if  '${due_date}' != '${None}'  Дочекатись дати  ${due_date}
+
 ##############################################################################################
 #             PLAN
 ##############################################################################################

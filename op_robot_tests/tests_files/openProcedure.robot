@@ -2110,6 +2110,20 @@ ${CRITERIA_LLC}     ${False}
   Можливість активувати пропозицію користувачем ${provider}
 
 
+Можливість подати пропозицію першим учасником на першому етапі
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_with_criteria_by_provider_first_stage  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft на першому етапі користувачем ${provider}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
+  Можливість активувати пропозицію користувачем ${provider}
+
+
 Можливість зменшити пропозицію на 5% першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
@@ -2219,20 +2233,6 @@ ${CRITERIA_LLC}     ${False}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію на суму ${BID_AMOUNT_3} користувачем ${provider2}
-
-
-Можливість подати пропозицію першим учасником на першому етапі
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      make_bid_with_criteria_by_provider_first_stage  level1
-  ...      critical
-  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати цінову пропозицію в статусі draft на першому етапі користувачем ${provider}
-  Можливість завантажити документ в пропозицію користувачем ${provider}
-  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
-  Можливість активувати пропозицію користувачем ${provider}
 
 
 Можливість подати пропозицію другим учасником на першому етапі
@@ -3090,7 +3090,7 @@ ${CRITERIA_LLC}     ${False}
   ...      make_bid_with_criteria_by_provider2_second_stage
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем ${provider2}
+  Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем  ${provider2}
   Можливість завантажити документ в пропозицію користувачем ${provider2}
   Можливість додати до пропозиції відповідь на критерії користувачем ${provider2}
   Можливість активувати пропозицію коритувачем ${provider2}
