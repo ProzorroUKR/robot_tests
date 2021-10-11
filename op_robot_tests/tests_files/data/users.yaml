@@ -350,8 +350,24 @@ users:
     Newtend_Provider1:
         broker:   Newtend
         homepage: "https://dev23.newtend.com/"
-        login:    test.priv.comp.1@gmail.com
-        password: test.priv.comp.1
+        login:    test.provider1@gmail.com
+        password: test.provider1
+        browser:  chrome
+        position: [0, 0]
+        size:     [1200, 1200]
+    Newtend_Provider2:
+        broker:   Newtend
+        homepage: "https://dev23.newtend.com/"
+        login:    test.provider2@gmail.com
+        password: test.provider2
+        browser:  chrome
+        position: [0, 0]
+        size:     [1200, 1200]
+    Newtend_Provider3:
+        broker:   Newtend
+        homepage: "https://dev23.newtend.com/"
+        login:    test.provider3@gmail.com
+        password: test.provider3
         browser:  chrome
         position: [0, 0]
         size:     [1200, 1200]

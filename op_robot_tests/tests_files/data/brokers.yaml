@@ -289,9 +289,32 @@ ztv:
     timeout_on_wait: 300
 Newtend:
     keywords_file: newtend
+    intervals:
+        default:
+            accelerator: 1440
+            enquiry: [0, 18]
+            tender:  [0, 18]
+        openeu:
+            accelerator: 1440
+            tender:  [0, 50]
+        openua:
+            accelerator: 1440
+            tender:  [0, 65]
+        belowThreshold:
+            accelerator: 1440
+            enquiry: [0, 75]
+            tender:  [0, 65]
+        negotiation:
+            accelerator: 360
+            enquiry: [0, 20]
+            tender:  [0, 20]
+        openua_defense:
+            tender:  [0, 110]
     roles:
-        provider:       Newtend_Provider1
         tender_owner:   Newtend_Owner
+        provider:       Newtend_Provider1
+        provider1:      Newtend_Provider2
+        provider2:      Newtend_Provider3
         viewer:         Newtend_Viewer
     timeout_on_wait: 60
 PrivatMarket:
