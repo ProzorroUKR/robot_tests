@@ -924,8 +924,9 @@ ${CRITERIA_LLC}     ${False}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${contract_data}=  Розрахувати ціну за одиницю товару  ${tender_owner}  ${TENDER['TENDER_UAID']}
-  Run As  ${tender_owner}  Встановити ціну за одиницю товару в контракті  ${TENDER['TENDER_UAID']}  ${contract_data}
+  ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
+  ${contract_data}=  Розрахувати ціну за одиницю товару  ${tender_owner}  ${TENDER['TENDER_UAID']}  ${contract_index}
+  Run As  ${tender_owner}  Встановити ціну за одиницю товару в контракті  ${TENDER['TENDER_UAID']}  ${contract_data}  ${contract_index}
 
 
 Можливість укласти угоду для закупівлі
@@ -1079,10 +1080,9 @@ ${CRITERIA_LLC}     ${False}
   ...      change_contract_amount
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
-  ${amount}=  create_fake_amount
-  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
-  ...      ${award.value.valueAddedTaxIncluded}
-  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  Log  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ${number}=  Set Variable  ${5000}
+  ${amount}=  Evaluate  ${number}+${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
 

@@ -731,6 +731,12 @@ def test_bid_value_esco(tender_data):
     })
 
 
+def test_bid_value_stage1(relatedLot):
+    return munchify({
+        "relatedLot": relatedLot
+    })
+
+
 def test_bid_data_selection(data, index):
     bid = munchify({
         "data": {
@@ -747,8 +753,14 @@ def test_bid_data_selection(data, index):
     return bid
 
 
-def test_bid_data_pq(data, over_limit=False, missing_criteria=False, more_than_two_requirements=False, invalid_expected_value=False):
+def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, more_than_two_requirements=False, invalid_expected_value=False):
     bid = test_bid_data()
+    if username == "Tender_User":
+        bid.data["tenderers"][0]["identifier"]["id"] = "21725150"
+    if username == "Tender_User1":
+        bid.data["tenderers"][0]["identifier"]["id"] = "2833906462"
+    if username == "Tender_User2":
+        bid.data["tenderers"][0]["identifier"]["id"] = "2894905868"
     bid.data.requirementResponses = []
     if 'criteria' in data:
         for criteria in data['criteria']:
@@ -1474,7 +1486,7 @@ def test_pricequotation_unsuccessfulReason_data(unsuccessfulReason):
         text = u'Обраний профіль не існує в системі Prozorro.Market'
         reason.append(text)
     if unsuccessfulReason == "empty":
-        text = u'В обраному профілі немає активних постачальників'
+        text = u'Для обраного профілю немає активних реєстрів'
         reason.append(text)
     return reason
 

@@ -7,6 +7,8 @@
 -v ITEM_MEAT:False
 -v LOT_MEAT:False
 
+-v CRITERIA_LLC:False
+
 -i create_tender
 -i find_tender
 -i tender_view
@@ -44,10 +46,10 @@
 
 -i ask_question_to_tender_after_tendering_period
 
--i auction_url_provider
--i auction_url_provider1
--i auction_url_viewer
 -i auction
+-i auction_provider_url
+-i auction_provider1_url
+-i auction_viewer_url
 
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award

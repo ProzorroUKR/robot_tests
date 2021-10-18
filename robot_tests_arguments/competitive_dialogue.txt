@@ -4,11 +4,12 @@
 -v NUMBER_OF_LOTS:1
 
 -v TENDER_MEAT:True
--v ITEM_MEAT:True
--v LOT_MEAT:True
+-v LOT_MEAT:False
+-v ITEM_MEAT:False
 
 -v ARTICLE_17:True
 
+-v CRITERIA_LLC:False
 
 -i create_tender
 -i find_tender
@@ -49,10 +50,10 @@
 -i modify_lot_after_questions
 
 -i make_bid_without_related_lot
--i make_bid_with_criteria_by_provider
+-i make_bid_with_criteria_by_provider_first_stage
   -i add_doc_to_bid_by_provider
--i make_bid_with_criteria_by_provider1
--i make_bid_with_criteria_by_provider2
+-i make_bid_with_criteria_by_provider1_first_stage
+-i make_bid_with_criteria_by_provider2_first_stage
 
 -i bid_view_in_tendering_period
 
@@ -107,6 +108,9 @@
 -i pre-qualification_approve_qualifications_second_stage
 
 -i auction
+-i auction_provider_url
+-i auction_provider2_url
+-i auction_viewer_url
 
 -i qualification_add_doc_to_first_award
 -i qualification_add_criteria_response_first_award
