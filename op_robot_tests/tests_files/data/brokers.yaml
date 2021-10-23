@@ -292,24 +292,25 @@ Newtend:
     intervals:
         default:
             accelerator: 1440
-            enquiry: [0, 18]
-            tender:  [0, 18]
+            enquiry: [0, 15]
+            tender:  [0, 15]
         openeu:
             accelerator: 1440
-            tender:  [0, 50]
+            tender:  [0, 35]
         openua:
             accelerator: 1440
-            tender:  [0, 65]
+            tender:  [0, 35]
         belowThreshold:
             accelerator: 1440
-            enquiry: [0, 75]
-            tender:  [0, 65]
+            enquiry: [0, 15]
+            tender:  [0, 35]
         negotiation:
-            accelerator: 360
+            accelerator: 1440
             enquiry: [0, 20]
             tender:  [0, 20]
         openua_defense:
-            tender:  [0, 110]
+            accelerator: 1440
+            tender:  [0, 35]
     roles:
         tender_owner:   Newtend_Owner
         provider:       Newtend_Provider1
