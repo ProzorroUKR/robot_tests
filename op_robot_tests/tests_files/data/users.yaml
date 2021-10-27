@@ -341,15 +341,15 @@ users:
         size:     [1366, 800]
     Newtend_Owner:
         broker:   Newtend
-        homepage: "https://dev23.newtend.com/"
-        login:    test.gov.comp.1@gmail.com
-        password: test.gov.comp.1
+        homepage: "https://autotest.newtend.com/"
+        login:    test.owner@gmail.com
+        password: testowner0
         browser:  chrome
         position: [0, 0]
         size:     [1200, 1200]
     Newtend_Provider1:
         broker:   Newtend
-        homepage: "https://dev23.newtend.com/"
+        homepage: "https://autotest.newtend.com/"
         login:    test.provider1@gmail.com
         password: test.provider1
         browser:  chrome
@@ -357,7 +357,7 @@ users:
         size:     [1200, 1200]
     Newtend_Provider2:
         broker:   Newtend
-        homepage: "https://dev23.newtend.com/"
+        homepage: "https://autotest.newtend.com/"
         login:    test.provider2@gmail.com
         password: test.provider2
         browser:  chrome
@@ -365,7 +365,7 @@ users:
         size:     [1200, 1200]
     Newtend_Provider3:
         broker:   Newtend
-        homepage: "https://dev23.newtend.com/"
+        homepage: "https://autotest.newtend.com/"
         login:    test.provider3@gmail.com
         password: test.provider3
         browser:  chrome
@@ -373,7 +373,7 @@ users:
         size:     [1200, 1200]
     Newtend_Viewer:
         broker:   Newtend
-        homepage: "https://dev23.newtend.com/"
+        homepage: "https://autotest.newtend.com/"
         browser:  chrome
         position: [0, 0]
         size:     [1200, 1200]
