@@ -338,6 +338,67 @@ Library  Collections
   [Return]  ${tender.data.tenderID}
 
 
+Створити тендер з buyers
+  [Arguments]  ${username}  ${tender_data}  ${plan_1_id}  ${plan_1_token}  ${plan_2_id}  ${plan_2_token}  ${plan_3_id}
+  ...  ${plan_3_token}  ${criteria_guarantee}=None  ${criteria_lot}=None  ${criteria_llc}=None
+  Log  ${plan_1_id}
+  Log  ${plan_1_token}
+  Log  ${plan_2_id}
+  Log  ${plan_2_token}
+  Log  ${plan_3_id}
+  Log  ${plan_3_token}
+  ${tender}=  Call Method  ${USERS.users['${username}'].tender_create_client}  create_tender
+  ...      ${plan_1_id}
+  ...      ${tender_data}
+  ...      access_token=${plan_1_token}
+  Log  ${tender}
+  Log  ${tender.data.id}
+  Log  ${tender.access.token}
+  ${plan_data}=  Підготувати дані агрегованих планів  ${plan_2_id}
+  ${aggregate_plans} =  Call Method  ${USERS.users['${username}'].client}  aggregate_plans
+  ...  ${tender.data.id}
+  ...  ${plan_data}
+  ...  access_token=${tender.access.token}
+  ${plan_data}=  Підготувати дані агрегованих планів  ${plan_3_id}
+  ${aggregate_plans} =  Call Method  ${USERS.users['${username}'].client}  aggregate_plans
+  ...  ${tender.data.id}
+  ...  ${plan_data}
+  ...  access_token=${tender.access.token}
+  ${access_token}=  Get Variable Value  ${tender.access.token}
+  ${article_17_data}=  Run keyword If  ${ARTICLE_17} == True  Підготувати дані по критеріям статті 17
+  ${tender_criteria}=  Run keyword If  ${ARTICLE_17} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${article_17_data}
+  ...      access_token=${tender.access.token}
+  Log  ${tender_criteria}
+  ${criteria_guarantee_data}=  Run keyword If  ${CRITERIA_GUARANTEE} == True  Підготувати дані по критеріям гарантії  ${criteria_lot}  ${tender}
+  ${tender_criteria_guarantee}=  Run keyword If  ${CRITERIA_GUARANTEE} == True   Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${criteria_guarantee_data}
+  ...      access_token=${tender.access.token}
+  ${criteria_llc_data}=  Run keyword If  ${criteria_llc} == True  Підготувати дані по критеріям життєвого циклу  ${criteria_lot}  ${tender}
+  ${tender_criteria_llc}=  Run keyword If  ${criteria_llc} == True  Call Method  ${USERS.users['${username}'].client}  create_criteria
+  ...      ${tender.data.id}
+  ...      ${criteria_llc_data}
+  ...      access_token=${tender.access.token}
+  ${status}=  Set Variable If  'aboveThreshold' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
+  ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
+  ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
+  ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
+  Set To Dictionary  ${tender['data']}  status=${status}
+  ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
+  ...      ${tender.data.id}
+  ...      ${tender}
+  ...      access_token=${tender.access.token}
+  Log  ${tender}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
+  Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
+  Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
+  Log   ${USERS.users['${username}'].tender_data}
+  [Return]  ${tender.data.tenderID}
+
+
 Створити тендер другого етапу
   [Arguments]  ${username}  ${tender_data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
@@ -2136,7 +2197,7 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${award}=  create_data_dict  data.status  active
   Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
-  Run Keyword IF  'open' in '${MODE}'
+  Run Keyword IF  'aboveThreshold' in '${MODE}'
   ...      Set To Dictionary  ${award.data}
   ...      qualified=${True}
   ...      eligible=${True}
@@ -2632,6 +2693,59 @@ Library  Collections
   Log  ${reply}
 
 
+Встановити ціну за одиницю товару в контрактах buyers
+  [Arguments]  ${username}  ${tender_uaid}  ${award_index}
+  ${award_value}=  Set Variable  ${USERS.users['${username}'].tender_data.data.awards[${award_index}].value.amount}
+  Log  ${award_value}
+  ${item_value}=  Evaluate  ${award_value}/${NUMBER_OF_ITEMS}
+  ${item_value}  Convert To Integer  ${item_value}
+  Log  ${item_value}
+  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+  \  ${quantity}=  Set Variable  ${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+  \  Log  ${quantity}
+  \  ${value}=  Evaluate  ${item_value}/${quantity}
+  \  ${value}=  Convert To Integer  ${value}
+  \  Log  ${value}
+  \  ${contract_data}=  test_unit_price_amount_buyer  ${value}
+  \  Log  ${contract_data}
+  \  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  \  Log  ${tender}
+  \  Log  ${tender['data']['contracts'][${index}]['id']}
+  \  ${tender_id}=  Set Variable  ${tender.data.id}
+  \  ${contract_id}=  Set Variable  ${tender['data']['contracts'][${index}]['id']}
+  \  ${access_token}=  Set Variable  ${tender.access.token}
+  \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+  \  ...      ${tender_id}
+  \  ...      ${contract_data}
+  \  ...      contract_id=${contract_id}
+  \  ...      access_token=${access_token}
+  \  Log  ${reply}
+
+
+Встановити ціну в контрактах buyers
+  [Arguments]  ${username}  ${tender_uaid}  ${award_index}
+  ${award_value}=  Set Variable  ${USERS.users['${username}'].tender_data.data.awards[${award_index}].value.amount}
+  Log  ${award_value}
+  ${item_amount}=  Evaluate  ${award_value}/${NUMBER_OF_ITEMS}
+  ${item_amount}  Convert To Integer  ${item_amount}
+  Log  ${item_amount}
+  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+  \  ${contract_data}=  test_contract_price_amount_buyer  ${item_amount}
+  \  Log  ${contract_data}
+  \  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  \  Log  ${tender}
+  \  Log  ${tender['data']['contracts'][${index}]['id']}
+  \  ${tender_id}=  Set Variable  ${tender.data.id}
+  \  ${contract_id}=  Set Variable  ${tender['data']['contracts'][${index}]['id']}
+  \  ${access_token}=  Set Variable  ${tender.access.token}
+  \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+  \  ...      ${tender_id}
+  \  ...      ${contract_data}
+  \  ...      contract_id=${contract_id}
+  \  ...      access_token=${access_token}
+  \  Log  ${reply}
+
+
 Встановити ціну за одиницю для контракту
   [Arguments]  ${username}  ${tender_uaid}  ${contract_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
@@ -2741,6 +2855,27 @@ Library  Collections
   ...      access_token=${tender.access.token}
   Log  ${reply}
   [Return]  ${reply}
+
+
+Підтвердити підписання контракту кожного buyer
+  [Documentation]
+  ...      [Arguments] Username, tender uaid, contract number
+  ...      Find tender using uaid, get contract test_confirmation data and call patch_contract
+  ...      [Return] Nothing
+  [Arguments]  ${username}  ${tender_uaid}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  Log  ${tender}
+  ${number_of_contracts}=  Get Length  ${tender.data.contracts}
+  Log  ${number_of_contracts}
+  :FOR  ${index}  IN RANGE  ${number_of_contracts}
+  \  ${data}=  test_confirm_data  ${tender['data']['contracts'][${index}]['id']}
+  \  Log  ${data}
+  \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+  \  ...      ${tender.data.id}
+  \  ...      ${data}
+  \  ...      ${data.data.id}
+  \  ...      access_token=${tender.access.token}
+  \  Log  ${reply}
 
 ##############################################################################
 #             CONTRACT MANAGEMENT
