@@ -1,0 +1,52 @@
+-v MODE:aboveThresholdUA
+
+-v NUMBER_OF_ITEMS:3
+-v NUMBER_OF_LOTS:1
+
+-v TENDER_MEAT:True
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-v KIND:central
+-v CPV_GROUP:2280
+
+-v ARTICLE_17:True
+
+-i create_buyers_plan_dictionary
+-i create_plan_for_buyer_1
+-i create_plan_for_buyer_2
+-i create_plan_for_buyer_3
+-i create_tender_plans_aggregation
+
+-i find_tender
+
+-i tender_view
+
+-i make_bid_with_criteria_by_provider
+-i make_bid_with_criteria_by_provider1
+
+-i wait_active_qualification_start
+-i qualification_add_doc_to_first_award
+-i qualification_add_criteria_response_first_award
+-i qualification_approve_first_award
+
+-i contract_stand_still
+-i contract_unit_price_buyers
+-i add_doc_to_contract
+-i contract_doc_documentOf
+-i contract_sign_buyers
+
+-i find_contract
+-i access_contract
+-i submit_change
+-i view_change
+-i upload_change_document
+-i modify_change
+-i change_contract_amountNet
+-i change_contract_amount
+-i apply_change
+-i add_contract_doc
+-i termination_reasons
+-i amount_paid
+-i change_amount_paid
+-i contract_termination
