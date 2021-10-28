@@ -200,9 +200,9 @@ def test_tender_data(params,
     }
     if params.get("criteria_llc"):
         data["awardCriteria"] = "lifeCycleCost"
-    if params.get("mode") == "open_framework":
+    if params.get("mode") == "closeFrameworkAgreementUA":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
-    elif params.get("mode") == "open_competitive_dialogue":
+    elif params.get("mode") in ["competitiveDialogueEU", "competitiveDialogueUA"]:
         data["mainProcurementCategory"] = random.choice(['services', 'works'])
     else:
         data["mainProcurementCategory"] = random.choice(['goods', 'services', 'works'])
