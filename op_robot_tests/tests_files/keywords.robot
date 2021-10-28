@@ -257,6 +257,25 @@ Get Broker Property By Username
   [Return]  ${tender_data}
 
 
+Підготувати дані для створення тендера buyers
+  [Arguments]  ${tender_parameters}  ${plan_data}
+  ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
+  ${submissionMethodDetails}=  Get Variable Value  ${submissionMethodDetails}
+  ${accelerator}=  Get Variable Value  ${accelerator}
+  ${funders}=  Get Variable Value  ${FUNDERS}
+  ${tender_data}=  prepare_test_tender_data
+  ...  ${period_intervals}
+  ...  ${tender_parameters}
+  ...  ${submissionMethodDetails}
+  ...  ${accelerator}
+  ...  ${funders}
+  ...  ${plan_data}
+  ${TENDER}=  Create Dictionary
+  Set Global Variable  ${TENDER}
+  Log  ${tender_data}
+  [Return]  ${tender_data}
+
+
 Підготувати дані для створення плану
   [Arguments]  ${tender_parameters}
   ${data}=  test_tender_data_planning  ${tender_parameters}
@@ -278,6 +297,12 @@ Get Broker Property By Username
   ${TENDER}=  Create Dictionary
   Set Global Variable  ${TENDER}
   [Return]  ${tender_data}
+
+
+Підготувати дані агрегованих планів
+  [Arguments]  ${plan_id}
+  ${plan_data}=  test_aggregate_plans_data  ${plan_id}
+  [Return]  ${plan_data}
 
 
 Підготувати дані для створення предмету закупівлі
