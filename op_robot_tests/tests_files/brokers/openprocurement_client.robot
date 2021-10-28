@@ -274,7 +274,7 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${criteria_llc_data}
   ...      access_token=${tender.access.token}
-  ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
@@ -320,7 +320,7 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${criteria_llc_data}
   ...      access_token=${tender.access.token}
-  ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
@@ -381,7 +381,7 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${criteria_llc_data}
   ...      access_token=${tender.access.token}
-  ${status}=  Set Variable If  'aboveThreshold' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
@@ -404,7 +404,7 @@ Library  Collections
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
-  ${status}=  Set Variable If  'open' in '${MODE}'  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
   ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
