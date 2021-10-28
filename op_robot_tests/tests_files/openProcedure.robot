@@ -319,6 +319,16 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   Можливість створити план закупівлі для buyer_3
 
 
+Можливість оголосити тендер з агрегацією планів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_plans_aggregation  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з агрегацією планів
+
+
 Можливість знайти тендер по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      viewer  tender_owner  provider  provider1
