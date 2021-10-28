@@ -210,7 +210,17 @@ def test_tender_data(params,
         if accelerator else params['intervals']['accelerator']
     data['procurementMethodDetails'] = 'quick, ' \
                                        'accelerator={}'.format(accelerator)
-    data["procuringEntity"]["kind"] = "other"
+    # determine procuringEntity  according to plan procurement method type or kind variable
+    if params.get('kind'):
+        data["procuringEntity"]["kind"] = params.get('kind')
+    elif params.get("mode") in ["simple.defense"]:
+        data["procuringEntity"]["kind"] = "defense"
+    elif params.get("mode") in ["belowThreshold", "reporting"]:
+        data["procuringEntity"]["kind"] = "other"
+    elif params.get("mode") in ["priceQuotation"]:
+        data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
+    else:
+        data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
     if data.get("mode") == "test":
         data["title"] = u"[ТЕСТУВАННЯ] {}".format(data["title"])
         data["title_en"] = u"[TESTING] {}".format(data["title_en"])
@@ -313,6 +323,20 @@ def test_tender_data_planning(params):
                 "endDate": get_now().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
             }
         },
+        "procuringEntity": {
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": random.choice(["13313462", "00037256"]),
+                "legalName": random.choice([u"Київський Тестовий Ліцей", u"Київська Тестова міська клінічна лікарня"]),
+            },
+            "address": {
+                "countryName": "Україна",
+                "postalCode": "01220",
+                "region": "м. Київ",
+                "streetAddress": "вул. Банкова, 11, корпус 1",
+                "locality": "м. Київ"
+            }
+        },
         "tender": {
             "procurementMethod": "",
             "procurementMethodType": params['mode'],
@@ -324,19 +348,11 @@ def test_tender_data_planning(params):
         "items": [],
         "buyers": []
     }
-    # use kind variable when create procuringEntity  - for now only if we want create plan where procuringEntity is cpb
-    if params.get('kind') == "central":
-        data["procuringEntity"] = fake.cpb_data()
-        data["procuringEntity"]["kind"] = "central"
-    else:
-        data["procuringEntity"] = fake.procuringEntity()
     data["procuringEntity"]["name"] = data["procuringEntity"]["identifier"]["legalName"]
-    # procuringEntity contactPoint is a rogue filed for plan - we delete it to avoid error
-    del data["procuringEntity"]["contactPoint"]
-    # determine procuringEntity  according to plan procurement method type or kind variable
+    # determine procuringEntity according to plan procurement method type or kind variable
     if params.get('kind'):
         data["procuringEntity"]["kind"] = params.get('kind')
-    elif params.get("mode") in ["aboveThresholdUA.defense", "simple.defense"]:
+    elif params.get("mode") in ["simple.defense"]:
         data["procuringEntity"]["kind"] = "defense"
     elif params.get("mode") in ["belowThreshold", "reporting"]:
         data["procuringEntity"]["kind"] = "other"
@@ -344,6 +360,12 @@ def test_tender_data_planning(params):
         data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
     else:
         data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
+    # if kind variable is central set cpb as procuringEntity
+    if params.get('kind') == "central":
+        data["procuringEntity"] = fake.cpb_data()
+        data["procuringEntity"]["kind"] = "central"
+    # procuringEntity contactPoint is a rogue filed for plan - we delete it to avoid error
+        del data["procuringEntity"]["contactPoint"]
     # create buyer - determine buyer kind according to plan procurement method type
     buyers = test_buyers_data()
     buyers["name"] = buyers["identifier"]["legalName"]
@@ -882,7 +904,7 @@ def test_tender_data_openua(params, submissionMethodDetails, plan_data):
     Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdUA'
-    data['procuringEntity']['kind'] = 'general'
+    #data['procuringEntity']['kind'] = 'general'
     return data
 
 
@@ -1522,6 +1544,31 @@ def test_unit_price_amount(amount):
     })
 
 
+def test_unit_price_amount_buyer(amount):
+    return munchify({
+        "data": {
+            "items": [{
+                "unit": {
+                    "value": {
+                        "amount": amount
+                            }
+                        }
+                    }]
+        }
+    })
+
+
+def test_contract_price_amount_buyer(amount):
+    return munchify({
+        "data": {
+            "value": {
+                "amount": amount,
+                "amountNet": amount * 0.85
+            }
+        }
+    })
+
+
 def test_monitoring_proceed_number_data():
     return munchify({
         "data": {
@@ -1621,3 +1668,33 @@ def edit_data_for_buyers(data, buyer):
     dict_data['buyers'].pop(0)
     dict_data['buyers'].append(buyer)
     return munchify(dict_data)
+
+
+def test_aggregate_plans_data(plan_id):
+    return munchify({
+        "data": {
+            "id": plan_id
+        }
+    })
+
+
+def edit_tender_data_for_buyers(tender_data, plan_1_data, plan_2_data, plan_3_data):
+    tender_data = unmunchify(tender_data)
+    tender_data['data']['buyers'] = []
+    address = fake.address_data()
+    plan_data_1 = unmunchify(plan_1_data)
+    plan_data_2 = unmunchify(plan_2_data)
+    plan_data_3 = unmunchify(plan_3_data)
+    buyer_1 = plan_data_1['data']['buyers'][0]
+    buyer_2 = plan_data_2['data']['buyers'][0]
+    buyer_3 = plan_data_3['data']['buyers'][0]
+    tender_data['data']['items'][0]["deliveryAddress"] = address["deliveryAddress"]
+    tender_data['data']['items'][1]["deliveryAddress"] = address["deliveryAddress"]
+    tender_data['data']['items'][2]["deliveryAddress"] = address["deliveryAddress"]
+    tender_data['data']['items'][0]["relatedBuyer"] = buyer_1["id"]
+    tender_data['data']['items'][1]["relatedBuyer"] = buyer_2["id"]
+    tender_data['data']['items'][2]["relatedBuyer"] = buyer_3["id"]
+    tender_data['data']['buyers'].append(buyer_1)
+    tender_data['data']['buyers'].append(buyer_2)
+    tender_data['data']['buyers'].append(buyer_3)
+    return munchify(tender_data)
