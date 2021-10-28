@@ -1,4 +1,4 @@
--v MODE:openua
+-v MODE:aboveThresholdUA
 
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:1
