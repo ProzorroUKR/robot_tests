@@ -9,6 +9,7 @@ Suite Teardown  Test Suite Teardown
 ${MODE}             openeu
 @{USED_ROLES}       tender_owner  provider  provider1  provider2  viewer
 ${DIALOGUE_TYPE}    EU
+@{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple.defense  closeFrameworkAgreementUA
 
 ${NUMBER_OF_ITEMS}  ${1}
 ${NUMBER_OF_LOTS}   ${1}
@@ -466,7 +467,7 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      ${USERS.users['${viewer}'].broker}
   ...      tender_view
   ...      non-critical
-  Run Keyword IF  'open' in '${MODE}'
+  Run Keyword IF  '${MODE}' in @{active_tendering_procedure_types}
   ...      Отримати дані із поля enquiryPeriod.startDate тендера для усіх користувачів
   ...      ELSE
   ...      Звірити відображення дати enquiryPeriod.startDate тендера для усіх користувачів
@@ -478,7 +479,7 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      ${USERS.users['${viewer}'].broker}
   ...      tender_view  level2
   ...      critical
-  Run Keyword IF  'open' in '${MODE}'
+  Run Keyword IF  '${MODE}' in @{active_tendering_procedure_types}
   ...      Отримати дані із поля enquiryPeriod.endDate тендера для усіх користувачів
   ...      ELSE
   ...      Звірити відображення дати enquiryPeriod.endDate тендера для усіх користувачів
