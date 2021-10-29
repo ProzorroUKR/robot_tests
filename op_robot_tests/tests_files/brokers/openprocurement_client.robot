@@ -4,6 +4,8 @@ Library  openprocurement_client_helper.py
 Library  openprocurement_client.utils
 Library  Collections
 
+*** Variables ***
+@{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple.defense  closeFrameworkAgreementUA
 
 *** Keywords ***
 Отримати internal id по UAid
@@ -274,8 +276,8 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${criteria_llc_data}
   ...      access_token=${tender.access.token}
-  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
-  ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
+  ${status}=  Set Variable If  '${MODE}' in @{active_tendering_procedure_types}  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'belowThreshold' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
@@ -320,8 +322,8 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${criteria_llc_data}
   ...      access_token=${tender.access.token}
-  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
-  ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
+  ${status}=  Set Variable If  '${MODE}' in @{active_tendering_procedure_types}  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'belowThreshold' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
@@ -381,8 +383,8 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${criteria_llc_data}
   ...      access_token=${tender.access.token}
-  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
-  ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
+  ${status}=  Set Variable If  '${MODE}' in @{active_tendering_procedure_types}  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'belowThreshold' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
@@ -404,8 +406,8 @@ Library  Collections
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  create_tender  ${tender_data}
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
-  ${status}=  Set Variable If  '${MODE}' in ['aboveThresholdEU',  'aboveThresholdUA', 'competitiveDialogueUA', 'competitiveDialogueEU', 'simple.defense', 'closeFrameworkAgreementUA']  active.tendering  ${EMPTY}
-  ${status}=  Set Variable If  'below' in '${MODE}'  active.enquiries  ${status}
+  ${status}=  Set Variable If  '${MODE}' in @{active_tendering_procedure_types}  active.tendering  ${EMPTY}
+  ${status}=  Set Variable If  'belowThreshold' in '${MODE}'  active.enquiries  ${status}
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   Set To Dictionary  ${tender['data']}  status=${status}
