@@ -7,6 +7,8 @@ Library  Collections
 *** Variables ***
 @{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple.defense  closeFrameworkAgreementUA
 
+@{qualified_eligible_procedure_types}  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA
+
 *** Keywords ***
 Отримати internal id по UAid
   [Arguments]  ${username}  ${tender_uaid}
@@ -2199,7 +2201,7 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${award}=  create_data_dict  data.status  active
   Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
-  Run Keyword IF  'aboveThreshold' in '${MODE}'
+  Run Keyword IF  '${MODE}' in @{qualified_eligible_procedure_types}
   ...      Set To Dictionary  ${award.data}
   ...      qualified=${True}
   ...      eligible=${True}
