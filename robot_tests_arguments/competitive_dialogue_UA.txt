@@ -1,4 +1,4 @@
--v MODE:open_competitive_dialogue
+-v MODE:competitiveDialogueUA
 
 -v DIALOGUE_TYPE:UA
 
