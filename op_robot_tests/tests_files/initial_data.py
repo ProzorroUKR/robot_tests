@@ -399,8 +399,9 @@ def test_tender_data_planning(params):
     del data['deliveryLocation']
     del data['quantity']
     del data['unit']
+    cpv = data["classification"]["id"]
     for i in range(params['number_of_items']):
-        item_data = test_item_data(id_cpv)
+        item_data = test_item_data(cpv)
         del item_data['deliveryAddress']
         del item_data['deliveryLocation']
         item_data['deliveryDate']['endDate'] = (get_now() + timedelta(days=10)).replace(hour=0, minute=0, second=0,
