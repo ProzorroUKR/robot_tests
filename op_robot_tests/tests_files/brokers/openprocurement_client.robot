@@ -7,7 +7,7 @@ Library  Collections
 *** Variables ***
 @{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple.defense  closeFrameworkAgreementUA
 
-@{qualified_eligible_procedure_types}  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA
+@{qualified_eligible_procedure_types}  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  simple.defense
 
 *** Keywords ***
 Отримати internal id по UAid
