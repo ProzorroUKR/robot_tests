@@ -376,7 +376,7 @@ def prepare_test_tender_data(procedure_intervals,
         return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
     elif mode == 'negotiation.quick':
         return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
-    elif mode == 'openeu':
+    elif mode == 'aboveThresholdEU':
         return munchify({'data': test_tender_data_openeu(
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'aboveThresholdUA':
@@ -385,12 +385,15 @@ def prepare_test_tender_data(procedure_intervals,
     elif mode == 'openua_defense':
         return munchify({'data': test_tender_data_openua_defense(
             tender_parameters, submissionMethodDetails, plan_data)})
-    elif mode == 'open_competitive_dialogue':
+    elif mode == 'competitiveDialogueEU':
+        return munchify({'data': test_tender_data_competitive_dialogue(
+            tender_parameters, submissionMethodDetails, plan_data)})
+    elif mode == 'competitiveDialogueUA':
         return munchify({'data': test_tender_data_competitive_dialogue(
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'reporting':
         return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
-    elif mode == 'open_framework':
+    elif mode == 'closeFrameworkAgreementUA':
         return munchify({'data': test_tender_data_framework_agreement(
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'belowThreshold':
@@ -401,12 +404,12 @@ def prepare_test_tender_data(procedure_intervals,
             funders=funders,
             accelerator=accelerator,
             )})
-    elif mode == 'open_esco':
+    elif mode == 'esco':
         return munchify({'data': test_tender_data_esco(
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'priceQuotation':
         return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data)})
-    elif mode == "open_simple_defense":
+    elif mode == "simple.defense":
         return munchify({'data': test_tender_data_simple_defense(
             tender_parameters, submissionMethodDetails, plan_data)})
 

@@ -1,4 +1,4 @@
--v MODE:open_competitive_dialogue
+-v MODE:competitiveDialogueEU
 
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:1

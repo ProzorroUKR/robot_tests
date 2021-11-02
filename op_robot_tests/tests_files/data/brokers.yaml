@@ -35,25 +35,28 @@ Default:
             # Please remember that openUA, openEU and openUA_defense procedures
             # forbid anyone to set or modify enquiryPeriod
             # (it is set automatically)
-        openeu:
+        aboveThresholdEU:
             accelerator: 1440
             tender:  [0, 30]
         openua_defense:
             accelerator: 1440
             tender:  [0, 6]
-        open_competitive_dialogue:
+        competitiveDialogueUA:
             accelerator: 1440
             tender:  [0, 30]
-        open_esco:
+        competitiveDialogueEU:
+            accelerator: 1440
+            tender: [ 0, 30 ]
+        esco:
              accelerator: 1440
              enquiry: [0, 15]
              tender:  [0, 30]
-        open_framework:
+        closeFrameworkAgreementUA:
              accelerator: 1440
              tender:  [0, 30]
         framework_selection:
              accelerator: 360
-        open_simple_defense:
+        simple.defense:
              accelerator: 1440
              tender:  [0, 10]
     # Synchronization delay, in seconds
@@ -63,32 +66,35 @@ Quinta:
         default:
             enquiry: [0, 20]
             tender:  [0, 20]
-        openua:
+        aboveThresholdUA:
             accelerator: 1440
             tender:  [1, 30]
-        openeu:
+        aboveThresholdEU:
             accelerator: 1440
             tender:  [1, 35]
         openua_defense:
             tender:  [0, 20]
-        open_competitive_dialogue:
+        competitiveDialogueUA:
             accelerator: 1440
             tender:  [0, 30]
-        open_esco:
-             accelerator: 1440
-             enquiry: [0, 15]
-             tender:  [0, 30]
-        open_framework:
-             accelerator: 1440
-             tender:  [0, 30]
+        competitiveDialogueEU:
+            accelerator: 1440
+            tender: [ 0, 30 ]
+        esco:
+            accelerator: 1440
+            enquiry: [0, 15]
+            tender:  [0, 30]
+        closeFrameworkAgreementUA:
+            accelerator: 1440
+            tender:  [0, 30]
         framework_selection:
-             accelerator: 360
+            accelerator: 360
         priceQuotation:
             tender:  [0, 15]
             accelerator: 1440
-        open_simple_defense:
-             accelerator: 1440
-             tender:  [0, 10]
+        simple.defense:
+            accelerator: 1440
+            tender:  [0, 10]
     keywords_file: openprocurement_client
     roles:
         provider:       Tender_User

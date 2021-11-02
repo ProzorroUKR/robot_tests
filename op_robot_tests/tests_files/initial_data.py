@@ -200,9 +200,9 @@ def test_tender_data(params,
     }
     if params.get("criteria_llc"):
         data["awardCriteria"] = "lifeCycleCost"
-    if params.get("mode") == "open_framework":
+    if params.get("mode") == "closeFrameworkAgreementUA":
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
-    elif params.get("mode") == "open_competitive_dialogue":
+    elif params.get("mode") in ["competitiveDialogueEU", "competitiveDialogueUA"]:
         data["mainProcurementCategory"] = random.choice(['services', 'works'])
     else:
         data["mainProcurementCategory"] = random.choice(['goods', 'services', 'works'])
@@ -399,8 +399,9 @@ def test_tender_data_planning(params):
     del data['deliveryLocation']
     del data['quantity']
     del data['unit']
+    cpv = data["classification"]["id"]
     for i in range(params['number_of_items']):
-        item_data = test_item_data(id_cpv)
+        item_data = test_item_data(cpv)
         del item_data['deliveryAddress']
         del item_data['deliveryLocation']
         item_data['deliveryDate']['endDate'] = (get_now() + timedelta(days=10)).replace(hour=0, minute=0, second=0,

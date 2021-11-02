@@ -13,6 +13,10 @@ Documentation
 ...  This resource file contains keywords that are used directly by
 ...  test suites or by brokers' keyword libraries (also known as drivers).
 
+*** Variables ***
+@{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple.defense  closeFrameworkAgreementUA
+
+
 
 *** Keywords ***
 Test Suite Setup
@@ -1138,7 +1142,7 @@ Require Failure
   Дочекатись дати  ${date}
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
-  ${next_status}=  Set variable if  'open' in '${MODE}'  active.tendering  active.enquiries
+  ${next_status}=  Set variable if  '${MODE}' in @{active_tendering_procedure_types}  active.tendering  active.enquiries
   Wait until keyword succeeds
   ...      5 min 15 sec
   ...      15 sec
