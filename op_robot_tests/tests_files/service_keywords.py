@@ -107,7 +107,12 @@ from .initial_data import (
     test_monitoring_proceed_number_data,
     test_monitoring_liability_data,
     log_webdriver_info,
-    test_bid_value_stage1
+    test_bid_value_stage1,
+    edit_data_for_buyers,
+    test_aggregate_plans_data,
+    edit_tender_data_for_buyers,
+    test_unit_price_amount_buyer,
+    test_contract_price_amount_buyer
 )
 from barbecue import chef
 from restkit import request
@@ -374,7 +379,7 @@ def prepare_test_tender_data(procedure_intervals,
     elif mode == 'openeu':
         return munchify({'data': test_tender_data_openeu(
             tender_parameters, submissionMethodDetails, plan_data)})
-    elif mode == 'openua':
+    elif mode == 'aboveThresholdUA':
         return munchify({'data': test_tender_data_openua(
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'openua_defense':

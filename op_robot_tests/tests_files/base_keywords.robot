@@ -335,6 +335,59 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 
+Можливість оголосити тендер з агрегацією планів
+  Log Dictionary  ${BUYER_PLAN}
+  ${NUMBER_OF_LOTS}=  Convert To Integer  ${NUMBER_OF_LOTS}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_MILESTONES}=  Convert To Integer  ${NUMBER_OF_MILESTONES}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      number_of_lots=${NUMBER_OF_LOTS}
+  ...      number_of_milestones=${NUMBER_OF_MILESTONES}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      lot_meat=${${LOT_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      api_host_url=${API_HOST_URL}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      vat_included=${${VAT_INCLUDED}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
+  ...      plan_tender=${${PLAN_TENDER}}
+  ...      article_17=${${ARTICLE_17}}
+  ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
+  ...      criteria_lot=${${CRITERIA_LOT}}
+  ...      criteria_llc=${${CRITERIA_LLC}}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
+  ${KIND}=  Get Variable Value  ${KIND}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
+  Run keyword if  '${KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  kind=${KIND}
+  ${plan_1_data}=  Пошук плану по ідентифікатору  ${tender_owner}  ${BUYER_PLAN.BUYER_1_TENDER_UAID}
+  ${plan_2_data}=  Пошук плану по ідентифікатору  ${tender_owner}  ${BUYER_PLAN.BUYER_2_TENDER_UAID}
+  ${plan_3_data}=  Пошук плану по ідентифікатору  ${tender_owner}  ${BUYER_PLAN.BUYER_3_TENDER_UAID}
+  ${plan_1_internal_id}=  openprocurement_client.Отримати internal id плану по UAid  ${tender_owner}  ${BUYER_PLAN.BUYER_1_TENDER_UAID}
+  ${plan_2_internal_id}=  openprocurement_client.Отримати internal id плану по UAid  ${tender_owner}  ${BUYER_PLAN.BUYER_2_TENDER_UAID}
+  ${plan_3_internal_id}=  openprocurement_client.Отримати internal id плану по UAid  ${tender_owner}  ${BUYER_PLAN.BUYER_3_TENDER_UAID}
+  ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_1_data}
+  Log  ${tender_data}
+  ${tender_data}=  edit_tender_data_for_buyers  ${tender_data}  ${plan_1_data}  ${plan_2_data}  ${plan_3_data}
+  Log  ${tender_data}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  Log  ${adapted_data}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер з buyers
+  ...  ${adapted_data}
+  ...  ${plan_1_internal_id}
+  ...  ${BUYER_PLAN.BUYER_1_ACCESS_TOKEN}
+  ...  ${plan_2_internal_id}
+  ...  ${BUYER_PLAN.BUYER_2_ACCESS_TOKEN}
+  ...  ${plan_3_internal_id}
+  ...  ${BUYER_PLAN.BUYER_3_ACCESS_TOKEN}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
 Можливість створити об'єкт моніторингу
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
   ${accelerator}=  Get Variable Value  ${accelerator}
@@ -373,11 +426,55 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      number_of_breakdown=${NUMBER_OF_BREAKDOWN}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  ${KIND}=  Get Variable Value  ${KIND}
+  Run keyword if  '${KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  kind=${KIND}
   ${tender_data}=  Підготувати дані для створення плану  ${tender_parameters}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити план  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+
+
+Підготувати збереження планів buyers
+  ${BUYER_PLAN}=  Create Dictionary
+  Set Global Variable  ${BUYER_PLAN}
+
+
+Можливість створити план закупівлі для ${buyer}
+  ${NUMBER_OF_ITEMS}=  Convert To Integer  ${NUMBER_OF_ITEMS}
+  ${NUMBER_OF_BREAKDOWN}=  Convert To Integer  ${NUMBER_OF_BREAKDOWN}
+  ${tender_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ...      number_of_items=${NUMBER_OF_ITEMS}
+  ...      tender_meat=${${TENDER_MEAT}}
+  ...      item_meat=${${ITEM_MEAT}}
+  ...      moz_integration=${${MOZ_INTEGRATION}}
+  ...      road_index=${${ROAD_INDEX}}
+  ...      gmdn_index=${${GMDN_INDEX}}
+  ...      number_of_breakdown=${NUMBER_OF_BREAKDOWN}
+  ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
+  Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
+  ${KIND}=  Get Variable Value  ${KIND}
+  Run keyword if  '${KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  kind=${KIND}
+  ${CPV_GROUP}=  Get Variable Value  ${CPV_GROUP}
+  Run keyword if  '${CPV_GROUP}' != '${None}'  Set to dictionary  ${tender_parameters}  cpv_group=${CPV_GROUP}
+  Log  ${buyer}
+  ${tender_data}=  Підготувати дані для створення плану з buyers  ${tender_parameters}  ${buyer}
+  Log  ${tender_data}
+  ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  Log  ${adapted_data}
+  ${TENDER_UAID}=  Run As  ${tender_owner}  Створити план   ${adapted_data}
+  Log  ${TENDER_UAID}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
+  Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
+  Log  ${TENDER.TENDER_UAID}
+  Log  ${USERS.users['${tender_owner}'].access_token}
+  Run keyword if  '${buyer}' == 'buyer_1'  Set To Dictionary  ${BUYER_PLAN}  BUYER_1_TENDER_UAID=${TENDER_UAID}
+  Run keyword if  '${buyer}' == 'buyer_1'  Set To Dictionary  ${BUYER_PLAN}  BUYER_1_ACCESS_TOKEN=${USERS.users['${tender_owner}'].access_token}
+  Run keyword if  '${buyer}' == 'buyer_2'  Set To Dictionary  ${BUYER_PLAN}  BUYER_2_TENDER_UAID=${TENDER_UAID}
+  Run keyword if  '${buyer}' == 'buyer_2'  Set To Dictionary  ${BUYER_PLAN}  BUYER_2_ACCESS_TOKEN=${USERS.users['${tender_owner}'].access_token}
+  Run keyword if  '${buyer}' == 'buyer_3'  Set To Dictionary  ${BUYER_PLAN}  BUYER_3_TENDER_UAID=${TENDER_UAID}
+  Run keyword if  '${buyer}' == 'buyer_3'  Set To Dictionary  ${BUYER_PLAN}  BUYER_3_ACCESS_TOKEN=${USERS.users['${tender_owner}'].access_token}
 
 
 Можливість створити план закупівлі з використанням валідації для buyers

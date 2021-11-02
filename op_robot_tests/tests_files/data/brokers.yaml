@@ -29,7 +29,7 @@ Default:
             # This is not a name of period
             # Please refer to API documentation to find out what's this
             accelerator: 1440
-        openua:
+        aboveThresholdUA:
             accelerator: 1440
             tender:  [0, 15]
             # Please remember that openUA, openEU and openUA_defense procedures

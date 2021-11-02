@@ -421,6 +421,19 @@ Suite Teardown  Test Suite Teardown
   Run As  ${tender_owner}  Встановити ціну за одиницю товару в контракті  ${TENDER['TENDER_UAID']}  ${contract_data}  ${contract_index}
 
 
+Можливість вказати ціну за одиницю в контрактах buyers
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Вказати ціну за одиницю
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      contract_unit_price_buyers  level1
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  Run As  ${tender_owner}  Встановити ціну за одиницю товару в контрактах buyers  ${TENDER['TENDER_UAID']}  ${award_index}
+  Run As  ${tender_owner}  Встановити ціну в контрактах buyers  ${TENDER['TENDER_UAID']}  ${award_index}
+
+
 Можливість укласти угоду для закупівлі
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес укладання угоди
   ...      tender_owner
@@ -443,6 +456,17 @@ Suite Teardown  Test Suite Teardown
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Run As  ${viewer}  Оновити сторінку з тендером  ${TENDER['TENDER_UAID']}
   Звірити відображення поля contracts[${contract_index}].status тендера із active для користувача ${viewer}
+
+
+Можливість укласти угоду для закупівлі
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес укладання угоди
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      contract_sign_buyers  level1
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Підтвердити підписання контракту кожного buyer  ${TENDER['TENDER_UAID']}
 
 
 Неможливість підтвердити постачальника після закінчення періоду кваліфікації

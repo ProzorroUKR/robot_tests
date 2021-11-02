@@ -28,6 +28,7 @@ ${ARTICLE_17}       ${False}
 ${CRITERIA_GUARANTEE}  ${False}
 ${CRITERIA_LOT}     ${False}
 ${CRITERIA_LLC}     ${False}
+${NUMBER_OF_BREAKDOWN}  ${2}
 
 *** Test Cases ***
 Можливість оголосити тендер
@@ -277,6 +278,55 @@ ${CRITERIA_LLC}     ${False}
   ...      plan_status_complete_view
   ...      critical
   Можливість перевірити статус плану після публікації тендера
+
+
+Зберегти дані планів buyers
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення основних даних плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_buyers_plan_dictionary
+  ...      critical
+  Підготувати збереження планів buyers
+
+
+Можливість створити план закупівлі buyer_1
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_for_buyer_1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити план закупівлі для buyer_1
+
+
+Можливість створити план закупівлі buyer_2
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_for_buyer_2
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити план закупівлі для buyer_2
+
+
+Можливість створити план закупівлі buyer_3
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення плану
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_plan_for_buyer_3
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість створити план закупівлі для buyer_3
+
+
+Можливість оголосити тендер з агрегацією планів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_plans_aggregation  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість оголосити тендер з агрегацією планів
 
 
 Можливість знайти тендер по ідентифікатору
