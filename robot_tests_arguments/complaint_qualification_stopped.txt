@@ -1,4 +1,4 @@
--v MODE:openeu
+-v MODE:aboveThresholdEU
 
 -v ARTICLE_17:True
 
