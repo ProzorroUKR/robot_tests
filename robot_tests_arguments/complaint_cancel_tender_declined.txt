@@ -1,4 +1,4 @@
--v MODE:openeu
+-v MODE:aboveThresholdEU
 
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:1
