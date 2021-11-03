@@ -435,7 +435,7 @@ ${CRITERIA_LLC}         ${False}
   ...      pre-qualification_approve_second_bid  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити -1 пропозицію кваліфікації
+  Можливість підтвердити 1 пропозицію кваліфікації
 
 
 Можливість підтвердити третю пропозицію кваліфікації
