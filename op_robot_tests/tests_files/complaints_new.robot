@@ -126,6 +126,20 @@ ${CRITERIA_LLC}         ${False}
   Можливість подати цінову пропозицію користувачем ${provider2}
 
 
+Можливість подати пропозицію третім учасником
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_with_criteria_by_provider2  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію в статусі draft користувачем ${provider2}
+  Можливість завантажити документ в пропозицію користувачем ${provider2}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider2}
+  Можливість активувати пропозицію користувачем ${provider2}
+
+
 Можливість подати пропозицію першим учасником на першому етапі
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
@@ -422,6 +436,16 @@ ${CRITERIA_LLC}         ${False}
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість підтвердити -1 пропозицію кваліфікації
+
+
+Можливість підтвердити третю пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_third_bid  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 2 пропозицію кваліфікації
 
 
 Можливість затвердити остаточне рішення кваліфікації
