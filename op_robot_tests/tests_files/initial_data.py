@@ -367,16 +367,11 @@ def test_tender_data_planning(params):
     # procuringEntity contactPoint is a rogue filed for plan - we delete it to avoid error
         del data["procuringEntity"]["contactPoint"]
     # create buyer - determine buyer kind according to plan procurement method type
-    buyers = test_buyers_data(data["procuringEntity"]["identifier"]["id"])
+    buyer_id = data["procuringEntity"]["identifier"]["id"]
+    legal_name = data["procuringEntity"]["identifier"]["legalName"]
+    buyer_kind = data["procuringEntity"]["kind"]
+    buyers = test_buyers_data(buyer_id, legal_name, buyer_kind)
     buyers["name"] = buyers["identifier"]["legalName"]
-    if params.get("mode") in ["simple.defense"]:
-        buyers["kind"] = "defense"
-    elif params.get("mode") in ["belowThreshold", "reporting"]:
-        buyers["kind"] = "other"
-    elif params.get("mode") in ["priceQuotation"]:
-        buyers["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
-    else:
-        buyers["kind"] = random.choice(["general", "special", "central", "authority", "social"])
     data['buyers'].append(buyers)
     # determine cpv group - to know which cpv code to use
     if params.get('cpv_group'):
@@ -1222,13 +1217,13 @@ def invalid_gmdn_data():
     })
 
 
-def test_buyers_data(id):
+def test_buyers_data(buyer_id, legal_name, buyer_kind):
     buyers = {
-        "kind": "general",
+        "kind": buyer_kind,
         "identifier": {
             "scheme": "UA-EDR",
-            "id": id,
-            "legalName": random.choice([u"Київський Тестовий Ліцей", u"Київська Тестова міська клінічна лікарня"]),
+            "id": buyer_id,
+            "legalName": legal_name,
         },
         "address": {
             "countryName": "Україна",
