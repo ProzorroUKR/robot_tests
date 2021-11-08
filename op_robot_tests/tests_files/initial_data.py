@@ -367,7 +367,7 @@ def test_tender_data_planning(params):
     # procuringEntity contactPoint is a rogue filed for plan - we delete it to avoid error
         del data["procuringEntity"]["contactPoint"]
     # create buyer - determine buyer kind according to plan procurement method type
-    buyers = test_buyers_data()
+    buyers = test_buyers_data(data["procuringEntity"]["identifier"]["id"])
     buyers["name"] = buyers["identifier"]["legalName"]
     if params.get("mode") in ["simple.defense"]:
         buyers["kind"] = "defense"
@@ -1222,12 +1222,12 @@ def invalid_gmdn_data():
     })
 
 
-def test_buyers_data():
+def test_buyers_data(id):
     buyers = {
         "kind": "general",
         "identifier": {
             "scheme": "UA-EDR",
-            "id": random.choice(["13313462", "00037256"]),
+            "id": id,
             "legalName": random.choice([u"Київський Тестовий Ліцей", u"Київська Тестова міська клінічна лікарня"]),
         },
         "address": {
