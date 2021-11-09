@@ -220,7 +220,8 @@ def test_tender_data(params,
     elif params.get("mode") in ["priceQuotation"]:
         data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
     else:
-        data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
+        data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
+            #random.choice(["general", "special", "authority", "social"])
     if data.get("mode") == "test":
         data["title"] = u"[ТЕСТУВАННЯ] {}".format(data["title"])
         data["title_en"] = u"[TESTING] {}".format(data["title_en"])
@@ -359,7 +360,7 @@ def test_tender_data_planning(params):
     elif params.get("mode") in ["priceQuotation"]:
         data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
     else:
-        data["procuringEntity"]["kind"] = random.choice(["general", "special", "central", "authority", "social"])
+        data["procuringEntity"]["kind"] = random.choice(["general", "special", "authority", "social"])
     # if kind variable is central set cpb as procuringEntity
     if params.get('kind') == "central":
         data["procuringEntity"] = fake.cpb_data()
@@ -900,17 +901,6 @@ def test_tender_data_openua(params, submissionMethodDetails, plan_data):
     Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdUA'
-    #data['procuringEntity']['kind'] = 'general'
-    return data
-
-
-def test_tender_data_openua_defense(params, submissionMethodDetails, plan_data):
-    """We should not provide any values for `enquiryPeriod` when creating
-    an openUA, openEU or openUA_defense procedure. That field should not be present at all.
-    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
-    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
-    data['procurementMethodType'] = 'aboveThresholdUA.defense'
-    data['procuringEntity']['kind'] = 'defense'
     return data
 
 
@@ -928,7 +918,6 @@ def test_tender_data_openeu(params, submissionMethodDetails, plan_data):
     data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
     data['procuringEntity']['identifier'][
         'legalName_en'] = u"Institution \"Vinnytsia City Council primary and secondary general school № 10\""
-    data['procuringEntity']['kind'] = 'general'
     return data
 
 
@@ -960,7 +949,6 @@ def test_tender_data_competitive_dialogue(params, submissionMethodDetails, plan_
     data['procuringEntity']['name_en'] = fake_en.name()
     data['procuringEntity']['contactPoint']['name_en'] = fake_en.name()
     data['procuringEntity']['identifier']['legalName_en'] = fake_en.sentence(nb_words=10, variable_nb_words=True)
-    data['procuringEntity']['kind'] = 'general'
     return data
 
 
