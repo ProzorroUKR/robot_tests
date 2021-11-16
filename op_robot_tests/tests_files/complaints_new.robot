@@ -64,6 +64,9 @@ ${CRITERIA_LLC}         ${False}
   ...     critical
   Звірити відображення поля title усіх лотів для усіх користувачів
 
+##############################################################################################
+#             BIDDING
+##############################################################################################
 
 Можливість подати пропозицію першим учасником
   [Tags]  ${USERS.users['${provider}'].broker}: Подання пропозиції
@@ -180,6 +183,216 @@ ${CRITERIA_LLC}         ${False}
   Можливість завантажити документ в пропозицію користувачем ${provider2}
   Можливість додати до пропозиції відповідь на критерії користувачем ${provider2}
   Можливість активувати пропозицію користувачем ${provider2}
+
+##############################################################################################
+#             PRE-QUALIFICATION
+##############################################################################################
+
+Можливість підтвердити першу пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_first_bid  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 0 пропозицію кваліфікації
+
+
+Можливість підтвердити другу пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_second_bid  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 1 пропозицію кваліфікації
+
+
+Можливість підтвердити третю пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_third_bid  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 2 пропозицію кваліфікації
+
+
+Можливість затвердити остаточне рішення пре-кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_qualifications  level1
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість затвердити остаточне рішення кваліфікації
+
+
+Відображення статусу блокування перед початком аукціону
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_view
+  ...      non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  Звірити статус тендера  ${tender_owner}  ${TENDER['TENDER_UAID']}  active.pre-qualification.stand-still
+
+##############################################################################################
+#             STAGE 2
+##############################################################################################
+
+Можливість дочекатися початку періоду очікування
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес очікування оскаржень на пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      stage2_pending_status_view
+  ...      critical
+  Отримати дані із поля qualificationPeriod.endDate тендера для усіх користувачів
+  Дочекатись дати закінчення періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Звірити статус тендера  ${tender_owner}  ${TENDER['TENDER_UAID']}  active.stage2.pending
+
+
+Можливість перевести тендер в статус очікування обробки мостом
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес переведення статусу у active.stage2.waiting.
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      stage2_pending_status_view
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість перевести тендер на статус очікування обробки мостом
+
+
+Можливість дочекатися завершення роботи мосту
+  [Tags]   ${USERS.users['${viewer}'].broker}: Процес очікування обробки мостом
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      wait_bridge_for_work
+  ...      critical
+  Дочекатися створення нового етапу мостом  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Звірити статус тендера  ${tender_owner}  ${TENDER['TENDER_UAID']}  complete
+
+
+Можливість активувати тендер другого етапу
+  [Tags]   ${USERS.users['${viewer}'].broker}: Активувати тендер другого етапу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      activate_second_stage
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  Активувати тендер другого етапу
+
+
+Можливість знайти тендер другого етапу по ідентифікатору для усіх користувачів
+  [Tags]   ${USERS.user['${tender_owner}'].broker}: Пошук тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      get_second_stage
+  ...      critical
+  Можливість знайти тендер другого етапу по ідентифікатору для усіх користувачів
+
+
+Відображення заголовку тендера другого етапу
+  [Tags]   ${USERS.user['${tender_owner}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля title тендера другого етапу для усіх користувачів
+
+
+Відображення мінімального кроку закупівлі другого етапу
+  [Tags]   ${USERS.user['${tender_owner}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля minimalStep.amount тендера другого етапу для усіх користувачів
+
+
+Відображення доступного бюджету закупівлі другого етапу
+  [Tags]   ${USERS.user['${tender_owner}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля value.amount тендера другого етапу для усіх користувачів
+
+
+Відображення опису закупівлі другого етапу
+  [Tags]   ${USERS.user['${tender_owner}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      non-critical
+  Отримати дані із поля description тендера другого етапу для усіх користувачів
+
+
+Відображення імені замовника тендера для другого етапу
+  [Tags]   ${USERS.user['${tender_owner}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля procuringEntity.name тендера другого етапу для усіх користувачів
+
+
+Відображення початку періоду прийому пропозицій тендера другого етапу
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля tenderPeriod.startDate тендера другого етапу для усіх користувачів
+
+
+Відображення закінчення періоду прийому пропозицій тендера другого етапу
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних тендера другого етапу
+  ...      viewer  tender_owner  provider  provider1
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
+  ...      compare_stages
+  ...      critical
+  Отримати дані із поля tenderPeriod.endDate тендера другого етапу для усіх користувачів
+
+##############################################################################################
+#             BID STAGE 2
+##############################################################################################
+
+Можливість подати пропозицію першим учасником на другому етапі
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_with_criteria_by_provider_second_stage
+  ...      critical
+  [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем  ${provider}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider}
+  Можливість активувати пропозицію користувачем ${provider}
+
+
+Можливість подати пропозицію другим учасником на другому етапі
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції на другий етап
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      make_bid_with_criteria_by_provider1_second_stage
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем  ${provider1}
+  Можливість завантажити документ в пропозицію користувачем ${provider1}
+  Можливість додати до пропозиції відповідь на критерії користувачем ${provider1}
+  Можливість активувати пропозицію користувачем ${provider1}
 
 ##############################################################################################
 #             TENDER/LOT COMPLAINT
@@ -417,58 +630,6 @@ ${CRITERIA_LLC}         ${False}
 #             QUALIFICATION COMPLAINT
 ##############################################################################################
 
-Можливість підтвердити першу пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      pre-qualification_approve_first_bid  level1
-  ...      critical
-  [Setup]  Дочекатись дати початку періоду прекваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити 0 пропозицію кваліфікації
-
-
-Можливість підтвердити другу пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      pre-qualification_approve_second_bid  level1
-  ...      critical
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити 1 пропозицію кваліфікації
-
-
-Можливість підтвердити третю пропозицію кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      pre-qualification_approve_third_bid  level1
-  ...      critical
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити 2 пропозицію кваліфікації
-
-
-Можливість затвердити остаточне рішення кваліфікації
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      pre-qualification_approve_qualifications  level1
-  ...      critical
-  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість затвердити остаточне рішення кваліфікації
-
-
-Відображення статусу блокування перед початком аукціону
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Пре-Кваліфікація
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      pre-qualification_view
-  ...      non-critical
-  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
-  Звірити статус тендера  ${tender_owner}  ${TENDER['TENDER_UAID']}  active.pre-qualification.stand-still
-
-
 Можливість створити чернетку скарги про виправлення кваліфікації учасника
   [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження пре-кваліфікації учасника
   ...     provider
@@ -676,6 +837,37 @@ ${CRITERIA_LLC}         ${False}
   Run As  ${tender_owner}  Завантажити документ рішення кваліфікаційної комісії  ${file_path}  ${TENDER['TENDER_UAID']}  0
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
   Remove File  ${file_path}
+
+
+Можливість підтвердити другого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_second_award
+  ...  critical
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
+
+
+Можливість підтвердити третього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_third_award
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  2
+
+
+Можливість затвердити остаточне рішення кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Кваліфікація
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      qualification_approve_qualifications
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Затвердити постачальників  ${TENDER['TENDER_UAID']}
 
 
 Можливість вперше скасувати рішення кваліфікації учасника
