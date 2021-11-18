@@ -291,26 +291,44 @@ Newtend:
     keywords_file: newtend
     intervals:
         default:
-            accelerator: 1440
             enquiry: [0, 15]
             tender:  [0, 15]
+            accelerator: 1440
+        openua:
+            accelerator: 1440
+            tender:  [0, 15]
+            # Please remember that openUA, openEU and openUA_defense procedures
+            # forbid anyone to set or modify enquiryPeriod
+            # (it is set automatically)
         openeu:
             accelerator: 1440
             tender:  [0, 35]
-        openua:
-            accelerator: 1440
-            tender:  [0, 35]
-        belowThreshold:
-            accelerator: 1440
-            enquiry: [0, 15]
-            tender:  [0, 35]
-        negotiation:
-            accelerator: 1440
-            enquiry: [0, 20]
-            tender:  [0, 20]
         openua_defense:
             accelerator: 1440
+            tender:  [0, 6]
+        open_competitive_dialogue:
+            accelerator: 1440
             tender:  [0, 35]
+        open_esco:
+             accelerator: 1440
+             enquiry: [0, 10]
+             tender:  [0, 36]
+        open_framework:
+             accelerator: 1440
+             tender:  [0, 30]
+        framework_selection:
+             accelerator: 1440
+        open_simple_defense:
+             accelerator: 1440
+             tender:  [0, 10]
+        negotiation:
+            accelerator: 1440
+            enquiry: [0, 10]
+            tender:  [0, 10]
+        belowThreshold:
+            accelerator: 1440
+            enquiry: [0, 10]
+            tender:  [0, 8]
     roles:
         tender_owner:   Newtend_Owner
         provider:       Newtend_Provider1
