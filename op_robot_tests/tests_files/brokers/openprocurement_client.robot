@@ -1680,11 +1680,15 @@ Library  Collections
 Відповісти на вимогу про виправлення умов закупівлі
   [Documentation]  Переводить вимогу зі статусу "claim" у статус "answered"
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${answer_data}
-  openprocurement_client.Відповісти на вимогу про виправлення умов лоту
-  ...      ${username}
-  ...      ${tender_uaid}
-  ...      ${complaintID}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_complaint
+  ...      ${tender.data.id}
   ...      ${answer_data}
+  ...      ${complaint_internal_id}
+  ...      access_token=${tender.access.token}
+  Log  ${tender}
+  Log  ${reply}
 
 
 Відповісти на вимогу про виправлення умов лоту
@@ -1692,7 +1696,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${answer_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${answer_data.data}  id=${complaint_internal_id}
+  #Set To Dictionary  ${answer_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_complaint
   ...      ${tender.data.id}
   ...      ${answer_data}
@@ -1707,7 +1711,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${answer_data}  ${qualification_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${answer_data.data}  id=${complaint_internal_id}
+  #Set To Dictionary  ${answer_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}   patch_qualification_complaint
   ...      ${tender.data.id}
   ...      ${answer_data}
@@ -1723,7 +1727,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${answer_data}  ${award_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${answer_data.data}  id=${complaint_internal_id}
+  #Set To Dictionary  ${answer_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_complaint
   ...      ${tender.data.id}
   ...      ${answer_data}
@@ -1802,7 +1806,7 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${cancellation_data.data}  id=${complaint_internal_id}
+  #Set To Dictionary  ${cancellation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_complaint
   ...      ${tender.data.id}
   ...      ${cancellation_data}
@@ -1817,7 +1821,7 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${cancellation_data.data}  id=${complaint_internal_id}
+  #Set To Dictionary  ${cancellation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification_complaint
   ...      ${tender.data.id}
   ...      ${cancellation_data}
@@ -1833,7 +1837,7 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${cancellation_data.data}  id=${complaint_internal_id}
+  #Set To Dictionary  ${cancellation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_complaint
   ...      ${tender.data.id}
   ...      ${cancellation_data}
