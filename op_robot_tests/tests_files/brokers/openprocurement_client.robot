@@ -1746,7 +1746,8 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+  Log  ${complaint_internal_id}
+  #Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
@@ -1761,7 +1762,8 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+  Log  ${complaint_internal_id}
+  #Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
@@ -1777,7 +1779,8 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+  Log  ${complaint_internal_id}
+  #Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
