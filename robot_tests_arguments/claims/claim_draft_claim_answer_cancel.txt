@@ -12,12 +12,12 @@
 -i tender_claim_draft
 -i submit_tender_claim
 -i answer_tender_claim
--i resolved_tender_claim
+-i cancel_tender_claim
 
 -i lot_claim_draft
 -i submit_lot_claim
 -i answer_lot_claim
--i resolved_lot_claim
+-i cancel_lot_claim
 
 -i make_bid_with_criteria_by_provider
 -i make_bid_with_criteria_by_provider1
@@ -30,7 +30,7 @@
 -i qualification_claim_draft
 -i submit_qualification_claim
 -i answer_qualification_claim
--i resolved_qualification_claim
+-i cancel_qualification_claim
 
 -i awardPeriod_startDate
 -i qualification_approve_first_award
@@ -38,4 +38,4 @@
 -i award_claim_draft
 -i submit_award_claim
 -i answer_award_claim
--i resolved_award_claim
+-i cancel_award_claim
