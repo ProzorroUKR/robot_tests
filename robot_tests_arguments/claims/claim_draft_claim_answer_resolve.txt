@@ -30,7 +30,6 @@
 -i qualification_claim_draft
 -i submit_qualification_claim
 -i answer_qualification_claim
--i resolved_qualification_claim
 
 -i awardPeriod_startDate
 -i qualification_approve_first_award
@@ -38,4 +37,3 @@
 -i award_claim_draft
 -i submit_award_claim
 -i answer_award_claim
--i resolved_award_claim
