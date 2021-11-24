@@ -938,10 +938,13 @@ def test_tender_data_competitive_dialogue(params, submissionMethodDetails, plan_
     an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
     Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
-    if params.get('dialogue_type') == 'UA':
-        data['procurementMethodType'] = 'competitiveDialogueUA'
-    else:
-        data['procurementMethodType'] = 'competitiveDialogueEU'
+    #if params.get('dialogue_type') == 'UA':
+        #data['procurementMethodType'] = 'competitiveDialogueUA'
+    #else:
+        #data['procurementMethodType'] = 'competitiveDialogueEU'
+        #data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
+    data['procurementMethodType'] = params.get('mode')
+    if data['procurementMethodType'] == 'competitiveDialogueEU':
         data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
     data['title_en'] = "[TESTING] {}".format(fake_en.sentence(nb_words=3, variable_nb_words=True))
     for item in data['items']:

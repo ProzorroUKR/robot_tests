@@ -1915,7 +1915,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} вимоги ${complaintID} ${object_index} із ${data} об'єкта ${object} для користувача ${username}
-  ...      Звірити поле скарги із значенням
+  Звірити поле скарги із значенням
   ...      ${username}
   ...      ${TENDER['TENDER_UAID']}
   ...      ${data}
