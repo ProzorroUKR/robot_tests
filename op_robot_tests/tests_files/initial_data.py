@@ -523,7 +523,7 @@ def test_question_answer_data():
     })
 
 
-def test_complaint_data():
+def test_complaint_data(identifier_id=None):
     data = {
         "author": fake.procuringTenderer(),
         "description": fake.description(),
@@ -531,6 +531,8 @@ def test_complaint_data():
         "type": "complaint"
     }
     del data['author']['scale']
+    if identifier_id:
+        data['author']['identifier']['id'] = identifier_id
     return munchify({'data': data})
 
 
