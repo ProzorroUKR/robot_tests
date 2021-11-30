@@ -327,8 +327,8 @@ Newtend:
             tender:  [0, 10]
         belowThreshold:
             accelerator: 1440
-            enquiry: [0, 10]
-            tender:  [0, 8]
+            enquiry: [0, 15]
+            tender:  [0, 15]
     roles:
         tender_owner:   Newtend_Owner
         provider:       Newtend_Provider1
