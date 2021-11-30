@@ -344,8 +344,8 @@ Get Broker Property By Username
 
 
 Підготувати дані для подання скарги
-  #[Arguments]  ${lot}=${False}
-  ${complaint}=  test_complaint_data
+  [Arguments]  ${identifier_id}
+  ${complaint}=  test_complaint_data  ${identifier_id}
   [Return]  ${complaint}
 
 

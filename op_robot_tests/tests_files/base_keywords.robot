@@ -1350,26 +1350,32 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 #             COMPLAINTS
 ##############################################################################################
 
-Можливість створити чернетку скарги
-  ${complaint}=  Підготувати дані для подання скарги
-  ${complaintID}=  Run As  ${provider}
+Можливість створити чернетку скарги користувачем ${username}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA.stage2  competitiveDialogueEU.stage2
+  ${identifier_id}=  Set Variable If  '${procurementMethodType}' in ${methods}  ${USERS.users['${username}'].tender_data.data.shortlistedFirms[0].identifier.id}
+  ${complaint}=  Підготувати дані для подання скарги  ${identifier_id}
+  ${complaintID}=  Run As  ${username}
   ...      Створити чернетку скарги про виправлення умов закупівлі
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
-  Log  ${USERS.users['${provider}'].complaint_data}
+  Set To Dictionary  ${USERS.users['${username}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${username}'].complaint_data}
 
 
-Можливість створити чернетку скарги про виправлення умов ${lot_index} лоту
-  ${complaint}=  Підготувати дані для подання скарги
-  ${lot_id}=  get_id_from_object  ${USERS.users['${provider}'].tender_data.data.lots[${lot_index}]}
-  ${complaintID}=  Run As  ${provider}
+Можливість створити чернетку скарги про виправлення умов ${lot_index} лоту ${username}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA.stage2  competitiveDialogueEU.stage2
+  ${identifier_id}=  Set Variable If  '${procurementMethodType}' in ${methods}  ${USERS.users['${username}'].tender_data.data.shortlistedFirms[0].identifier.id}
+  ${complaint}=  Підготувати дані для подання скарги  ${identifier_id}
+  ${lot_id}=  get_id_from_object  ${USERS.users['${username}'].tender_data.data.lots[${lot_index}]}
+  ${complaintID}=  Run As  ${username}
   ...      Створити чернетку скарги про виправлення умов лоту
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
   ...      ${lot_id}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
-  Log  ${USERS.users['${provider}'].complaint_data}
+  Set To Dictionary  ${USERS.users['${username}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${username}'].complaint_data}
 
 
 Додати документ до скарги
@@ -1390,37 +1396,46 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Log  ${USERS.users['${provider}'].complaint_data}
 
 
-Можливість створити чернетку скарги про виправлення кваліфікації ${qualification_index} учасника
-  ${complaint}=  Підготувати дані для подання скарги
-  ${complaintID}=  Run As  ${provider}
+Можливість створити чернетку скарги про виправлення кваліфікації ${qualification_index} учасника ${username}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA.stage2  competitiveDialogueEU.stage2
+  ${identifier_id}=  Set Variable If  '${procurementMethodType}' in ${methods}  ${USERS.users['${username}'].tender_data.data.shortlistedFirms[0].identifier.id}
+  ${complaint}=  Підготувати дані для подання скарги  ${identifier_id}
+  ${complaintID}=  Run As  ${username}
   ...      Створити чернетку вимоги/скарги про виправлення кваліфікації учасника
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
   ...      ${qualification_index}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
-  Log  ${USERS.users['${provider}'].complaint_data}
+  Set To Dictionary  ${USERS.users['${username}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${username}'].complaint_data}
 
 
-Можливість створити чернетку скарги про виправлення визначення ${award_index} переможця
-  ${complaint}=  Підготувати дані для подання скарги
-  ${complaintID}=  Run As  ${provider}
+Можливість створити чернетку скарги про виправлення визначення ${award_index} переможця ${username}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA.stage2  competitiveDialogueEU.stage2
+  ${identifier_id}=  Set Variable If  '${procurementMethodType}' in ${methods}  ${USERS.users['${username}'].tender_data.data.shortlistedFirms[0].identifier.id}
+  ${complaint}=  Підготувати дані для подання скарги  ${identifier_id}
+  ${complaintID}=  Run As  ${username}
   ...      Створити чернетку вимоги/скарги про виправлення визначення переможця
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
   ...      ${award_index}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
-  Log  ${USERS.users['${provider}'].complaint_data}
+  Set To Dictionary  ${USERS.users['${username}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${username}'].complaint_data}
 
 
-Можливість створити чернетку скарги на скасування ${canсellations_index}
-  ${complaint}=  Підготувати дані для подання скарги
-  ${complaintID}=  Run As  ${provider}
+Можливість створити чернетку скарги на скасування ${canсellations_index} користувачем ${username}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA.stage2  competitiveDialogueEU.stage2
+  ${identifier_id}=  Set Variable If  '${procurementMethodType}' in ${methods}  ${USERS.users['${username}'].tender_data.data.shortlistedFirms[0].identifier.id}
+  ${complaint}=  Підготувати дані для подання скарги  ${identifier_id}
+  ${complaintID}=  Run As  ${username}
   ...      Створити чернетку вимоги/скарги на скасування
   ...      ${TENDER['TENDER_UAID']}
   ...      ${complaint}
   ...      ${canсellations_index}
-  Set To Dictionary  ${USERS.users['${provider}']}  complaint_data  ${complaintID}
-  Log  ${USERS.users['${provider}'].complaint_data}
+  Set To Dictionary  ${USERS.users['${username}']}  complaint_data  ${complaintID}
+  Log  ${USERS.users['${username}'].complaint_data}
 
 
 Звірити відображення поля ${field} скарги ${object_index} із ${data} об'єкта ${object} для користувача ${username}
