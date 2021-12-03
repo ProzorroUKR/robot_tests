@@ -211,17 +211,8 @@ def test_tender_data(params,
     data['procurementMethodDetails'] = 'quick, ' \
                                        'accelerator={}'.format(accelerator)
     # determine procuringEntity  according to plan procurement method type or kind variable
-    if params.get('kind'):
-        data["procuringEntity"]["kind"] = params.get('kind')
-    elif params.get("mode") in ["simple.defense"]:
-        data["procuringEntity"]["kind"] = "defense"
-    elif params.get("mode") in ["belowThreshold", "reporting"]:
+    if params.get("mode") == "belowThreshold":
         data["procuringEntity"]["kind"] = "other"
-    elif params.get("mode") in ["priceQuotation"]:
-        data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'social', 'special'])
-    else:
-        data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
-            #random.choice(["general", "special", "authority", "social"])
     if data.get("mode") == "test":
         data["title"] = u"[ТЕСТУВАННЯ] {}".format(data["title"])
         data["title_en"] = u"[TESTING] {}".format(data["title_en"])
@@ -428,6 +419,8 @@ def test_tender_data_limited(params, plan_data):
     for lot in data.get('lots', []):
         lot.pop('minimalStep', None)
     data["procuringEntity"]["kind"] = "general"
+    if params.get("mode") == "reporting":
+        data["procuringEntity"]["kind"] = "other"
     data.update({"procurementMethodType": params['mode'], "procurementMethod": "limited"})
     if params['mode'] == "negotiation":
         cause_variants = (
@@ -899,17 +892,18 @@ def test_change_document_data(document, change_id):
 
 def test_tender_data_openua(params, submissionMethodDetails, plan_data):
     """We should not provide any values for `enquiryPeriod` when creating
-    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
-    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
+    an openUA, openEU open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a non default list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdUA'
+    data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
     return data
 
 
 def test_tender_data_openeu(params, submissionMethodDetails, plan_data):
     """We should not provide any values for `enquiryPeriod` when creating
-    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
-    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
+    an openUA, openEU open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a non default list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'aboveThresholdEU'
     data['title_en'] = "[TESTING]"
@@ -920,12 +914,14 @@ def test_tender_data_openeu(params, submissionMethodDetails, plan_data):
     data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
     data['procuringEntity']['identifier'][
         'legalName_en'] = u"Institution \"Vinnytsia City Council primary and secondary general school № 10\""
+    data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
     return data
 
 
 def test_tender_data_framework_agreement(params, submissionMethodDetails, plan_data):
     data = test_tender_data_openeu(params, submissionMethodDetails, plan_data)
     data['procurementMethodType'] = 'closeFrameworkAgreementUA'
+    data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
     data['maxAwardsCount'] = fake.random_int(min=3, max=5)
     data['agreementDuration'] = create_fake_IsoDurationType(
         years=fake.random_int(min=1, max=3),
@@ -937,14 +933,9 @@ def test_tender_data_framework_agreement(params, submissionMethodDetails, plan_d
 
 def test_tender_data_competitive_dialogue(params, submissionMethodDetails, plan_data):
     """We should not provide any values for `enquiryPeriod` when creating
-    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
-    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
+    an openUA, openEU or open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a non default list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
-    #if params.get('dialogue_type') == 'UA':
-        #data['procurementMethodType'] = 'competitiveDialogueUA'
-    #else:
-        #data['procurementMethodType'] = 'competitiveDialogueEU'
-        #data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
     data['procurementMethodType'] = params.get('mode')
     if data['procurementMethodType'] == 'competitiveDialogueEU':
         data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
@@ -954,6 +945,7 @@ def test_tender_data_competitive_dialogue(params, submissionMethodDetails, plan_
     data['procuringEntity']['name_en'] = fake_en.name()
     data['procuringEntity']['contactPoint']['name_en'] = fake_en.name()
     data['procuringEntity']['identifier']['legalName_en'] = fake_en.sentence(nb_words=10, variable_nb_words=True)
+    data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
     return data
 
 
@@ -975,11 +967,11 @@ def test_tender_data_selection(procedure_intervals, params, submissionMethodDeta
 
 def test_tender_data_simple_defense(params, submissionMethodDetails, plan_data):
     """We should not provide any values for `enquiryPeriod` when creating
-    an openUA, openEU, openUA_defense or open_simple_defense procedure. That field should not be present at all.
-    Therefore, we pass a nondefault list of periods to `test_tender_data()`."""
+    an openUA, openEU or open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a non default list of periods to `test_tender_data()`."""
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     data['procurementMethodType'] = 'simple.defense'
-    data['procuringEntity']['kind'] = 'defense'
+    data['procuringEntity']['kind'] = plan_data["data"]["procuringEntity"]["kind"]
     return data
 
 
@@ -1023,7 +1015,7 @@ def test_modification_data(item_id, field_name, field_value):
 
 
 def get_hash(file_contents):
-    return ("md5:" + hashlib.md5(file_contents).hexdigest())
+    return "md5:" + hashlib.md5(file_contents).hexdigest()
 
 
 def test_monitoring_data(tender_id, accelerator=None):
@@ -1106,7 +1098,7 @@ def test_tender_data_esco(params, submissionMethodDetails, plan_data):
     data['procuringEntity']['contactPoint']['name_en'] = fake_en.name()
     data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
     data['procuringEntity']['identifier']['legalName_en'] = fake_en.sentence(nb_words=10, variable_nb_words=True)
-    data['procuringEntity']['kind'] = 'general'
+    data['procuringEntity']['kind'] = plan_data["data"]["procuringEntity"]["kind"]
     data['minimalStepPercentage'] = float(round(random.uniform(0.015, 0.03), 5))
     data['fundingKind'] = params['fundingKind']
     data['NBUdiscountRate'] = float(round(random.uniform(0, 0.99), 5))
@@ -1144,7 +1136,7 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     del data["minimalStep"]
     del data["title_en"]
     data['procurementMethodType'] = 'priceQuotation'
-    data["procuringEntity"]["kind"] = random.choice(['authority', 'defense', 'general', 'other', 'social', 'special'])
+    data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
     data['profile'] = fake.valid_profile()
     if params.get('wrong_profile'):
         data['profile'] = fake.invalid_profile()
