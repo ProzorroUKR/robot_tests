@@ -28,6 +28,7 @@ ${ARTICLE_17}           ${False}
 ${CRITERIA_GUARANTEE}   ${False}
 ${CRITERIA_LOT}         ${False}
 ${CRITERIA_LLC}         ${False}
+${first_reject_index}   ${0}
 
 *** Test Cases ***
 
@@ -970,7 +971,7 @@ ${CRITERIA_LLC}         ${False}
   ...     critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${provider}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  run keyword and expect error  *  Можливість створити чернетку скарги про виправлення визначення ${award_index} переможця
+  run keyword and expect error  *  Можливість створити чернетку скарги про виправлення визначення ${award_index} переможця ${provider}
 
 
 Можливість створити чернетку скарги про виправлення визначення переможця

@@ -56,7 +56,7 @@ Default:
              tender:  [0, 30]
         framework_selection:
              accelerator: 360
-        simple.defense:
+        simple_defense:
              accelerator: 1440
              tender:  [0, 10]
     # Synchronization delay, in seconds

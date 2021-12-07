@@ -1,4 +1,4 @@
--v MODE:simple.defense
+-v MODE:simple_defense
 
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:1
@@ -30,6 +30,7 @@
   -i delete_tender_meat
 
 -i ask_question_to_tender
+-i answer_question_to_tender
 -i answer_question_after_clarifications_period
 
 -i modify_tender_after_questions
