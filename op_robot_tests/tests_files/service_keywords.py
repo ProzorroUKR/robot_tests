@@ -405,7 +405,7 @@ def prepare_test_tender_data(procedure_intervals,
             tender_parameters, submissionMethodDetails, plan_data)})
     elif mode == 'priceQuotation':
         return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data)})
-    elif mode == "simple.defense":
+    elif mode == "simple_defense":
         return munchify({'data': test_tender_data_simple_defense(
             tender_parameters, submissionMethodDetails, plan_data)})
 
