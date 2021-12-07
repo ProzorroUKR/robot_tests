@@ -14,7 +14,7 @@ Documentation
 ...  test suites or by brokers' keyword libraries (also known as drivers).
 
 *** Variables ***
-@{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple.defense  closeFrameworkAgreementUA
+@{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple_defense  closeFrameworkAgreementUA
 
 
 
