@@ -291,8 +291,8 @@ Newtend:
     keywords_file: newtend
     intervals:
         default:
-            enquiry: [0, 15]
-            tender:  [0, 15]
+            enquiry: [0, 20]
+            tender:  [0, 20]
             accelerator: 1440
         openua:
             accelerator: 1440
@@ -327,8 +327,8 @@ Newtend:
             tender:  [0, 10]
         belowThreshold:
             accelerator: 1440
-            enquiry: [0, 15]
-            tender:  [0, 15]
+            enquiry: [0, 20]
+            tender:  [0, 20]
     roles:
         tender_owner:   Newtend_Owner
         provider:       Newtend_Provider1
