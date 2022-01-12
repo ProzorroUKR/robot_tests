@@ -43,6 +43,7 @@ class OP_Provider(BaseProvider):
     criteria_guarant = _fake_data.criteria_guarantee
     criteria_llc = _fake_data.criteria_llc
     cpb = _fake_data.cpb
+    valid_agreement_id = _fake_data.agreement_id
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -284,3 +285,6 @@ class OP_Provider(BaseProvider):
     def cpb_data(self):
         return deepcopy(self.random_element(self.cpb))
 
+    @classmethod
+    def valid_agreement(self):
+        return self.random_element(self.valid_agreement_id)
