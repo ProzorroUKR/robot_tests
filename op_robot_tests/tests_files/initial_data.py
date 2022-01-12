@@ -1137,24 +1137,37 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     del data["title_en"]
     data['procurementMethodType'] = 'priceQuotation'
     data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
-    data['profile'] = fake.valid_profile()
+    data['agreement'] = test_agreement_id()
+    data['criteria'] = []
+    for index in range(params['number_of_items']):
+        data['items'][index]['profile'] = fake.valid_profile()
+        data['items'][index]['id'] = uuid4().hex
+        item_id = data['items'][index]['id']
+        first_criteria = test_profile_first_criteria(item_id)
+        data['criteria'].append(first_criteria)
+        second_criteria = test_profile_second_criteria(item_id)
+        data['criteria'].append(second_criteria)
     if params.get('wrong_profile'):
-        data['profile'] = fake.invalid_profile()
+        for index in range(params['number_of_items']):
+            data['items'][index]['profile'] = fake.invalid_profile()
     if params.get('wrong_tender_date'):
         start_date = data['tenderPeriod']['startDate']
         from op_robot_tests.tests_files.service_keywords import add_minutes_to_date
         data['tenderPeriod']['endDate'] = add_minutes_to_date(start_date, 1)
     if params.get('empty_profile'):
-        data['profile'] = ""
+        for index in range(params['number_of_items']):
+            data['items'][index]['profile'] = "none"
     if params.get('tender_wrong_status'):
         data['status'] = fake.wrong_status()
     if params.get('profiles_hidden_status'):
-        data['profile'] = fake.profiles_hidden()
+        for index in range(params['number_of_items']):
+            data['items'][index]['profile'] = fake.profiles_hidden()
     if params.get('profiles_shortlistedfirms_empty'):
-        data['profile'] = fake.shortlistedfirms_empty()
+        for index in range(params['number_of_items']):
+            data['items'][index]['profile'] = fake.shortlistedfirms_empty()
     if params.get('unknown_profile'):
-        data['profile'] = fake.tender_unknown_profile()
-
+        for index in range(params['number_of_items']):
+            data['items'][index]['profile'] = fake.tender_unknown_profile()
     return munchify(data)
 
 
@@ -1489,7 +1502,7 @@ def test_pricequotation_unsuccessfulReason_data(unsuccessfulReason):
         text = u'Обраний профіль не існує в системі Prozorro.Market'
         reason.append(text)
     if unsuccessfulReason == "empty":
-        text = u'Для обраного профілю немає активних реєстрів'
+        text = u'Обрані профіля не відповідають обраному реєстру'
         reason.append(text)
     return reason
 
@@ -1679,3 +1692,60 @@ def edit_tender_data_for_buyers(tender_data, plan_1_data, plan_2_data, plan_3_da
     tender_data['data']['buyers'].append(buyer_2)
     tender_data['data']['buyers'].append(buyer_3)
     return munchify(tender_data)
+
+
+def test_agreement_id():
+    return munchify({
+        "id": fake.valid_agreement()
+    })
+
+
+def test_profile_first_criteria(item_id):
+    criteria = {
+            "title": "Рівень жирності",
+            "description": "Рівень жирності",
+            "relatesTo": "item",
+            "relatedItem": item_id,
+            "requirementGroups": [
+                {
+                    "description": "Рівень жирності",
+                    "requirements": [
+                        {
+                            "id": "125331-0001-001-01",
+                            "title": "Рівень жирності",
+                            "dataType": "number",
+                            "unit": {
+                                "code": "P1",
+                                "name": "відсоток"
+                            },
+                            "expectedValue": "72"
+                        }
+                    ]
+                }
+            ]
+    }
+    return munchify(criteria)
+
+
+def test_profile_second_criteria(item_id):
+    criteria = {
+            "title": "Вид Фасування",
+            "description": "Вид Фасування",
+            "relatesTo": "item",
+            "relatedItem": item_id,
+            "requirementGroups": [
+                {
+                    "description": "Вид Фасування",
+                    "requirements": [
+                        {
+                            "id": "125331-0002-001-01",
+                            "title": "Фасування - звичайне",
+                            "dataType": "boolean",
+                            "expectedValue": "true"
+                        }
+                    ]
+                }
+            ]
+    }
+    return munchify(criteria)
+
