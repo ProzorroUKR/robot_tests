@@ -284,9 +284,10 @@ Library  Collections
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
   Set To Dictionary  ${tender['data']}  status=${status}
+  ${status_data}=  create_data_dict  data.status  ${status}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${tender}
   Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
@@ -330,9 +331,10 @@ Library  Collections
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
   Set To Dictionary  ${tender['data']}  status=${status}
+  ${status_data}=  create_data_dict  data.status  ${status}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${tender}
   Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
@@ -391,9 +393,10 @@ Library  Collections
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   ${status}=  Set Variable If  'priceQuotation' in '${MODE}'  draft.publishing  ${status}
   Set To Dictionary  ${tender['data']}  status=${status}
+  ${status_data}=  create_data_dict  data.status  ${status}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${tender}
   Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
@@ -413,16 +416,17 @@ Library  Collections
   ${status}=  Set Variable If  'selection' in '${MODE}'  draft.pending  ${status}
   ${status}=  Set Variable If  '${status}'=='${EMPTY}'  active   ${status}
   Set To Dictionary  ${tender['data']}  status=${status}
+  ${status_data}=  create_data_dict  data.status  ${status}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${tender}
   Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
   Log   ${USERS.users['${username}'].tender_data}
-  [return]  ${tender.data.tenderID}
+  [Return]  ${tender.data.tenderID}
 
 
 Створити тендер без 2-ї фази commit-у
