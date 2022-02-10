@@ -778,15 +778,13 @@ Library  Collections
 Внести зміни в тендер
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ${prev_value}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${fieldname}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
-  ${procurementMethodType}=  Get From Object  ${tender.data}  procurementMethodType
-  Run Keyword If  '${procurementMethodType}' == 'aboveThresholdUA' or '${procurementMethodType}' == 'aboveThresholdEU'
-  ...      Remove From Dictionary  ${tender.data}  enquiryPeriod
-  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${change_tender_data}
   ...      access_token=${tender.access.token}
   Run Keyword And Expect Error  *  Порівняти об'єкти  ${prev_value}  ${tender.data.${fieldname}}
   Set_To_Object   ${USERS.users['${username}'].tender_data}   ${fieldname}   ${fieldvalue}
@@ -1009,10 +1007,12 @@ Library  Collections
 Додати неціновий показник на тендер
   [Arguments]  ${username}  ${tender_uaid}  ${feature}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Append To List  ${tender.data['features']}  ${feature}
+  ${features_data_list}=  Create List
+  Append To List  ${features_data_list}  ${feature}
+  ${features_data}=  create_data_dict  data.features  ${features_data_list}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${features_data}
   ...      access_token=${tender.access.token}
 
 
@@ -1022,10 +1022,12 @@ Library  Collections
   ${item_index}=  get_object_index_by_id  ${tender.data['items']}  ${item_id}
   ${item_id}=  Get Variable Value  ${tender.data['items'][${item_index}].id}
   Set To Dictionary  ${feature}  relatedItem=${item_id}
-  Append To List  ${tender.data['features']}  ${feature}
+  ${features_data_list}=  Create List
+  Append To List  ${features_data_list}  ${feature}
+  ${features_data}=  create_data_dict  data.features  ${features_data_list}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${features_data}
   ...      access_token=${tender.access.token}
 
 
@@ -1035,10 +1037,12 @@ Library  Collections
   ${lot_index}=  get_object_index_by_id  ${tender.data['lots']}  ${lot_id}
   ${lot_id}=  Get Variable Value  ${tender.data['lots'][${lot_index}].id}
   Set To Dictionary  ${feature}  relatedItem=${lot_id}
-  Append To List  ${tender.data['features']}  ${feature}
+  ${features_data_list}=  Create List
+  Append To List  ${features_data_list}  ${feature}
+  ${features_data}=  create_data_dict  data.features  ${features_data_list}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${features_data}
   ...      access_token=${tender.access.token}
 
 
@@ -2691,12 +2695,11 @@ Library  Collections
   ...      [Return] Reply of API
   [Arguments]  ${username}  ${tender_uaid}
   ${internal_id}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
-  ${tender}=  create_data_dict  data.id  ${internal_id}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  set_to_object  ${tender}  data.status  active.pre-qualification.stand-still
+  ${status_data}=  create_data_dict  data.status  active.pre-qualification.stand-still
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
-  ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${internal_id}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -2727,12 +2730,11 @@ Library  Collections
   ...      [Return] Reply of API
   [Arguments]  ${username}  ${tender_uaid}
   ${internal_id}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
-  ${tender}=  create_data_dict  data.id  ${internal_id}
+  ${status_data}=  create_data_dict  data.status  active.stage2.waiting
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  set_to_object  ${tender}  data.status  active.stage2.waiting
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
-  ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${internal_id}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
