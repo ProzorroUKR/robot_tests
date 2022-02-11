@@ -790,6 +790,24 @@ Library  Collections
   Set_To_Object   ${USERS.users['${username}'].tender_data}   ${fieldname}   ${fieldvalue}
 
 
+Внести зміни в дату в тендері
+  [Arguments]  ${username}  ${tender_uaid}  ${endDate}  ${period}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  ${prev_value}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${period}
+  ${startDate}=  set variable  ${tender.data.${period}.startDate}
+  ${change_tender_data}=  create_data_dict  data.${period}.startDate  ${startDate}
+  set_to_object  ${change_tender_data}  data.${period}.endDate  ${endDate}
+  ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
+  ...      ${tender.data.id}
+  ...      ${change_tender_data}
+  ...      access_token=${tender.access.token}
+  Run Keyword And Expect Error  *  Порівняти об'єкти  ${prev_value}  ${tender.data.${period}}
+  ${fieldname}=  set variable  tenderPeriod.endDate
+  ${fieldvalue}=  set variable  ${tender.data.${period}.endDate}
+  Set_To_Object   ${USERS.users['${username}'].tender_data}   ${fieldname}   ${fieldvalue}
+
+
 Внести зміни в план
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
@@ -852,14 +870,17 @@ Library  Collections
   ...      ${tender}
   ...      access_token=${tender.access.token}
 
+
 Видалити поле з донора
   [Arguments]  ${username}  ${tender_uaid}  ${funders_index}  ${field_name}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Delete From Dictionary  ${tender.data['funders'][${funders_index}]}  ${field_name}
-  Log  ${tender.data['funders'][${funders_index}]}
+  ${funder_data_list}=  Create List
+  Append To List  ${funder_data_list} ${tender.data['funders'][${funders_index}]}
+  ${funders_data}=  create_data_dict  data.funders  ${funder_data_list}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${funders_data}
   ...      access_token=${tender.access.token}
   Dictionary Should Not Contain Path  ${reply.data['funders'][${funders_index}]}  ${field_name}
 
@@ -868,10 +889,10 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${funders_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Remove From List  ${tender.data.funders}  ${funders_index}
-  Log  ${tender}
+  ${funders_data}=  create_data_dict  data.funders  ${tender.data.funders}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${funders_data}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -879,12 +900,11 @@ Library  Collections
 Додати донора
   [Arguments]  ${username}  ${tender_uaid}  ${funders_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  Set To Dictionary  ${tender.data}  funders=@{EMPTY}
   Append To List  ${tender.data.funders}  ${funders_data}
-  Log  ${tender}
+  ${funders_data}=  create_data_dict  data.funders  ${tender.data.funders}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${funders_data}
   ...      access_token=${tender.access.token}
 
 ##############################################################################

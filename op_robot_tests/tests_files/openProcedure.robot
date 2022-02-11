@@ -1029,9 +1029,7 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      extend_tendering_period  level3
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${endDate}=  add_minutes_to_date  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod.endDate}  1
-  Можливість змінити поле tenderPeriod.endDate тендера на ${endDate}
-  Remove From Dictionary  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod}  endDate
+  Можливість змінити період tenderPeriod на 1 днів
 
 
 Відображення зміни закінчення періоду прийому пропозицій тендера
@@ -2417,7 +2415,7 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість продовжити період подання пропозиції на 5 днів
+  Можливість змінити період tenderPeriod на 5 днів
   Можливість відповісти на запитання на тендер
 
 
