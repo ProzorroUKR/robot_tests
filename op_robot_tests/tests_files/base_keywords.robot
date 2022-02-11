@@ -2916,3 +2916,15 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...  ${second_requirement_index}
   Log  ${right}
   Порівняти об'єкти  ${left}  ${right}
+
+##################################################################################################
+
+Можливість змінити період ${period} на ${number_of_days} днів
+  ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
+  ${number_of_minutes}=  get_number_of_minutes  ${number_of_days}  ${period_intervals.${MODE}.accelerator}
+  Log  ${period}
+  Log  ${number_of_days}
+  ${endDate}=  add_minutes_to_date  ${USERS.users['${tender_owner}'].tender_data.data.${period}.endDate}  ${number_of_minutes}
+  Log  ${endDate}
+  Run As  ${tender_owner}  Внести зміни в дату в тендері  ${TENDER['TENDER_UAID']}  ${endDate}  ${period}
+  Remove From Dictionary  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod}  endDate
