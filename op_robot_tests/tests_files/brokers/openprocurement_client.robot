@@ -827,9 +827,10 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${item}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Append To List  ${tender.data['items']}  ${item}
+  ${items_data}=  create_data_dict  data.items  ${tender.data['items']}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${items_data}
   ...      access_token=${tender.access.token}
 
 
@@ -854,9 +855,10 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${item_index}=  get_object_index_by_id  ${tender.data['items']}  ${item_id}
   Remove From List  ${tender.data['items']}  ${item_index}
+  ${items_data}=  create_data_dict  data.items  ${tender.data['items']}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${items_data}
   ...      access_token=${tender.access.token}
 
 
@@ -955,9 +957,10 @@ Library  Collections
   ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
   Set_To_Object   ${item}   relatedLot   ${lot_id}
   Append To List   ${tender.data['items']}   ${item}
+  ${items_data}=  create_data_dict  data.items  ${tender.data['items']}
   Call Method   ${USERS.users['${username}'].client}   patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${items_data}
   ...      access_token=${tender.access.token}
 
 
@@ -1077,9 +1080,10 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${feature_index}=  get_object_index_by_id  ${tender.data['features']}  ${feature_id}
   Remove From List  ${tender.data['features']}  ${feature_index}
+  ${features_data}=  create_data_dict  data.features  ${tender.data['features']}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${features_data}
   ...      access_token=${tender.access.token}
 
 
