@@ -1094,6 +1094,7 @@ def test_tender_data_esco(params, submissionMethodDetails, plan_data):
     for item_number, item in enumerate(data['items']):
         item['description_en'] = "Test item #{}".format(item_number)
         del item['unit']
+        del item['quantity']
     data['procuringEntity']['name_en'] = fake_en.name()
     data['procuringEntity']['contactPoint']['name_en'] = fake_en.name()
     data['procuringEntity']['contactPoint']['availableLanguage'] = "en"
