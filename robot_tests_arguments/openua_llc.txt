@@ -20,10 +20,10 @@
 -i make_bid_with_criteria_by_provider
 -i make_bid_with_criteria_by_provider1
 
-#-i auction
-#-i auction_provider_url
-#-i auction_provider1_url
-#-i auction_viewer_url
+-i auction
+-i auction_provider_url
+-i auction_provider1_url
+-i auction_viewer_url
 
 -i wait_active_qualification_start
 -i wait_to_check_milestones

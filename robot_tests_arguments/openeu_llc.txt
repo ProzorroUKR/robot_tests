@@ -27,10 +27,10 @@
 -i pre-qualification_approve_qualifications
 
 
-#-i auction
-#-i auction_provider_url
-#-i auction_provider1_url
-#-i auction_viewer_url
+-i auction
+-i auction_provider_url
+-i auction_provider1_url
+-i auction_viewer_url
 
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
