@@ -2743,12 +2743,11 @@ Library  Collections
 Затвердити постачальників
   [Arguments]  ${username}  ${tender_uaid}
   ${internal_id}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
-  ${tender}=  create_data_dict  data.id  ${internal_id}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  set_to_object  ${tender}  data.status  active.qualification.stand-still
+  ${status_data}=  create_data_dict  data.status  active.pre-qualification.stand-still
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
-  ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${internal_id}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
