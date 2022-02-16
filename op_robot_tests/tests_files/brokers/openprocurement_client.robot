@@ -902,12 +902,18 @@ Library  Collections
 Додати донора
   [Arguments]  ${username}  ${tender_uaid}  ${funders_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${funders}=  Get Variable Value  ${tender.data['funders']}  ${None}
+  ${funders_data_list}=  Run Keyword IF  ${funders}
+  ...  Set Variable  ${funders}
+  ...  ELSE
+  ...  Create List
   Append To List  ${tender.data.funders}  ${funders_data}
   ${funders_data}=  create_data_dict  data.funders  ${tender.data.funders}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${funders_data}
   ...      access_token=${tender.access.token}
+  Log  ${reply}
 
 ##############################################################################
 #             Lot operations
