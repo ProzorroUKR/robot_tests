@@ -880,9 +880,15 @@ def test_lot_data(max_value_amount, vat_included=True):
         })
 
 
-def test_lot_document_data(document, lot_id):
-    document.data.update({"documentOf": "lot", "relatedItem": lot_id})
-    return munchify(document)
+def test_lot_document_data(lot_id):
+    return munchify(
+        {
+            "data":
+                {
+                    "documentOf": "lot",
+                    "relatedItem": lot_id
+                }
+        })
 
 
 def test_change_document_data(document, change_id):
@@ -1094,6 +1100,7 @@ def test_tender_data_esco(params, submissionMethodDetails, plan_data):
     for item_number, item in enumerate(data['items']):
         item['description_en'] = "Test item #{}".format(item_number)
         del item['unit']
+        del item['quantity']
     data['procuringEntity']['name_en'] = fake_en.name()
     data['procuringEntity']['contactPoint']['name_en'] = fake_en.name()
     data['procuringEntity']['contactPoint']['availableLanguage'] = "en"

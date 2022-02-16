@@ -29,6 +29,10 @@ Default:
             # This is not a name of period
             # Please refer to API documentation to find out what's this
             accelerator: 1440
+        belowThreshold:
+            accelerator: 1440
+            enquiry: [0, 10]
+            tender:  [0, 10]
         aboveThresholdUA:
             accelerator: 1440
             tender:  [0, 15]
@@ -66,6 +70,10 @@ Quinta:
         default:
             enquiry: [0, 20]
             tender:  [0, 20]
+        belowThreshold:
+            accelerator: 1440
+            enquiry: [0, 10]
+            tender:  [0, 10]
         aboveThresholdUA:
             accelerator: 1440
             tender:  [1, 30]

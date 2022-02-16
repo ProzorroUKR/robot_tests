@@ -970,11 +970,11 @@ Library  Collections
   ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
   ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
   ${doc}=  openprocurement_client.Завантажити документ  ${username}  ${filepath}  ${tender_uaid}
-  ${lot_doc}=  test_lot_document_data  ${doc}  ${lot_id}
+  ${lot_doc_data}=  test_lot_document_data  ${lot_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_document
   ...      ${tender.data.id}
-  ...      ${lot_doc}
-  ...      ${lot_doc.data.id}
+  ...      ${lot_doc_data}
+  ...      ${doc.data.id}
   ...      access_token=${tender.access.token}
 
 
@@ -1030,7 +1030,11 @@ Library  Collections
 Додати неціновий показник на тендер
   [Arguments]  ${username}  ${tender_uaid}  ${feature}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${features_data_list}=  Create List
+  ${features}=  Get Variable Value  ${tender.data['features']}  ${None}
+  ${features_data_list}=  Run Keyword IF  ${features}
+  ...  Set Variable  ${features}
+  ...  ELSE
+  ...  Create List
   Append To List  ${features_data_list}  ${feature}
   ${features_data}=  create_data_dict  data.features  ${features_data_list}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
@@ -1042,10 +1046,14 @@ Library  Collections
 Додати неціновий показник на предмет
   [Arguments]  ${username}  ${tender_uaid}  ${feature}  ${item_id}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${features}=  Get Variable Value  ${tender.data['features']}  ${None}
   ${item_index}=  get_object_index_by_id  ${tender.data['items']}  ${item_id}
   ${item_id}=  Get Variable Value  ${tender.data['items'][${item_index}].id}
   Set To Dictionary  ${feature}  relatedItem=${item_id}
-  ${features_data_list}=  Create List
+  ${features_data_list}=  Run Keyword IF  ${features}
+  ...  Set Variable  ${features}
+  ...  ELSE
+  ...  Create List
   Append To List  ${features_data_list}  ${feature}
   ${features_data}=  create_data_dict  data.features  ${features_data_list}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
@@ -1057,10 +1065,14 @@ Library  Collections
 Додати неціновий показник на лот
   [Arguments]  ${username}  ${tender_uaid}  ${feature}  ${lot_id}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${features}=  Get Variable Value  ${tender.data['features']}  ${None}
   ${lot_index}=  get_object_index_by_id  ${tender.data['lots']}  ${lot_id}
   ${lot_id}=  Get Variable Value  ${tender.data['lots'][${lot_index}].id}
   Set To Dictionary  ${feature}  relatedItem=${lot_id}
-  ${features_data_list}=  Create List
+  ${features_data_list}=  Run Keyword IF  ${features}
+  ...  Set Variable  ${features}
+  ...  ELSE
+  ...  Create List
   Append To List  ${features_data_list}  ${feature}
   ${features_data}=  create_data_dict  data.features  ${features_data_list}
   Call Method  ${USERS.users['${username}'].client}  patch_tender
