@@ -880,9 +880,15 @@ def test_lot_data(max_value_amount, vat_included=True):
         })
 
 
-def test_lot_document_data(document, lot_id):
-    document.data.update({"documentOf": "lot", "relatedItem": lot_id})
-    return munchify(document)
+def test_lot_document_data(lot_id):
+    return munchify(
+        {
+            "data":
+                {
+                    "documentOf": "lot",
+                    "relatedItem": lot_id
+                }
+        })
 
 
 def test_change_document_data(document, change_id):
