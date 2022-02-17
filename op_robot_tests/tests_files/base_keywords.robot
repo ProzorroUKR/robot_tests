@@ -2276,6 +2276,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість подати цінову пропозицію на другий етап конкурентного діалогу користувачем
   [Arguments]  ${username}  ${index}=${0}
+  ${index}=  Run Keyword If  '${TEST_NAME}' == 'Можливість подати пропозицію першим учасником на другому етапі'  Set Variable  0
+  ...  ELSE  Set Variable  1
   ${edrpou}=  set variable  ${USERS.users['${username}'].tender_data.data['shortlistedFirms'][${index}]['identifier']['id']}
   Log  ${edrpou}
   ${bid}=  Підготувати дані для подання пропозиції для другого етапу конкурентного діалогу  ${username}  ${edrpou}
