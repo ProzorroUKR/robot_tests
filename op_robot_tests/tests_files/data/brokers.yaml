@@ -305,25 +305,25 @@ Newtend:
             tender:  [0, 35]
         openua_defense:
             accelerator: 1440
-            tender:  [0, 6]
+            tender:  [0, 15]
         open_competitive_dialogue:
             accelerator: 1440
             tender:  [0, 35]
         open_esco:
              accelerator: 1440
-             enquiry: [0, 10]
+             enquiry: [0, 15]
              tender:  [0, 36]
         open_framework:
              accelerator: 1440
-             tender:  [0, 30]
+             tender:  [0, 35]
         framework_selection:
-             accelerator: 1440
+             accelerator: 180
         open_simple_defense:
              accelerator: 1440
-             tender:  [0, 10]
+             tender:  [0, 15]
         negotiation:
             accelerator: 1440
-            enquiry: [0, 10]
+            enquiry: [0, 15]
             tender:  [0, 10]
         belowThreshold:
             accelerator: 1440
