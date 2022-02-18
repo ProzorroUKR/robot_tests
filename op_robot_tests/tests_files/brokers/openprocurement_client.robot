@@ -2731,9 +2731,7 @@ Library  Collections
 Затвердити остаточне рішення кваліфікації
   [Documentation]
   ...      [Arguments] Username and tender uaid
-  ...
   ...      [Description] Find tender using uaid and call patch_tender
-  ...
   ...      [Return] Reply of API
   [Arguments]  ${username}  ${tender_uaid}
   ${internal_id}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
@@ -2750,7 +2748,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}
   ${internal_id}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  ${status_data}=  create_data_dict  data.status  active.pre-qualification.stand-still
+  ${status_data}=  create_data_dict  data.status  active.qualification.stand-still
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${internal_id}
   ...      ${status_data}
