@@ -493,7 +493,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
   ...      lot_view  level1
   ...      critical
-  Звірити відображення поля title усіх лотів для усіх користувачів
+  Звірити відображення поля title усіх лотів другого етапу для усіх користувачів
 
 
 Відображення опису лотів
@@ -502,7 +502,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${viewer}'].broker}
   ...      lot_view
   ...      critical
-  Звірити відображення поля description усіх лотів для користувача ${viewer}
+  Звірити відображення поля description усіх лотів другого етапу для усіх користувачів
 
 
 Відображення бюджету лотів
@@ -512,7 +512,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
   ...      lot_view
   ...      critical
-  Отримати дані із поля lots[0].value.amount тендера для усіх користувачів
+  Звірити відображення поля value.amount усіх лотів другого етапу для усіх користувачів
 
 
 Відображення валюти лотів
@@ -521,7 +521,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${viewer}'].broker}
   ...      lot_view
   ...      non-critical
-  Звірити відображення поля value.currency усіх лотів для користувача ${viewer}
+  Звірити відображення поля value.currency усіх лотів другого етапу для усіх користувачів
 
 
 Відображення ПДВ в бюджеті лотів
@@ -530,7 +530,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${viewer}'].broker}
   ...      lot_view
   ...      non-critical
-  Звірити відображення поля value.valueAddedTaxIncluded усіх лотів для користувача ${viewer}
+  Звірити відображення поля value.valueAddedTaxIncluded усіх лотів другого етапу для усіх користувачів
 
 
 Відображення мінімального кроку лотів
@@ -540,8 +540,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${provider}'].broker}  ${USERS.users['${provider1}'].broker}
   ...      lot_view
   ...      non-critical
-  Отримати дані із поля lots[0].minimalStep.amount тендера для усіх користувачів
-
+  Звірити відображення поля minimalStep.amount усіх лотів другого етапу для усіх користувачів
 
 Відображення валюти мінімального кроку лотів
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення лоту тендера
@@ -549,7 +548,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${viewer}'].broker}
   ...      lot_view
   ...      non-critical
-  Звірити відображення поля minimalStep.currency усіх лотів для користувача ${viewer}
+  Звірити відображення поля minimalStep.currency усіх лотів другого етапу для усіх користувачів
 
 
 Відображення ПДВ в мінімальному кроці лотів
@@ -558,7 +557,7 @@ ${PLAN_TENDER}      ${False}
   ...      ${USERS.users['${viewer}'].broker}
   ...      lot_view
   ...      non-critical
-  Звірити відображення поля minimalStep.valueAddedTaxIncluded усіх лотів для користувача ${viewer}
+  Звірити відображення поля minimalStep.valueAddedTaxIncluded усіх лотів другого етапу для усіх користувачів
 
 ##############################################################################################
 #             Відображення основних даних предмету
