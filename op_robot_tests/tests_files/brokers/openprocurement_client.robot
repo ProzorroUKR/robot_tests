@@ -2803,10 +2803,10 @@ Library  Collections
   ${internal_id}=  openprocurement_client.Отримати internal id по UAid  ${username}  ${tender_uaid}
   ${tender}=  create_data_dict  data.id  ${internal_id}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  set_to_object  ${tender}  data.status  active.tendering
+  ${status_data}=  create_data_dict  data.status  active.tendering
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
-  ...      ${tender}
+  ...      ${status_data}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${reply.data.id}${\n}  WARN
