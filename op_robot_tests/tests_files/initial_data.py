@@ -462,8 +462,6 @@ def test_tender_data_limited(params, plan_data):
             "cause": cause,
             "causeDescription": fake.description()
         })
-    #if params['mode'] in ("negotiation", "negotiation.quick"):
-        #cause = fake.random_element(cause_variants)
     return munchify(data)
 
 
@@ -968,6 +966,10 @@ def test_tender_data_selection(procedure_intervals, params, submissionMethodDeta
     data['agreements'] = [{'id': tender_data['data']['agreements'][0]['id']}]
     del data['value']
     del data['minimalStep']
+    for lot in data.get('lots', []):
+        lot.pop('minimalStep', None)
+        lot.pop('auctionPeriod', None)
+        lot.pop('value', None)
     return munchify({'data': data})
 
 
