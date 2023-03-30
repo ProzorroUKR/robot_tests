@@ -39,7 +39,7 @@ class StableDsClient(DocumentServiceClient):
 
 
 class StableAgreementClient(AgreementClient):
-    @retry(stop_max_attempt_number=100, wait_random_min=1000,
+    @retry(stop_max_attempt_number=100, wait_random_min=1500,
            wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         return super(StableAgreementClient, self).request(*args, **kwargs)
@@ -60,7 +60,7 @@ def prepare_agreement_api_wrapper(key, resource, host_url, api_version, ds_confi
 
 
 class ContractingStableClient(ContractingClient):
-    @retry(stop_max_attempt_number=100, wait_random_min=1000, wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    @retry(stop_max_attempt_number=100, wait_random_min=1500, wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         return super(ContractingStableClient, self).request(*args, **kwargs)
 
@@ -70,7 +70,7 @@ def prepare_contract_api_wrapper(key, resource, host_url, api_version, ds_config
 
 
 class StableEDRClient(EDRClient):
-    @retry(stop_max_attempt_number=100, wait_random_min=1000,
+    @retry(stop_max_attempt_number=100, wait_random_min=1500,
            wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         try:
@@ -149,22 +149,22 @@ def get_document_by_id(data, doc_id):
     raise Exception('Document with id {} not found'.format(doc_id))
 
 
-def get_tenders_feed(client, interval=0.5):
+def get_tenders_feed(client, interval=1.0):
     for item in get_items_feed(client, 'get_tenders', interval):
         yield item
 
 
-def get_plans_feed(client, interval=0.5):
+def get_plans_feed(client, interval=1.0):
     for item in get_items_feed(client, 'get_plans', interval):
         yield item
 
 
-def get_contracts_feed(client, interval=0.5):
+def get_contracts_feed(client, interval=1.5):
     for item in get_items_feed(client, 'get_contracts', interval):
         yield item
 
 
-def get_items_feed(client, client_method, interval=0.5):
+def get_items_feed(client, client_method, interval=1.5):
     items = True
     while items:
         items = getattr(client, client_method)()
@@ -181,7 +181,7 @@ def download_file_from_url(url, path_to_save_file):
 
 
 class StableClient_plan(PlansClient):
-    @retry(stop_max_attempt_number=100, wait_random_min=1000, wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    @retry(stop_max_attempt_number=100, wait_random_min=2000, wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         return super(StableClient_plan, self).request(*args, **kwargs)
 
@@ -191,7 +191,7 @@ def prepare_plan_api_wrapper(key, resource, host_url, api_version):
 
 
 class StableClient_dasu(DasuClient):
-    @retry(stop_max_attempt_number=100, wait_random_min=500,
+    @retry(stop_max_attempt_number=100, wait_random_min=2000,
            wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         return super(StableClient_dasu, self).request(*args, **kwargs)
@@ -202,7 +202,7 @@ def prepare_dasu_api_wrapper(resource, host_url, api_version, username, password
 
 
 class StableTenderCreateClient(TenderCreateClient):
-    @retry(stop_max_attempt_number=100, wait_random_min=1000,
+    @retry(stop_max_attempt_number=100, wait_random_min=1500,
            wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         return super(StableTenderCreateClient, self).request(*args, **kwargs)
@@ -213,7 +213,7 @@ def prepare_tender_create_wrapper(key, resource, host_url, api_version, ds_confi
 
 
 class StableClientAmcu(Client):
-    @retry(stop_max_attempt_number=100, wait_random_min=1000,
+    @retry(stop_max_attempt_number=100, wait_random_min=1500,
            wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         return super(StableClientAmcu, self).request(*args, **kwargs)
@@ -224,7 +224,7 @@ def prepare_amcu_api_wrapper(key, resource, host_url, api_version, ds_config=Non
 
 
 class StableClientPayment(PaymentClient):
-    @retry(stop_max_attempt_number=100, wait_random_min=1000,
+    @retry(stop_max_attempt_number=100, wait_random_min=2000,
            wait_random_max=4000, retry_on_exception=retry_if_request_failed)
     def request(self, *args, **kwargs):
         return super(StableClientPayment, self).request(*args, **kwargs)
