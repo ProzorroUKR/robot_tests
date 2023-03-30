@@ -2670,11 +2670,11 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${qualification_num}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${qualification}=  create_data_dict   data.status  active
-  Set To Dictionary  ${qualification.data}  id=${tender.data.qualifications[${qualification_num}].id}  eligible=${True}  qualified=${True}
+  Set To Dictionary  ${qualification.data}  eligible=${True}  qualified=${True}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification
   ...      ${tender.data.id}
   ...      ${qualification}
-  ...      ${qualification.data.id}
+  ...      ${tender.data.qualifications[${qualification_num}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -2687,11 +2687,11 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${qualification_num}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${qualification}=  create_data_dict   data.status  unsuccessful
-  Set To Dictionary  ${qualification.data}  id=${tender.data.qualifications[${qualification_num}].id}
+ # Set To Dictionary  ${qualification.data}  id=${tender.data.qualifications[${qualification_num}].id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification
   ...      ${tender.data.id}
   ...      ${qualification}
-  ...      ${qualification.data.id}
+  ...      ${tender.data.qualifications[${qualification_num}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
