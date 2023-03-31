@@ -570,6 +570,14 @@ def munch_dict(arg=None, data=False):
     return munchify(arg)
 
 
+def delete_rogue_fields(obj):
+    data_dict = {'data': {}}
+    data_dict = set_to_object(data_dict, 'data.items', obj.get('items', ''))
+    data_dict = set_to_object(data_dict, 'status', obj.get('status', ''))
+    data_dict = set_to_object(data_dict, 'value', obj.get('value', ''))
+    return data_dict
+
+
 def get_id_from_object(obj):
     regex = r'(^[filq]-[0-9a-fA-F]{8}): '
 

@@ -2818,15 +2818,11 @@ Library  Collections
 Редагувати угоду
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contractAllData}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
-  ${contract}=  create_data_dict   data.items  ${contractAllData.data['items']}
-  Set_to_object  ${contract.data}  status  ${contractAllData.data['status']}
-  Set_to_object  ${contract.data}  value  ${contractAllData.data['value']}
-  Set_to_object  ${contract.data}  ${fieldname}  ${fieldvalue}
+  ${contract}=  delete_rogue_fields  ${tender.data.contracts[${contract_index}]}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contractAllData.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -2980,12 +2976,12 @@ Library  Collections
 Встановити дату підписання угоди
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields  ${tender.data.contracts[${contract_index}]}
   Set To Dictionary  ${contract.data}  dateSigned=${fieldvalue}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contract.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -2995,13 +2991,13 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${period}=  Create Dictionary  startDate=${startDate}
   Set to Dictionary  ${period}  endDate=${endDate}
-  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields  ${tender.data.contracts[${contract_index}]}
   Set To Dictionary  ${contract.data}  period=${period}
   Log  ${contract}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contract.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
