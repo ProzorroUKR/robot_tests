@@ -287,7 +287,7 @@ Suite Teardown  Test Suite Teardown
   ...      ${contract_index}
   ...      value.amountNet
   ...      ${invalid_amountNet}
-  Should Contain  ${value}  Amount should be greater than amountNet and differ by no more than 20.0%
+  Should Contain  ${value}  Amount should be equal or greater than amountNet and differ by no more than 20.0%
 
 
 Неможливість збільшити ціну договору з ПДВ на суму більшу за 20% від ціни договору без ПДВ (закупівля без ПДВ)
