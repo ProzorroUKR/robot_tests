@@ -2858,6 +2858,7 @@ Library  Collections
 Встановити ціну за одиницю товару в контракті
   [Arguments]  ${username}  ${tender_uaid}  ${contract_data}  ${contract_index}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract_data}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Log  ${tender}
   Log  ${contract_data}
   Log  ${tender['data']['contracts'][${contract_index}]['id']}
@@ -3030,7 +3031,7 @@ Library  Collections
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${data}
-  ...      ${data.data.id}
+  ...      ${tender['data']['contracts'][${contract_num}]['id']}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   [Return]  ${reply}
