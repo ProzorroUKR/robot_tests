@@ -570,21 +570,13 @@ def munch_dict(arg=None, data=False):
     return munchify(arg)
 
 
-def delete_rogue_fields(obj):
-    data_dict = {'data': {}}
-    data_dict = set_to_object(data_dict, 'data.items', obj.get('items', ''))
-    data_dict = set_to_object(data_dict, 'status', obj.get('status', ''))
-    data_dict = set_to_object(data_dict, 'value', obj.get('value', ''))
-    return data_dict
-
-
 def delete_rogue_fields_contract(obj):
     data_dict = {'data': {}}
     data_dict = set_to_object(data_dict, 'data.items', obj.get('items', ''))
-    data_dict = set_to_object(data_dict, 'status', obj.get('status', ''))
-    data_dict = set_to_object(data_dict, 'value', obj.get('value', ''))
-    data_dict = set_to_object(data_dict, 'period', obj.get('period', ''))
-    data_dict = set_to_object(data_dict, 'dateSigned', obj.get('dateSigned', ''))
+    data_dict = set_to_object(data_dict, 'data.status', obj.get('status', ''))
+    data_dict = set_to_object(data_dict, 'data.value', obj.get('value', ''))
+    data_dict = set_to_object(data_dict, 'data.period', obj.get('period', ''))
+    data_dict = set_to_object(data_dict, 'data.dateSigned', obj.get('dateSigned', ''))
     return data_dict
 
 

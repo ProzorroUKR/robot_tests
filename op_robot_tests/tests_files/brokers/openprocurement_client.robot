@@ -2818,7 +2818,7 @@ Library  Collections
 Редагувати угоду
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  delete_rogue_fields  ${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
@@ -2977,7 +2977,7 @@ Library  Collections
 Встановити дату підписання угоди
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  delete_rogue_fields  ${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Set To Dictionary  ${contract.data}  dateSigned=${fieldvalue}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
@@ -2992,7 +2992,7 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${period}=  Create Dictionary  startDate=${startDate}
   Set to Dictionary  ${period}  endDate=${endDate}
-  ${contract}=  delete_rogue_fields  ${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Set To Dictionary  ${contract.data}  period=${period}
   Log  ${contract}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
