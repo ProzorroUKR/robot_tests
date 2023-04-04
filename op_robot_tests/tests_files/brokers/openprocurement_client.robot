@@ -2819,6 +2819,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
+  Set_to_object  ${contract.data}  ${fieldname}  ${fieldvalue}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
