@@ -572,11 +572,16 @@ def munch_dict(arg=None, data=False):
 
 def delete_rogue_fields_contract(obj):
     data_dict = {'data': {}}
+    period = obj.get('period', '')
+    date_signed = obj.get('dateSigned', '')
+
     data_dict = set_to_object(data_dict, 'data.items', obj.get('items', ''))
     data_dict = set_to_object(data_dict, 'data.status', obj.get('status', ''))
     data_dict = set_to_object(data_dict, 'data.value', obj.get('value', ''))
-    data_dict = set_to_object(data_dict, 'data.period', obj.get('period', ''))
-    data_dict = set_to_object(data_dict, 'data.dateSigned', obj.get('dateSigned', ''))
+    if period:
+        data_dict = set_to_object(data_dict, 'data.period', period)
+    if date_signed:
+        data_dict = set_to_object(data_dict, 'data.dateSigned', date_signed)
     return data_dict
 
 
