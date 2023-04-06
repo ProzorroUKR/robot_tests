@@ -235,7 +235,7 @@ Suite Teardown  Test Suite Teardown
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'
   ...      Should Contain  ${value}  Amount and amountNet should be equal
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${False}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'
-  ...      Should Contain  ${value}  Amount should be less or equal to awarded amount
+  ...      Should Contain  ${value}  Amount and amountNet should be equal
 
 
 Неможливість вказати ціну договору з ПДВ більше ніж результат проведення аукціону
