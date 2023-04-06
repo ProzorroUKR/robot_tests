@@ -2831,13 +2831,14 @@ Library  Collections
 Редагувати обидва поля вартості угоди
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${field_amount}  ${field_amountNet}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+#  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Set_to_object  ${contract.data}  ${field_amount}  ${fieldvalue}
   Set_to_object  ${contract.data}  ${field_amountNet}  ${fieldvalue}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contract.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
