@@ -2846,13 +2846,14 @@ Library  Collections
 Змінити ознаку ПДВ на True
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${vat_fieldvalue}  ${field_amount}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+#  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Set To Dictionary  ${contract.data.value}  valueAddedTaxIncluded=${vat_fieldvalue}
   Set To Dictionary  ${contract.data.value}  amountNet=${field_amount}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contract.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 

@@ -119,9 +119,10 @@ Suite Teardown  Test Suite Teardown
   ${amount_net}=  create_fake_amount_net  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
-  Run As  ${tender_owner}  Редагувати угоду
+  Run As  ${tender_owner}  Редагувати обидва поля вартості угоди
   ...      ${TENDER['TENDER_UAID']}
   ...      ${contract_index}
+  ...      value.amount
   ...      value.amountNet
   ...      ${amount_net}
 
@@ -138,13 +139,15 @@ Suite Teardown  Test Suite Teardown
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
   ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
-  ${amount}=  create_fake_amount  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
+#  ${amount}=  create_fake_amount  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
+  ${amount}=  create_fake_number_float  ${contract.value.amount}  ${award.value.amount}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
-  Run As  ${tender_owner}  Редагувати угоду
+  Run As  ${tender_owner}  Редагувати обидва поля вартості угоди
   ...      ${TENDER['TENDER_UAID']}
   ...      ${contract_index}
   ...      value.amount
+  ...      value.amountNet
   ...      ${amount}
 
 
@@ -307,7 +310,7 @@ Suite Teardown  Test Suite Teardown
   ...      ${contract_index}
   ...      value.amount
   ...      ${amount}
-  Should Contain  ${value}  Amount should be greater than amountNet and differ by no more than 20.0%"
+  Should Contain  ${value}  Amount should be equal or greater than amountNet and differ by no more than 20.0%"
 
 
 Можливість встановити дату підписання угоди
