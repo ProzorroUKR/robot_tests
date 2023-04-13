@@ -1305,6 +1305,28 @@ Require Failure
   ...      active.pre-qualification
 
 
+Дочекатись дати початку періоду прекваліфікації 24h
+  [Arguments]  ${username}  ${tender_uaid}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${status}  ${date}=  Run Keyword And Ignore Error
+  ...      Set Variable
+  ...      ${tender.data.qualifications[0].milestones[0].dueDate}
+  ${date}=  Set Variable If
+  ...      '${status}' == 'FAIL'
+  ...      ${tender.data.qualifications[0].milestones[0].dueDate}
+  ...      ${date}
+  Дочекатись дати  ${date}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
+  Wait until keyword succeeds
+  ...      20 min 15 sec
+  ...      15 sec
+  ...      Звірити статус тендера
+  ...      ${username}
+  ...      ${tender_uaid}
+  ...      active.pre-qualification
+
+
 Дочекатись дати початку очікування
   [Arguments]  ${username}  ${tender_uaid}
   # XXX: HACK: Same as above
