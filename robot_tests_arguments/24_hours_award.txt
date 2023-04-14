@@ -21,4 +21,4 @@
 -i add_doc_to_bid_by_provider_24h_qualification
 
 -i qualification_add_doc_to_first_award
--i qualification_approve_first_award
+-i qualification_approve_first_award_24h
