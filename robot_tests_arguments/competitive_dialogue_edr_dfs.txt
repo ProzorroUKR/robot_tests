@@ -53,4 +53,4 @@
 -i qualification_add_doc_to_first_award
 -i qualifications_check_by_edrpou
 -i qualification_approve_first_award
--i awards_check_by_dfs
+# -i awards_check_by_dfs
