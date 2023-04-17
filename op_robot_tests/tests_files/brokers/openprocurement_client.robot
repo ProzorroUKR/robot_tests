@@ -955,7 +955,7 @@ Library  Collections
   ...      ${lot}
   ...      ${tender.data.lots[${lot_index}].id}
 #  ...      ${lot.data.id}
-  ...      access_token=${tender.access.token}ожливість відповісти на запитання на тендер
+  ...      access_token=${tender.access.token}
 
 
 Додати предмет закупівлі в лот
@@ -1154,11 +1154,13 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${answer_data}  ${question_id}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  ${answer_data.data.id}=  openprocurement_client.Отримати інформацію із запитання  ${username}  ${tender_uaid}  ${question_id}  id
+#  ${answer_data.data.id}=  openprocurement_client.Отримати інформацію із запитання  ${username}  ${tender_uaid}  ${question_id}  id
+  ${answer_data_id}=  openprocurement_client.Отримати інформацію із запитання  ${username}  ${tender_uaid}  ${question_id}  id
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_question
   ...      ${tender.data.id}
   ...      ${answer_data}
-  ...      ${answer_data.data.id}
+#  ...      ${answer_data.data.id}
+  ...      ${answer_data_id}
   ...      access_token=${tender.access.token}
 
 ##############################################################################
