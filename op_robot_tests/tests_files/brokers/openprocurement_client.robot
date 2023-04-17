@@ -947,13 +947,15 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${lot_id}   ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
-  ${lot}=  Create Dictionary  data=${tender.data.lots[${lot_index}]}
+#  ${lot}=  Create Dictionary  data=${tender.data.lots[${lot_index}]}
+  ${lot}=  delete_rogue_fields_lot  ${tender.data.lots[${lot_index}]}
   Set_To_Object   ${lot.data}   ${fieldname}   ${fieldvalue}
   ${reply}=  Call Method   ${USERS.users['${username}'].client}  patch_lot
   ...      ${tender.data.id}
   ...      ${lot}
-  ...      ${lot.data.id}
-  ...      access_token=${tender.access.token}
+  ...      ${tender.data.lots[${lot_index}].id}
+#  ...      ${lot.data.id}
+  ...      access_token=${tender.access.token}ожливість відповісти на запитання на тендер
 
 
 Додати предмет закупівлі в лот
