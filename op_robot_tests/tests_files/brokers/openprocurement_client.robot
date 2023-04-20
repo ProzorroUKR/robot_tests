@@ -2599,7 +2599,8 @@ Library  Collections
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation
   ...      ${tender.data.id}
   ...      ${data}
-  ...      ${data.data.id}
+  ...      ${cancel_id}
+#  ...      ${data.data.id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   [Return]  ${reply}
