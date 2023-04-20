@@ -630,7 +630,7 @@ def test_cancel_pending_data(id):
     return munchify({
         "data": {
             "status": "pending",
-            "id": id
+            #"id": id
         }
     })
 
