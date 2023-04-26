@@ -877,8 +877,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${funders_index}  ${field_name}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Delete From Dictionary  ${tender.data['funders'][${funders_index}]}  ${field_name}
-  ${funder_data_list}=  Create List
-  Append To List  ${funder_data_list} ${tender.data['funders'][${funders_index}]}
+  ${funder_data_list}=  Create List  ${tender.data['funders'][${funders_index}]}
   ${funders_data}=  create_data_dict  data.funders  ${funder_data_list}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
@@ -907,8 +906,11 @@ Library  Collections
   ...  Set Variable  ${funders}
   ...  ELSE
   ...  Create List
-  Append To List  ${tender.data.funders}  ${funders_data}
-  ${funders_data}=  create_data_dict  data.funders  ${tender.data.funders}
+#  Append To List  ${tender.data.funders}  ${funders_data}
+  Append To List  ${funders_data_list}  ${funders_data}
+#  ${funders_data}=  create_data_dict  data.funders  ${tender.data.funders}
+  ${funders_data}=  create_data_dict  data.funders  ${funders_data_list}
+  Log    ${funders_data}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${funders_data}
