@@ -3065,7 +3065,7 @@ Library  Collections
   \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   \  ...      ${tender.data.id}
   \  ...      ${data}
-  \  ...      ${data.data.id}
+  \  ...      ${tender['data']['contracts'][${index}]['id']}
   \  ...      access_token=${tender.access.token}
   \  Log  ${reply}
 
