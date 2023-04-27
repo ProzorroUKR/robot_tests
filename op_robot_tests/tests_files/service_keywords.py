@@ -111,6 +111,7 @@ from .initial_data import (
     test_aggregate_plans_data,
     edit_tender_data_for_buyers,
     test_unit_price_amount_buyer,
+    test_unit_price_amount_buyer_updated,
     test_contract_price_amount_buyer
 )
 from barbecue import chef

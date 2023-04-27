@@ -2896,7 +2896,8 @@ Library  Collections
   \  ${value}=  Evaluate  ${item_value}/${quantity}
   \  ${value}=  Convert To Integer  ${value}
   \  Log  ${value}
-  \  ${contract_data}=  test_unit_price_amount_buyer  ${value}
+#  \  ${contract_data}=  test_unit_price_amount_buyer  ${value}
+  \  ${contract_data}=  test_unit_price_amount_buyer_updated  ${index}  ${value}
   \  Log  ${contract_data}
   \  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   \  Log  ${tender}

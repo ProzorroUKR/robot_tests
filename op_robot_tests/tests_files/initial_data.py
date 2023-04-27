@@ -1561,6 +1561,18 @@ def test_unit_price_amount_buyer(amount):
     })
 
 
+def test_unit_price_amount_buyer_updated(index, amount):
+    return munchify({
+        "data": {
+            "contractNumber": index,
+             "value": {
+                 "amount": amount,
+                  "amountNet": amount
+              }
+        }
+    })
+
+
 def test_contract_price_amount_buyer(amount):
     return munchify({
         "data": {
