@@ -2964,6 +2964,12 @@ Library  Collections
   ${tender_id}=  Set Variable  ${tender.data.id}
   ${agreement_id}=  Set Variable  ${tender.data.agreements[0].id}
   ${access_token}=  Set Variable  ${tender.access.token}
+  Delete From Dictionary  ${agreement}  data.features
+  Delete From Dictionary  ${agreement}  data.date
+  Delete From Dictionary  ${agreement}  data.items
+  Delete From Dictionary  ${agreement}  data.contracts
+  Delete From Dictionary  ${agreement}  data.agreementID
+  Delete From Dictionary  ${agreement}  data.id
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_agreement
   ...      ${tender_id}
   ...      ${agreement}
