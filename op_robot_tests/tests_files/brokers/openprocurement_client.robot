@@ -782,6 +782,7 @@ Library  Collections
   ${prev_value}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${fieldname}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
   ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
+  Log    ${change_tender_data.data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}
@@ -2946,6 +2947,11 @@ Library  Collections
   ${agreement_id}=  Set Variable  ${tender.data.agreements[0].id}
   ${contract_id}=  Set Variable  ${contract_data.data.id}
   ${access_token}=  Set Variable  ${tender.access.token}
+  Delete From Dictionary  ${contract_data}  data.suppliers
+  Delete From Dictionary  ${contract_data}  data.bidID
+  Delete From Dictionary  ${contract_data}  data.awardID
+  Delete From Dictionary  ${contract_data}  data.date
+  Delete From Dictionary  ${contract_data}  data.id
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_agreement_contract
   ...      ${tender_id}
   ...      ${agreement_id}
