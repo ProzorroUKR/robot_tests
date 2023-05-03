@@ -589,13 +589,13 @@ def delete_rogue_fields_contract(obj):
 def delete_rogue_fields_lot(obj):
     data_dict = {'data': {}}
 
-    # data_dict = set_to_object(data_dict, 'data.description', obj.get('description', ''))
+    data_dict = set_to_object(data_dict, 'data.description', obj.get('description', ''))
     data_dict = set_to_object(data_dict, 'data.minimalStep', obj.get('minimalStep', ''))
     data_dict = set_to_object(data_dict, 'data.status', obj.get('status', ''))
     data_dict = set_to_object(data_dict, 'data.title', obj.get('title', ''))
     data_dict = set_to_object(data_dict, 'data.title_en', obj.get('title_en', ''))
     data_dict = set_to_object(data_dict, 'data.title_ru', obj.get('title_ru', ''))
-    # data_dict = set_to_object(data_dict, 'data.value', obj.get('value', ''))
+    data_dict = set_to_object(data_dict, 'data.value', obj.get('value', ''))
     return data_dict
 
 
