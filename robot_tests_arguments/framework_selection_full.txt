@@ -23,8 +23,7 @@
 
 -i add_tender_doc
 
-#-i extend_tendering_period
--i extend_tendering_period_3_days
+-i extend_tendering_period
 
 -i make_bid_by_provider
   -i modify_bid_by_provider

@@ -86,18 +86,6 @@ ${PLAN_TENDER}      ${False}
   Отримати дані із поля tenderPeriod.endDate тендера для користувача ${tender_owner}
 
 
-Можливість змінити дату закінчення періоду подання пропозиції на 3 дні
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Можливість редагувати тендер
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      extend_tendering_period_3_days  level3
-  ...      critical
-  [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${endDate}=  add_minutes_to_date  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod.endDate}  3
-  Можливість змінити поле tenderPeriod.endDate тендера на ${endDate}
-  Remove From Dictionary  ${USERS.users['${tender_owner}'].tender_data.data.tenderPeriod}  endDate
-
-
 Можливість змінити дату закінчення періоду подання пропозиції на 10 днів
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Можливість редагувати тендер
   ...      tender_owner

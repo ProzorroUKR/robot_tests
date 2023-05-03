@@ -953,6 +953,7 @@ Library  Collections
 #  ${lot}=  Create Dictionary  data=${tender.data.lots[${lot_index}]}
   ${lot}=  delete_rogue_fields_lot  ${tender.data.lots[${lot_index}]}
   Set_To_Object   ${lot.data}   ${fieldname}   ${fieldvalue}
+  Log    ${lot}
   ${reply}=  Call Method   ${USERS.users['${username}'].client}  patch_lot
   ...      ${tender.data.id}
   ...      ${lot}
