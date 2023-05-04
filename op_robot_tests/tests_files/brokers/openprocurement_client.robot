@@ -2395,7 +2395,7 @@ Library  Collections
   ...  ${tender.data.id}
   ...  ${award_criteria}
   ...  ${award.data.id}
-  ...  ${token}
+  ...  access_token=${token}
   ${reply}=  munch_dict  arg=${reply}
   [return]  ${reply}
 
