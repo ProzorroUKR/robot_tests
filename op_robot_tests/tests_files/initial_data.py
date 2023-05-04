@@ -1144,9 +1144,11 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     del data["minimalStep"]
     del data["title_en"]
+    del data["submissionMethodDetails"]
     data['procurementMethodType'] = 'priceQuotation'
     data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
-    data['agreement'] = test_agreement_id()
+    #data['agreement'] = test_agreement_id()
+    data['agreement'] = test_agreement_id(params)
     data['criteria'] = []
     for index in range(params['number_of_items']):
         data['items'][index]['profile'] = fake.valid_profile()
@@ -1721,6 +1723,12 @@ def test_agreement_id():
     })
 
 
+def test_agreement_id(params):
+    return munchify({
+        "id": "192863773fc249b6b136c984b4403385"
+    })
+
+
 def test_profile_first_criteria(item_id):
     criteria = {
             "title": "Рівень жирності",
@@ -1739,7 +1747,7 @@ def test_profile_first_criteria(item_id):
                                 "code": "P1",
                                 "name": "відсоток"
                             },
-                            "expectedValue": "72"
+                            "expectedValue": 72
                         }
                     ]
                 }
@@ -1762,7 +1770,7 @@ def test_profile_second_criteria(item_id):
                             "id": "125331-0002-001-01",
                             "title": "Фасування - звичайне",
                             "dataType": "boolean",
-                            "expectedValue": "true"
+                            "expectedValue": True
                         }
                     ]
                 }
