@@ -782,6 +782,8 @@ Library  Collections
   ${prev_value}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${fieldname}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
   ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
+  Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
+  ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  startDate=${tender.data.tenderPeriod.startDate}
   Log    ${change_tender_data.data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
