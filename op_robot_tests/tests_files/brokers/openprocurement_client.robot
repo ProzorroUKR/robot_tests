@@ -784,6 +784,8 @@ Library  Collections
   ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
   Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
   ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  startDate=${tender.data.tenderPeriod.startDate}
+  Run Keyword If  '${fieldname}' == 'items[0].quantity'
+  ...     Set To Dictionary  ${change_tender_data.data.items[0]}  description=${tender.data.items[0].description}
   Log    ${change_tender_data.data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
@@ -961,6 +963,21 @@ Library  Collections
   ...      ${lot}
   ...      ${tender.data.lots[${lot_index}].id}
 #  ...      ${lot.data.id}
+  ...      access_token=${tender.access.token}
+
+
+Змінити лот без копіювання даних
+  [Arguments]  ${username}  ${tender_uaid}  ${lot_id}   ${fieldname}  ${fieldvalue}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
+  ${lot}=  delete_rogue_fields_lot  ${tender.data.lots[${lot_index}]}
+  Delete From Dictionary  ${lot.data}  description
+  Set_To_Object   ${lot.data}   ${fieldname}   ${fieldvalue}
+  Log    ${lot}
+  ${reply}=  Call Method   ${USERS.users['${username}'].client}  patch_lot
+  ...      ${tender.data.id}
+  ...      ${lot}
+  ...      ${tender.data.lots[${lot_index}].id}
   ...      access_token=${tender.access.token}
 
 

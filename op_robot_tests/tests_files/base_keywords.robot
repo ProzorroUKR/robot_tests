@@ -1076,6 +1076,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
   Run As  ${tender_owner}  Змінити лот  ${TENDER['TENDER_UAID']}  ${lot_id}  ${field}  ${value}
 
+
+Можливість змінити поле ${field} ${lot_index} лоту без копіювання даних на ${value}
+  ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
+  Run As  ${tender_owner}  Змінити лот без копіювання даних  ${TENDER['TENDER_UAID']}  ${lot_id}  ${field}  ${value}
+
 ##############################################################################################
 #             FEATURES
 ##############################################################################################

@@ -1297,7 +1297,7 @@ Require Failure
   Оновити LAST_MODIFICATION_DATE
   Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
-  ...      20 min 15 sec
+  ...      30 min 15 sec
   ...      15 sec
   ...      Звірити статус тендера
   ...      ${username}

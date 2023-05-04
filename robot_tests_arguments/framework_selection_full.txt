@@ -19,7 +19,8 @@
 -i lot_view_value
 -i lot_view_minimalStep
 -i modify_item
--i modify_lot
+#-i modify_lot
+ -i modify_lot_without_copy
 
 -i add_tender_doc
 
