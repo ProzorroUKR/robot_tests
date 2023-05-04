@@ -785,12 +785,12 @@ Library  Collections
   Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
   ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  startDate=${tender.data.tenderPeriod.startDate}
   Run Keyword If  '${fieldname}' == 'items[0].quantity'
-  ...     Set To Dictionary  ${change_tender_data.data.items[0]}  description=${tender.data.items[0].description}
-  Log    ${change_tender_data.data}
+  ...     Set To Dictionary  ${change_tender_data['data']['items'][0]}  description=${tender['data']['items'][0]['description']}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}
   ...      access_token=${tender.access.token}
+  Log    ${change_tender_data.data}
   Run Keyword And Expect Error  *  Порівняти об'єкти  ${prev_value}  ${tender.data.${fieldname}}
   Set_To_Object   ${USERS.users['${username}'].tender_data}   ${fieldname}   ${fieldvalue}
 
@@ -972,6 +972,7 @@ Library  Collections
   ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
   ${lot}=  delete_rogue_fields_lot  ${tender.data.lots[${lot_index}]}
   Delete From Dictionary  ${lot.data}  description
+  Delete From Dictionary  ${lot.data}  value
   Set_To_Object   ${lot.data}   ${fieldname}   ${fieldvalue}
   Log    ${lot}
   ${reply}=  Call Method   ${USERS.users['${username}'].client}  patch_lot
