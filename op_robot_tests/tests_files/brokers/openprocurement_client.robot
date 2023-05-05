@@ -784,7 +784,9 @@ Library  Collections
   ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
   Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
   ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  startDate=${tender.data.tenderPeriod.startDate}
-  ${change_tender_data} =  Run Keyword If  '${fieldname}' == 'items[0].quantity'  preparing_tender_data  ${change_tender_data}  ${tender}
+  Run Keyword If  '${fieldname}' == 'items[0].quantity'  Run Keywords
+  ...     Set To Dictionary  ${change_tender_data['data']['items'][0]}  description=${tender['data']['items'][0]['description']}
+  ...     AND  Set To Dictionary  ${change_tender_data['data']['items'][0]}  classification=${tender['data']['items'][0]['classification']}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}
