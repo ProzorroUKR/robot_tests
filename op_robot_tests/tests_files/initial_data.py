@@ -1147,8 +1147,7 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     del data["submissionMethodDetails"]
     data['procurementMethodType'] = 'priceQuotation'
     data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
-    #data['agreement'] = test_agreement_id()
-    data['agreement'] = test_agreement_id(params)
+    data['agreement'] = test_agreement_id()
     data['criteria'] = []
     for index in range(params['number_of_items']):
         data['items'][index]['profile'] = fake.valid_profile()
@@ -1720,12 +1719,6 @@ def edit_tender_data_for_buyers(tender_data, plan_1_data, plan_2_data, plan_3_da
 def test_agreement_id():
     return munchify({
         "id": fake.valid_agreement()
-    })
-
-
-def test_agreement_id(params):
-    return munchify({
-        "id": "192863773fc249b6b136c984b4403385"
     })
 
 
