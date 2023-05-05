@@ -180,7 +180,7 @@ ${CRITERIA_LLC}     ${False}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  active.tendering
   Convert To Lowercase  ${value}
-  Should Contain  ${value}  can't switch tender from status (draft.publishing) to (active.tendering)
+  Should Contain  ${value}  Can't update tender in current (draft.publishing) status
 
 
 Можливість знайти тендер по ідентифікатору
