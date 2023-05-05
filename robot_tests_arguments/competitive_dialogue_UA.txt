@@ -53,9 +53,6 @@
 
 -i make_bid_with_criteria_by_provider_second_stage
 -i make_bid_with_criteria_by_provider1_second_stage
--i pre-qualification_approve_first_bid_second_stage
--i pre-qualification_approve_second_bid_second_stage
--i pre-qualification_approve_qualifications_second_stage
 
 -i auction
 -i auction_provider_url
