@@ -571,6 +571,12 @@ def munch_dict(arg=None, data=False):
     return munchify(arg)
 
 
+def preparing_tender_data(change_tender, tender):
+    change_tender = set_to_object(change_tender, 'data.items[0].description', tender.get('data.items[0].description', ''))
+    change_tender = set_to_object(change_tender, 'data.items[0].classification', tender.get('data.items[0].classification', ''))
+    return change_tender
+
+
 def delete_rogue_fields_contract(obj):
     data_dict = {'data': {}}
     period = obj.get('period', '')
