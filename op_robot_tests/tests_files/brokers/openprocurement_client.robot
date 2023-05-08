@@ -785,7 +785,8 @@ Library  Collections
   Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
   ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  startDate=${tender.data.tenderPeriod.startDate}
   Run Keyword If  '${fieldname}' == 'items[0].quantity'  Run Keywords
-  ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  endDate=${tender.data.tenderPeriod.endDate}
+  ...     Set To Dictionary  ${change_tender_data.data}  tenderPeriod=${tender.data.tenderPeriod}
+  ...     AND  Delete From Dictionary  ${change_tender_data}  data.tenderPeriod.startDate
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}
