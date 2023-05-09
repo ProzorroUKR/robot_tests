@@ -785,13 +785,13 @@ Library  Collections
   Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
   ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  startDate=${tender.data.tenderPeriod.startDate}
   Run Keyword If  '${fieldname}' == 'items[0].quantity'  Run Keywords
-  ...     Set To Dictionary  ${change_tender_data.data}  tenderPeriod=${tender.data.tenderPeriod}
-  ...     AND  Delete From Dictionary  ${change_tender_data}  data.tenderPeriod.startDate
+  ...     Set To Dictionary  ${change_tender_data['data']['items'][0]}  description=${tender['data']['items'][0]['description']}
+  ...     Set To Dictionary  ${change_tender_data['data']['items'][0]}  classification=${tender['data']['items'][0]['classification']}
+  Log    ${change_tender_data.data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}
   ...      access_token=${tender.access.token}
-  Log    ${change_tender_data.data}
   Run Keyword And Expect Error  *  Порівняти об'єкти  ${prev_value}  ${tender.data.${fieldname}}
   Set_To_Object   ${USERS.users['${username}'].tender_data}   ${fieldname}   ${fieldvalue}
 
