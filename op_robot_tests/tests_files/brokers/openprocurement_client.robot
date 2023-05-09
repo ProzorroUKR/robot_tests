@@ -782,13 +782,11 @@ Library  Collections
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ${prev_value}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${fieldname}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
-  ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
-  Run Keyword If  '${fieldname}' == 'tenderPeriod.endDate'
-  ...     Set To Dictionary  ${change_tender_data.data.tenderPeriod}  startDate=${tender.data.tenderPeriod.startDate}
-  Run Keyword If  '${fieldname}' == 'items[0].quantity'  Run Keywords
-  ...     Set To Dictionary  ${change_tender_data['data']['items'][0]}  description=${tender['data']['items'][0]['description']}
-  ...     Set To Dictionary  ${change_tender_data['data']['items'][0]}  classification=${tender['data']['items'][0]['classification']}
-  Log    ${change_tender_data.data}
+#  ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
+  ${change_tender_data}=  Run Keyword If  '${fieldname}' == 'items[0].quantity'  prepare_data_for_changing_quantity  ${tender}  ${fieldvalue}
+  ...    ELSE IF  '${fieldname}' == 'tenderPeriod.endDate'  prepare_data_for_changing_tender_period  ${tender}  ${fieldvalue}
+  ...    ELSE  create_data_dict  data.${fieldname}  ${fieldvalue}
+  Log    ${change_tender_data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}

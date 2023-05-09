@@ -111,6 +111,31 @@ def create_fake_period(days=0, hours=0, minutes=0):
     return data
 
 
+def prepare_data_for_changing_quantity(tender, value):
+    data_dict = {"data": {
+                            "items": [
+                                       {
+                                        "description": tender['data']['items'][0]['description'],
+                                        "classification": tender['data']['items'][0]['classification'],
+                                        "quantity": value
+                                        }
+                            ]
+                  }
+    }
+    return data_dict
+
+
+def prepare_data_for_changing_tender_period(tender, value):
+    data_dict = {"data": {
+                            "tenderPeriod": {
+                                              "startDate": tender['data']['tenderPeriod']['startDate'],
+                                              "endDate": value
+                            }
+                 }
+    }
+    return data_dict
+
+
 def subtraction(value1, value2):
     if "." in str(value1) or "." in str(value2):
         return (float(value1) - float(value2))
