@@ -2497,7 +2497,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${lots_ids}=  Run Keyword IF  ${lots}
   ...     Отримати ідентифікатори об’єктів  ${username}  lots
   ...     ELSE  Set Variable  ${None}
-  Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
+  Run As  ${username}  Подати цінову пропозицію без перевірки учасника за ЄДРПОУ   ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
 
 
 ##############################################################################################
