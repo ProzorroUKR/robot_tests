@@ -112,7 +112,9 @@ from .initial_data import (
     edit_tender_data_for_buyers,
     test_unit_price_amount_buyer,
     test_unit_price_amount_buyer_updated,
-    test_contract_price_amount_buyer
+    test_contract_price_amount_buyer,
+    prepare_data_for_changing_tender_period,
+    prepare_data_for_changing_quantity
 )
 from barbecue import chef
 from restkit import request
