@@ -113,8 +113,9 @@ ${CRITERIA_LLC}     ${False}
   ...      unsuccessful
   :FOR    ${status}    IN    @{statuses}
   \  ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  ${status}
-  \  Convert To Lowercase  ${value}
-  \  Should Contain  ${value}  can't switch tender from status (draft) to (${status})
+#  \  Convert To Lowercase  ${value}
+#  \  Should Contain  ${value}  can't switch tender from status (draft) to (${status})
+  \  Should Contain  ${value}  Value must be one of ['draft', 'draft.publishing'].  ignore_case=True
 
 
 Можливість оголосити тендер з профайлом, статус якого hidden

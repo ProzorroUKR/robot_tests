@@ -1202,6 +1202,8 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
             data['items'][index]['profile'] = "none"
     if params.get('tender_wrong_status'):
         data['status'] = fake.wrong_status()
+    if params.get('tender_draft_status'):
+        data['status'] = "draft"
     if params.get('profiles_hidden_status'):
         for index in range(params['number_of_items']):
             data['items'][index]['profile'] = fake.profiles_hidden()
