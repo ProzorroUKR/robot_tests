@@ -685,7 +685,7 @@ ${CRITERIA_LLC}     ${False}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  tender_unsuccessfully_reason_shortlistedfirms_empty
-  ${reason}=  Текст причини відхилення empty
+  ${reason}=  Текст причини відхилення unknown
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
   ...      ${reason}
   ...      unsuccessfulReason
