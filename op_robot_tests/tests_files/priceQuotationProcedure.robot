@@ -786,7 +786,7 @@ ${CRITERIA_LLC}     ${False}
   ...      ${contract_index}
   ...      value.amountNet
   ...      ${invalid_amountNet}
-  Should Contain  ${value}  Amount should be greater than amountNet and differ by no more than 20.0%
+  Should Contain  ${value}  Amount should be equal or greater than amountNet and differ by no more than 20.0%
 
 
 Можливість редагувати вартість угоди без урахування ПДВ
