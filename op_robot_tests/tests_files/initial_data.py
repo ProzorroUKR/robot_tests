@@ -115,13 +115,21 @@ def prepare_data_for_changing_quantity(tender, value):
     data_dict = {"data": {
                             "items": [
                                        {
+                                        "id": tender['data']['items'][0]['id'],
                                         "description": tender['data']['items'][0]['description'],
+                                        "description_en": tender['data']['items'][0]['description_en'],
                                         "classification": tender['data']['items'][0]['classification'],
-                                        "quantity": value
+                                        "additionalClassifications": tender['data']['items'][0]['additionalClassifications'],
+                                        "quantity": value,
+                                        "deliveryDate": tender['data']['items'][0]['deliveryDate'],
+                                        "deliveryLocation": tender['data']['items'][0]['deliveryLocation'],
+                                        "relatedLot": tender['data']['items'][0]['relatedLot'],
+                                        "deliveryAddress": tender['data']['items'][0]['deliveryAddress']
                                         }
-                            ]
-                  }
-    }
+                                      ],
+                            "tenderPeriod": tender['data']['tenderPeriod']
+                          }
+                 }
     return data_dict
 
 
