@@ -54,6 +54,7 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
   ...      auction_provider_url
+  Дочекатись дати початку періоду аукціону  ${provider}  ${TENDER['TENDER_UAID']}
   Можливість вичитати посилання на аукціон для ${provider}
 
 
