@@ -1185,11 +1185,14 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     for index in range(params['number_of_items']):
         data['items'][index]['profile'] = fake.valid_profile()
         data['items'][index]['id'] = uuid4().hex
-        item_id = data['items'][index]['id']
-        first_criteria = test_profile_first_criteria(item_id)
-        data['criteria'].append(first_criteria)
-        second_criteria = test_profile_second_criteria(item_id)
-        data['criteria'].append(second_criteria)
+        # item_id = data['items'][index]['id']
+        # first_criteria = test_profile_first_criteria(item_id)
+        # data['criteria'].append(first_criteria)
+        # second_criteria = test_profile_second_criteria(item_id)
+        # data['criteria'].append(second_criteria)
+    item_id = data['items'][0]['id']
+    criteria_data = test_profile_criteria_data(item_id)
+    data['criteria'].append(criteria_data)
     if params.get('wrong_profile'):
         for index in range(params['number_of_items']):
             data['items'][index]['profile'] = fake.invalid_profile()
@@ -1755,6 +1758,34 @@ def test_agreement_id():
     return munchify({
         "id": fake.valid_agreement()
     })
+
+
+def test_profile_criteria_data(item_id):
+    criteria = {
+        "title": "Технічні характеристики предмета закупівлі",
+        "description": "Електрична енергія, вільні ціни, ОЕС, без обмежень по терміну дії, з розподілом",
+        "relatesTo": "item",
+        "relatedItem": item_id,
+        "requirementGroups": [{
+            "description": "Технічні характеристики",
+            "requirements": [
+                {
+                    "id": "a7f1c7c99f27440fa2e3bd911f54b17a",
+                    "title": "Термін",
+                    "description": "Термін",
+                    "dataType": "number",
+                    "expectedValue": 72
+                },
+                {
+                    "id": "a6727bb5c22f484d9b6e1ab0874a4163",
+                    "title": "Торгова зона",
+                    "dataType": "string",
+                    "expectedValue": "Об'єднана енергосистема України"
+                }
+            ]
+        }]
+    }
+    return munchify(criteria)
 
 
 def test_profile_first_criteria(item_id):
