@@ -2444,6 +2444,10 @@ Library  Collections
   ...      Set To Dictionary  ${award.data}
   ...      qualified=${True}
   ...      eligible=${True}
+  ${status}  ${date}=  Run Keyword And Ignore Error
+      ...      Set Variable
+      ...      ${tender.data.awards[0].milestones[0].dueDate}
+  Run Keyword If  '${status}' != 'FAIL'  Дочекатись дати  ${date}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award
   ...      ${tender.data.id}
   ...      ${award}
