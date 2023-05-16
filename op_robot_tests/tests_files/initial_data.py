@@ -112,37 +112,35 @@ def create_fake_period(days=0, hours=0, minutes=0):
 
 
 def prepare_data_for_changing_quantity(tender, value):
-    data_dict = {"data": {
-                            "items": [
-                                       {
-                                        "id": tender['data']['items'][0]['id'],
-                                        "description": tender['data']['items'][0]['description'],
-                                        "description_en": tender['data']['items'][0]['description_en'],
-                                        "classification": tender['data']['items'][0]['classification'],
-                                        "additionalClassifications": tender['data']['items'][0]['additionalClassifications'],
-                                        "quantity": value,
-                                        "deliveryDate": tender['data']['items'][0]['deliveryDate'],
-                                        "deliveryLocation": tender['data']['items'][0]['deliveryLocation'],
-                                        "relatedLot": tender['data']['items'][0]['relatedLot'],
-                                        "unit": tender['data']['items'][0]['unit'],
-                                        "deliveryAddress": tender['data']['items'][0]['deliveryAddress']
-                                        }
-                                      ],
-                            "tenderPeriod": tender['data']['tenderPeriod']
-                          }
-                 }
-    return munchify(data_dict)
+    data = {
+             "items": [
+                        {
+                         "id": tender['data']['items'][0]['id'],
+                         "description": tender['data']['items'][0]['description'],
+                         "description_en": tender['data']['items'][0]['description_en'],
+                         "classification": tender['data']['items'][0]['classification'],
+                         "additionalClassifications": tender['data']['items'][0]['additionalClassifications'],
+                         "quantity": value,
+                         "deliveryDate": tender['data']['items'][0]['deliveryDate'],
+                         "deliveryLocation": tender['data']['items'][0]['deliveryLocation'],
+                         "relatedLot": tender['data']['items'][0]['relatedLot'],
+                         # "unit": tender['data']['items'][0]['unit'],
+                         "deliveryAddress": tender['data']['items'][0]['deliveryAddress']
+                         }
+                       ],
+             "tenderPeriod": tender['data']['tenderPeriod']
+    }
+    return munchify({'data': data})
 
 
 def prepare_data_for_changing_tender_period(tender, value):
-    data_dict = {"data": {
-                            "tenderPeriod": {
-                                              "startDate": tender['data']['tenderPeriod']['startDate'],
-                                              "endDate": value
-                            }
-                 }
+    data = {
+             "tenderPeriod": {
+                          "startDate": tender['data']['tenderPeriod']['startDate'],
+                          "endDate": value
+             }
     }
-    return data_dict
+    return munchify({'data': data})
 
 
 def subtraction(value1, value2):
