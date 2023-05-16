@@ -363,7 +363,7 @@ ${CRITERIA_LLC}     ${False}
   Set Test Variable  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}  ${True}
   ${value}=  Run Keyword And Expect Error  *  Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
   ${value}=  Convert To Lowercase  ${value}
-  Should Contain  ${value}  conflicting in criteria
+  Should Contain  ${value}  no such criteria with id
 
 
 Неможливість подати пропозицію, якщо характеристика не відповідає вимозі

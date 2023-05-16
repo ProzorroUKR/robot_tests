@@ -786,7 +786,7 @@ Library  Collections
   ${change_tender_data}=  Run Keyword If  '${fieldname}' == 'items[0].quantity'  prepare_data_for_changing_quantity  ${tender}  ${fieldvalue}
   ...    ELSE IF  '${fieldname}' == 'tenderPeriod.endDate'  prepare_data_for_changing_tender_period  ${tender}  ${fieldvalue}
   ...    ELSE  create_data_dict  data.${fieldname}  ${fieldvalue}
-  Log    ${change_tender_data}
+  Log    ${change_tender_data.data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}

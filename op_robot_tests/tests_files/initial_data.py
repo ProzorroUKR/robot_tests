@@ -807,6 +807,7 @@ def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, m
     if username == "Tender_User2":
         bid.data["tenderers"][0]["identifier"]["id"] = "1989909665"
     bid.data.requirementResponses = []
+    amount = 0
     if 'criteria' in data:
         for criteria in data['criteria']:
             for requirements in criteria['requirementGroups']:
@@ -817,10 +818,17 @@ def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, m
                             value = "invalid_value"
                     else:
                         value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
-                    requirement = {
-                        "requirement": {"id": requirement['id']},
-                        "value": value
-                    }
+                    if more_than_two_requirements and amount == 0:
+                        requirement = {
+                            "requirement": {"id": uuid4().hex},
+                            "value": value
+                        }
+                        amount += 1
+                    else:
+                        requirement = {
+                            "requirement": {"id": requirement['id']},
+                            "value": value
+                        }
                     bid.data.requirementResponses.append(requirement)
                 if not more_than_two_requirements:
                     break
@@ -1770,14 +1778,14 @@ def test_profile_criteria_data(item_id):
             "description": "Технічні характеристики",
             "requirements": [
                 {
-                    "id": "a7f1c7c99f27440fa2e3bd911f54b17a",
+                    "id": uuid4().hex,
                     "title": "Термін",
                     "description": "Термін",
                     "dataType": "number",
                     "expectedValue": 72
                 },
                 {
-                    "id": "a6727bb5c22f484d9b6e1ab0874a4163",
+                    "id": uuid4().hex,
                     "title": "Торгова зона",
                     "dataType": "string",
                     "expectedValue": "Об'єднана енергосистема України"
