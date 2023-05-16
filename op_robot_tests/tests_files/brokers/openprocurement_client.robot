@@ -2460,6 +2460,12 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${award_num}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${award}=  create_data_dict   data.status  unsuccessful
+  Log    ${tender.data}
+  ${status}  ${date}=  Run Keyword And Ignore Error
+      ...      Set Variable
+      ...      ${tender.data.awards[0].milestones[0].dueDate}
+  Run Keyword If  '${status}' != 'FAIL'  Дочекатись дати  ${date}
+  Log    ${tender.data}
   #Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award
   ...      ${tender.data.id}

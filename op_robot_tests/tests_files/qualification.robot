@@ -357,7 +357,6 @@ ${award_index}      ${0}
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  qualification_reject_first_award
   ...  critical
-  Дочекатись дати початку періоду кваліфікації 24h  ${tender_owner}  ${TENDER['TENDER_UAID']}
   Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
 
 
@@ -397,7 +396,6 @@ ${award_index}      ${0}
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  qualification_approve_second_award
   ...  critical
-  Дочекатись дати початку періоду кваліфікації 24h  ${tender_owner}  ${TENDER['TENDER_UAID']}
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
 
 
