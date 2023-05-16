@@ -1406,9 +1406,10 @@ Require Failure
 
 Дочекатись дати початку періоду кваліфікації 24h
   [Arguments]  ${username}  ${tender_uaid}
+  Оновити LAST_MODIFICATION_DATE
+  Дочекатись синхронізації з майданчиком  ${username}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Log    ${tender.data}
-  Log    ${tender.data.awards[0].milestones[0].dueDate}
   ${status}  ${date}=  Run Keyword And Ignore Error
   ...      Set Variable
   ...      ${tender.data.awards[0].milestones[0].dueDate}
@@ -1417,8 +1418,6 @@ Require Failure
   ...      ${tender.data.awards[0].milestones[0].dueDate}
   ...      ${date}
   Дочекатись дати  ${date}
-  Оновити LAST_MODIFICATION_DATE
-  Дочекатись синхронізації з майданчиком  ${username}
   Wait until keyword succeeds
   ...      40 min 15 sec
   ...      15 sec
