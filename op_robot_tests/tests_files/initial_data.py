@@ -124,7 +124,7 @@ def prepare_data_for_changing_quantity(tender, value):
                          "deliveryDate": tender['data']['items'][0]['deliveryDate'],
                          "deliveryLocation": tender['data']['items'][0]['deliveryLocation'],
                          "relatedLot": tender['data']['items'][0]['relatedLot'],
-                         # "unit": tender['data']['items'][0]['unit'],
+                         "unit": tender['data']['items'][0]['unit'],
                          "deliveryAddress": tender['data']['items'][0]['deliveryAddress']
                          }
                        ],
