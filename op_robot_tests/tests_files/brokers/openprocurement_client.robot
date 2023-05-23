@@ -2456,6 +2456,27 @@ Library  Collections
   Log  ${reply}
 
 
+Підтвердити постачальника без перевірки milestones
+  [Documentation]
+  ...      [Arguments] Username, tender uaid and number of the award to confirm
+  ...      Find tender using uaid, create dict with confirmation data and call patch_award
+  ...      [Return] Nothing
+  [Arguments]  ${username}  ${tender_uaid}  ${award_num}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${award}=  create_data_dict  data.status  active
+  #Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
+  Run Keyword IF  '${MODE}' in @{qualified_eligible_procedure_types}
+  ...      Set To Dictionary  ${award.data}
+  ...      qualified=${True}
+  ...      eligible=${True}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award
+  ...      ${tender.data.id}
+  ...      ${award}
+  ...      ${tender.data.awards[${award_num}].id}
+  ...      access_token=${tender.access.token}
+  Log  ${reply}
+
+
 Дискваліфікувати постачальника
   [Documentation]
   ...      [Arguments] Username, tender uaid and award number

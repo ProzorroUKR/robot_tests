@@ -245,7 +245,7 @@ ${award_index}      ${0}
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      qualification_approve_award_dueDate_error
-  run keyword and expect error  *  Підтвердити постачальника  ${tender_owner}  ${TENDER['TENDER_UAID']}  0
+  run keyword and expect error  *  Підтвердити постачальника без перевірки milestones  ${tender_owner}  ${TENDER['TENDER_UAID']}  0
 
 
 Можливість завантажити документ в пропозицію учасником 24 години
