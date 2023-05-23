@@ -82,6 +82,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${first_stage}=  Run As  ${provider2}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
   ${tender_data}=  test_tender_data_selection  ${period_intervals}  ${tender_parameters}  ${submissionMethodDetails}  tender_data=${first_stage}
   ${adapted_data}=  Адаптувати дані для оголошення тендера  ${tender_data}
+  Delete From Dictionary  ${adapted_data}  data.lots.[0].auctionUrl
   ${TENDER_UAID}=  Run As  ${tender_owner}  Створити тендер другого етапу  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
@@ -318,7 +319,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      road_index=${${ROAD_INDEX}}
   ...      gmdn_index=${${GMDN_INDEX}}
   ...      plan_tender=${${PLAN_TENDER}}
-  ...      tender_wrong_status=${${TENDER_WRONG_STATUS}}
+#  ...      tender_wrong_status=${${TENDER_WRONG_STATUS}}
+  ...      tender_draft_status="draft"
+  Log     ${tender_parameters}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -1074,6 +1077,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 Можливість змінити поле ${field} ${lot_index} лоту на ${value}
   ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
   Run As  ${tender_owner}  Змінити лот  ${TENDER['TENDER_UAID']}  ${lot_id}  ${field}  ${value}
+
+
+Можливість змінити поле ${field} ${lot_index} лоту без копіювання даних на ${value}
+  ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
+  Run As  ${tender_owner}  Змінити лот без копіювання даних  ${TENDER['TENDER_UAID']}  ${lot_id}  ${field}  ${value}
 
 ##############################################################################################
 #             FEATURES
@@ -2491,7 +2499,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${lots_ids}=  Run Keyword IF  ${lots}
   ...     Отримати ідентифікатори об’єктів  ${username}  lots
   ...     ELSE  Set Variable  ${None}
-  Run As  ${username}  Подати цінову пропозицію  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
+  Run As  ${username}  Подати цінову пропозицію без перевірки учасника за ЄДРПОУ   ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
 
 
 ##############################################################################################

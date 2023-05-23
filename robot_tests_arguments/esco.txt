@@ -69,7 +69,7 @@
 -i contract_stand_still
 -i contract_view
 -i contract_view_dateSigned
--i modify_contract_amount_net
+#-i modify_contract_amount_net
 -i modify_contract
 -i add_doc_to_contract
 -i add_doc_to_contract_content

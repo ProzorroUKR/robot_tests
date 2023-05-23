@@ -206,6 +206,7 @@ Library  Collections
 Отримати посилання на аукціон для учасника
   [Arguments]  ${username}  ${tender_uaid}  ${relatedLot}=${Empty}
   ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+  Log    ${bid}
   ${object_with_url}=  get_object_by_id  ${bid.data}  ${relatedLot}  lotValues  relatedLot
   Log  ${object_with_url}
   ${participationUrl}=  Get Variable Value  ${object_with_url['participationUrl']}
@@ -781,7 +782,11 @@ Library  Collections
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ${prev_value}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${fieldname}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
-  ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
+#  ${change_tender_data}=  create_data_dict  data.${fieldname}  ${fieldvalue}
+  ${change_tender_data}=  Run Keyword If  '${fieldname}' == 'items[0].quantity'  prepare_data_for_changing_quantity  ${tender}  ${fieldvalue}
+  ...    ELSE IF  '${fieldname}' == 'tenderPeriod.endDate'  prepare_data_for_changing_tender_period  ${tender}  ${fieldvalue}
+  ...    ELSE  create_data_dict  data.${fieldname}  ${fieldvalue}
+  Log    ${change_tender_data.data}
   ${tender}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${change_tender_data}
@@ -877,8 +882,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${funders_index}  ${field_name}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   Delete From Dictionary  ${tender.data['funders'][${funders_index}]}  ${field_name}
-  ${funder_data_list}=  Create List
-  Append To List  ${funder_data_list} ${tender.data['funders'][${funders_index}]}
+  ${funder_data_list}=  Create List  ${tender.data['funders'][${funders_index}]}
   ${funders_data}=  create_data_dict  data.funders  ${funder_data_list}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
@@ -907,8 +911,11 @@ Library  Collections
   ...  Set Variable  ${funders}
   ...  ELSE
   ...  Create List
-  Append To List  ${tender.data.funders}  ${funders_data}
-  ${funders_data}=  create_data_dict  data.funders  ${tender.data.funders}
+#  Append To List  ${tender.data.funders}  ${funders_data}
+  Append To List  ${funders_data_list}  ${funders_data}
+#  ${funders_data}=  create_data_dict  data.funders  ${tender.data.funders}
+  ${funders_data}=  create_data_dict  data.funders  ${funders_data_list}
+  Log    ${funders_data}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_tender
   ...      ${tender.data.id}
   ...      ${funders_data}
@@ -947,12 +954,31 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${lot_id}   ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
-  ${lot}=  Create Dictionary  data=${tender.data.lots[${lot_index}]}
+#  ${lot}=  Create Dictionary  data=${tender.data.lots[${lot_index}]}
+  ${lot}=  delete_rogue_fields_lot  ${tender.data.lots[${lot_index}]}
   Set_To_Object   ${lot.data}   ${fieldname}   ${fieldvalue}
+  Log    ${lot}
   ${reply}=  Call Method   ${USERS.users['${username}'].client}  patch_lot
   ...      ${tender.data.id}
   ...      ${lot}
-  ...      ${lot.data.id}
+  ...      ${tender.data.lots[${lot_index}].id}
+#  ...      ${lot.data.id}
+  ...      access_token=${tender.access.token}
+
+
+Змінити лот без копіювання даних
+  [Arguments]  ${username}  ${tender_uaid}  ${lot_id}   ${fieldname}  ${fieldvalue}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
+  ${lot}=  delete_rogue_fields_lot  ${tender.data.lots[${lot_index}]}
+  Delete From Dictionary  ${lot.data}  description
+  Delete From Dictionary  ${lot.data}  value
+  Set_To_Object   ${lot.data}   ${fieldname}   ${fieldvalue}
+  Log    ${lot}
+  ${reply}=  Call Method   ${USERS.users['${username}'].client}  patch_lot
+  ...      ${tender.data.id}
+  ...      ${lot}
+  ...      ${tender.data.lots[${lot_index}].id}
   ...      access_token=${tender.access.token}
 
 
@@ -1152,11 +1178,13 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${answer_data}  ${question_id}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
-  ${answer_data.data.id}=  openprocurement_client.Отримати інформацію із запитання  ${username}  ${tender_uaid}  ${question_id}  id
+#  ${answer_data.data.id}=  openprocurement_client.Отримати інформацію із запитання  ${username}  ${tender_uaid}  ${question_id}  id
+  ${answer_data_id}=  openprocurement_client.Отримати інформацію із запитання  ${username}  ${tender_uaid}  ${question_id}  id
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_question
   ...      ${tender.data.id}
   ...      ${answer_data}
-  ...      ${answer_data.data.id}
+#  ...      ${answer_data.data.id}
+  ...      ${answer_data_id}
   ...      access_token=${tender.access.token}
 
 ##############################################################################
@@ -2010,6 +2038,36 @@ Library  Collections
   Log  ${reply_active}
 
 
+Подати цінову пропозицію без перевірки учасника за ЄДРПОУ
+  [Arguments]  ${username}  ${tender_uaid}  ${bid}  ${lots_ids}=${None}  ${features_ids}=${None}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${lots_ids}=  Run Keyword IF  ${lots_ids}  Set Variable  ${lots_ids}
+  ...     ELSE  Create List
+  : FOR    ${index}    ${lot_id}    IN ENUMERATE    @{lots_ids}
+  \    ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
+  \    ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
+  \    Set To Dictionary  ${bid.data.lotValues[${index}]}  relatedLot=${lot_id}
+  ${features_ids}=  Run Keyword IF  ${features_ids}  Set Variable  ${features_ids}
+  ...     ELSE  Create List
+  : FOR    ${index}    ${feature_id}    IN ENUMERATE    @{features_ids}
+  \    ${feature_index}=  get_object_index_by_id  ${tender.data.features}  ${feature_id}
+  \    ${code}=  Get Variable Value  ${tender.data.features[${feature_index}].code}
+  \    Set To Dictionary  ${bid.data.parameters[${index}]}  code=${code}
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender.data.id}  ${bid}
+  Log  ${reply}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
+  Set To Dictionary  ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
+  Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply['access']['token']}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_access_token=${reply.access.token}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].bid_access_token}
+  ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
+  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  closeFrameworkAgreementUA  esco
+  ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
+  ${field}=  Set variable  status
+  ${reply_active}=  Run as  ${username}  Змінити цінову пропозицію  ${tender_uaid}  ${field}  ${status}
+  Log  ${reply_active}
+
+
 Подати цінову пропозицію в статусі draft
   [Arguments]  ${username}  ${tender_uaid}  ${bid}  ${lots_ids}=${None}  ${features_ids}=${None}
   ${verify_response}=  Run As  ${username}  Перевірити учасника за ЄДРПОУ  ${bid.data.tenderers[0].identifier.id}
@@ -2368,7 +2426,7 @@ Library  Collections
   ...  ${tender.data.id}
   ...  ${award_criteria}
   ...  ${award.data.id}
-  ...  ${token}
+  ...  access_token=${token}
   ${reply}=  munch_dict  arg=${reply}
   [return]  ${reply}
 
@@ -2386,6 +2444,10 @@ Library  Collections
   ...      Set To Dictionary  ${award.data}
   ...      qualified=${True}
   ...      eligible=${True}
+  ${status}  ${date}=  Run Keyword And Ignore Error
+      ...      Set Variable
+      ...      ${tender.data.awards[0].milestones[0].dueDate}
+  Run Keyword If  '${status}' != 'FAIL'  Дочекатись дати  ${date}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award
   ...      ${tender.data.id}
   ...      ${award}
@@ -2402,6 +2464,12 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${award_num}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${award}=  create_data_dict   data.status  unsuccessful
+  Log    ${tender.data}
+  ${status}  ${date}=  Run Keyword And Ignore Error
+      ...      Set Variable
+      ...      ${tender.data.awards[0].milestones[0].dueDate}
+  Run Keyword If  '${status}' != 'FAIL'  Дочекатись дати  ${date}
+  Log    ${tender.data}
   #Set To Dictionary  ${award.data}  id=${tender.data.awards[${award_num}].id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award
   ...      ${tender.data.id}
@@ -2577,7 +2645,7 @@ Library  Collections
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation
   ...      ${tender.data.id}
   ...      ${data}
-  ...      ${data.data.id}
+  ...      ${cancel_id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   [Return]  ${reply}
@@ -2595,7 +2663,8 @@ Library  Collections
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation
   ...      ${tender.data.id}
   ...      ${data}
-  ...      ${data.data.id}
+  ...      ${cancel_id}
+#  ...      ${data.data.id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
   [Return]  ${reply}
@@ -2831,13 +2900,14 @@ Library  Collections
 Редагувати обидва поля вартості угоди
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${field_amount}  ${field_amountNet}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+#  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Set_to_object  ${contract.data}  ${field_amount}  ${fieldvalue}
   Set_to_object  ${contract.data}  ${field_amountNet}  ${fieldvalue}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contract.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -2845,13 +2915,14 @@ Library  Collections
 Змінити ознаку ПДВ на True
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${vat_fieldvalue}  ${field_amount}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+#  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Set To Dictionary  ${contract.data.value}  valueAddedTaxIncluded=${vat_fieldvalue}
   Set To Dictionary  ${contract.data.value}  amountNet=${field_amount}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contract.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -2887,7 +2958,8 @@ Library  Collections
   \  ${value}=  Evaluate  ${item_value}/${quantity}
   \  ${value}=  Convert To Integer  ${value}
   \  Log  ${value}
-  \  ${contract_data}=  test_unit_price_amount_buyer  ${value}
+#  \  ${contract_data}=  test_unit_price_amount_buyer  ${value}
+  \  ${contract_data}=  test_unit_price_amount_buyer_updated  ${index}  ${value}
   \  Log  ${contract_data}
   \  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   \  Log  ${tender}
@@ -2936,6 +3008,11 @@ Library  Collections
   ${agreement_id}=  Set Variable  ${tender.data.agreements[0].id}
   ${contract_id}=  Set Variable  ${contract_data.data.id}
   ${access_token}=  Set Variable  ${tender.access.token}
+  Delete From Dictionary  ${contract_data}  data.suppliers
+  Delete From Dictionary  ${contract_data}  data.bidID
+  Delete From Dictionary  ${contract_data}  data.awardID
+  Delete From Dictionary  ${contract_data}  data.date
+  Delete From Dictionary  ${contract_data}  data.id
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_agreement_contract
   ...      ${tender_id}
   ...      ${agreement_id}
@@ -2954,6 +3031,12 @@ Library  Collections
   ${tender_id}=  Set Variable  ${tender.data.id}
   ${agreement_id}=  Set Variable  ${tender.data.agreements[0].id}
   ${access_token}=  Set Variable  ${tender.access.token}
+  Delete From Dictionary  ${agreement}  data.features
+  Delete From Dictionary  ${agreement}  data.date
+  Delete From Dictionary  ${agreement}  data.items
+  Delete From Dictionary  ${agreement}  data.contracts
+  Delete From Dictionary  ${agreement}  data.agreementID
+  Delete From Dictionary  ${agreement}  data.id
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_agreement
   ...      ${tender_id}
   ...      ${agreement}
@@ -2965,12 +3048,13 @@ Library  Collections
 Змінити ознаку ПДВ
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+#  ${contract}=  Create Dictionary  data=${tender.data.contracts[${contract_index}]}
+  ${contract}=  delete_rogue_fields_contract  ${tender.data.contracts[${contract_index}]}
   Set To Dictionary  ${contract.data.value}  valueAddedTaxIncluded=${fieldvalue}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   ...      ${tender.data.id}
   ...      ${contract}
-  ...      ${contract.data.id}
+  ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
   Log  ${reply}
 
@@ -3054,7 +3138,7 @@ Library  Collections
   \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
   \  ...      ${tender.data.id}
   \  ...      ${data}
-  \  ...      ${data.data.id}
+  \  ...      ${tender['data']['contracts'][${index}]['id']}
   \  ...      access_token=${tender.access.token}
   \  Log  ${reply}
 

@@ -127,6 +127,18 @@ ${PLAN_TENDER}      ${False}
   Можливість змінити поле minimalStep.amount 0 лоту на ${step_value}
 
 
+Можливість збільшити мінімальний крок лоту на 5 процентів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_lot_without_copy
+  ...      critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${step_value}=  mult_and_round  ${USERS.users['${tender_owner}'].tender_data.data.lots[0].minimalStep.amount}  ${1.05}  precision=${2}
+  Можливість змінити поле minimalStep.amount 0 лоту без копіювання даних на ${step_value}
+
+
 Можливість знайти тендер по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук тендера
   ...      viewer  tender_owner  provider  provider1

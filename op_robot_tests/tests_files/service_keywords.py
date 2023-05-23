@@ -111,7 +111,10 @@ from .initial_data import (
     test_aggregate_plans_data,
     edit_tender_data_for_buyers,
     test_unit_price_amount_buyer,
-    test_contract_price_amount_buyer
+    test_unit_price_amount_buyer_updated,
+    test_contract_price_amount_buyer,
+    prepare_data_for_changing_tender_period,
+    prepare_data_for_changing_quantity
 )
 from barbecue import chef
 from restkit import request
@@ -582,6 +585,19 @@ def delete_rogue_fields_contract(obj):
         data_dict = set_to_object(data_dict, 'data.period', period)
     if date_signed:
         data_dict = set_to_object(data_dict, 'data.dateSigned', date_signed)
+    return data_dict
+
+
+def delete_rogue_fields_lot(obj):
+    data_dict = {'data': {}}
+
+    data_dict = set_to_object(data_dict, 'data.description', obj.get('description', ''))
+    data_dict = set_to_object(data_dict, 'data.minimalStep', obj.get('minimalStep', ''))
+    data_dict = set_to_object(data_dict, 'data.status', obj.get('status', ''))
+    data_dict = set_to_object(data_dict, 'data.title', obj.get('title', ''))
+    data_dict = set_to_object(data_dict, 'data.title_en', obj.get('title_en', ''))
+    data_dict = set_to_object(data_dict, 'data.title_ru', obj.get('title_ru', ''))
+    data_dict = set_to_object(data_dict, 'data.value', obj.get('value', ''))
     return data_dict
 
 

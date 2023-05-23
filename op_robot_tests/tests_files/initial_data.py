@@ -111,6 +111,38 @@ def create_fake_period(days=0, hours=0, minutes=0):
     return data
 
 
+def prepare_data_for_changing_quantity(tender, value):
+    data = {
+             "items": [
+                        {
+                         "id": tender['data']['items'][0]['id'],
+                         "description": tender['data']['items'][0]['description'],
+                         "description_en": tender['data']['items'][0]['description_en'],
+                         "classification": tender['data']['items'][0]['classification'],
+                         "additionalClassifications": tender['data']['items'][0]['additionalClassifications'],
+                         "quantity": value,
+                         "deliveryDate": tender['data']['items'][0]['deliveryDate'],
+                         "deliveryLocation": tender['data']['items'][0]['deliveryLocation'],
+                         "relatedLot": tender['data']['items'][0]['relatedLot'],
+                         "unit": tender['data']['items'][0]['unit'],
+                         "deliveryAddress": tender['data']['items'][0]['deliveryAddress']
+                         }
+                       ],
+             "tenderPeriod": tender['data']['tenderPeriod']
+    }
+    return munchify({'data': data})
+
+
+def prepare_data_for_changing_tender_period(tender, value):
+    data = {
+             "tenderPeriod": {
+                          "startDate": tender['data']['tenderPeriod']['startDate'],
+                          "endDate": value
+             }
+    }
+    return munchify({'data': data})
+
+
 def subtraction(value1, value2):
     if "." in str(value1) or "." in str(value2):
         return (float(value1) - float(value2))
@@ -630,7 +662,7 @@ def test_cancel_pending_data(id):
     return munchify({
         "data": {
             "status": "pending",
-            "id": id
+            #"id": id
         }
     })
 
@@ -768,12 +800,13 @@ def test_bid_data_selection(data, index):
 def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, more_than_two_requirements=False, invalid_expected_value=False):
     bid = test_bid_data()
     if username == "Tender_User":
-        bid.data["tenderers"][0]["identifier"]["id"] = "21725150"
+        bid.data["tenderers"][0]["identifier"]["id"] = "2445606583"
     if username == "Tender_User1":
-        bid.data["tenderers"][0]["identifier"]["id"] = "2833906462"
+        bid.data["tenderers"][0]["identifier"]["id"] = "40813989"
     if username == "Tender_User2":
-        bid.data["tenderers"][0]["identifier"]["id"] = "2894905868"
+        bid.data["tenderers"][0]["identifier"]["id"] = "1989909665"
     bid.data.requirementResponses = []
+    amount = 0
     if 'criteria' in data:
         for criteria in data['criteria']:
             for requirements in criteria['requirementGroups']:
@@ -784,10 +817,17 @@ def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, m
                             value = "invalid_value"
                     else:
                         value = fake.random_int(min=int(requirement.get('minValue')), max=int(data['value']['amount']))
-                    requirement = {
-                        "requirement": {"id": requirement['id']},
-                        "value": value
-                    }
+                    if more_than_two_requirements and amount == 0:
+                        requirement = {
+                            "requirement": {"id": uuid4().hex},
+                            "value": value
+                        }
+                        amount += 1
+                    else:
+                        requirement = {
+                            "requirement": {"id": requirement['id']},
+                            "value": value
+                        }
                     bid.data.requirementResponses.append(requirement)
                 if not more_than_two_requirements:
                     break
@@ -1144,6 +1184,7 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
     del data["minimalStep"]
     del data["title_en"]
+    del data["submissionMethodDetails"]
     data['procurementMethodType'] = 'priceQuotation'
     data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
     data['agreement'] = test_agreement_id()
@@ -1151,11 +1192,14 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     for index in range(params['number_of_items']):
         data['items'][index]['profile'] = fake.valid_profile()
         data['items'][index]['id'] = uuid4().hex
-        item_id = data['items'][index]['id']
-        first_criteria = test_profile_first_criteria(item_id)
-        data['criteria'].append(first_criteria)
-        second_criteria = test_profile_second_criteria(item_id)
-        data['criteria'].append(second_criteria)
+        # item_id = data['items'][index]['id']
+        # first_criteria = test_profile_first_criteria(item_id)
+        # data['criteria'].append(first_criteria)
+        # second_criteria = test_profile_second_criteria(item_id)
+        # data['criteria'].append(second_criteria)
+    item_id = data['items'][0]['id']
+    criteria_data = test_profile_criteria_data(item_id)
+    data['criteria'].append(criteria_data)
     if params.get('wrong_profile'):
         for index in range(params['number_of_items']):
             data['items'][index]['profile'] = fake.invalid_profile()
@@ -1168,6 +1212,8 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
             data['items'][index]['profile'] = "none"
     if params.get('tender_wrong_status'):
         data['status'] = fake.wrong_status()
+    if params.get('tender_draft_status'):
+        data['status'] = "draft"
     if params.get('profiles_hidden_status'):
         for index in range(params['number_of_items']):
             data['items'][index]['profile'] = fake.profiles_hidden()
@@ -1561,6 +1607,18 @@ def test_unit_price_amount_buyer(amount):
     })
 
 
+def test_unit_price_amount_buyer_updated(index, amount):
+    return munchify({
+        "data": {
+            "contractNumber": index,
+             "value": {
+                 "amount": amount,
+                  "amountNet": amount
+              }
+        }
+    })
+
+
 def test_contract_price_amount_buyer(amount):
     return munchify({
         "data": {
@@ -1709,6 +1767,34 @@ def test_agreement_id():
     })
 
 
+def test_profile_criteria_data(item_id):
+    criteria = {
+        "title": "Технічні характеристики предмета закупівлі",
+        "description": "Електрична енергія, вільні ціни, ОЕС, без обмежень по терміну дії, з розподілом",
+        "relatesTo": "item",
+        "relatedItem": item_id,
+        "requirementGroups": [{
+            "description": "Технічні характеристики",
+            "requirements": [
+                {
+                    "id": uuid4().hex,
+                    "title": "Термін",
+                    "description": "Термін",
+                    "dataType": "number",
+                    "expectedValue": 72
+                },
+                {
+                    "id": uuid4().hex,
+                    "title": "Торгова зона",
+                    "dataType": "string",
+                    "expectedValue": "Об'єднана енергосистема України"
+                }
+            ]
+        }]
+    }
+    return munchify(criteria)
+
+
 def test_profile_first_criteria(item_id):
     criteria = {
             "title": "Рівень жирності",
@@ -1727,7 +1813,7 @@ def test_profile_first_criteria(item_id):
                                 "code": "P1",
                                 "name": "відсоток"
                             },
-                            "expectedValue": "72"
+                            "expectedValue": 72
                         }
                     ]
                 }
@@ -1750,7 +1836,7 @@ def test_profile_second_criteria(item_id):
                             "id": "125331-0002-001-01",
                             "title": "Фасування - звичайне",
                             "dataType": "boolean",
-                            "expectedValue": "true"
+                            "expectedValue": True
                         }
                     ]
                 }

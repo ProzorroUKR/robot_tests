@@ -20,7 +20,7 @@
 -i create_24h_milestone_pre-qualification
 -i add_doc_to_bid_by_provider_24h_pre-qualification
 
--i pre-qualification_approve_first_bid
+-i pre-qualification_approve_first_bid_24
 -i pre-qualification_approve_second_bid
 -i pre-qualification_approve_third_bid
 -i pre-qualification_approve_qualifications

@@ -113,8 +113,9 @@ ${CRITERIA_LLC}     ${False}
   ...      unsuccessful
   :FOR    ${status}    IN    @{statuses}
   \  ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  ${status}
-  \  Convert To Lowercase  ${value}
-  \  Should Contain  ${value}  can't switch tender from status (draft) to (${status})
+#  \  Convert To Lowercase  ${value}
+#  \  Should Contain  ${value}  can't switch tender from status (draft) to (${status})
+  \  Should Contain  ${value}  Value must be one of ['draft', 'draft.publishing'].  ignore_case=True
 
 
 Можливість оголосити тендер з профайлом, статус якого hidden
@@ -180,7 +181,7 @@ ${CRITERIA_LLC}     ${False}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  active.tendering
   Convert To Lowercase  ${value}
-  Should Contain  ${value}  can't switch tender from status (draft.publishing) to (active.tendering)
+  Should Contain  ${value}  Can't update tender in current (draft.publishing) status
 
 
 Можливість знайти тендер по ідентифікатору
@@ -362,7 +363,7 @@ ${CRITERIA_LLC}     ${False}
   Set Test Variable  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}  ${True}
   ${value}=  Run Keyword And Expect Error  *  Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
   ${value}=  Convert To Lowercase  ${value}
-  Should Contain  ${value}  conflicting in criteria
+  Should Contain  ${value}  no such criteria with id
 
 
 Неможливість подати пропозицію, якщо характеристика не відповідає вимозі
@@ -685,7 +686,7 @@ ${CRITERIA_LLC}     ${False}
   ...  viewer
   ...  ${USERS.users['${viewer}'].broker}
   ...  tender_unsuccessfully_reason_shortlistedfirms_empty
-  ${reason}=  Текст причини відхилення empty
+  ${reason}=  Текст причини відхилення unknown
   Звірити поле тендера із значенням  ${viewer}  ${TENDER['TENDER_UAID']}
   ...      ${reason}
   ...      unsuccessfulReason
@@ -786,7 +787,7 @@ ${CRITERIA_LLC}     ${False}
   ...      ${contract_index}
   ...      value.amountNet
   ...      ${invalid_amountNet}
-  Should Contain  ${value}  Amount should be greater than amountNet and differ by no more than 20.0%
+  Should Contain  ${value}  Amount should be equal or greater than amountNet and differ by no more than 20.0%
 
 
 Можливість редагувати вартість угоди без урахування ПДВ

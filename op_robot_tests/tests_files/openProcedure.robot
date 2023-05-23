@@ -2705,6 +2705,17 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   Можливість підтвердити 0 пропозицію кваліфікації
 
 
+Можливість підтвердити першу пропозицію кваліфікації 24h
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_first_bid_24  level1
+  ...      critical
+  [Setup]  Дочекатись дати початку періоду прекваліфікації 24h  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 0 пропозицію кваліфікації
+
+
 Можливість завантажити документ у кваліфікацію пропозиції другого учасника
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
