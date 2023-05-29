@@ -92,7 +92,7 @@ if options.version:
 try:
     from urllib.request import urlopen
 except ImportError:
-    from urllib2 import urlopen
+    from urllib import urlopen
 
 ez = {}
 if os.path.exists('ez_setup.py'):
