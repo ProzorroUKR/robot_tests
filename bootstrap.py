@@ -70,7 +70,7 @@ parser.add_option("--allow-site-packages",
                   action="store_true", default=False,
                   help=("Let bootstrap.py use existing site packages"))
 parser.add_option("--buildout-version",
-                  default='3.0.1',
+                  default='2.13.8',
                   help="Use a specific zc.buildout version")
 parser.add_option("--setuptools-version",
                   default='51.3.3',
