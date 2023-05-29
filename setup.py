@@ -31,8 +31,9 @@ setup(name='op_robot_tests',
           'parse',
           'pytz',
           'robotframework',
-          'robotframework-selenium2library',
-          'selenium < 3.0.dev0',
+          'robotframework-seleniumlibrary',
+          'robotframework-requests',
+          'selenium',
       ],
       entry_points={
           'console_scripts': [
