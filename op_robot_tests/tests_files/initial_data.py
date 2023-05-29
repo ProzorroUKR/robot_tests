@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -
+from __future__ import absolute_import
 import os
 import random
 from random import randint
@@ -11,7 +12,7 @@ from faker.providers.company.en_US import Provider as CompanyProviderEnUs
 from faker.providers.company.ru_RU import Provider as CompanyProviderRuRu
 from munch import munchify, unmunchify
 from op_faker import OP_Provider
-from .local_time import get_now, TZ
+from local_time import get_now, TZ
 from datetime import datetime
 import string
 from copy import deepcopy

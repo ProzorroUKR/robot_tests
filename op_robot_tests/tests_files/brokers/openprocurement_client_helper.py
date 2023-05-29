@@ -1,3 +1,4 @@
+from __future__ import print_function
 from openprocurement_client.resources.tenders import Client
 from openprocurement_client.resources.edr import EDRClient
 from openprocurement_client.resources.agreements import AgreementClient

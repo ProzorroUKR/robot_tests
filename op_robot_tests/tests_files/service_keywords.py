@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -
+from __future__ import print_function
 import operator
-from .local_time import get_now, TZ
+from local_time import get_now, TZ
 from copy import deepcopy
 from datetime import timedelta
 from dateutil.parser import parse
@@ -16,7 +17,7 @@ from robot.output.loggerhelper import Message
 # These imports are not pointless. Robot's resource and testsuite files
 # can access them by simply importing library "service_keywords".
 # Please ignore the warning given by Flake8 or other linter.
-from .initial_data import (
+from initial_data import (
     create_fake_doc,
     create_fake_sentence,
     create_fake_amount,
@@ -123,8 +124,8 @@ import os
 import re
 
 
-NUM_TYPES = (int, long, float)
-STR_TYPES = (str, unicode)
+NUM_TYPES = (int, float)
+STR_TYPES = str
 
 
 def get_current_tzdate():
