@@ -15,19 +15,21 @@ import shutil
 import sys
 import tempfile
 import zipfile
+import tarfile
 import optparse
 import subprocess
 import platform
 import textwrap
 import contextlib
 import warnings
+from pathlib import Path
 
 from distutils import log
 
 try:
     from urllib.request import urlopen
 except ImportError:
-    from urllib2 import urlopen
+    from urllib import urlopen
 
 try:
     from site import USER_SITE
@@ -133,9 +135,10 @@ def _do_download(version, download_base, to_dir, download_delay):
     tp = 'setuptools-{version}-{py_desig}.egg'
     egg = os.path.join(to_dir, tp.format(**locals()))
     if not os.path.exists(egg):
-        archive = download_setuptools(version, download_base,
+        archive_tar = download_setuptools(version, download_base,
             to_dir, download_delay)
-        _build_egg(egg, archive, to_dir)
+        archive_zip = tar_to_zip(archive_tar)
+        _build_egg(egg, archive_zip, to_dir)
     sys.path.insert(0, egg)
 
     # Remove previously-imported pkg_resources if present (see
@@ -344,9 +347,9 @@ def download_setuptools(
     """
     # making sure we use the absolute path
     to_dir = os.path.abspath(to_dir)
-    zip_name = "setuptools-%s.zip" % version
-    url = download_base + zip_name
-    saveto = os.path.join(to_dir, zip_name)
+    tar_name = "setuptools-%s.tar.gz" % version
+    url = download_base + tar_name
+    saveto = os.path.join(to_dir, tar_name)
     if not os.path.exists(saveto):  # Avoid repeated downloads
         log.warn("Downloading %s", url)
         downloader = downloader_factory()
@@ -401,6 +404,20 @@ def _download_args(options):
         to_dir=options.to_dir,
     )
 
+def tar_to_zip(archive_name):
+    """Extract tar.gz file content and add it to a .zip file to be executable
+    Then cleanup unnecessary files and folder from eggs directory
+    """
+    tarf = tarfile.open(archive_name)
+    parent = Path(archive_name).parent.absolute()
+    tarf.extractall(parent)
+    tarf.close()
+    remove_gz = os.path.splitext(archive_name)[0]
+    folder_name= os.path.splitext(remove_gz)[0]
+    zipf = shutil.make_archive(folder_name, 'zip', rf"{parent}", 'setuptools-51.3.3')
+    os.remove(archive_name)
+    shutil.rmtree(rf"{parent}/setuptools-51.3.3")
+    return zipf
 
 def main():
     """Install or upgrade setuptools and EasyInstall."""
