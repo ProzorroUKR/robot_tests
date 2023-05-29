@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -
+import logging
 import os
 import random
 from random import randint
@@ -23,7 +24,7 @@ fake_uk = Factory.create(locale='uk_UA')
 fake_uk.add_provider(OP_Provider)
 fake = fake_uk
 used_identifier_id = []
-mode_open = ["belowThreshold", "aboveThresholdUA", "aboveThresholdEU",
+mode_open = ["belowThreshold", "aboveThreshold", "aboveThresholdUA", "aboveThresholdEU",
              "aboveThresholdUA.defense", "competitiveDialogueUA", "competitiveDialogueEU", "esco",
              "closeFrameworkAgreementUA", "simple.defense"]
 mode_limited = ["reporting", "negotiation.quick", "negotiation"]
