@@ -7,11 +7,13 @@ from openprocurement_client.resources.document_service import DocumentServiceCli
 from openprocurement_client.resources.plans import PlansClient
 from openprocurement_client.resources.contracts import ContractingClient
 from openprocurement_client.exceptions import IdNotFound
-from restkit.errors import RequestFailed, BadStatusLine, ResourceError
+#from restkit.errors import RequestFailed, BadStatusLine, ResourceError
+from http.client import BadStatusLine
 from retrying import retry
 from time import sleep
 import os
 import urllib
+import requests
 from openprocurement_client.resources.tenders import TenderCreateClient
 from openprocurement_client.resources.tenders import PaymentClient
 
@@ -76,8 +78,8 @@ class StableEDRClient(EDRClient):
     def request(self, *args, **kwargs):
         try:
             res = super(StableEDRClient, self).request(*args, **kwargs)
-        except ResourceError as re:
-            if re.status_int == 429:
+        except requests.exceptions.HTTPError as re:
+            if re.response.status_code == 429:
                 sleep(int(re.response.headers.get('Retry-After', '30')))
             raise re
         else:
