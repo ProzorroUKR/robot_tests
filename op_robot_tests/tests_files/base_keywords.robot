@@ -1,6 +1,6 @@
 coding: utf-8
 *** Settings ***
-Library            op_robot_tests.tests_files.service_keywords
+Library            ../tests_files/service_keywords.py
 Library            Collections
 Resource           keywords.robot
 Resource           resource.robot
@@ -501,8 +501,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість знайти тендер по ідентифікатору для усіх користувачів
-  :FOR  ${username}  IN  ${tender_owner}  ${provider}  ${provider1}  ${provider2}  ${viewer}
-  \  Можливість знайти тендер по ідентифікатору для користувача ${username}
+  FOR  ${username}  IN  ${tender_owner}  ${provider}  ${provider1}  ${provider2}  ${viewer}
+    Можливість знайти тендер по ідентифікатору для користувача ${username}
+   END
 
 
 Можливість знайти тендер по ідентифікатору для користувача ${username}
@@ -516,21 +517,23 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${number}=  Evaluate  min(${FEED_ITEMS_NUMBER}, ${tenders_len})
   ${sample}=  Evaluate  random.sample(range(0, ${tenders_len}), ${number})  random
   Log To Console  ${number}/${tenders_len}
-  :FOR  ${index}  IN  @{sample}
-  \  ${tenders_feed_item}=  Get From List  ${tenders_feed}  ${index}
-  \  ${internalid}=  Get From Dictionary  ${tenders_feed_item}  id
-  \  ${date_modified}=  Get From Dictionary  ${tenders_feed_item}  dateModified
-  \  Log To Console  - Читання тендеру з id ${internalid} та датою модифікації ${date_modified}
-  \  ${status}=  Run Keyword And Return Status  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
-  \  Run Keyword If  ${status} == ${False}
-  \  ...  Run Keyword And Expect Error  ${ERROR_MESSAGE}  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
-  \  Run Keyword If  ${status} == ${True}
-  \  ...  Run As  ${username}  Отримати тендер по внутрішньому ідентифікатору  ${internalid}
+  FOR  ${index}  IN  @{sample}
+    ${tenders_feed_item}=  Get From List  ${tenders_feed}  ${index}
+    ${internalid}=  Get From Dictionary  ${tenders_feed_item}  id
+    ${date_modified}=  Get From Dictionary  ${tenders_feed_item}  dateModified
+    Log To Console  - Читання тендеру з id ${internalid} та датою модифікації ${date_modified}
+    ${status}=  Run Keyword And Return Status  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
+    Run Keyword If  ${status} == ${False}
+    ...  Run Keyword And Expect Error  ${ERROR_MESSAGE}  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
+    Run Keyword If  ${status} == ${True}
+    ...  Run As  ${username}  Отримати тендер по внутрішньому ідентифікатору  ${internalid}
+  END
 
 
 Можливість знайти план по ідентифікатору
-  :FOR  ${username}  IN  ${tender_owner}  ${viewer}
-  \  Можливість знайти план по ідентифікатору для користувача ${username}
+  FOR  ${username}  IN  ${tender_owner}  ${viewer}
+    Можливість знайти план по ідентифікатору для користувача ${username}
+  END
 
 
 Можливість прочитати плани для користувача ${username}
