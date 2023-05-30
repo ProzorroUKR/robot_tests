@@ -118,7 +118,7 @@ from initial_data import (
     prepare_data_for_changing_quantity
 )
 from barbecue import chef
-from restkit import request
+#from restkit import request
 # End of non-pointless import
 import os
 import re
@@ -205,7 +205,7 @@ def compare_coordinates(left_lat, left_lon, right_lat, right_lon, accuracy=0.1):
                             into float value. When it will be catched warning will be
                             given and accuracy will be set to 0.1.
     '''
-    for key, value in {'left_lat': left_lat, 'left_lon': left_lon, 'right_lat': right_lat, 'right_lon': right_lon}.iteritems():
+    for key, value in {'left_lat': left_lat, 'left_lon': left_lon, 'right_lat': right_lat, 'right_lon': right_lon}.items():
         if not isinstance(value, NUM_TYPES):
             raise TypeError("Invalid type for coordinate '{0}'. "
                             "Expected one of {1}, got {2}".format(
@@ -292,7 +292,7 @@ def load_data_from(file_name, mode=None, external_params_name=None):
     if mode == 'brokers':
         default = file_data.pop('Default')
         brokers = {}
-        for k, v in file_data.iteritems():
+        for k, v in file_data.items():
             brokers[k] = merge_dicts(default, v)
         file_data = brokers
 
@@ -333,7 +333,7 @@ def compute_intrs(brokers_data, used_brokers):
             if l < r:
                 return r if prefer_greater_numbers else l
         elif isinstance(l, dict) and isinstance(r, dict):
-            for k, v in r.iteritems():
+            for k, v in r.items():
                 if k not in l.keys():
                     l[k] = v
                 elif k in keys_to_prefer_lesser:
@@ -537,7 +537,7 @@ def merge_dicts(a, b):
     if not isinstance(b, dict):
         return b
     result = deepcopy(a)
-    for k, v in b.iteritems():
+    for k, v in b.items():
         if k in result and isinstance(result[k], dict):
                 result[k] = merge_dicts(result[k], v)
         else:
