@@ -696,7 +696,7 @@ Log differences between dicts
   ${sleep}=  Subtract Date From Date
   ...      ${last_modification_date_corrected}
   ...      ${now}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
   ${time_diff}=  Subtract Date From Date
@@ -719,7 +719,7 @@ Log differences between dicts
   ${sleep}=  Subtract Date From Date
   ...      ${last_modification_date_corrected}
   ...      ${now}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
   ${time_diff}=  Subtract Date From Date
@@ -1134,7 +1134,7 @@ Require Failure
 Дочекатись дати
   [Arguments]  ${date}
   ${sleep}=  wait_to_date  ${date}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
 Дочекатись дати початку періоду уточнень
@@ -1396,7 +1396,7 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      active.auction
-  Sleep  120  # Auction sync
+  BuiltIn.Sleep  120  # Auction sync
 
 
 Дочекатись дати початку періоду кваліфікації
