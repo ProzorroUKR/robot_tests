@@ -231,7 +231,7 @@ Library         Selenium2Library
   Open browser  ${url}  ${USERS.users['${username}'].browser}  ${username}
   Set Window Position  @{USERS['${username}']['position']}
   Set Window Size      @{USERS['${username}']['size']}
-  Run Keyword Unless  '${username}' == '${viewer}'
+  Run Keyword If  '${username}' != '${viewer}'
   ...      Click Element                  xpath=//button[contains(@class, 'btn btn-success')]
 
 

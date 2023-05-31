@@ -272,7 +272,7 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid
   Open browser  ${url}  ${USERS.users['${username}'].browser}  ${username}
   Set Window Position  @{USERS['${username}']['position']}
   Set Window Size      @{USERS['${username}']['size']}
-  Run Keyword Unless  '${username}' == '${viewer}'
+  Run Keyword If  '${username}' != '${viewer}'
   ...      Click Element                  xpath=//button[contains(@class, 'btn btn-success')]
 
 

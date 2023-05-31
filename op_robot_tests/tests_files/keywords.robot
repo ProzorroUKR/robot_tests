@@ -102,7 +102,7 @@ Set Suite Variable With Default Value
   ${used_users}=  Create List
 
   # Handle `-v role:something`
-  Run Keyword Unless  '${ROLE}' in @{USED_ROLES}
+  Run Keyword If  '${ROLE}' not in @{USED_ROLES}
   ...      Log
   ...      Role ${ROLE} is not used in this test suite.
   ...      WARN
