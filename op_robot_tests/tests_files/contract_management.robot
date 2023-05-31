@@ -15,8 +15,9 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      find_tender
   Завантажити дані про тендер
-  :FOR  ${username}  in  @{used_roles}
-  \  Run As  ${${username}}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+  FOR  ${username}  in  @{used_roles}
+    Run As  ${${username}}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+  END
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   ${CONTRACT_UAID}=  Get variable value  ${USERS.users['${tender_owner}'].tender_data.data.contracts[${contract_index}].contractID}
   Set Suite Variable  ${CONTRACT_UAID}
@@ -28,8 +29,9 @@ Suite Teardown  Test Suite Teardown
   ...      viewer  tender_owner
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      find_contract
-  :FOR  ${username}  IN  @{used_roles}
-  \  Run As  ${${username}}  Пошук договору по ідентифікатору  ${CONTRACT_UAID}
+  FOR  ${username}  IN  @{used_roles}
+    Run As  ${${username}}  Пошук договору по ідентифікатору  ${CONTRACT_UAID}
+  END
 
 
 Можливість отримати доступ до договору

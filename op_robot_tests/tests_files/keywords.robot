@@ -127,7 +127,7 @@ Set Suite Variable With Default Value
   ${used_brokers}=  Remove Duplicates  ${used_brokers}
   Set Suite Variable  ${used_brokers}
   # We need to create two lists since Robot Framework doesn't support
-  # dicts in `:FOR` loops.
+  # dicts in `FOR` loops.
   Log Many  @{used_users}
   Log Many  @{used_brokers}
 

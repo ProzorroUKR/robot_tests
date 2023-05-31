@@ -111,12 +111,12 @@ ${CRITERIA_LLC}     ${False}
   ...      complete
   ...      cancelled
   ...      unsuccessful
-  :FOR    ${status}    IN    @{statuses}
-  \  ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  ${status}
+  FOR    ${status}    IN    @{statuses}
+    ${value}=  Require Failure  ${tender_owner}  Внести зміни в тендер  ${TENDER['TENDER_UAID']}  status  ${status}
 #  \  Convert To Lowercase  ${value}
 #  \  Should Contain  ${value}  can't switch tender from status (draft) to (${status})
-  \  Should Contain  ${value}  Value must be one of ['draft', 'draft.publishing'].  ignore_case=True
-
+    Should Contain  ${value}  Value must be one of ['draft', 'draft.publishing'].  ignore_case=True
+  END
 
 Можливість оголосити тендер з профайлом, статус якого hidden
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
@@ -971,8 +971,9 @@ ${CRITERIA_LLC}     ${False}
   ...      viewer  tender_owner
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      find_contract
-  :FOR  ${username}  IN  @{used_roles}
-  \  Run As  ${${username}}  Пошук договору по ідентифікатору  ${CONTRACT_UAID}
+  FOR  ${username}  IN  @{used_roles}
+    Run As  ${${username}}  Пошук договору по ідентифікатору  ${CONTRACT_UAID}
+  END
 
 
 Можливість отримати доступ до договору
@@ -1201,11 +1202,12 @@ ${CRITERIA_LLC}     ${False}
 *** Keywords ***
 Пошук постачальника пропозиції з awards по індексу
     [Arguments]  ${index}
-    :FOR  ${user_role}  IN  @{USED_PROVIDERS}
-    \  ${user_name}=  Get Variable Value  ${BROKERS['${BROKER}'].roles['${user_role}']}
-    \  ${bid_id}=  Отримати дані із тендера  ${user_name}  ${TENDER['TENDER_UAID']}  awards[${index}].bid_id
-    \  ${bid_id_by_user}=  Get Variable Value  ${USERS.users['${user_name}'].bidresponses.bid.data.id}
-    \  Exit For Loop If  '${bid_id}' == '${bid_id_by_user}'
+    FOR  ${user_role}  IN  @{USED_PROVIDERS}
+      ${user_name}=  Get Variable Value  ${BROKERS['${BROKER}'].roles['${user_role}']}
+      ${bid_id}=  Отримати дані із тендера  ${user_name}  ${TENDER['TENDER_UAID']}  awards[${index}].bid_id
+      ${bid_id_by_user}=  Get Variable Value  ${USERS.users['${user_name}'].bidresponses.bid.data.id}
+      Exit For Loop If  '${bid_id}' == '${bid_id_by_user}'
+    END
     [Return]  ${user_name}
 
 
@@ -1229,8 +1231,9 @@ ${CRITERIA_LLC}     ${False}
 Отримати мінімальне значення amount з поданих пропозицій
   ${bids}=  Отримати дані із тендера  ${provider}  ${TENDER['TENDER_UAID']}  bids
   ${values}=  Create List
-  :FOR  ${value}  IN  @{bids}
-  \  ${item}=  Get Variable Value  ${value['value']['amount']}
-  \  Append To List  ${values}  ${item}
+  FOR  ${value}  IN  @{bids}
+    ${item}=  Get Variable Value  ${value['value']['amount']}
+    Append To List  ${values}  ${item}
+  END
   ${min_amount}=  get_lowest_value_from_list  ${values}
   [Return]  ${min_amount}

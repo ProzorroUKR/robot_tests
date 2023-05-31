@@ -83,8 +83,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      plan_view
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  budget.amount
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+    Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  budget.amount
+  END
   Звірити відображення поля budget.amount плану для користувача ${viewer}
 
 

@@ -463,11 +463,11 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid
 
 
 Вибрати учасника, який може зробити ставку
-  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
-  \   Run Keyword And Ignore Error  Переключитись на учасника   ${username}
-  \   ${status}  ${_}=  Run Keyword And Ignore Error  Page Should Contain  до закінчення вашої черги
-  \   Run Keyword If  '${status}' == 'PASS'    Exit For Loop
-
+  FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+     Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+     ${status}  ${_}=  Run Keyword And Ignore Error  Page Should Contain  до закінчення вашої черги
+     Run Keyword If  '${status}' == 'PASS'    Exit For Loop
+  END
 
 Поставити малу ставку в ${last_amount} грн
   Run Keyword If  ${TENDER_MEAT} == ${True}  Wait Until Page Contains Element  ${xpath_max_bid_amount_meat}

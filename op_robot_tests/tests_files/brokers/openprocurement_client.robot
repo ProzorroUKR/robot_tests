@@ -444,8 +444,9 @@ Library  Collections
   ${access_token}=  Get Variable Value  ${tender.access.token}
   ${tender_uaid}=  Get Variable Value  ${tender.data.tenderID}
   ${tender_id}=  Get Variable Value  ${tender.data.id}
-  :FOR  ${user}  IN  @{USED_ROLES}
-  \  Set To Dictionary  ${USERS.users['${${user}}'].id_map}  ${tender_uaid}  ${tender_id}
+  FOR  ${user}  IN  @{USED_ROLES}
+    Set To Dictionary  ${USERS.users['${${user}}'].id_map}  ${tender_uaid}  ${tender_id}
+  END
   Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/tenders/${tender.data.id}${\n}  WARN
   Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   tender_data=${tender}
@@ -1015,10 +1016,11 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
   ${lot}=  Create Dictionary  data=${tender.data.lots[${lot_index}]}
-  :FOR  ${item}  IN  @{tender.data['items']}
-  \  ${item_id}=  get_id_from_object  ${item}
-  \  Run Keyword If  '${item.relatedLot}'=='${lot.data.id}'
-  \  ...     openprocurement_client.Видалити предмет закупівлі  ${username}  ${tender_uaid}  ${item_id}
+  FOR  ${item}  IN  @{tender.data['items']}
+    ${item_id}=  get_id_from_object  ${item}
+    Run Keyword If  '${item.relatedLot}'=='${lot.data.id}'
+    ...     openprocurement_client.Видалити предмет закупівлі  ${username}  ${tender_uaid}  ${item_id}
+  END
   ${reply}=  Call Method  ${USERS.users['${username}'].client}   delete_lot   ${tender}    ${lot}
 
 
@@ -2369,9 +2371,10 @@ Library  Collections
   ...       [Return] Last document from pre-quailfication
   [Arguments]  ${username}  ${tender_uaid}  ${qualification_id}
   ${docs}=  Run As  ${username}  Отримати список документів по прекваліфікації  ${tender_uaid}  ${qualification_id}
-  :FOR  ${item}  IN  @{docs['data']}
-  \  ${status}  ${_}=  Run Keyword And Ignore Error  Dictionary Should Contain Key  ${item}  documentType
-  \  Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  FOR  ${item}  IN  @{docs['data']}
+    ${status}  ${_}=  Run Keyword And Ignore Error  Dictionary Should Contain Key  ${item}  documentType
+    Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  END
   Log  ${item}
   [Return]  ${item}
 
@@ -2383,9 +2386,10 @@ Library  Collections
   ...       [Return] Last document for
   [Arguments]  ${username}  ${tender_uaid}  ${award_id}
   ${docs}=  Run As  ${username}  Отримати список документів по кваліфікації  ${tender_uaid}  ${award_id}
-  :FOR  ${item}  IN  @{docs['data']}
-  \  ${status}  ${_}=  Run Keyword And Ignore Error  Dictionary Should Contain Key  ${item}  documentType
-  \  Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  FOR  ${item}  IN  @{docs['data']}
+    ${status}  ${_}=  Run Keyword And Ignore Error  Dictionary Should Contain Key  ${item}  documentType
+    Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  END
   Log  ${item}
   [Return]  ${item}
 
@@ -2397,9 +2401,10 @@ Library  Collections
   ...       [Return] Last document for
   [Arguments]  ${username}  ${tender_uaid}  ${award_id}
   ${docs}=  Run As  ${username}  Отримати список документів по кваліфікації  ${tender_uaid}  ${award_id}
-  :FOR  ${item}  IN  @{docs['data']}
-  \  ${status}  ${_}=  Run Keyword And Ignore Error  Dictionary Should Contain Item  ${item}  documentType  registerFiscal
-  \  Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  FOR  ${item}  IN  @{docs['data']}
+    ${status}  ${_}=  Run Keyword And Ignore Error  Dictionary Should Contain Item  ${item}  documentType  registerFiscal
+    Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  END
   Log  ${item}
   [Return]  ${item}
 
@@ -2973,27 +2978,28 @@ Library  Collections
   ${item_value}=  Evaluate  ${award_value}/${NUMBER_OF_ITEMS}
   ${item_value}  Convert To Integer  ${item_value}
   Log  ${item_value}
-  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  ${quantity}=  Set Variable  ${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
-  \  Log  ${quantity}
-  \  ${value}=  Evaluate  ${item_value}/${quantity}
-  \  ${value}=  Convert To Integer  ${value}
-  \  Log  ${value}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    ${quantity}=  Set Variable  ${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+    Log  ${quantity}
+    ${value}=  Evaluate  ${item_value}/${quantity}
+    ${value}=  Convert To Integer  ${value}
+    Log  ${value}
 #  \  ${contract_data}=  test_unit_price_amount_buyer  ${value}
-  \  ${contract_data}=  test_unit_price_amount_buyer_updated  ${index}  ${value}
-  \  Log  ${contract_data}
-  \  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  \  Log  ${tender}
-  \  Log  ${tender['data']['contracts'][${index}]['id']}
-  \  ${tender_id}=  Set Variable  ${tender.data.id}
-  \  ${contract_id}=  Set Variable  ${tender['data']['contracts'][${index}]['id']}
-  \  ${access_token}=  Set Variable  ${tender.access.token}
-  \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
-  \  ...      ${tender_id}
-  \  ...      ${contract_data}
-  \  ...      contract_id=${contract_id}
-  \  ...      access_token=${access_token}
-  \  Log  ${reply}
+    ${contract_data}=  test_unit_price_amount_buyer_updated  ${index}  ${value}
+    Log  ${contract_data}
+    ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+    Log  ${tender}
+    Log  ${tender['data']['contracts'][${index}]['id']}
+    ${tender_id}=  Set Variable  ${tender.data.id}
+    ${contract_id}=  Set Variable  ${tender['data']['contracts'][${index}]['id']}
+    ${access_token}=  Set Variable  ${tender.access.token}
+    ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+    ...      ${tender_id}
+    ...      ${contract_data}
+    ...      contract_id=${contract_id}
+    ...      access_token=${access_token}
+    Log  ${reply}
+  END
 
 
 Встановити ціну в контрактах buyers
@@ -3003,21 +3009,22 @@ Library  Collections
   ${item_amount}=  Evaluate  ${award_value}/${NUMBER_OF_ITEMS}
   ${item_amount}  Convert To Integer  ${item_amount}
   Log  ${item_amount}
-  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  ${contract_data}=  test_contract_price_amount_buyer  ${item_amount}
-  \  Log  ${contract_data}
-  \  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  \  Log  ${tender}
-  \  Log  ${tender['data']['contracts'][${index}]['id']}
-  \  ${tender_id}=  Set Variable  ${tender.data.id}
-  \  ${contract_id}=  Set Variable  ${tender['data']['contracts'][${index}]['id']}
-  \  ${access_token}=  Set Variable  ${tender.access.token}
-  \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
-  \  ...      ${tender_id}
-  \  ...      ${contract_data}
-  \  ...      contract_id=${contract_id}
-  \  ...      access_token=${access_token}
-  \  Log  ${reply}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    ${contract_data}=  test_contract_price_amount_buyer  ${item_amount}
+    Log  ${contract_data}
+    ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+    Log  ${tender}
+    Log  ${tender['data']['contracts'][${index}]['id']}
+    ${tender_id}=  Set Variable  ${tender.data.id}
+    ${contract_id}=  Set Variable  ${tender['data']['contracts'][${index}]['id']}
+    ${access_token}=  Set Variable  ${tender.access.token}
+    ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+    ...      ${tender_id}
+    ...      ${contract_data}
+    ...      contract_id=${contract_id}
+    ...      access_token=${access_token}
+    Log  ${reply}
+  END
 
 
 Встановити ціну за одиницю для контракту
@@ -3153,15 +3160,16 @@ Library  Collections
   Log  ${tender}
   ${number_of_contracts}=  Get Length  ${tender.data.contracts}
   Log  ${number_of_contracts}
-  :FOR  ${index}  IN RANGE  ${number_of_contracts}
-  \  ${data}=  test_confirm_data  ${tender['data']['contracts'][${index}]['id']}
-  \  Log  ${data}
-  \  ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
-  \  ...      ${tender.data.id}
-  \  ...      ${data}
-  \  ...      ${tender['data']['contracts'][${index}]['id']}
-  \  ...      access_token=${tender.access.token}
-  \  Log  ${reply}
+  FOR  ${index}  IN RANGE  ${number_of_contracts}
+    ${data}=  test_confirm_data  ${tender['data']['contracts'][${index}]['id']}
+    Log  ${data}
+    ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_contract
+    ...      ${tender.data.id}
+    ...      ${data}
+    ...      ${tender['data']['contracts'][${index}]['id']}
+    ...      access_token=${tender.access.token}
+    Log  ${reply}
+  END
 
 ##############################################################################
 #             CONTRACT MANAGEMENT
