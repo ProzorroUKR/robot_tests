@@ -237,6 +237,8 @@ def test_tender_data(params,
         data["mainProcurementCategory"] = random.choice(['goods', 'services'])
     elif params.get("mode") in ["competitiveDialogueEU", "competitiveDialogueUA"]:
         data["mainProcurementCategory"] = random.choice(['services', 'works'])
+    elif params.get("mode") == "aboveThreshold":
+        data["mainProcurementCategory"] = 'services'
     else:
         data["mainProcurementCategory"] = random.choice(['goods', 'services', 'works'])
     accelerator = accelerator \
@@ -933,6 +935,22 @@ def test_lot_document_data(lot_id):
 def test_change_document_data(document, change_id):
     document.data.update({"documentOf": "change", "relatedItem": change_id})
     return munchify(document)
+
+
+def test_tender_data_open(params, submissionMethodDetails, plan_data):
+    """We should not provide any values for `enquiryPeriod` when creating
+    an openUA, openEU open_simple_defense procedure. That field should not be present at all.
+    Therefore, we pass a non default list of periods to `test_tender_data()`."""
+    data = test_tender_data(params, plan_data, ('tender',), submissionMethodDetails)
+    data['procurementMethodType'] = params['mode']
+    data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
+    del data["description_en"]
+    del data["description_ru"]
+    del data["guarantee"]
+    del data["title_en"]
+    del data["title_ru"]
+    del data["status"]
+    return data
 
 
 def test_tender_data_openua(params, submissionMethodDetails, plan_data):
