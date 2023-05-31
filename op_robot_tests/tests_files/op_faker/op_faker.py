@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from faker.providers import BaseProvider
 from faker.generator import random
+from faker.generator import Generator
 from copy import deepcopy
 from munch import Munch
 from json import load
@@ -44,6 +45,8 @@ class OP_Provider(BaseProvider):
     criteria_llc = _fake_data.criteria_llc
     cpb = _fake_data.cpb
     valid_agreement_id = _fake_data.agreement_id
+    generator = Generator
+    random = random
 
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
@@ -58,7 +61,7 @@ class OP_Provider(BaseProvider):
         """
         if le > ge:
             raise Exception("Lower bound: {} is greater then upper: {}.".format(le, ge))
-        return int(number * self.random_int(min=le, max=ge) / 100) + 1
+        return int(number * self.random_int(BaseProvider(self), min=le, max=ge) / 100) + 1
 
     @classmethod
     def word(self):
@@ -129,7 +132,7 @@ class OP_Provider(BaseProvider):
                     cpvs.append(cpv_element)
             return self.random_element(cpvs)
         else:
-            return self.random_element(self.cpvs)
+            return self.random_elements(self.cpvs, use_weighting=None)
 
     @classmethod
     def road_cpv(self, cpv_group=None):
