@@ -870,6 +870,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 Звірити відображення ${field} усіх предметів плану для усіх користувачів
   FOR  ${username}  IN  ${viewer}  ${tender_owner}
     Звірити відображення ${field} усіх предметів плану для користувача ${username}
+  END
 
 
 Звірити відображення ${field} усіх предметів плану для користувача ${username}
