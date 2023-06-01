@@ -375,42 +375,53 @@ def prepare_test_tender_data(procedure_intervals,
     assert intervals['accelerator'] >= 0, \
         "Accelerator should not be less than 0"
     if mode == 'negotiation':
-        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data),
+                         'config': {"hasAuction": False}})
     elif mode == 'negotiation.quick':
-        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data),
+                         'config': {"hasAuction": False}})
     elif mode == 'aboveThresholdEU':
         return munchify({'data': test_tender_data_openeu(
-            tender_parameters, submissionMethodDetails, plan_data)})
+            tender_parameters, submissionMethodDetails, plan_data),
+                         'config': {"hasAuction": True}})
     elif mode == 'aboveThresholdUA':
         return munchify({'data': test_tender_data_openua(
-            tender_parameters, submissionMethodDetails, plan_data)})
+            tender_parameters, submissionMethodDetails, plan_data),
+                         'config': {"hasAuction": True}})
     elif mode == 'competitiveDialogueEU':
         return munchify({'data': test_tender_data_competitive_dialogue(
-            tender_parameters, submissionMethodDetails, plan_data)})
+            tender_parameters, submissionMethodDetails, plan_data),
+                          'config': {"hasAuction": False}})
     elif mode == 'competitiveDialogueUA':
         return munchify({'data': test_tender_data_competitive_dialogue(
-            tender_parameters, submissionMethodDetails, plan_data)})
+            tender_parameters, submissionMethodDetails, plan_data),
+                          'config': {"hasAuction": False}})
     elif mode == 'reporting':
-        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data)})
+        return munchify({'data': test_tender_data_limited(tender_parameters, plan_data),
+                         'config': {"hasAuction": False}})
     elif mode == 'closeFrameworkAgreementUA':
         return munchify({'data': test_tender_data_framework_agreement(
-            tender_parameters, submissionMethodDetails, plan_data)})
+            tender_parameters, submissionMethodDetails, plan_data),
+                         'config': {"hasAuction": True}})
     elif mode == 'belowThreshold':
         return munchify({'data': test_tender_data(
             tender_parameters,
             plan_data,
             submissionMethodDetails=submissionMethodDetails,
             funders=funders,
-            accelerator=accelerator,
-            )})
+            accelerator=accelerator,),
+                        'config': {"hasAuction": True}})
     elif mode == 'esco':
         return munchify({'data': test_tender_data_esco(
-            tender_parameters, submissionMethodDetails, plan_data)})
+            tender_parameters, submissionMethodDetails, plan_data),
+                         'config': {"hasAuction": True}})
     elif mode == 'priceQuotation':
-        return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data)})
+        return munchify({'data': test_tender_data_pq(tender_parameters, submissionMethodDetails, plan_data),
+                         'config': {"hasAuction": False}})
     elif mode == "simple_defense":
         return munchify({'data': test_tender_data_simple_defense(
-            tender_parameters, submissionMethodDetails, plan_data)})
+            tender_parameters, submissionMethodDetails, plan_data),
+                         'config': {"hasAuction": True}})
 
         # The previous line needs an explicit keyword argument because,
         # unlike previous functions, this one has three arguments.
