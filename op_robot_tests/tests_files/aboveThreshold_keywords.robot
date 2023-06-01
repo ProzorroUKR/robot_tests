@@ -1,5 +1,5 @@
 *** Settings ***
-Library            op_robot_tests.tests_files.service_keywords
+Library            ../tests_files/service_keywords.py
 Library            Collections
 Resource           keywords.robot
 Resource           resource.robot

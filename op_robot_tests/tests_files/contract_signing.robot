@@ -15,8 +15,9 @@ Suite Teardown  Test Suite Teardown
   ...      find_tender  level1
   ...      critical
   Завантажити дані про тендер
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \   Run As  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+    Run As  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+  END
 
 ##############################################################################################
 #             CONTRACT
@@ -29,8 +30,9 @@ Suite Teardown  Test Suite Teardown
   ...      contract_stand_still
   ...      critical
   ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
-  :FOR  ${username}  IN  ${viewer}
-  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
+  FOR  ${username}  IN  ${viewer}
+    Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
+  END
 
 
 Дочекатися закічення stand still періоду

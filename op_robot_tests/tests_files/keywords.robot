@@ -102,7 +102,7 @@ Set Suite Variable With Default Value
   ${used_users}=  Create List
 
   # Handle `-v role:something`
-  Run Keyword Unless  '${ROLE}' in @{USED_ROLES}
+  Run Keyword If  '${ROLE}' not in @{USED_ROLES}
   ...      Log
   ...      Role ${ROLE} is not used in this test suite.
   ...      WARN
@@ -127,7 +127,7 @@ Set Suite Variable With Default Value
   ${used_brokers}=  Remove Duplicates  ${used_brokers}
   Set Suite Variable  ${used_brokers}
   # We need to create two lists since Robot Framework doesn't support
-  # dicts in `:FOR` loops.
+  # dicts in `FOR` loops.
   Log Many  @{used_users}
   Log Many  @{used_brokers}
 
@@ -696,7 +696,7 @@ Log differences between dicts
   ${sleep}=  Subtract Date From Date
   ...      ${last_modification_date_corrected}
   ...      ${now}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
   ${time_diff}=  Subtract Date From Date
@@ -719,7 +719,7 @@ Log differences between dicts
   ${sleep}=  Subtract Date From Date
   ...      ${last_modification_date_corrected}
   ...      ${now}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
   ${time_diff}=  Subtract Date From Date
@@ -1134,7 +1134,7 @@ Require Failure
 Дочекатись дати
   [Arguments]  ${date}
   ${sleep}=  wait_to_date  ${date}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
 Дочекатись дати початку періоду уточнень
@@ -1396,7 +1396,7 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      active.auction
-  Sleep  120  # Auction sync
+  BuiltIn.Sleep  120  # Auction sync
 
 
 Дочекатись дати початку періоду кваліфікації

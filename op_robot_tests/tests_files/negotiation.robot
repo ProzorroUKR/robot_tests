@@ -746,9 +746,9 @@ ${CRITERIA_LLC}     ${False}
   ...      contract_stand_still
   ...      critical
   ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
-  :FOR  ${username}  IN  ${viewer}
-  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
-
+  FOR  ${username}  IN  ${viewer}
+    Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
+  END
 
 Відображення вартості угоди без урахування ПДВ
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних угоди
