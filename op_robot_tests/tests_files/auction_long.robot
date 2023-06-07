@@ -3,7 +3,7 @@ Resource        keywords.robot
 Resource        resource.robot
 Suite Setup     Test Suite Setup
 Suite Teardown  Test Suite Teardown
-Library         Selenium2Library
+Library         SeleniumLibrary
 
 *** Variables ***
 @{USED_ROLES}  viewer  provider  provider1  provider2

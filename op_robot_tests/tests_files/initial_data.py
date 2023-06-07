@@ -1655,7 +1655,7 @@ def test_monitoring_liability_data():
 
 def log_webdriver_info():
     driver = webdriver.Chrome()
-    browser_version = "chrome version - " + driver.capabilities['version']
+    browser_version = "chrome version - " + driver.capabilities['browserVersion']
     driver_version = "chromedriver version - " + driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
     return browser_version, driver_version
 
