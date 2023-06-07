@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -
 from __future__ import print_function
 import operator
+from functools import reduce
+
 from local_time import get_now, TZ
 from copy import deepcopy
 from datetime import timedelta
@@ -258,7 +260,7 @@ def log_object_data(data, file_name=None, format="yaml", update=False, artifact=
         with open(file_path, "w") as file_obj:
             file_obj.write(data_obj)
     data_obj = munch_to_object(data, format)
-    LOGGER.log_message(Message(data_obj.decode('utf-8'), "INFO"))
+    LOGGER.log_message(Message(data_obj, "INFO"))
 
 
 def munch_from_object(data, format="yaml"):
