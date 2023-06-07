@@ -12,8 +12,8 @@ from http.client import BadStatusLine
 from retrying import retry
 from time import sleep
 import os
-import urllib
 import requests
+import urllib.request
 from openprocurement_client.resources.tenders import TenderCreateClient
 from openprocurement_client.resources.tenders import PaymentClient
 
@@ -178,7 +178,7 @@ def get_items_feed(client, client_method, interval=0.5):
 
 def download_file_from_url(url, path_to_save_file):
     f = open(path_to_save_file, 'wb')
-    f.write(urllib.urlopen(url).read())
+    f.write(urllib.request.urlopen(url).read())
     f.close()
     return os.path.basename(f.name)
 
