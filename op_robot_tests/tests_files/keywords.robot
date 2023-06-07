@@ -921,7 +921,7 @@ Log differences between dicts
 Отримати дані із тендера
   [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
   ${field}=  Run Keyword If  '${object_id}'  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
-  ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}[${object_index}].${field_name}
+  ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}\[${object_index}].${field_name}
   ...             ELSE  Set Variable  ${field_name}
   ${status}  ${field_value}=  Run keyword and ignore error
   ...      get_from_object
@@ -937,7 +937,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].tender_data.data}
   Set To Dictionary  ${USERS.users['${username}'].tender_data}  data=${data}
   Log  ${USERS.users['${username}'].tender_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із тендера другого етапу
@@ -955,7 +955,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].second_stage_data.data}
   Set To Dictionary  ${USERS.users['${username}'].second_stage_data}  data=${data}
   Log  ${USERS.users['${username}'].second_stage_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із угоди
@@ -973,7 +973,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].agreement_data.data}
   Set To Dictionary  ${USERS.users['${username}'].agreement_data}  data=${data}
   Log  ${USERS.users['${username}'].agreement_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із об'єкта моніторингу
@@ -988,7 +988,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].monitoring_data.data}
   Set To Dictionary  ${USERS.users['${username}'].monitoring_data}  data=${data}
   Log  ${USERS.users['${username}'].monitoring_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із плану
@@ -1008,7 +1008,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].tender_data.data}
   Set To Dictionary  ${USERS.users['${username}'].tender_data}  data=${data}
   Log  ${USERS.users['${username}'].tender_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із договору
@@ -1026,7 +1026,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].contract_data.data}
   Set To Dictionary  ${USERS.users['${username}'].contract_data}  data=${data}
   Log  ${USERS.users['${username}'].contract_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати шлях до поля об’єкта
@@ -1034,7 +1034,7 @@ Log differences between dicts
   ${object_type}=  get_object_type_by_id  ${object_id}
   ${objects}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data['${object_type}']}  ${None}
   ${object_index}=  get_object_index_by_id  ${objects}  ${object_id}
-  [return]  ${object_type}[${object_index}].${field_name}
+  [Return]  ${object_type}\[${object_index}].${field_name}
 
 
 Отримати дані із об’єкта тендера
@@ -1051,7 +1051,7 @@ Log differences between dicts
   ${field}=  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
   ${field_value}=  Run Keyword IF  '${status}'=='PASS'  Set Variable  ${value}
   ...      ELSE  Run As  ${username}  Отримати інформацію із тендера  ${tender_uaid}  ${field}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати ідентифікатори об’єктів
@@ -1062,7 +1062,7 @@ Log differences between dicts
      ${obj_id}=  get_id_from_object  ${obj}
      Append To List  ${objects_ids}  ${obj_id}
   END
-  [return]  ${objects_ids}
+  [Return]  ${objects_ids}
 
 
 Звірити поле скарги із значенням
@@ -1096,7 +1096,7 @@ Require Failure
   ${keywords_file}=  Get Broker Property By Username  ${username}  keywords_file
   ${status}  ${value}=  Run keyword and ignore keyword definitions  ${keywords_file}.${command}  ${username}  @{arguments}
   Run keyword if  '${status}' == 'PASS'  Fail  Користувач ${username} зміг виконати "${command}"
-  [return]  ${value}
+  [Return]  ${value}
 
 
 Можливість отримати посилання на аукціон для глядача
