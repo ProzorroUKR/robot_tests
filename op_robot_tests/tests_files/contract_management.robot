@@ -15,7 +15,7 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      find_tender
   Завантажити дані про тендер
-  FOR  ${username}  in  @{used_roles}
+  FOR  ${username}  IN  @{used_roles}
     Run As  ${${username}}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
   END
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
