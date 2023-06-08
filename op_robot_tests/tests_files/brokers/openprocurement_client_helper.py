@@ -7,7 +7,6 @@ from openprocurement_client.resources.document_service import DocumentServiceCli
 from openprocurement_client.resources.plans import PlansClient
 from openprocurement_client.resources.contracts import ContractingClient
 from openprocurement_client.exceptions import IdNotFound
-#from restkit.errors import RequestFailed, BadStatusLine, ResourceError
 from http.client import BadStatusLine
 from retrying import retry
 from time import sleep

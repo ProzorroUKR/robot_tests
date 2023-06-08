@@ -120,7 +120,6 @@ from initial_data import (
     prepare_data_for_changing_quantity
 )
 from barbecue import chef
-#from restkit import request
 # End of non-pointless import
 import os
 import re
