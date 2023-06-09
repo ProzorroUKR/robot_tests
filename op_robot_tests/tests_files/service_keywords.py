@@ -59,6 +59,7 @@ from initial_data import (
     test_tender_data_limited,
     test_tender_data_openeu,
     test_tender_data_openua,
+    test_tender_data_open,
     test_tender_data_planning,
     test_tender_data_framework_agreement,
     test_tender_data_pq,
@@ -382,6 +383,10 @@ def prepare_test_tender_data(procedure_intervals,
     elif mode == 'negotiation.quick':
         return munchify({'data': test_tender_data_limited(tender_parameters, plan_data),
                          'config': {"hasAuction": False}})
+    elif mode == 'aboveThreshold':
+        return munchify({'data': test_tender_data_open(
+            tender_parameters, submissionMethodDetails, plan_data),
+                         'config': {"hasAuction": True}})
     elif mode == 'aboveThresholdEU':
         return munchify({'data': test_tender_data_openeu(
             tender_parameters, submissionMethodDetails, plan_data),
@@ -697,7 +702,7 @@ def get_object_by_id(data, given_object_id, slice_element, object_id):
 
 
 def generate_test_bid_data(tender_data, edrpou=None):
-    if tender_data.get('procurementMethodType', '') in ('aboveThresholdUA', 'aboveThresholdEU', 'closeFrameworkAgreementUA'):
+    if tender_data.get('procurementMethodType', '') in ('aboveThreshold', 'aboveThresholdUA', 'aboveThresholdEU', 'closeFrameworkAgreementUA'):
         bid = test_bid_competitive_data()
         bid.data.selfQualified = True
         if 'lots' in tender_data:
