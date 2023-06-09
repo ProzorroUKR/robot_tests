@@ -5,9 +5,9 @@ Library  openprocurement_client.utils
 Library  Collections
 
 *** Variables ***
-@{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  competitiveDialogueEU  simple_defense  closeFrameworkAgreementUA
+@{active_tendering_procedure_types}  esco  aboveThresholdEU  aboveThresholdUA  aboveThreshold  competitiveDialogueUA  competitiveDialogueEU  simple_defense  closeFrameworkAgreementUA
 
-@{qualified_eligible_procedure_types}  aboveThresholdEU  aboveThresholdUA  competitiveDialogueUA  simple_defense
+@{qualified_eligible_procedure_types}  aboveThresholdEU  aboveThresholdUA  aboveThreshold  competitiveDialogueUA  simple_defense
 
 *** Keywords ***
 Отримати internal id по UAid
