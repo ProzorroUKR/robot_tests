@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -
+from __future__ import absolute_import
 import logging
 import os
 import random
@@ -11,8 +12,8 @@ from faker import Factory
 from faker.providers.company.en_US import Provider as CompanyProviderEnUs
 from faker.providers.company.ru_RU import Provider as CompanyProviderRuRu
 from munch import munchify, unmunchify
-from op_faker import OP_Provider
-from .local_time import get_now, TZ
+from op_faker.op_faker import OP_Provider
+from local_time import get_now, TZ
 from datetime import datetime
 import string
 from copy import deepcopy
@@ -185,7 +186,7 @@ def create_fake_doc():
     content = fake.text()
     suffix = fake.random_element(('.doc', '.docx', '.pdf'))
     prefix = "{}-{}{}".format("d", fake.uuid4()[:8], fake_en.word())
-    tf = NamedTemporaryFile(delete=False, suffix=suffix, prefix=prefix)
+    tf = NamedTemporaryFile(delete=False, suffix=suffix, prefix=prefix, mode="w")
     tf.write(content)
     tf.close()
     return tf.name.replace('\\', '\\\\'), os.path.basename(tf.name), content
@@ -1673,7 +1674,7 @@ def test_monitoring_liability_data():
 
 def log_webdriver_info():
     driver = webdriver.Chrome()
-    browser_version = "chrome version - " + driver.capabilities['version']
+    browser_version = "chrome version - " + driver.capabilities['browserVersion']
     driver_version = "chromedriver version - " + driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
     return browser_version, driver_version
 

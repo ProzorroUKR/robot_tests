@@ -625,9 +625,9 @@ ${CRITERIA_LOT}        ${False}
   ...      award_stand_still
   ...      critical
   ${award_index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
-  :FOR  ${username}  IN  ${viewer}
-  \  Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
-
+  FOR  ${username}  IN  ${viewer}
+    Отримати дані із тендера  ${username}  ${TENDER['TENDER_UAID']}  awards[${award_index}].complaintPeriod.endDate
+  END
 
 Дочекатися закічення stand still періоду
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес укладання угоди

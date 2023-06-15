@@ -1,12 +1,13 @@
 coding: utf-8
 *** Settings ***
-Library  op_robot_tests.tests_files.service_keywords
+Library  ../tests_files/service_keywords.py
 Library  String
 Library  Collections
-Library  Selenium2Library
+Library  SeleniumLibrary
 Library  OperatingSystem
 Library  DateTime
 Library  DebugLibrary
+Library  RequestsLibrary
 
 
 Documentation
@@ -50,7 +51,8 @@ Set Suite Variable With Default Value
 
 
 Порівняти системний і серверний час
-  ${server_time}=  request  ${API_HOST_URL}  HEAD
+  [Tags]      head
+  ${server_time}=  HEAD     ${API_HOST_URL}     expected_status= 404
   ${local_time}=  Get current TZdate
   Log  ${server_time.headers['date']}
   Log  ${local_time}
@@ -100,7 +102,7 @@ Set Suite Variable With Default Value
   ${used_users}=  Create List
 
   # Handle `-v role:something`
-  Run Keyword Unless  '${ROLE}' in @{USED_ROLES}
+  Run Keyword If  '${ROLE}' not in @{USED_ROLES}
   ...      Log
   ...      Role ${ROLE} is not used in this test suite.
   ...      WARN
@@ -113,18 +115,19 @@ Set Suite Variable With Default Value
   # fill `used_brokers`.
   #
   # Don't even ask how this works!
-  :FOR  ${tmp_role}  IN  @{USED_ROLES}
-  \  Set Suite Variable With Default Value
-  \  ...      ${tmp_role}
-  \  ...      ${BROKERS['Quinta'].roles.${tmp_role}}
-  \  Append To List  ${used_users}  ${${tmp_role}}
-  \  Append To List  ${used_brokers}  ${USERS.users.${${tmp_role}}.broker}
+  FOR  ${tmp_role}  IN  @{USED_ROLES}
+    Set Suite Variable With Default Value
+    ...      ${tmp_role}
+    ...      ${BROKERS['Quinta'].roles.${tmp_role}}
+    Append To List  ${used_users}  ${${tmp_role}}
+    Append To List  ${used_brokers}  ${USERS.users.${${tmp_role}}.broker}
+  END
   # Since `@{USED_ROLES}` is already a suite variable,
   # let's make `@{used_brokers}` alike.
   ${used_brokers}=  Remove Duplicates  ${used_brokers}
   Set Suite Variable  ${used_brokers}
   # We need to create two lists since Robot Framework doesn't support
-  # dicts in `:FOR` loops.
+  # dicts in `FOR` loops.
   Log Many  @{used_users}
   Log Many  @{used_brokers}
 
@@ -133,25 +136,25 @@ Set Suite Variable With Default Value
 
   # Check whether users file contains an entry for each
   # selected user before preparing any clients
-  :FOR  ${username}  IN  @{used_users}
-  \  List Should Contain Value
-  \  ...      ${known_users}
-  \  ...      ${username}
-  \  ...      msg=User ${username} not found in users file!
-
+  FOR  ${username}  IN  @{used_users}
+    List Should Contain Value
+    ...      ${known_users}
+    ...      ${username}
+    ...      msg=User ${username} not found in users file!
+  END
   # Prepare a client for each user
-  :FOR  ${username}  IN  @{used_users}
-  \  ${munch_dict}=  munch_dict  data=${True}
-  \  ${keywords_file}=  Get Broker Property  ${USERS.users.${username}.broker}  keywords_file
-  \  Завантажуємо бібліотеку з реалізацією для майданчика ${keywords_file}
-  \  Run As  ${username}  Підготувати клієнт для користувача
-  \  ${LAST_REFRESH_DATE}=  Get Current TZdate
-  \  Set To Dictionary  ${USERS}  ${username}=${USERS.users.${username}}
-  \  Set To Dictionary  ${USERS.${username}}  tender_data=${munch_dict}
-  \  Set To Dictionary  ${USERS.${username}}  second_stage_data=${munch_dict}
-  \  Set To Dictionary  ${USERS.${username}}  LAST_REFRESH_DATE  ${LAST_REFRESH_DATE}
-  \  Set To Dictionary  ${USERS.${username}}  DASU_LAST_REFRESH_DATE  ${LAST_REFRESH_DATE}
-
+  FOR  ${username}  IN  @{used_users}
+    ${munch_dict}=  munch_dict  data=${True}
+    ${keywords_file}=  Get Broker Property  ${USERS.users.${username}.broker}  keywords_file
+    Завантажуємо бібліотеку з реалізацією для майданчика ${keywords_file}
+    Run As  ${username}  Підготувати клієнт для користувача
+    ${LAST_REFRESH_DATE}=  Get Current TZdate
+    Set To Dictionary  ${USERS}  ${username}=${USERS.users.${username}}
+    Set To Dictionary  ${USERS.${username}}  tender_data=${munch_dict}
+    Set To Dictionary  ${USERS.${username}}  second_stage_data=${munch_dict}
+    Set To Dictionary  ${USERS.${username}}  LAST_REFRESH_DATE  ${LAST_REFRESH_DATE}
+    Set To Dictionary  ${USERS.${username}}  DASU_LAST_REFRESH_DATE  ${LAST_REFRESH_DATE}
+  END
   # Drop all unused users
   Keep In Dictionary  ${USERS.users}  @{used_users}
   Log Many  @{USERS}
@@ -596,19 +599,20 @@ Get Broker Property By Username
   [Arguments]  ${tender_data}
   # munchify is used to make deep copy of ${tender_data}
   ${adapted_data}=  munchify  ${tender_data}
-  :FOR  ${username}  IN  @{USED_ROLES}
+  FOR  ${username}  IN  @{USED_ROLES}
   # munchify is used to make deep copy of ${adapted_data}
-  \  ${adapted_data_copy}=  munchify  ${adapted_data}
-  \  ${status}  ${adapted_data_from_broker}=  Run keyword and ignore error  Run As  ${${username}}  Підготувати дані для оголошення тендера  ${adapted_data_copy}  ${username}
-  \  Log  ${adapted_data_from_broker}
+    ${adapted_data_copy}=  munchify  ${adapted_data}
+    ${status}  ${adapted_data_from_broker}=  Run keyword and ignore error  Run As  ${${username}}  Підготувати дані для оголошення тендера  ${adapted_data_copy}  ${username}
+    Log  ${adapted_data_from_broker}
   # Need this in case ``${${username}}`` doesn't have `Підготувати дані для оголошення
   # тендера користувачем` keyword, so after `Run keyword and ignore error` call
   # ``${adapted_data_from_broker}`` will be ``${None}``. Else - nothing changes.
-  \  ${adapted_data_from_broker}=  Set variable if  '${status}' == 'FAIL'  ${adapted_data}  ${adapted_data_from_broker}
-  \  Log differences between dicts  ${adapted_data.data}  ${adapted_data_from_broker.data}  ${username} has changed initial data!
+    ${adapted_data_from_broker}=  Set variable if  '${status}' == 'FAIL'  ${adapted_data}  ${adapted_data_from_broker}
+    Log differences between dicts  ${adapted_data.data}  ${adapted_data_from_broker.data}  ${username} has changed initial data!
   # Update (or not, if nothing changed) ``${adapted_data}``.
-  \  ${adapted_data}=  munchify  ${adapted_data_from_broker}
-  \  Log  ${adapted_data}
+    ${adapted_data}=  munchify  ${adapted_data_from_broker}
+    Log  ${adapted_data}
+  END
   Log  ${adapted_data}
   Log  ${tender_data}
   [Return]  ${adapted_data}
@@ -692,7 +696,7 @@ Log differences between dicts
   ${sleep}=  Subtract Date From Date
   ...      ${last_modification_date_corrected}
   ...      ${now}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
   ${time_diff}=  Subtract Date From Date
@@ -715,7 +719,7 @@ Log differences between dicts
   ${sleep}=  Subtract Date From Date
   ...      ${last_modification_date_corrected}
   ...      ${now}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
   ${time_diff}=  Subtract Date From Date
@@ -893,28 +897,31 @@ Log differences between dicts
   [Arguments]  ${username}  ${tender_data}  ${field}
   @{items}=  get_from_object  ${tender_data.data}  items
   ${len_of_items}=  Get Length  ${items}
-  :FOR  ${index}  IN RANGE  ${len_of_items}
-  \  Звірити поле тендера  ${viewer}  ${tender_data}  items[${index}].${field}
+  FOR  ${index}  IN RANGE  ${len_of_items}
+    Звірити поле тендера  ${viewer}  ${tender_data}  items[${index}].${field}
+  END
 
 
 Звірити дату предметів закупівлі багатопредметного тендера
   [Arguments]  ${username}  ${tender_data}  ${field}  ${accuracy}=60  ${absolute_delta}=${False}
   @{items}=  get_from_object  ${tender_data.data}  items
-  :FOR  ${index}  ${_}  IN ENUMERATE  @{items}
-  \  Звірити дату тендера  ${viewer}  ${TENDER['TENDER_UAID']}  ${tender_data}  items[${index}].${field}  accuracy=${accuracy}  absolute_delta=${absolute_delta}
+  FOR  ${index}  ${_}  IN ENUMERATE  @{items}
+    Звірити дату тендера  ${viewer}  ${TENDER['TENDER_UAID']}  ${tender_data}  items[${index}].${field}  accuracy=${accuracy}  absolute_delta=${absolute_delta}
+  END
 
 
 Звірити координати доставки предметів закупівлі багатопредметного тендера
   [Arguments]  ${username}  ${tender_data}
   @{items}=  get_from_object  ${tender_data.data}  items
-  :FOR  ${index}  ${_}  IN ENUMERATE  @{items}
-  \  Звірити координати тендера  ${viewer}  ${tender_data}  items[${index}]
+  FOR  ${index}  ${_}  IN ENUMERATE  @{items}
+    Звірити координати тендера  ${viewer}  ${tender_data}  items[${index}]
+  END
 
 
 Отримати дані із тендера
   [Arguments]  ${username}  ${tender_uaid}  ${field_name}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
   ${field}=  Run Keyword If  '${object_id}'  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
-  ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}[${object_index}].${field_name}
+  ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}\[${object_index}].${field_name}
   ...             ELSE  Set Variable  ${field_name}
   ${status}  ${field_value}=  Run keyword and ignore error
   ...      get_from_object
@@ -930,7 +937,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].tender_data.data}
   Set To Dictionary  ${USERS.users['${username}'].tender_data}  data=${data}
   Log  ${USERS.users['${username}'].tender_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із тендера другого етапу
@@ -948,7 +955,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].second_stage_data.data}
   Set To Dictionary  ${USERS.users['${username}'].second_stage_data}  data=${data}
   Log  ${USERS.users['${username}'].second_stage_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із угоди
@@ -966,7 +973,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].agreement_data.data}
   Set To Dictionary  ${USERS.users['${username}'].agreement_data}  data=${data}
   Log  ${USERS.users['${username}'].agreement_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із об'єкта моніторингу
@@ -981,7 +988,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].monitoring_data.data}
   Set To Dictionary  ${USERS.users['${username}'].monitoring_data}  data=${data}
   Log  ${USERS.users['${username}'].monitoring_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із плану
@@ -1001,7 +1008,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].tender_data.data}
   Set To Dictionary  ${USERS.users['${username}'].tender_data}  data=${data}
   Log  ${USERS.users['${username}'].tender_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати дані із договору
@@ -1019,7 +1026,7 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].contract_data.data}
   Set To Dictionary  ${USERS.users['${username}'].contract_data}  data=${data}
   Log  ${USERS.users['${username}'].contract_data.data}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати шлях до поля об’єкта
@@ -1027,7 +1034,7 @@ Log differences between dicts
   ${object_type}=  get_object_type_by_id  ${object_id}
   ${objects}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data['${object_type}']}  ${None}
   ${object_index}=  get_object_index_by_id  ${objects}  ${object_id}
-  [return]  ${object_type}[${object_index}].${field_name}
+  [Return]  ${object_type}\[${object_index}].${field_name}
 
 
 Отримати дані із об’єкта тендера
@@ -1044,17 +1051,18 @@ Log differences between dicts
   ${field}=  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
   ${field_value}=  Run Keyword IF  '${status}'=='PASS'  Set Variable  ${value}
   ...      ELSE  Run As  ${username}  Отримати інформацію із тендера  ${tender_uaid}  ${field}
-  [return]  ${field_value}
+  [Return]  ${field_value}
 
 
 Отримати ідентифікатори об’єктів
   [Arguments]  ${username}  ${objects_type}
   @{objects_ids}=  Create List
   @{objects}=  Get from object  ${USERS.users['${username}'].tender_data.data}  ${objects_type}
-  :FOR  ${obj}  IN  @{objects}
-  \   ${obj_id}=  get_id_from_object  ${obj}
-  \   Append To List  ${objects_ids}  ${obj_id}
-  [return]  ${objects_ids}
+  FOR  ${obj}  IN  @{objects}
+     ${obj_id}=  get_id_from_object  ${obj}
+     Append To List  ${objects_ids}  ${obj_id}
+  END
+  [Return]  ${objects_ids}
 
 
 Звірити поле скарги із значенням
@@ -1088,7 +1096,7 @@ Require Failure
   ${keywords_file}=  Get Broker Property By Username  ${username}  keywords_file
   ${status}  ${value}=  Run keyword and ignore keyword definitions  ${keywords_file}.${command}  ${username}  @{arguments}
   Run keyword if  '${status}' == 'PASS'  Fail  Користувач ${username} зміг виконати "${command}"
-  [return]  ${value}
+  [Return]  ${value}
 
 
 Можливість отримати посилання на аукціон для глядача
@@ -1126,7 +1134,7 @@ Require Failure
 Дочекатись дати
   [Arguments]  ${date}
   ${sleep}=  wait_to_date  ${date}
-  Run Keyword If  ${sleep} > 0  Sleep  ${sleep}
+  Run Keyword If  ${sleep} > 0  BuiltIn.Sleep  ${sleep}
 
 
 Дочекатись дати початку періоду уточнень
@@ -1388,7 +1396,7 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      active.auction
-  Sleep  120  # Auction sync
+  BuiltIn.Sleep  120  # Auction sync
 
 
 Дочекатись дати початку періоду кваліфікації
@@ -1540,14 +1548,15 @@ Require Failure
 
 Отримати користувача з доступом до поля за пріорітетом
   [Arguments]  ${field}  @{usernames}
-  :FOR  ${username}  IN  @{usernames}
-  \  ${user_data}=  Get From Dictionary  ${USERS.users}  ${username}
-  \  ${status}  ${field_value}=  Run Keyword And Ignore Error
+  FOR  ${username}  IN  @{usernames}
+    ${user_data}=  Get From Dictionary  ${USERS.users}  ${username}
+    ${status}  ${field_value}=  Run Keyword And Ignore Error
   ...      get_from_object
   ...      ${user_data.tender_data.data}
   ...      ${field}
-  \  Log  ${user_data.tender_data.data}
-  \  Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+    Log  ${user_data.tender_data.data}
+    Run Keyword If  '${status}' == 'PASS'  Exit For Loop
+  END
   Run Keyword If  '${status}' == 'FAIL'  Fail  ${object} not found for usernames @{usernames}
   [Return]  ${username}
 
@@ -1576,12 +1585,14 @@ Require Failure
   ${username}=  Отримати користувача з доступом до поля за пріорітетом  agreements  ${tender_owner}  ${viewer}
   ${contract_data}=  Create Dictionary  data=${USERS.users['${username}'].tender_data.data.agreements[0].contracts[${contract_number}]}
   ${quantity}=  Set Variable  ${0}
-  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  ${quantity}=  Evaluate  ${quantity}+${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    ${quantity}=  Evaluate  ${quantity}+${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+  END
   ${value}=  Evaluate  ${USERS.users['${username}'].tender_data.data.awards[${contract_number}].value.amount}/${quantity}
   ${value}=  Convert To Integer  ${value}
-  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Set To Dictionary  ${contract_data.data.unitPrices[${index}].value}  amount=${value}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Set To Dictionary  ${contract_data.data.unitPrices[${index}].value}  amount=${value}
+  END
   ${contract_data}=  munch_dict  arg=${contract_data}
   Log  ${contract_data}
   [Return]  ${contract_data}
@@ -1592,14 +1603,16 @@ Require Failure
   ${contract_number}=  Set Variable  ${contract_index}
   ${contract_data}=  Create Dictionary  data=${USERS.users['${username}'].tender_data.data.contracts[${contract_number}]}
   ${quantity}=  Set Variable  ${0}
-  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  ${quantity}=  Evaluate  ${quantity}+${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    ${quantity}=  Evaluate  ${quantity}+${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+  END
   ${value}=  Evaluate  ${USERS.users['${username}'].tender_data.data.contracts[${contract_number}].value.amount}/${quantity}
   ${value}=  Convert To Integer  ${value}
   Log  ${value}
   ${amount}=  test_unit_price_amount  ${value}
-  :FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Set To Dictionary  ${contract_data.data['items'][${index}]['unit']}  value=${amount}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Set To Dictionary  ${contract_data.data['items'][${index}]['unit']}  value=${amount}
+  END
   ${contract_data}=  munch_dict  arg=${contract_data}
   Log  ${contract_data}
   [Return]  ${contract_data}
@@ -1632,11 +1645,12 @@ Require Failure
   Log  ${tender}
   ${award}=  Get Variable Value  ${USERS.users['${tender_owner}'].tender_data.data.awards[-1]}
   Log  ${award}
-  :FOR  ${username}  IN  @{usernames}
-  \  ${status}  ${bid}=  Run Keyword And Ignore Error
-  \  ...  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
-  \  Run Keyword if  '${status}' == 'PASS'  Log  ${bid.data.id}
-  \  ${status}=  Run Keyword And Return Status   Should Be Equal  ${bid.data.id}  ${award.bid_id}
-  \  Run Keyword If  '${status}' == 'True'  Exit For Loop
+  FOR  ${username}  IN  @{usernames}
+    ${status}  ${bid}=  Run Keyword And Ignore Error
+    ...  openprocurement_client.Отримати пропозицію  ${username}  ${tender_uaid}
+    Run Keyword if  '${status}' == 'PASS'  Log  ${bid.data.id}
+    ${status}=  Run Keyword And Return Status   Should Be Equal  ${bid.data.id}  ${award.bid_id}
+    Run Keyword If  '${status}' == 'True'  Exit For Loop
+  END
   [Return]  ${username}
 

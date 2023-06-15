@@ -1,6 +1,6 @@
 coding: utf-8
 *** Settings ***
-Library            op_robot_tests.tests_files.service_keywords
+Library            ../tests_files/service_keywords.py
 Library            Collections
 Resource           keywords.robot
 Resource           resource.robot
@@ -40,9 +40,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
-  \  Run Keyword If  ${status}   Exit For Loop
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+    ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
+    Run Keyword If  ${status}   Exit For Loop
+  END
   ${plan_data}=  знайти план за ідентифікатором  ${ARTIFACT.tender_uaid}  ${username}
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
@@ -285,9 +286,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
-  \  Run Keyword If  ${status}   Exit For Loop
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+    ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
+    Run Keyword If  ${status}   Exit For Loop
+  END
   ${plan_data}=  знайти план за ідентифікатором  ${ARTIFACT.tender_uaid}  ${username}
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
@@ -326,9 +328,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
   Run keyword if  '${FUNDING_KIND}' != '${None}'  Set to dictionary  ${tender_parameters}  fundingKind=${FUNDING_KIND}
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
-  \  Run Keyword If  ${status}   Exit For Loop
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+    ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}']}  plan_client
+    Run Keyword If  ${status}   Exit For Loop
+  END
   ${plan_data}=  знайти план за ідентифікатором  ${ARTIFACT.tender_uaid}  ${username}
   Log  ${plan_data}
   ${tender_data}=  Підготувати дані для створення тендера  ${tender_parameters}  ${plan_data}
@@ -405,14 +408,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість перевірити завантаження документів через Document Service
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}'].tender_data.data}  documents
-  \  Run Keyword If  ${status}   Exit For Loop
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+    ${status}=   Run Keyword And Return Status  List Should Contain Value  ${USERS.users['${username}'].tender_data.data}  documents
+    Run Keyword If  ${status}   Exit For Loop
+  END
   ${documents}=  Get From Dictionary  ${USERS.users['${username}'].tender_data.data}  documents
   ${doc_number}=  Get Length  ${documents}
-  :FOR  ${doc_index}  IN RANGE  ${doc_number}
-  \  ${document_url}=  Get From Dictionary  ${USERS.users['${username}'].tender_data.data.documents[${doc_index}]}  url
-  \  Should Match Regexp   ${document_url}   ${DS_REGEXP}   msg=Not a Document Service Upload
+  FOR  ${doc_index}  IN RANGE  ${doc_number}
+    ${document_url}=  Get From Dictionary  ${USERS.users['${username}'].tender_data.data.documents[${doc_index}]}  url
+    Should Match Regexp   ${document_url}   ${DS_REGEXP}   msg=Not a Document Service Upload
+  END
 
 
 Можливість створити план закупівлі
@@ -501,8 +506,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість знайти тендер по ідентифікатору для усіх користувачів
-  :FOR  ${username}  IN  ${tender_owner}  ${provider}  ${provider1}  ${provider2}  ${viewer}
-  \  Можливість знайти тендер по ідентифікатору для користувача ${username}
+  FOR  ${username}  IN  ${tender_owner}  ${provider}  ${provider1}  ${provider2}  ${viewer}
+    Можливість знайти тендер по ідентифікатору для користувача ${username}
+   END
 
 
 Можливість знайти тендер по ідентифікатору для користувача ${username}
@@ -516,21 +522,23 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${number}=  Evaluate  min(${FEED_ITEMS_NUMBER}, ${tenders_len})
   ${sample}=  Evaluate  random.sample(range(0, ${tenders_len}), ${number})  random
   Log To Console  ${number}/${tenders_len}
-  :FOR  ${index}  IN  @{sample}
-  \  ${tenders_feed_item}=  Get From List  ${tenders_feed}  ${index}
-  \  ${internalid}=  Get From Dictionary  ${tenders_feed_item}  id
-  \  ${date_modified}=  Get From Dictionary  ${tenders_feed_item}  dateModified
-  \  Log To Console  - Читання тендеру з id ${internalid} та датою модифікації ${date_modified}
-  \  ${status}=  Run Keyword And Return Status  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
-  \  Run Keyword If  ${status} == ${False}
-  \  ...  Run Keyword And Expect Error  ${ERROR_MESSAGE}  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
-  \  Run Keyword If  ${status} == ${True}
-  \  ...  Run As  ${username}  Отримати тендер по внутрішньому ідентифікатору  ${internalid}
+  FOR  ${index}  IN  @{sample}
+    ${tenders_feed_item}=  Get From List  ${tenders_feed}  ${index}
+    ${internalid}=  Get From Dictionary  ${tenders_feed_item}  id
+    ${date_modified}=  Get From Dictionary  ${tenders_feed_item}  dateModified
+    Log To Console  - Читання тендеру з id ${internalid} та датою модифікації ${date_modified}
+    ${status}=  Run Keyword And Return Status  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
+    Run Keyword If  ${status} == ${False}
+    ...  Run Keyword And Expect Error  ${ERROR_MESSAGE}  Отримати тендер по внутрішньому ідентифікатору  ${username}  ${internalid}
+    Run Keyword If  ${status} == ${True}
+    ...  Run As  ${username}  Отримати тендер по внутрішньому ідентифікатору  ${internalid}
+  END
 
 
 Можливість знайти план по ідентифікатору
-  :FOR  ${username}  IN  ${tender_owner}  ${viewer}
-  \  Можливість знайти план по ідентифікатору для користувача ${username}
+  FOR  ${username}  IN  ${tender_owner}  ${viewer}
+    Можливість знайти план по ідентифікатору для користувача ${username}
+  END
 
 
 Можливість прочитати плани для користувача ${username}
@@ -539,16 +547,17 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${number}=  Evaluate  min(${FEED_ITEMS_NUMBER}, ${plans_len})
   ${sample}=  Evaluate  random.sample(range(0, ${plans_len}), ${number})  random
   Log To Console  ${number}/${plans_len}
-  :FOR  ${index}  IN  @{sample}
-  \  ${plans_feed_item}=  Get From List  ${plans_feed}  ${index}
-  \  ${internalid}=  Get From Dictionary  ${plans_feed_item}  id
-  \  ${date_modified}=  Get From Dictionary  ${plans_feed_item}  dateModified
-  \  Log To Console  - Читання плану з id ${internalid} та датою модифікації ${date_modified}
-  \  ${status}=  Run Keyword And Return Status  Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}
-  \  Run Keyword If  ${status} == ${False}
-  \  ...  Run Keyword And Expect Error  ${ERROR_PLAN_MESSAGE}  Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}
-  \  Run Keyword If  ${status} == ${True}
-  \  ...  Run As  ${username}  Отримати план по внутрішньому ідентифікатору  ${internalid}
+  FOR  ${index}  IN  @{sample}
+    ${plans_feed_item}=  Get From List  ${plans_feed}  ${index}
+    ${internalid}=  Get From Dictionary  ${plans_feed_item}  id
+    ${date_modified}=  Get From Dictionary  ${plans_feed_item}  dateModified
+    Log To Console  - Читання плану з id ${internalid} та датою модифікації ${date_modified}
+    ${status}=  Run Keyword And Return Status  Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}
+    Run Keyword If  ${status} == ${False}
+    ...  Run Keyword And Expect Error  ${ERROR_PLAN_MESSAGE}  Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}
+    Run Keyword If  ${status} == ${True}
+    ...  Run As  ${username}  Отримати план по внутрішньому ідентифікатору  ${internalid}
+  END
 
 
 Можливість прочитати договори для користувача ${username}
@@ -557,17 +566,19 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${number}=  Evaluate  min(${FEED_ITEMS_NUMBER}, ${contracts_len})
   ${sample}=  Evaluate  random.sample(range(0, ${contracts_len}), ${number})  random
   Log To Console  ${number}/${contracts_len}
-  :FOR  ${index}  IN  @{sample}
-  \  ${contracts_feed_item}=  Get From List  ${contracts_feed}  ${index}
-  \  ${internalid}=  Get From Dictionary  ${contracts_feed_item}  id
-  \  ${date_modified}=  Get From Dictionary  ${contracts_feed_item}  dateModified
-  \  Log To Console  - Читання договору з id ${internalid} та датою модифікації ${date_modified}
-  \  Run As  ${username}  Отримати договір по внутрішньому ідентифікатору  ${internalid}
+  FOR  ${index}  IN  @{sample}
+    ${contracts_feed_item}=  Get From List  ${contracts_feed}  ${index}
+    ${internalid}=  Get From Dictionary  ${contracts_feed_item}  id
+    ${date_modified}=  Get From Dictionary  ${contracts_feed_item}  dateModified
+    Log To Console  - Читання договору з id ${internalid} та датою модифікації ${date_modified}
+    Run As  ${username}  Отримати договір по внутрішньому ідентифікатору  ${internalid}
+  END
 
 
 Можливість знайти об'єкт моніторингу по ідентифікатору
-  :FOR  ${username}  IN  ${viewer}  ${dasu_user}
-  \  Можливість знайти об'єкт моніторингу по ідентифікатору для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${dasu_user}
+    Можливість знайти об'єкт моніторингу по ідентифікатору для користувача ${username}
+  END
 
 
 Можливість знайти план по ідентифікатору для користувача ${username}
@@ -742,14 +753,15 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} документа ${doc_id} із ${left} для користувача ${username}
-  Sleep  30s
+  BuiltIn.Sleep  30s
   ${right}=  Run As  ${username}  Отримати інформацію із документа  ${TENDER['TENDER_UAID']}  ${doc_id}  ${field}
   Порівняти об'єкти  ${left}  ${right}
 
 
 Звірити відображення поля ${field} тендера для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} тендера для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} тендера для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} тендера із ${data} для користувача ${username}
@@ -769,9 +781,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість знайти тендер другого етапу по ідентифікатору для усіх користувачів
-  :FOR  ${username}  IN  ${tender_owner}  ${provider}  ${provider1}  ${provider2}  ${viewer}
-  \  Дочекатись синхронізації з майданчиком  ${username}
-  \  Run As  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}  second_stage_data
+  FOR  ${username}  IN  ${tender_owner}  ${provider}  ${provider1}  ${provider2}  ${viewer}
+    Дочекатись синхронізації з майданчиком  ${username}
+    Run As  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}  second_stage_data
+  END
 
 
 Звірити відображення вмісту документа ${doc_id} із ${left} для користувача ${username}
@@ -800,8 +813,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення дати ${date} тендера для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення дати ${date} тендера для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення дати ${date} тендера для користувача ${username}
+  END
 
 
 Звірити відображення дати ${date} тендера для користувача ${username}
@@ -813,8 +827,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} у новоствореному предметі для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} у новоствореному предметі для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} у новоствореному предметі для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} у новоствореному предметі для користувача ${username}
@@ -825,39 +840,44 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} усіх предметів для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} усіх предметів для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} усіх предметів для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх предметів для користувача ${username}
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Звірити відображення поля ${field} ${item_index} предмету для користувача ${username}
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Звірити відображення поля ${field} ${item_index} предмету для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх умов оплати для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} усіх умов оплати для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} усіх умов оплати для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх умов оплати для користувача ${username}
-  :FOR  ${milestone_index}  IN RANGE  ${NUMBER_OF_MILESTONES}
-  \  Звірити поле тендера із значенням
-  \  ...      ${username}
-  \  ...      ${TENDER['TENDER_UAID']}
-  \  ...      ${USERS.users['${tender_owner}'].initial_data.data['milestones'][${milestone_index}].${field}}
-  \  ...      ${field}  object_type=milestones  object_index=${milestone_index}
+  FOR  ${milestone_index}  IN RANGE  ${NUMBER_OF_MILESTONES}
+    Звірити поле тендера із значенням
+    ...      ${username}
+    ...      ${TENDER['TENDER_UAID']}
+    ...      ${USERS.users['${tender_owner}'].initial_data.data['milestones'][${milestone_index}].${field}}
+    ...      ${field}  object_type=milestones  object_index=${milestone_index}
+  END
 
 
 Звірити відображення ${field} усіх предметів плану для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \  Звірити відображення ${field} усіх предметів плану для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+    Звірити відображення ${field} усіх предметів плану для користувача ${username}
+  END
 
 
 Звірити відображення ${field} усіх предметів плану для користувача ${username}
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  ${item_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data['items'][${item_index}]}
-  \  Звірити поле плану із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${USERS.users['${tender_owner}'].initial_data.data['items'][${item_index}].${field}}  ${field}  ${item_id}
-
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    ${item_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data['items'][${item_index}]}
+    Звірити поле плану із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${USERS.users['${tender_owner}'].initial_data.data['items'][${item_index}].${field}}  ${field}  ${item_id}
+  END
 
 Звірити відображення поля ${field} ${item_index} предмету для користувача ${username}
   ${item_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].initial_data.data['items'][${item_index}]}
@@ -865,8 +885,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення дати ${field} усіх предметів для користувача ${username}
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Звірити відображення дати ${field} ${item_index} предмету для користувача ${username}
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Звірити відображення дати ${field} ${item_index} предмету для користувача ${username}
+  END
 
 
 Звірити відображення дати ${date} ${item_index} предмету для користувача ${username}
@@ -875,8 +896,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення координат усіх предметів для користувача ${username}
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Звірити відображення координат ${item_index} предмету для користувача ${username}
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Звірити відображення координат ${item_index} предмету для користувача ${username}
+  END
 
 
 Звірити відображення координат ${item_index} предмету для користувача ${username}
@@ -885,13 +907,15 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} усіх донорів для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} усіх донорів для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} усіх донорів для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх донорів для користувача ${username}
-  :FOR  ${funders_index}  IN RANGE  ${FUNDERS}
-  \  Звірити відображення поля ${field} ${funders_index} донора для користувача ${username}
+  FOR  ${funders_index}  IN RANGE  ${FUNDERS}
+    Звірити відображення поля ${field} ${funders_index} донора для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} ${funders_index} донора для користувача ${username}
@@ -899,8 +923,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Отримати дані із поля ${field} тендера для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${provider}  ${provider1}  ${provider2}  ${tender_owner}
-  \  Отримати дані із поля ${field} тендера для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${provider}  ${provider1}  ${provider2}  ${tender_owner}
+    Отримати дані із поля ${field} тендера для користувача ${username}
+  END
 
 
 Отримати дані із поля ${field} тендера для користувача ${username}
@@ -908,8 +933,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Отримати дані із поля ${field} об'єкта моніторингу для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${dasu_user}
-  \  Отримати дані із поля ${field} об'єкта моніторингу для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${dasu_user}
+    Отримати дані із поля ${field} об'єкта моніторингу для користувача ${username}
+  END
 
 
 Отримати дані із поля ${field} об'єкта моніторингу для користувача ${username}
@@ -937,8 +963,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість додати документацію до всіх лотів
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Можливість додати документацію до ${lot_index} лоту
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Можливість додати документацію до ${lot_index} лоту
+  END
 
 
 Можливість додати предмет закупівлі в ${lot_index} лот
@@ -954,15 +981,15 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення заголовку документації до всіх лотів для користувача ${username}
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Звірити відображення поля title документа ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_id} із ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_name} для користувача ${username}
-
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Звірити відображення поля title документа ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_id} із ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_name} для користувача ${username}
+  END
 
 Звірити відображення вмісту документації до всіх лотів для користувача ${username}
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
-  \  Звірити відображення вмісту документа ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_id} до лоту ${lot_id} з ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_content} для користувача ${username}
-
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
+    Звірити відображення вмісту документа ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_id} до лоту ${lot_id} з ${USERS.users['${tender_owner}'].lots_documents[${lot_index}].doc_content} для користувача ${username}
+  END
 
 Звірити відображення поля ${field} документа ${doc_id} до лоту ${lot_id} з ${left} для користувача ${username}
   ${right}=  Run As  ${username}  Отримати інформацію із документа до лоту  ${TENDER['TENDER_UAID']}  ${lot_id}  ${doc_id}  ${field}
@@ -1000,28 +1027,33 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 Можливість видалення ${lot_index} лоту
   ${lot_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data.lots[${lot_index}]}
   Run As  ${tender_owner}  Видалити лот  ${TENDER['TENDER_UAID']}  ${lot_id}
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
-  \  Remove From List  ${USERS.users['${username}'].tender_data.data.lots}  ${lot_index}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+    Remove From List  ${USERS.users['${username}'].tender_data.data.lots}  ${lot_index}
+  END
 
 
 Звірити відображення поля ${field} усіх лотів для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} усіх лотів для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} усіх лотів для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх лотів другого етапу для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} усіх лотів другого етапу для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} усіх лотів другого етапу для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх лотів для користувача ${username}
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Звірити відображення поля ${field} ${lot_index} лоту для користувача ${username}
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Звірити відображення поля ${field} ${lot_index} лоту для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх лотів другого етапу для користувача ${username}
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Звірити відображення поля ${field} ${lot_index} лоту другого етапу для користувача ${username}
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Звірити відображення поля ${field} ${lot_index} лоту другого етапу для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} ${lot_index} лоту для користувача ${username}
@@ -1040,8 +1072,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Отримати дані із поля ${field} тендера другого етапу для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
-  \  Отримати дані із поля ${field} тендера другого етапу для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+    Отримати дані із поля ${field} тендера другого етапу для користувача ${username}
+  END
 
 
 Отримати дані із поля ${field} тендера другого етапу для користувача ${username}
@@ -1054,8 +1087,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} у новоствореному лоті для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} у новоствореному лоті для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} у новоствореному лоті для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} у новоствореному лоті для користувача ${username}
@@ -1126,8 +1160,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} у новоствореному неціновому показнику для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} у новоствореному неціновому показнику для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} у новоствореному неціновому показнику для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} у новоствореному неціновому показнику для користувача ${username}
@@ -1138,14 +1173,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} усіх нецінових показників для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} усіх нецінових показників для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} усіх нецінових показників для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} усіх нецінових показників для користувача ${username}
   ${number_of_features}=  Get Length  ${USERS.users['${tender_owner}'].initial_data.data.features}
-  :FOR  ${feature_index}  IN RANGE  ${number_of_features}
-  \  Звірити відображення поля ${field} ${feature_index} нецінового показника для користувача ${username}
+  FOR  ${feature_index}  IN RANGE  ${number_of_features}
+    Звірити відображення поля ${field} ${feature_index} нецінового показника для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} ${feature_index} нецінового показника для користувача ${username}
@@ -1157,14 +1194,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Отримати дані із поля ${field_name} нецінових показників для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
-  \  Отримати дані із поля ${field_name} нецінових показників для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+    Отримати дані із поля ${field_name} нецінових показників для користувача ${username}
+  END
 
 
 Отримати дані із поля ${field_name} нецінових показників для користувача ${username}
   ${number_of_features}=  Get Length  ${USERS.users['${provider2}'].tender_data.data.features}
-  :FOR  ${feature_index}  IN RANGE  ${number_of_features}
-  \  Отримати дані із нецінового показника  ${username}  ${TENDER['TENDER_UAID']}  features[${feature_index}].${field_name}
+  FOR  ${feature_index}  IN RANGE  ${number_of_features}
+    Отримати дані із нецінового показника  ${username}  ${TENDER['TENDER_UAID']}  features[${feature_index}].${field_name}
+  END
 
 
 Отримати дані із нецінового показника
@@ -1181,8 +1220,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${feature_id}=  get_id_from_object  ${USERS.users['${tender_owner}'].tender_data.data['features'][${feature_index}]}
   Run As  ${tender_owner}  Видалити неціновий показник  ${TENDER['TENDER_UAID']}  ${feature_id}
   ${feature_index}=  get_object_index_by_id  ${USERS.users['${tender_owner}'].tender_data.data['features']}  ${feature_id}
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Remove From List  ${USERS.users['${username}'].tender_data.data['features']}  ${feature_index}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Remove From List  ${USERS.users['${username}'].tender_data.data['features']}  ${feature_index}
+  END
 
 
 ##############################################################################################
@@ -1329,8 +1369,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} запитання на тендер для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} запитання на тендер для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} запитання на тендер для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} запитання на тендер для користувача ${username}
@@ -1338,8 +1379,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} запитання на ${item_index} предмет для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} запитання на ${item_index} предмет для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} запитання на ${item_index} предмет для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} запитання на ${item_index} предмет для користувача ${username}
@@ -1347,8 +1389,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} запитання на ${lot_index} лот для усіх користувачів
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-  \  Звірити відображення поля ${field} запитання на ${lot_index} лот для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Звірити відображення поля ${field} запитання на ${lot_index} лот для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} запитання на ${lot_index} лот для користувача ${username}
@@ -2741,11 +2784,12 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...       [Return]  Nothing
   [Arguments]  ${username}  ${tender_uaid}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  :FOR  ${qualification}  IN  @{tender.data.qualifications}
-  \   ${res}=  Wait until keyword succeeds
-  \   ...      10 min 15 sec
-  \   ...      30 sec
-  \   ...      Перевірити документ прекваліфікіції ${qualification.id} для користувача ${username} в тендері ${tender_uaid}
+  FOR  ${qualification}  IN  @{tender.data.qualifications}
+     ${res}=  Wait until keyword succeeds
+     ...      10 min 15 sec
+     ...      30 sec
+     ...      Перевірити документ прекваліфікіції ${qualification.id} для користувача ${username} в тендері ${tender_uaid}
+  END
 
 
 Перевірити документ прекваліфікіції ${qualification_id} для користувача ${username} в тендері ${tender_uaid}
@@ -2763,11 +2807,12 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...       [Return]  Nothing
   [Arguments]  ${username}  ${tender_uaid}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  :FOR  ${award}  IN  @{tender.data.awards}
-  \   Wait until keyword succeeds
-  \   ...      10 min 15 sec
-  \   ...      30 sec
-  \   ...      Перевірити документ кваліфікіції ${award.id} для користувача ${username} в тендері ${tender_uaid}
+  FOR  ${award}  IN  @{tender.data.awards}
+     Wait until keyword succeeds
+     ...      10 min 15 sec
+     ...      30 sec
+     ...      Перевірити документ кваліфікіції ${award.id} для користувача ${username} в тендері ${tender_uaid}
+  END
 
 
 Перевірити документ кваліфікіції ${award_id} для користувача ${username} в тендері ${tender_uaid}
@@ -2782,11 +2827,12 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...       [Return]  Nothing
   [Arguments]  ${username}  ${tender_uaid}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  :FOR  ${award}  IN  @{tender.data.awards}
-  \   Wait until keyword succeeds
-  \   ...      10 min 15 sec
-  \   ...      30 sec
-  \   ...      Перевірити наявність першої квитанції від ДФС ${award.id} для користувача ${username} в тендері ${tender_uaid}
+  FOR  ${award}  IN  @{tender.data.awards}
+     Wait until keyword succeeds
+     ...      10 min 15 sec
+     ...      30 sec
+     ...      Перевірити наявність першої квитанції від ДФС ${award.id} для користувача ${username} в тендері ${tender_uaid}
+  END
 
 
 Перевірити наявність першої квитанції від ДФС ${award_id} для користувача ${username} в тендері ${tender_uaid}
@@ -2818,12 +2864,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 Перевірити наявність milestones в кваліфікації
     [Arguments]  ${username}  ${tender_uaid}
     ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-    :FOR  ${award}  IN  @{tender.data.awards}
-    \   Log  ${award}
-    \   Run Keyword And Ignore Error  Log  ${award.milestones[0].dueDate}
-    \   ${due_date}=  Get variable value  ${award.milestones[0].dueDate}
-    \   Log  ${due_date}
-    \   Run keyword if  '${due_date}' != '${None}'  Дочекатись дати  ${due_date}
+    FOR  ${award}  IN  @{tender.data.awards}
+       Log  ${award}
+       Run Keyword And Ignore Error  Log  ${award.milestones[0].dueDate}
+       ${due_date}=  Get variable value  ${award.milestones[0].dueDate}
+       Log  ${due_date}
+       Run keyword if  '${due_date}' != '${None}'  Дочекатись дати  ${due_date}
+    END
 
 ##############################################################################################
 #             PLAN

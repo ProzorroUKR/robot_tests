@@ -70,10 +70,10 @@ parser.add_option("--allow-site-packages",
                   action="store_true", default=False,
                   help=("Let bootstrap.py use existing site packages"))
 parser.add_option("--buildout-version",
-                  default='2.5.3',
+                  default='2.13.8',
                   help="Use a specific zc.buildout version")
 parser.add_option("--setuptools-version",
-                  default='44.1.1',
+                  default='51.3.3',
                   help="Use a specific setuptools version")
 parser.add_option("--setuptools-to-dir",
                   default=eggsdir,
@@ -92,7 +92,7 @@ if options.version:
 try:
     from urllib.request import urlopen
 except ImportError:
-    from urllib2 import urlopen
+    from urllib import urlopen
 
 ez = {}
 if os.path.exists('ez_setup.py'):

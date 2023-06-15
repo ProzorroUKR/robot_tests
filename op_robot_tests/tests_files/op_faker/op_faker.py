@@ -5,6 +5,7 @@ from copy import deepcopy
 from munch import Munch
 from json import load
 import os
+from faker import Generator
 
 
 def load_data_from_file(file_name):
@@ -45,6 +46,8 @@ class OP_Provider(BaseProvider):
     cpb = _fake_data.cpb
     valid_agreement_id = _fake_data.agreement_id
 
+
+
     @classmethod
     def randomize_nb_elements(self, number=10, le=60, ge=140):
         """
@@ -58,14 +61,14 @@ class OP_Provider(BaseProvider):
         """
         if le > ge:
             raise Exception("Lower bound: {} is greater then upper: {}.".format(le, ge))
-        return int(number * self.random_int(min=le, max=ge) / 100) + 1
+        return int(number * self.random_int(BaseProvider(Generator()), min=le, max=ge) / 100) + 1
 
     @classmethod
     def word(self):
         """
         :example 'Курка'
         """
-        return self.random_element(self.word_list)
+        return self.random_element(BaseProvider(Generator()),self.word_list)
 
     @classmethod
     def words(self, nb=3):
@@ -106,19 +109,19 @@ class OP_Provider(BaseProvider):
 
     @classmethod
     def procuringEntity(self):
-        return deepcopy(self.random_element(self.procuringEntities))
+        return deepcopy(self.random_element(BaseProvider(Generator()),self.procuringEntities))
 
     @classmethod
     def procuringTenderer(self):
-        return deepcopy(self.random_element(self.procuringTenderers))
+        return deepcopy(self.random_element(BaseProvider(Generator()),self.procuringTenderers))
 
     @classmethod
     def funders_data(self):
-        return self.random_element(self.funders)
+        return self.random_element(BaseProvider(Generator()),self.funders)
 
     @classmethod
     def funder_scheme(self):
-        return self.random_element(self.funders_scheme_list)
+        return self.random_element(BaseProvider(Generator()),self.funders_scheme_list)
 
     @classmethod
     def cpv(self, cpv_group=None):
@@ -127,9 +130,9 @@ class OP_Provider(BaseProvider):
             for cpv_element in self.cpvs:
                 if cpv_element.startswith(cpv_group):
                     cpvs.append(cpv_element)
-            return self.random_element(cpvs)
+            return self.random_element(BaseProvider(Generator()),cpvs)
         else:
-            return self.random_element(self.cpvs)
+            return self.random_element(BaseProvider(Generator()), self.cpvs)
 
     @classmethod
     def road_cpv(self, cpv_group=None):
@@ -138,9 +141,9 @@ class OP_Provider(BaseProvider):
             for cpv_element in self.road_cpvs:
                 if cpv_element.startswith(cpv_group):
                     road_cpvs.append(road_cpvs)
-            return self.random_element(road_cpvs)
+            return self.random_element(BaseProvider(Generator()),road_cpvs)
         else:
-            return self.random_element(self.road_cpvs)
+            return self.random_element(BaseProvider(Generator()),self.road_cpvs)
 
     @classmethod
     def gmdn_cpv(self, cpv_group=None):
@@ -149,13 +152,13 @@ class OP_Provider(BaseProvider):
             for cpv_element in self.gmdn_cpvs:
                 if cpv_element.startswith(cpv_group):
                     gmdn_cpvs.append(gmdn_cpvs)
-            return self.random_element(gmdn_cpvs)
+            return self.random_element(BaseProvider(Generator()),gmdn_cpvs)
         else:
-            return self.random_element(self.gmdn_cpvs)
+            return self.random_element(BaseProvider(Generator()),self.gmdn_cpvs)
 
     @classmethod
     def address_data(self):
-        return self.random_element(self.addresses)
+        return self.random_element(BaseProvider(Generator()),self.addresses)
 
     @classmethod
     def fake_item(self, cpv_group=None):
@@ -169,13 +172,13 @@ class OP_Provider(BaseProvider):
         item_base_data = None
         cpv = None
         if cpv_group is None:
-            cpv = self.random_element(self.cpvs)
+            cpv = self.random_element(BaseProvider(Generator()),self.cpvs)
         elif cpv_group == 336:
-            cpv = self.random_element(self.moz_cpvs)
+            cpv = self.random_element(BaseProvider(Generator()),self.moz_cpvs)
         elif cpv_group == 'road':
-            cpv = self.random_element(self.road_cpvs)
+            cpv = self.random_element(BaseProvider(Generator()),self.road_cpvs)
         elif cpv_group == 'gmdn':
-            cpv = self.random_element(self.gmdn_cpvs)
+            cpv = self.random_element(BaseProvider(Generator()),self.gmdn_cpvs)
         else:
             cpv_group = str(cpv_group)
             similar_cpvs = []
@@ -191,7 +194,7 @@ class OP_Provider(BaseProvider):
             for cpv_element in self.gmdn_cpvs:
                 if cpv_element.startswith(cpv_group):
                     similar_cpvs.append(cpv_element)
-            cpv = self.random_element(similar_cpvs)
+            cpv = self.random_element(BaseProvider(Generator()),similar_cpvs)
         for entity in self.items_base_data:
             if entity["cpv_id"] == cpv:
                 item_base_data = entity
@@ -206,14 +209,14 @@ class OP_Provider(BaseProvider):
                 additional_class.append(entity)
         if not additional_class:
             raise ValueError('unable to find a matching additional classification for CPV ' + cpv)
-        classification = self.random_element(additional_class)
+        classification = self.random_element(BaseProvider(Generator()),additional_class)
 
         dk_descriptions = {
             u'ДК003': (u'Послуги фахівців', u'Услуги специалистов', u'Specialists services'),
             u'ДК015': (u'Дослідження та розробки', u'Исследования и разработки', u'Research and development'),
             u'ДК018': (u'Будівлі та споруди', u'Здания и сооружения', u'Buildings and structures')
         }
-        address = self.random_element(self.addresses)
+        address = self.random_element(BaseProvider(Generator()),self.addresses)
         item = {
             "classification": classification["classification"],
             "deliveryAddress": address["deliveryAddress"],
@@ -243,31 +246,31 @@ class OP_Provider(BaseProvider):
 
     @classmethod
     def milestone_title(self):
-        return self.random_element(self.title_of_milestones)
+        return self.random_element(BaseProvider(Generator()),self.title_of_milestones)
 
     @classmethod
     def valid_profile(self):
-        return self.random_element(self.valid_profile_ids)
+        return self.random_element(BaseProvider(Generator()),self.valid_profile_ids)
 
     @classmethod
     def invalid_profile(self):
-        return self.random_element(self.invalid_profile_ids)
+        return self.random_element(BaseProvider(Generator()),self.invalid_profile_ids)
 
     @classmethod
     def wrong_status(self):
-        return self.random_element(self.tender_wrong_status)
+        return self.random_element(BaseProvider(Generator()),self.tender_wrong_status)
 
     @classmethod
     def profiles_hidden(self):
-        return self.random_element(self.profiles_hidden_status)
+        return self.random_element(BaseProvider(Generator()),self.profiles_hidden_status)
 
     @classmethod
     def shortlistedfirms_empty(self):
-        return self.random_element(self.profiles_shortlistedfirms_empty)
+        return self.random_element(BaseProvider(Generator()),self.profiles_shortlistedfirms_empty)
 
     @classmethod
     def tender_unknown_profile(self):
-        return self.random_element(self.unknown_profile)
+        return self.random_element(BaseProvider(Generator()),self.unknown_profile)
 
     @classmethod
     def criteria_data(self):
@@ -283,8 +286,8 @@ class OP_Provider(BaseProvider):
 
     @classmethod
     def cpb_data(self):
-        return deepcopy(self.random_element(self.cpb))
+        return deepcopy(self.random_element(BaseProvider(Generator()),self.cpb))
 
     @classmethod
     def valid_agreement(self):
-        return self.random_element(self.valid_agreement_id)
+        return self.random_element(BaseProvider(Generator()),self.valid_agreement_id)

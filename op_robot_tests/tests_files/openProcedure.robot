@@ -1532,8 +1532,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      critical
   [Setup]  Дочекатись дати початку періоду уточнень  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Можливість задати запитання на ${item_index} предмет користувачем ${provider}
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Можливість задати запитання на ${item_index} предмет користувачем ${provider}
+  END
 
 
 Відображення заголовку анонімного запитання на всі предмети без відповіді
@@ -1543,8 +1544,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      ask_question_to_item
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Звірити відображення поля title запитання на ${item_index} предмет для усіх користувачів
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Звірити відображення поля title запитання на ${item_index} предмет для усіх користувачів
+  END
 
 
 Відображення опису анонімного запитання на всі предмети без відповіді
@@ -1553,8 +1555,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      ${USERS.users['${viewer}'].broker}
   ...      ask_question_to_item
   ...      critical
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Звірити відображення поля description запитання на ${item_index} предмет для користувача ${viewer}
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Звірити відображення поля description запитання на ${item_index} предмет для користувача ${viewer}
+  END
 
 
 Можливість відповісти на запитання на всі предмети
@@ -1565,8 +1568,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Можливість відповісти на запитання на ${item_index} предмет
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Можливість відповісти на запитання на ${item_index} предмет
+  END
 
 
 Відображення відповіді на запитання на всі предмети
@@ -1576,8 +1580,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      answer_question_to_item
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  :FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
-  \  Звірити відображення поля answer запитання на ${item_index} предмет для користувача ${viewer}
+  FOR  ${item_index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Звірити відображення поля answer запитання на ${item_index} предмет для користувача ${viewer}
+  END
 
 
 Можливість задати запитання на всі лоти
@@ -1588,8 +1593,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      critical
   [Setup]  Дочекатись дати початку періоду уточнень  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Можливість задати запитання на ${lot_index} лот користувачем ${provider}
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Можливість задати запитання на ${lot_index} лот користувачем ${provider}
+  END
 
 
 Відображення заголовку анонімного запитання на всі лоти без відповіді
@@ -1599,8 +1605,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      ask_question_to_lot
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Звірити відображення поля title запитання на ${lot_index} лот для усіх користувачів
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Звірити відображення поля title запитання на ${lot_index} лот для усіх користувачів
+  END
 
 
 Відображення опису анонімного запитання на всі лоти без відповіді
@@ -1609,8 +1616,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      ${USERS.users['${viewer}'].broker}
   ...      ask_question_to_lot
   ...      non-critical
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Звірити відображення поля description запитання на ${lot_index} лот для користувача ${viewer}
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Звірити відображення поля description запитання на ${lot_index} лот для користувача ${viewer}
+  END
 
 
 Можливість відповісти на запитання на всі лоти
@@ -1621,8 +1629,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Можливість відповісти на запитання на ${lot_index} лот
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Можливість відповісти на запитання на ${lot_index} лот
+  END
 
 
 Відображення відповіді на запитання на всі лоти
@@ -1632,8 +1641,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      answer_question_to_lot
   ...      critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
-  :FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
-  \  Звірити відображення поля answer запитання на ${lot_index} лот для користувача ${viewer}
+  FOR  ${lot_index}  IN RANGE  ${NUMBER_OF_LOTS}
+    Звірити відображення поля answer запитання на ${lot_index} лот для користувача ${viewer}
+  END
 
 
 Можливість внести зміни у тендер після запитання

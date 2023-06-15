@@ -1,3 +1,4 @@
+from __future__ import print_function
 from openprocurement_client.resources.tenders import Client
 from openprocurement_client.resources.edr import EDRClient
 from openprocurement_client.resources.agreements import AgreementClient
@@ -6,11 +7,12 @@ from openprocurement_client.resources.document_service import DocumentServiceCli
 from openprocurement_client.resources.plans import PlansClient
 from openprocurement_client.resources.contracts import ContractingClient
 from openprocurement_client.exceptions import IdNotFound
-from restkit.errors import RequestFailed, BadStatusLine, ResourceError
+from http.client import BadStatusLine
 from retrying import retry
 from time import sleep
 import os
-import urllib
+import requests
+import urllib.request
 from openprocurement_client.resources.tenders import TenderCreateClient
 from openprocurement_client.resources.tenders import PaymentClient
 
@@ -75,8 +77,8 @@ class StableEDRClient(EDRClient):
     def request(self, *args, **kwargs):
         try:
             res = super(StableEDRClient, self).request(*args, **kwargs)
-        except ResourceError as re:
-            if re.status_int == 429:
+        except requests.exceptions.HTTPError as re:
+            if re.response.status_code == 429:
                 sleep(int(re.response.headers.get('Retry-After', '30')))
             raise re
         else:
@@ -175,7 +177,7 @@ def get_items_feed(client, client_method, interval=0.5):
 
 def download_file_from_url(url, path_to_save_file):
     f = open(path_to_save_file, 'wb')
-    f.write(urllib.urlopen(url).read())
+    f.write(urllib.request.urlopen(url).read())
     f.close()
     return os.path.basename(f.name)
 

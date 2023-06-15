@@ -3,7 +3,7 @@ Resource        keywords.robot
 Resource        resource.robot
 Suite Setup     Test Suite Setup
 Suite Teardown  Test Suite Teardown
-Library         Selenium2Library
+Library         SeleniumLibrary
 
 *** Variables ***
 @{USED_ROLES}  viewer  provider  provider1  provider2
@@ -231,7 +231,7 @@ Library         Selenium2Library
   Open browser  ${url}  ${USERS.users['${username}'].browser}  ${username}
   Set Window Position  @{USERS['${username}']['position']}
   Set Window Size      @{USERS['${username}']['size']}
-  Run Keyword Unless  '${username}' == '${viewer}'
+  Run Keyword If  '${username}' != '${viewer}'
   ...      Click Element                  xpath=//button[contains(@class, 'btn btn-success')]
 
 
@@ -294,9 +294,10 @@ Library         Selenium2Library
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  30 times  5s  Page should contain  → ${round_number}
   ${date}=  Get Current Date
-  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
-  \   ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
-  \   Run Keyword If  '${status}' == 'PASS'   Page should contain  → ${round_number}
+  FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+     ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+     Run Keyword If  '${status}' == 'PASS'   Page should contain  → ${round_number}
+  END
   #Переключитись на учасника  ${provider}
   #Page should contain  → ${round_number}
   #Переключитись на учасника  ${provider1}
@@ -304,9 +305,10 @@ Library         Selenium2Library
   Переключитись на учасника  ${viewer}
   Wait Until Keyword Succeeds  30 times  5 s  Page should not contain  → ${round_number}
   ${new_date}=  Get Current Date
-  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
-  \   ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
-  \   Run Keyword If  '${status}' == 'PASS'   Page should not contain  → ${round_number}
+  FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+     ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+     Run Keyword If  '${status}' == 'PASS'   Page should not contain  → ${round_number}
+  END
   #Переключитись на учасника  ${provider}
   #Page should not contain  → ${round_number}
   #Переключитись на учасника  ${provider1}
@@ -326,9 +328,10 @@ Library         Selenium2Library
   ${new_date}=  Get Current Date
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
   Should Be True  ${time} < 310 and ${time} > 250
-  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
-  \   ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
-  \   Run Keyword If  '${status}' == 'PASS'   Page should not contain  → 1
+  FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+     ${status}  ${_}=  Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+     Run Keyword If  '${status}' == 'PASS'   Page should not contain  → 1
+  END
   #Переключитись на учасника  ${provider}
   #Page should not contain  → 1
   #Переключитись на учасника  ${provider1}
@@ -423,10 +426,11 @@ Library         Selenium2Library
 
 
 Вибрати учасника, який може зробити ставку
-  :FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
-  \   Run Keyword And Ignore Error  Переключитись на учасника   ${username}
-  \   ${status}  ${_}=  Run Keyword And Ignore Error  Page Should Contain  до закінчення вашої черги
-  \   Run Keyword If  '${status}' == 'PASS'    Exit For Loop
+  FOR    ${username}    IN    ${provider}  ${provider1}  ${provider2}
+     Run Keyword And Ignore Error  Переключитись на учасника   ${username}
+     ${status}  ${_}=  Run Keyword And Ignore Error  Page Should Contain  до закінчення вашої черги
+     Run Keyword If  '${status}' == 'PASS'    Exit For Loop
+  END
 
 
 Поставити малу ставку в ${last_amount} грн

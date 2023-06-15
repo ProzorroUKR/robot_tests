@@ -14,8 +14,9 @@ Suite Teardown  Test Suite Teardown
   ...      find_tender
   ...      critical
   Завантажити дані про тендер
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \   Run As  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+     Run As  ${username}  Пошук тендера по ідентифікатору  ${TENDER['TENDER_UAID']}
+  END
 
 
 Відображення ідентифікатора угоди
@@ -24,8 +25,9 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      tender_view
   ...      critical
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \   Отримати дані із поля agreements[0].agreementID тендера для користувача ${username}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+     Отримати дані із поля agreements[0].agreementID тендера для користувача ${username}
+  END
   ${AGREEMENT_UAID}=  Get Variable Value  ${USERS.users['${tender_owner}'].tender_data.data.agreements[0].agreementID}
   Set Suite Variable  ${AGREEMENT_UAID}
 
@@ -36,8 +38,9 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      find_agreement
   ...      critical
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \   Run As  ${username}  Пошук угоди по ідентифікатору  ${AGREEMENT_UAID}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+     Run As  ${username}  Пошук угоди по ідентифікатору  ${AGREEMENT_UAID}
+  END
 
 
 Відображення ідентифікатора контракту в угоді
@@ -46,8 +49,9 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      agreement_view
   ...      critical
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \   Отримати дані із угоди  ${username}  ${AGREEMENT_UAID}  contracts[0].id
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+     Отримати дані із угоди  ${username}  ${AGREEMENT_UAID}  contracts[0].id
+  END
 
 
 Відображення ідентифікатора предмету в угоді
@@ -56,8 +60,9 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      agreement_view
   ...      critical
-  :FOR  ${username}  IN  ${viewer}  ${tender_owner}
-  \   Отримати дані із угоди  ${username}  ${AGREEMENT_UAID}  items[0].id
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}
+     Отримати дані із угоди  ${username}  ${AGREEMENT_UAID}  items[0].id
+  END
 
 
 Можливість отримати доступ до угоди
