@@ -40,7 +40,8 @@
 -i qualification_approve_first_award
 -i qualification_cancel_first_award_qualification
 -i qualification_add_doc_to_second_award
--i qualification_approve_second_award
+-i qualification_reject_second_award
+-i qualification_approve_second_participant
 
 -i contract_view
 -i modify_contract_amount_net
