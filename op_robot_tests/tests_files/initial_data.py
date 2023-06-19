@@ -115,32 +115,32 @@ def create_fake_period(days=0, hours=0, minutes=0):
 
 def prepare_data_for_changing_quantity(tender, value):
     data = {
-             "items": [
-                        {
-                         "id": tender['data']['items'][0]['id'],
-                         "description": tender['data']['items'][0]['description'],
-                         "description_en": tender['data']['items'][0]['description_en'],
-                         "classification": tender['data']['items'][0]['classification'],
-                         "additionalClassifications": tender['data']['items'][0]['additionalClassifications'],
-                         "quantity": value,
-                         "deliveryDate": tender['data']['items'][0]['deliveryDate'],
-                         "deliveryLocation": tender['data']['items'][0]['deliveryLocation'],
-                         "relatedLot": tender['data']['items'][0]['relatedLot'],
-                         "unit": tender['data']['items'][0]['unit'],
-                         "deliveryAddress": tender['data']['items'][0]['deliveryAddress']
-                         }
-                       ],
-             "tenderPeriod": tender['data']['tenderPeriod']
+        "items": [
+            {
+                "id": tender['data']['items'][0]['id'],
+                "description": tender['data']['items'][0]['description'],
+                "description_en": tender['data']['items'][0]['description_en'],
+                "classification": tender['data']['items'][0]['classification'],
+                "additionalClassifications": tender['data']['items'][0]['additionalClassifications'],
+                "quantity": value,
+                "deliveryDate": tender['data']['items'][0]['deliveryDate'],
+                "deliveryLocation": tender['data']['items'][0]['deliveryLocation'],
+                "relatedLot": tender['data']['items'][0]['relatedLot'],
+                "unit": tender['data']['items'][0]['unit'],
+                "deliveryAddress": tender['data']['items'][0]['deliveryAddress']
+            }
+        ],
+        "tenderPeriod": tender['data']['tenderPeriod']
     }
     return munchify({'data': data})
 
 
 def prepare_data_for_changing_tender_period(tender, value):
     data = {
-             "tenderPeriod": {
-                          "startDate": tender['data']['tenderPeriod']['startDate'],
-                          "endDate": value
-             }
+        "tenderPeriod": {
+            "startDate": tender['data']['tenderPeriod']['startDate'],
+            "endDate": value
+        }
     }
     return munchify({'data': data})
 
@@ -392,7 +392,7 @@ def test_tender_data_planning(params):
     if params.get('kind') == "central":
         data["procuringEntity"] = fake.cpb_data()
         data["procuringEntity"]["kind"] = "central"
-    # procuringEntity contactPoint is a rogue filed for plan - we delete it to avoid error
+        # procuringEntity contactPoint is a rogue filed for plan - we delete it to avoid error
         del data["procuringEntity"]["contactPoint"]
     # create buyer - determine buyer kind according to plan procurement method type
     buyer_id = data["procuringEntity"]["identifier"]["id"]
@@ -566,17 +566,17 @@ def test_complaint_data(identifier_id=None):
 def test_payment_data(token, complaint_value, complaint_uaid):
     complaint_value = format(complaint_value, '.2f')
     data = {
-            "amount": str(complaint_value),
-            "currency": "UAH",
-            "description": generate_payment_description(token, complaint_uaid),
-            "type": "credit",
-            "date_oper": generate_payment_date_operation(),
-            "account": "UA723004380000026001503374077",
-            "okpo": "14360570",
-            "mfo": "123456",
-            "name": u"Плат.интер-эквайрин через LiqPay",
-            "source": random.choice(["account", "card"]),
-            "odb_ref": generate_payment_transaction_id()
+        "amount": str(complaint_value),
+        "currency": "UAH",
+        "description": generate_payment_description(token, complaint_uaid),
+        "type": "credit",
+        "date_oper": generate_payment_date_operation(),
+        "account": "UA723004380000026001503374077",
+        "okpo": "14360570",
+        "mfo": "123456",
+        "name": u"Плат.интер-эквайрин через LiqPay",
+        "source": random.choice(["account", "card"]),
+        "odb_ref": generate_payment_transaction_id()
     }
     return data
 
@@ -615,7 +615,8 @@ def test_accept_complaint_data():
 
 def test_reject_complaint_data():
     data = {
-        "rejectReason": random.choice(["lawNonCompliance", "buyerViolationsCorrected", "alreadyExists", "tenderCancelled"])
+        "rejectReason": random.choice(
+            ["lawNonCompliance", "buyerViolationsCorrected", "alreadyExists", "tenderCancelled"])
     }
     return munchify({'data': data})
 
@@ -666,7 +667,7 @@ def test_cancel_pending_data(id):
     return munchify({
         "data": {
             "status": "pending",
-            #"id": id
+            # "id": id
         }
     })
 
@@ -801,7 +802,8 @@ def test_bid_data_selection(data, index):
     return bid
 
 
-def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, more_than_two_requirements=False, invalid_expected_value=False):
+def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, more_than_two_requirements=False,
+                     invalid_expected_value=False):
     bid = test_bid_data()
     if username == "Tender_User":
         bid.data["tenderers"][0]["identifier"]["id"] = "2445606583"
@@ -986,12 +988,21 @@ def test_tender_data_framework_agreement(params, submissionMethodDetails, plan_d
     data = test_tender_data_openeu(params, submissionMethodDetails, plan_data)
     data['procurementMethodType'] = 'closeFrameworkAgreementUA'
     data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
-    data['maxAwardsCount'] = fake.random_int(min=3, max=5)
-    data['agreementDuration'] = create_fake_IsoDurationType(
-        years=fake.random_int(min=1, max=3),
-        months=fake.random_int(min=1, max=8),
-        days=fake.random_int(min=1, max=6)
-    )
+    if params.get('wrong_awards_count'):
+        data['maxAwardsCount'] = fake.random_int(min=1, max=2)
+    else:
+        data['maxAwardsCount'] = fake.random_int(min=3, max=5)
+    if params.get('wrong_tender_date'):
+        data['agreementDuration'] = create_fake_IsoDurationType(
+            years=fake.random_int(min=5, max=8),
+            months=fake.random_int(min=1, max=8),
+            days=fake.random_int(min=1, max=6))
+    else:
+        data['agreementDuration'] = create_fake_IsoDurationType(
+            years=fake.random_int(min=1, max=3),
+            months=fake.random_int(min=1, max=8),
+            days=fake.random_int(min=1, max=6)
+        )
     return data
 
 
@@ -1372,8 +1383,8 @@ def test_cancellation_data(procurement_method_type):
 def test_24_hours_data():
     return munchify({
         "data": {
-                "code": "24h",
-                "description": create_fake_sentence()
+            "code": "24h",
+            "description": create_fake_sentence()
         }
     })
 
@@ -1409,8 +1420,8 @@ def test_criteria_llc_data(criteria_lot, tender_data):
 
 def test_data_guarantee(value_amount):
     return munchify({
-            "amount": round(value_amount * 0.75, 2),
-            "currency": u"UAH"
+        "amount": round(value_amount * 0.75, 2),
+        "currency": u"UAH"
     })
 
 
@@ -1419,24 +1430,24 @@ def test_data_bid_criteria():
         "data": []
     })
     mock = {
-            "description": "Requirement response description",
-            "value": "true",
-            "evidences": [
-                {
-                    "relatedDocument": {
-                        "id": "",
-                        "title": ""
-                    },
-                    "type": "document",
-                    "title": "Evidence of Requirement response"
-                }
-            ],
-            "requirement": {
-                "id": "",
-                "title": ""
-            },
-            "title": "Requirement response title"
-        }
+        "description": "Requirement response description",
+        "value": "true",
+        "evidences": [
+            {
+                "relatedDocument": {
+                    "id": "",
+                    "title": ""
+                },
+                "type": "document",
+                "title": "Evidence of Requirement response"
+            }
+        ],
+        "requirement": {
+            "id": "",
+            "title": ""
+        },
+        "title": "Requirement response title"
+    }
     return bid, mock
 
 
@@ -1473,24 +1484,24 @@ def test_data_qualification_award_criteria():
         "data": []
     })
     mock = {
-            "description": "qualification Requirement response description",
-            "value": "true",
-            "evidences": [
-                {
-                    "relatedDocument": {
-                        "id": "",
-                        "title": ""
-                    },
-                    "type": "document",
-                    "title": "Evidence of qualification Requirement response"
-                }
-            ],
-            "requirement": {
-                "id": "",
-                "title": ""
-            },
-            "title": "qualification Requirement response title"
-        }
+        "description": "qualification Requirement response description",
+        "value": "true",
+        "evidences": [
+            {
+                "relatedDocument": {
+                    "id": "",
+                    "title": ""
+                },
+                "type": "document",
+                "title": "Evidence of qualification Requirement response"
+            }
+        ],
+        "requirement": {
+            "id": "",
+            "title": ""
+        },
+        "title": "qualification Requirement response title"
+    }
     return bid, mock
 
 
@@ -1558,13 +1569,13 @@ def test_contract_criteria_response_data(bid_doc_id, bid_doc_title):
 
 def test_change_evidence_data():
     return munchify({
-            "data": {
-                "eligibleEvidences": [{
-                    "title": "Змінений заголовок прийнятного доказу критерія",
-                    "title_en": "Changed en title for eligible evidences of criteria",
-                    "description": "Змінений опис прийнятного доказу критерія"
-                }]
-            }
+        "data": {
+            "eligibleEvidences": [{
+                "title": "Змінений заголовок прийнятного доказу критерія",
+                "title_en": "Changed en title for eligible evidences of criteria",
+                "description": "Змінений опис прийнятного доказу критерія"
+            }]
+        }
     })
 
 
@@ -1620,9 +1631,9 @@ def test_unit_price_amount_buyer(amount):
                 "unit": {
                     "value": {
                         "amount": amount
-                            }
-                        }
-                    }]
+                    }
+                }
+            }]
         }
     })
 
@@ -1631,10 +1642,10 @@ def test_unit_price_amount_buyer_updated(index, amount):
     return munchify({
         "data": {
             "contractNumber": index,
-             "value": {
-                 "amount": amount,
-                  "amountNet": amount
-              }
+            "value": {
+                "amount": amount,
+                "amountNet": amount
+            }
         }
     })
 
@@ -1655,7 +1666,7 @@ def test_monitoring_proceed_number_data():
         "data": {
             "proceeding": {
                 "dateProceedings": "2019-04-01T00:00:00+02:00",
-                 "proceedingNumber": "0123456789"
+                "proceedingNumber": "0123456789"
             }
         }
     })
@@ -1663,12 +1674,12 @@ def test_monitoring_proceed_number_data():
 
 def test_monitoring_liability_data():
     return munchify({
-            "reportNumber": "1234567890",
-            "legislation": {
-                "article": [
-                    "8.10"
-                ]
-            }
+        "reportNumber": "1234567890",
+        "legislation": {
+            "article": [
+                "8.10"
+            ]
+        }
     })
 
 
@@ -1681,19 +1692,19 @@ def log_webdriver_info():
 
 def test_buyer_1_data():
     buyer = {
-            "identifier": {
-                "scheme": "UA-EDR",
-                "id": "11223344",
-                "legalName": "Перший Тестовий buyer"
-            },
-            "name": "Перший Тестовий buyer",
-            "address": {
-                "postalCode": "01111",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Тестова, 333, 8",
-                "region": "м. Київ",
-                "locality": "м. Київ"
-            }
+        "identifier": {
+            "scheme": "UA-EDR",
+            "id": "11223344",
+            "legalName": "Перший Тестовий buyer"
+        },
+        "name": "Перший Тестовий buyer",
+        "address": {
+            "postalCode": "01111",
+            "countryName": "Україна",
+            "streetAddress": "вулиця Тестова, 333, 8",
+            "region": "м. Київ",
+            "locality": "м. Київ"
+        }
     }
     return munchify(buyer)
 
@@ -1719,19 +1730,19 @@ def test_buyer_2_data():
 
 def test_buyer_3_data():
     buyer = {
-            "identifier": {
-                "scheme": "UA-EDR",
-                "id": "99887744",
-                "legalName": "Третій Тестовий buyer"
-            },
-            "name": "Третій Тестовий buyer",
-            "address": {
-                "postalCode": "01111",
-                "countryName": "Україна",
-                "streetAddress": "вулиця Тестова, 333, 8",
-                "region": "м. Київ",
-                "locality": "м. Київ"
-            }
+        "identifier": {
+            "scheme": "UA-EDR",
+            "id": "99887744",
+            "legalName": "Третій Тестовий buyer"
+        },
+        "name": "Третій Тестовий buyer",
+        "address": {
+            "postalCode": "01111",
+            "countryName": "Україна",
+            "streetAddress": "вулиця Тестова, 333, 8",
+            "region": "м. Київ",
+            "locality": "м. Київ"
+        }
     }
     return munchify(buyer)
 
@@ -1817,50 +1828,49 @@ def test_profile_criteria_data(item_id):
 
 def test_profile_first_criteria(item_id):
     criteria = {
-            "title": "Рівень жирності",
-            "description": "Рівень жирності",
-            "relatesTo": "item",
-            "relatedItem": item_id,
-            "requirementGroups": [
-                {
-                    "description": "Рівень жирності",
-                    "requirements": [
-                        {
-                            "id": "125331-0001-001-01",
-                            "title": "Рівень жирності",
-                            "dataType": "number",
-                            "unit": {
-                                "code": "P1",
-                                "name": "відсоток"
-                            },
-                            "expectedValue": 72
-                        }
-                    ]
-                }
-            ]
+        "title": "Рівень жирності",
+        "description": "Рівень жирності",
+        "relatesTo": "item",
+        "relatedItem": item_id,
+        "requirementGroups": [
+            {
+                "description": "Рівень жирності",
+                "requirements": [
+                    {
+                        "id": "125331-0001-001-01",
+                        "title": "Рівень жирності",
+                        "dataType": "number",
+                        "unit": {
+                            "code": "P1",
+                            "name": "відсоток"
+                        },
+                        "expectedValue": 72
+                    }
+                ]
+            }
+        ]
     }
     return munchify(criteria)
 
 
 def test_profile_second_criteria(item_id):
     criteria = {
-            "title": "Вид Фасування",
-            "description": "Вид Фасування",
-            "relatesTo": "item",
-            "relatedItem": item_id,
-            "requirementGroups": [
-                {
-                    "description": "Вид Фасування",
-                    "requirements": [
-                        {
-                            "id": "125331-0002-001-01",
-                            "title": "Фасування - звичайне",
-                            "dataType": "boolean",
-                            "expectedValue": True
-                        }
-                    ]
-                }
-            ]
+        "title": "Вид Фасування",
+        "description": "Вид Фасування",
+        "relatesTo": "item",
+        "relatedItem": item_id,
+        "requirementGroups": [
+            {
+                "description": "Вид Фасування",
+                "requirements": [
+                    {
+                        "id": "125331-0002-001-01",
+                        "title": "Фасування - звичайне",
+                        "dataType": "boolean",
+                        "expectedValue": True
+                    }
+                ]
+            }
+        ]
     }
     return munchify(criteria)
-
