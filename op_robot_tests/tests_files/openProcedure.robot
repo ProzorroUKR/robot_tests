@@ -2807,7 +2807,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      pre-qualification_try_add_doc_to_rejected_second_bid
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Неможливість завантажити документ до кваліфікації 1 пропозиції
+  ${value}=  Run Keyword And Expect Error  *  Можливість завантажити документ у кваліфікацію 1 пропозиції
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't add document in current qualification status
 
 
 Можливість підтвердити другу пропозицію кваліфікації
@@ -2877,7 +2879,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      pre-qualification-stand.still_try_approve_first_bid  level1
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Неможливість підтвердити кваліфікацію ставки 0 після попередньої кваліфікації
+  ${value}=  Run Keyword And Expect Error  *  Можливість підтвердити 0 пропозицію кваліфікації
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't update qualification in current (active.pre-qualification.stand-still) tender status
 
 Неможливість відхилити пропозицію після попередньої кваліфікації
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
@@ -2886,7 +2890,9 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   ...      pre-qualification_stand.still_try_reject_third_bid
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Неможливість відхилити кваліфікаційну ставку 1 після попередньої кваліфікації
+  ${value}=  Run Keyword And Expect Error  *  Можливість підтвердити 2 пропозицію кваліфікації
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't update qualification in current (active.pre-qualification.stand-still) tender status
 
 
 Відображення статусу блокування перед початком аукціону
