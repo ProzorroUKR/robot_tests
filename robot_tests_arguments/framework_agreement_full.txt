@@ -59,8 +59,7 @@
 -i pre-qualification_view
 -i pre-qualification_add_doc_to_first_bid
 -i pre-qualification_approve_first_bid
--i pre-qualification_reject_second_bid
--i pre-qualification_try_add_doc_to_rejected_second_bid
+-i pre-qualification_approve_second_bid
 -i pre-qualification_approve_third_bid
 -i pre-qualification_approve_qualifications
 -i pre-qualification-stand.still_try_approve_first_bid
@@ -75,8 +74,8 @@
 
 -i qualification_add_doc_to_first_award
 -i qualification_approve_first_award
--i qualification_reject_second_award
--i qualification_cancel_third_award_qualification
+-i qualification_approve_second_award
+-i qualification_approve_third_award
 -i qualification_approve_qualifications
 
 -i contract_stand_still
