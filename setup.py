@@ -18,6 +18,7 @@ setup(name='op_robot_tests',
       zip_safe=False,
       install_requires=[
           # -*- Extra requirements: -*-
+          'urllib3[socks] = 1.26'
           'selenium == 4.9.0',
           'Faker',
           'Pillow',
