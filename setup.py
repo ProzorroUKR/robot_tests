@@ -33,7 +33,7 @@ setup(name='op_robot_tests',
           'parse',
           'pytz',
           'robotframework',
-          'robotframework-seleniumlibrary',
+          'robotframework-seleniumlibrary == 6.0.0',
           'robotframework-requests',
       ],
       entry_points={
