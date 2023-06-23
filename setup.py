@@ -18,6 +18,7 @@ setup(name='op_robot_tests',
       zip_safe=False,
       install_requires=[
           # -*- Extra requirements: -*-
+          'selenium == 4.9.0',
           'Faker',
           'Pillow',
           'PyYAML',
@@ -33,7 +34,6 @@ setup(name='op_robot_tests',
           'robotframework',
           'robotframework-seleniumlibrary',
           'robotframework-requests',
-          'selenium == 4.9.0',
       ],
       entry_points={
           'console_scripts': [
