@@ -33,7 +33,7 @@ setup(name='op_robot_tests',
           'robotframework',
           'robotframework-seleniumlibrary',
           'robotframework-requests',
-          'selenium',
+          'selenium == 4.9.0',
       ],
       entry_points={
           'console_scripts': [
