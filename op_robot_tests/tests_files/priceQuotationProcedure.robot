@@ -605,6 +605,15 @@ ${CRITERIA_LLC}     ${False}
   Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  2
 
 
+Можливість дискваліфікації третього постачальника, якщо не було підтвердження протягом 2 днів
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_third_award_after_2_days
+  ...  critical
+  Дочекатись зміни статусу рішення  ${tender_owner}  unsuccessful  2
+
+
 Неможливість повторно кваліфікувати постачальником четверте підтвердження
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  provider
@@ -1061,9 +1070,9 @@ ${CRITERIA_LLC}     ${False}
 
 
 Можливість редагувати вартість договору без ПДВ
-  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      tender_owner
-  ...      ${USERS.users['${tender_owner}']}
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      change_contract_amountNet
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
@@ -1076,9 +1085,9 @@ ${CRITERIA_LLC}     ${False}
 
 
 Можливість редагувати вартість договору
-  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      tender_owner
-  ...      ${USERS.users['${tender_owner}']}
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      change_contract_amount
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}

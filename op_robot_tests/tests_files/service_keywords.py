@@ -7,7 +7,7 @@ from local_time import get_now, TZ
 from copy import deepcopy
 from datetime import timedelta
 from dateutil.parser import parse
-from dpath.util import delete as xpathdelete, get as xpathget, new as xpathnew
+from dpath import delete as xpathdelete, get as xpathget, new as xpathnew
 from haversine import haversine
 from json import load, loads
 from jsonpath_rw import parse as parse_path
@@ -808,9 +808,6 @@ def compare_rationale_types(type1, type2):
 
 
 def delete_from_dictionary(variable, path):
-    if not type(path) in STR_TYPES:
-        raise TypeError('path must be one of: ' +
-            str(STR_TYPES))
     return xpathdelete(variable, path, separator='.')
 
 
