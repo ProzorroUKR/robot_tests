@@ -18,6 +18,8 @@ setup(name='op_robot_tests',
       zip_safe=False,
       install_requires=[
           # -*- Extra requirements: -*-
+          'urllib3[socks] == 1.26.16',
+          'selenium == 4.9.0',
           'Faker',
           'Pillow',
           'PyYAML',
@@ -33,7 +35,6 @@ setup(name='op_robot_tests',
           'robotframework',
           'robotframework-seleniumlibrary',
           'robotframework-requests',
-          'selenium',
       ],
       entry_points={
           'console_scripts': [

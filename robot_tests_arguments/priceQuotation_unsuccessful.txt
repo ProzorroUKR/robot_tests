@@ -29,4 +29,4 @@
 -i impossible_approve_fourth_award_by_provider
 -i qualification_reject_4_award
 
--i unsuccefully_tende
+-i unsuccefully_tender
