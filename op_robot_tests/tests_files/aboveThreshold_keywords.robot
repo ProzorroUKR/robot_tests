@@ -66,9 +66,18 @@ Resource           base_keywords.robot
   Run As  ${tender_owner}  Завантажити документ у кваліфікацію  ${file_path}  ${TENDER['TENDER_UAID']}  ${bid_index}
   Remove File  ${file_path}
 
+Неможливість завантажити документ до кваліфікації ${bid_index} пропозиції
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  Require Failure  ${tender_owner}  Завантажити документ у кваліфікацію  ${file_path}  ${TENDER['TENDER_UAID']}  ${bid_index}
+  Remove File  ${file_path}
+
 
 Можливість відхилити ${bid_index} пропозиції кваліфікації
   Run As  ${tender_owner}  Відхилити кваліфікацію  ${TENDER['TENDER_UAID']}  ${bid_index}
+
+
+Неможливість відхилити кваліфікаційну ставку ${bid_index} після попередньої кваліфікації
+  Require Failure  ${tender_owner}  Відхилити кваліфікацію  ${TENDER['TENDER_UAID']}  ${bid_index}
 
 
 Можливість скасувати рішення кваліфікації для ${bid_index} пропопозиції
@@ -77,6 +86,10 @@ Resource           base_keywords.robot
 
 Можливість підтвердити ${bid_index} пропозицію кваліфікації
   Run As  ${tender_owner}  Підтвердити кваліфікацію  ${TENDER['TENDER_UAID']}  ${bid_index}
+
+
+Неможливість підтвердити кваліфікацію ставки ${bid_index} після попередньої кваліфікації
+  Require Failure  ${tender_owner}  Підтвердити кваліфікацію  ${TENDER['TENDER_UAID']}  ${bid_index}
 
 
 Можливість затвердити остаточне рішення кваліфікації

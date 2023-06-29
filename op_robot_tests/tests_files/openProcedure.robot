@@ -32,6 +32,32 @@ ${CRITERIA_LLC}     ${False}
 ${NUMBER_OF_BREAKDOWN}  ${2}
 
 *** Test Cases ***
+Створити невдалий тендер з більш ніж 4 роками
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_wrong_agreement_duration  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${WRONG_TENDER_DATE}  ${True}
+  ${value}=  Run Keyword And Expect Error  *  Можливість оголосити тендер з недоліками в параметрах
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  agreement duration period is greater than p4y
+
+
+Створити невдалий тендер із меншою кількістю нагород, ніж мінімальна кількість учасників
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_tender_wrong_awards_count  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Set Test Variable  ${WRONG_AWARDS_COUNT}  ${True}
+  ${value}=  Run Keyword And Expect Error  *  Можливість оголосити тендер з недоліками в параметрах
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  maximal awards number can't be less then minimal bids number
+
+
 Можливість оголосити тендер
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення тендера
   ...      tender_owner
@@ -2755,6 +2781,14 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість відхилити 1 пропозиції кваліфікації
 
+Можливість підтвердити другу пропозицію кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_approve_second_bid  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість підтвердити 1 пропозицію кваліфікації
 
 Можливість скасувати рішення кваліфікації для другої пропопозиції
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
@@ -2766,14 +2800,16 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   Можливість скасувати рішення кваліфікації для 1 пропопозиції
 
 
-Можливість підтвердити другу пропозицію кваліфікації
+Спробуйте додати документ до відхиленої пропозиції
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      pre-qualification_approve_second_bid  level1
+  ...      pre-qualification_try_add_doc_to_rejected_second_bid
   ...      critical
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  Можливість підтвердити 1 пропозицію кваліфікації
+  ${value}=  Run Keyword And Expect Error  *  Можливість завантажити документ у кваліфікацію 1 пропозиції
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't add document in current qualification status
 
 
 Можливість підтвердити другу пропозицію кваліфікації
@@ -2835,6 +2871,28 @@ ${NUMBER_OF_BREAKDOWN}  ${2}
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість затвердити остаточне рішення кваліфікації
+
+Неможливість затвердити пропозицію після попередньої кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification-stand.still_try_approve_first_bid  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${value}=  Run Keyword And Expect Error  *  Можливість підтвердити 0 пропозицію кваліфікації
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't update qualification in current (active.pre-qualification.stand-still) tender status
+
+Неможливість відхилити пропозицію після попередньої кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес пре-кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      pre-qualification_stand.still_try_reject_third_bid
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${value}=  Run Keyword And Expect Error  *  Можливість підтвердити 2 пропозицію кваліфікації
+  ${value}=  Convert To Lowercase  ${value}
+  Should Contain  ${value}  can't update qualification in current (active.pre-qualification.stand-still) tender status
 
 
 Відображення статусу блокування перед початком аукціону

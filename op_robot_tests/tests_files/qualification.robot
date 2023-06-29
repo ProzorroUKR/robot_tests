@@ -389,6 +389,14 @@ ${award_index}      ${0}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Відповісти на критерії Замовника 1 постачальника
 
+Можливість скасування другого кваліфікаційного рішення
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_second_award_qualification
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  1
+
 
 Можливість підтвердити другого постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
@@ -430,6 +438,14 @@ ${award_index}      ${0}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  2
 
+Можливість скасування третього кваліфікаційного рішення
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_third_award_qualification
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  2
+
 
 Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження четвертого постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
@@ -463,6 +479,22 @@ ${award_index}      ${0}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Затвердити постачальників  ${TENDER['TENDER_UAID']}
 
+Можливість скасувати рішення кваліфікації stand still
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_third_award_qualification_stand_still
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  2
+
+
+Можливість скасування другого кваліфікаційного рішення після зупинки
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_second_award_qualification_after_stand_still
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  1
 
 Можливість дочекатися перевірки переможців по ДФС
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Перевірка користувача по ДФС
