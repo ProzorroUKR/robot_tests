@@ -446,6 +446,23 @@ def test_tender_data_planning(params):
     return munchify(data)
 
 
+def test_tender_config_data(params):
+    hasAuction_false_value = ["negotiation", "negotiation.quick", "competitiveDialogueUA",
+                               "competitiveDialogueEU", "reporting", "priceQuоtation"]
+    hasValueRestriction_false_value = ["aboveThreshold"]
+
+    data = {
+        "hasAuction": True,
+        "hasAwardingOrder": True,
+        "hasValueRestriction": True
+    }
+    if params.get("mode") in hasAuction_false_value:
+        data["hasAuction"] = False
+    if params.get("mode") in hasValueRestriction_false_value:
+        data["hasValueRestriction"] = False
+    return munchify(data)
+
+
 def test_tender_data_limited(params, plan_data):
     data = test_tender_data(params, plan_data)
     del data["submissionMethodDetails"]
