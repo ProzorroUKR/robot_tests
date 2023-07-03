@@ -18,6 +18,8 @@ from datetime import datetime
 import string
 from copy import deepcopy
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 
 fake_en = Factory.create(locale='en_US')
 fake_ru = Factory.create(locale='ru_RU')
@@ -1684,7 +1686,8 @@ def test_monitoring_liability_data():
 
 
 def log_webdriver_info():
-    driver = webdriver.Chrome()
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    # driver = webdriver.Chrome()
     browser_version = "chrome version - " + driver.capabilities['browserVersion']
     driver_version = "chromedriver version - " + driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
     return browser_version, driver_version
