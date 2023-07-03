@@ -269,7 +269,7 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid
 
 Відкрити сторінку аукціону для ${username}
   ${url}=  Можливість вичитати посилання на аукціон для ${username}
-  Open browser  ${url}  ${USERS.users['${username}'].browser}  ${username}
+  Open browser  ${url}  ${USERS.users['${username}'].browser}  ${username}  options=add_argument("--remote-debugging-port=9222"); add_argument("--no-sandbox"); add_argument("--headless")
   Set Window Position  @{USERS['${username}']['position']}
   Set Window Size      @{USERS['${username}']['size']}
   Run Keyword If  '${username}' != '${viewer}'
