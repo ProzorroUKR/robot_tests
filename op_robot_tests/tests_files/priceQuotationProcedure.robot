@@ -1061,9 +1061,9 @@ ${CRITERIA_LLC}     ${False}
 
 
 Можливість редагувати вартість договору без ПДВ
-  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      tender_owner
-  ...      ${USERS.users['${tender_owner}']}
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      change_contract_amountNet
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
@@ -1076,9 +1076,9 @@ ${CRITERIA_LLC}     ${False}
 
 
 Можливість редагувати вартість договору
-  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      tender_owner
-  ...      ${USERS.users['${tender_owner}']}
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      change_contract_amount
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
