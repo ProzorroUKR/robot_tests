@@ -104,7 +104,7 @@ Suite Teardown  Test Suite Teardown
 
 Відкрити сторінку аукціону для ${username}
   ${url}=  Run as  ${username}  Отримати посилання на аукціон для глядача  ${TENDER['TENDER_UAID']}  ${TENDER['LOT_ID']}
-  Open browser  ${url}  ${USERS.users['${username}'].browser}   options=add_argument("--remote-debugging-port=9222"); add_argument("--no-sandbox"); add_argument("--headless")
+  Open browser  ${url}  ${USERS.users['${username}'].browser}   options=add_argument("--remote-debugging-port=9222"); add_argument("--no-sandbox"); add_argument("--headless=new")
 
 
 Дочекатись дати закінчення аукціону користувачем ${username}
