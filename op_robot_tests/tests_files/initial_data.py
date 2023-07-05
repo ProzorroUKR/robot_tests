@@ -174,7 +174,7 @@ def translate_country_en(country):
 
 
 def convert_amount(amount):
-    value = float('{:.2f}'.format(amount))
+    value = float('{:.2f}'.format(float(amount)))
     return ("{0:,}".format(float(value))).replace(',', ' ').replace('.', ',')
     # return ("{:,}".format(float(amount))).replace(',', ' ').replace('.', ',')
 
