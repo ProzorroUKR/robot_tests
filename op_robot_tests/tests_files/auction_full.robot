@@ -444,6 +444,7 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid
   [Arguments]  ${amount}  ${msg}
   ${amount}=  Convert To String  ${amount}
   Set To Dictionary  ${USERS['${CURRENT_USER}']}  last_amount=${amount}
+  Wait Until Page Contains Element    id=clear-bid-button   60s
   Click Element  id=clear-bid-button
   Wait Until Page Does Not Contain Element  xpath=//alert[contains(@class, 'bids-form')]  7s
   Input Text     id=bid-amount-input  ${amount}
