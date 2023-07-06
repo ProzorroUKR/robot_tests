@@ -8,9 +8,9 @@ Library         SeleniumLibrary
 *** Variables ***
 @{USED_ROLES}  viewer  provider  provider1  provider2
 
-${xpath_max_bid_amount_meat}        xpath=//div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-${xpath_max_bid_amount_llc}         xpath=//*[@class='price-inform-block ng-scope']/div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
-${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid_amount_price']
+${xpath_max_bid_amount_meat}        xpath://div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+${xpath_max_bid_amount_llc}         xpath://*[@class='price-inform-block ng-scope']/div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
+${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid_amount_price']
 
 *** Test Cases ***
 Залогувати інформацію про браузер та драйвер в консоль
@@ -444,11 +444,11 @@ ${xpath_max_bid_amount_no_meat}     xpath=//*[@id='BidsForm']//span[@id='max_bid
   [Arguments]  ${amount}  ${msg}
   ${amount}=  Convert To String  ${amount}
   Set To Dictionary  ${USERS['${CURRENT_USER}']}  last_amount=${amount}
-  Wait Until Page Contains Element    id=clear-bid-button   60s
-  Click Element  id=clear-bid-button
-  Wait Until Page Does Not Contain Element  xpath=//alert[contains(@class, 'bids-form')]  7s
-  Input Text     id=bid-amount-input  ${amount}
-  Click Element  id=place-bid-button
+  Wait Until Element Is Visible    id:clear-bid-button   120s
+  Click Element  id:clear-bid-button
+  Wait Until Page Does Not Contain Element  xpath://alert[contains(@class, 'bids-form')]  7s
+  Input Text     id:bid-amount-input  ${amount}
+  Click Element  id:place-bid-button
   Wait Until Page Contains  ${msg}  30s
 
 
