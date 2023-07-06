@@ -290,9 +290,9 @@ Suite Teardown  Test Suite Teardown
 
 
 Відображення відредагованої вартості договору без ПДВ
-  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      viewer
-  ...      ${USERS.users['${tender_owner}']}
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      modify_contract_view_new_amountNet
   Звірити поле договору із значенням
   ...      ${viewer}
@@ -302,9 +302,9 @@ Suite Teardown  Test Suite Teardown
 
 
 Відображення відредагованої вартості договору
-  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      viewer
-  ...      ${USERS.users['${tender_owner}']}
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      modify_contract_view_new_amountNet
   Звірити поле договору із значенням
   ...      ${viewer}
@@ -314,9 +314,9 @@ Suite Teardown  Test Suite Teardown
 
 
 Відображення одночасно відредагованої вартості договору з/без ПДВ
-  [Tags]   ${USERS.users['${tender_owner}']}: Редагування договору
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування договору
   ...      viewer
-  ...      ${USERS.users['${tender_owner}']}
+  ...      ${USERS.users['${tender_owner}'].broker}
   ...      modify_contract_view_new_amount_amountNet
   Звірити поле договору із значенням
   ...      ${viewer}
