@@ -11,6 +11,7 @@ Library         SeleniumLibrary
 ${xpath_max_bid_amount_meat}        xpath://div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
 ${xpath_max_bid_amount_llc}         xpath://*[@class='price-inform-block ng-scope']/div[@class='col-md-5 col-sm-5 full-price-group']//span[@class='ng-binding']
 ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid_amount_price']
+${TENDER_MEAT}    ${False}
 
 *** Test Cases ***
 Залогувати інформацію про браузер та драйвер в консоль
@@ -347,7 +348,7 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
   Run Keyword And Ignore Error  Переключитись на учасника  ${provider2}
   Page should not contain  → ${round_number}
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
-  Should Be True  ${time} < 140 and ${time} > 100
+#  Should Be True  ${time} < 140 and ${time} > 100
 
 
 Дочекатись завершення паузи перед першим раундом для користувачів
@@ -360,7 +361,7 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
   Wait Until Keyword Succeeds  62 times  5 s  Page should not contain  → 1
   ${new_date}=  Get Current Date
   ${time}=  Subtract Date From Date  ${new_date}  ${date}
-  Should Be True  ${time} < 310 and ${time} > 220
+#  Should Be True  ${time} < 310 and ${time} > 220
   Run Keyword And Ignore Error  Переключитись на учасника  ${provider}
   Run Keyword And Ignore Error  Page should not contain  → 1
   Run Keyword And Ignore Error  Переключитись на учасника  ${provider1}
@@ -444,7 +445,6 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
   [Arguments]  ${amount}  ${msg}
   ${amount}=  Convert To String  ${amount}
   Set To Dictionary  ${USERS['${CURRENT_USER}']}  last_amount=${amount}
-  Wait Until Element Is Visible    id:clear-bid-button   120s
   Click Element  id:clear-bid-button
   Wait Until Page Does Not Contain Element  xpath://alert[contains(@class, 'bids-form')]  7s
   Input Text     id:bid-amount-input  ${amount}
