@@ -1,6 +1,6 @@
 coding: utf-8
 *** Settings ***
-Library  ../tests_files/service_keywords.py
+Library  service_keywords.py
 Library  String
 Library  Collections
 Library  SeleniumLibrary

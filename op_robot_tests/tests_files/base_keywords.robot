@@ -1,6 +1,6 @@
 coding: utf-8
 *** Settings ***
-Library            ../tests_files/service_keywords.py
+Library            service_keywords.py
 Library            Collections
 Resource           keywords.robot
 Resource           resource.robot
