@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  robot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command: ["sh","-c", "run-tests-in-virtual-screen.sh"]
+    env_file:
+      - .env
+    volumes:
+      - ./op_robot_tests/tests_files:/opt/robotframework/tests
+      - ./reports:/opt/robotframework/reports
