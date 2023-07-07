@@ -1396,7 +1396,7 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      active.auction
-  BuiltIn.Sleep  120  # Auction sync
+#  BuiltIn.Sleep  120  # Auction sync
 
 
 Дочекатись дати початку періоду кваліфікації
