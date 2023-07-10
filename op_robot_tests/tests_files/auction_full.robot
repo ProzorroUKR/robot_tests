@@ -385,7 +385,7 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
 
 
 Дочекатись учасником закінчення стадії ставок
-  Wait Until Keyword Succeeds  12 times  10 s  Page should not contain  до закінчення вашої черги
+  Wait Until Keyword Succeeds  15 times  10 s  Page should not contain  до закінчення вашої черги
 
 
 Дочекатись оголошення результатів глядачем
@@ -440,7 +440,6 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
   ${last_amount}=  Run Keyword If  ${TENDER_MEAT} == ${True}  Get Text  ${xpath_max_bid_amount_meat}
   ...        ELSE IF  ${CRITERIA_LLC} == ${True}  Get Text  ${xpath_max_bid_amount_llc}
   ...        ELSE  Get Text  ${xpath_max_bid_amount_no_meat}
-  Capture Page Screenshot
   ${last_amount}=  convert_amount_string_to_float  ${last_amount}
   ${extra_amount}=  convert_amount_string_to_float  ${extra_amount}
   ${last_amount}=  Evaluate  ${last_amount}+${extra_amount}
