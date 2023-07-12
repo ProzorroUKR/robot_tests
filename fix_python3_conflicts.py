@@ -1,5 +1,8 @@
 # op_tests remove decode
 # Read in the file
+import os
+import shutil
+
 with open("bin/op_tests", 'r') as file:
     filedata = file.read()
 
@@ -45,3 +48,9 @@ filedata = filedata.replace("robot.rebot.rebot_cli()", 'robot.rebot_cli()')
 # Write the file out again
 with open("bin/rebot", 'w') as file:
     file.write(filedata)
+
+if os.path.exists('test_output'):
+    shutil.rmtree('test_output')
+
+
+
