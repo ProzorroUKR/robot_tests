@@ -1967,7 +1967,10 @@ Library  Collections
 Отримати інформацію із скарги
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field_name}  ${object_index}  ${object}
   openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
-  ${complaints}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.${object}[${object_index}].complaints}  ${USERS.users['${username}'].tender_data.data.complaints}
+  ${info}=  Create Dictionary
+  ...      data=${USERS.users['${username}'].tender_data.data.${object}}
+#  ${complaints}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.${object}[${object_index}].complaints}  ${USERS.users['${username}'].tender_data.data.complaints}
+  ${complaints}=  Get Variable Value  ${info.data[${object_index}].complaints}  ${USERS.users['${username}'].tender_data.data.complaints}
   ${complaint_index}=  get_complaint_index_by_complaintID  ${complaints}  ${complaintID}
   ${field_value}=  Get Variable Value  ${complaints[${complaint_index}]['${field_name}']}
   [Return]  ${field_value}
