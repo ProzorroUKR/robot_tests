@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -
 from __future__ import absolute_import
-import logging
 import os
 import random
 from random import randint
@@ -1693,6 +1692,11 @@ def log_webdriver_info():
     browser_version = "chrome version - " + driver.capabilities['browserVersion']
     driver_version = "chromedriver version - " + driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
     return browser_version, driver_version
+
+
+def get_chromedriver_path():
+    driver_path = ChromeDriverManager().install()
+    return driver_path
 
 
 def test_buyer_1_data():

@@ -272,10 +272,13 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
 #  Open browser  ${url}  ${USERS.users['${username}'].browser}  ${username}  options=add_argument("--remote-debugging-port=9222"); add_argument("--no-sandbox"); add_argument("--headless=new")
   ${chromeOptions}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
   Call Method    ${chromeOptions}    add_argument    --headless\=new
-  Call Method    ${chromeOptions}    add_argument    ---no-sandbox
-  @{service_args} =    Create List    --remote-debugging-port=9222
-  Create Webdriver    Chrome   alias=${username}   service_args=@{service_args}  chrome_options=${chromeOptions}
-  Go To  ${url}
+  Call Method    ${chromeOptions}    add_argument    --no-sandbox
+#  @{service_args} =    Create List    --remote-debugging-port=9222
+  Open Browser    url=${url}
+  ...    browser=${USERS.users['${username}'].browser}
+  ...    alias=${username}
+  ...    options=${chromeOptions}
+  ...    executable_path=get_chromedriver_path
   Set Window Position  @{USERS['${username}']['position']}
   Set Window Size      @{USERS['${username}']['size']}
   Run Keyword If  '${username}' != '${viewer}'
