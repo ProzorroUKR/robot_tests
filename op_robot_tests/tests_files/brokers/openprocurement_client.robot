@@ -1533,22 +1533,28 @@ Library  Collections
   Log  ${USERS.users['${username}'].complaint_access_token}
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
+  ${info}=  Create Dictionary
+  ...      data=${tender.data.${object}}
+  ${id}=  Get Variable Value  ${info.data[${object_index}].id}
   ${reply}=  run keyword if  '${object}' == 'awards'  Call Method  ${USERS.users['${username}'].client}  upload_award_complaint_document
   ...      ${document}
   ...      ${tender.data.id}
-  ...      ${tender.data.${object}[${object_index}].id}
+#  ...      ${tender.data.${object}[${object_index}].id}
+  ...      ${id}
   ...      ${complaint_internal_id}
   ...      access_token=${USERS.users['${username}'].complaint_access_token}
   ...      ELSE IF  '${object}' == 'qualifications'  Call Method  ${USERS.users['${username}'].client}  upload_qualification_complaint_document
   ...      ${document}
   ...      ${tender.data.id}
-  ...      ${tender.data.${object}[${object_index}].id}
+#  ...      ${tender.data.${object}[${object_index}].id}
+  ...      ${id}
   ...      ${complaint_internal_id}
   ...      access_token=${USERS.users['${username}'].complaint_access_token}
   ...      ELSE  Call Method  ${USERS.users['${username}'].client}  upload_cancellation_complaint_document
   ...      ${document}
   ...      ${tender.data.id}
-  ...      ${tender.data.${object}[${object_index}].id}
+  ...      ${id}
+#  ...      ${tender.data.${object}[${object_index}].id}
   ...      ${complaint_internal_id}
   ...      access_token=${USERS.users['${username}'].complaint_access_token}
   Log  ${tender}
