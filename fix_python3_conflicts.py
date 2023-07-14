@@ -49,8 +49,17 @@ filedata = filedata.replace("robot.rebot.rebot_cli()", 'robot.rebot_cli()')
 with open("bin/rebot", 'w') as file:
     file.write(filedata)
 
+# Clean workspace
 if os.path.exists('test_output'):
     shutil.rmtree('test_output')
+
+# Add permission to selenium-manager
+file_path = '/home/jenkins-slave/.buildout/eggs/selenium-4.9.1-py3.9.egg/selenium/webdriver/common/linux/selenium-manager'
+if os.path.exists(file_path):
+    permissions = 0o755  # Give read, write, and execute permissions to the owner, and read and execute permissions to others
+
+    # Add permissions to the file
+    os.chmod(file_path, permissions)
 
 
 
