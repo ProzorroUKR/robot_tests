@@ -2541,15 +2541,20 @@ Library  Collections
 Створити повідомлення по невідповідність
   [Arguments]  ${username}  ${tender_uaid}  ${object}  ${object_index}  ${24h_data}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${info}=  Create Dictionary
+  ...      data=${tender.data.${object}}
+  ${id}=  Get Variable Value  ${info.data[${object_index}].id}
   ${reply}=  run keyword if  '${object}' == 'awards'  Call Method  ${USERS.users['${username}'].client}  create_award_milestone
   ...  ${tender.data.id}
   ...  ${24h_data}
-  ...  ${tender.data.${object}[${object_index}].id}
+#  ...  ${tender.data.${object}[${object_index}].id}
+  ...  ${id}
   ...  access_token=${tender.access.token}
   ...  ELSE  Call Method  ${USERS.users['${username}'].client}  create_qualification_milestone
   ...  ${tender.data.id}
   ...  ${24h_data}
-  ...  ${tender.data.${object}[${object_index}].id}
+#  ...  ${tender.data.${object}[${object_index}].id}
+  ...  ${id}
   ...  access_token=${tender.access.token}
   Log  ${reply}
 
