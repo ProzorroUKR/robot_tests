@@ -2462,7 +2462,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість активувати пропозицію користувачем ${username}
   ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
-  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  closeFrameworkAgreementUA  esco
+  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  aboveThresholdUA  closeFrameworkAgreementUA  esco
   ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
   ${field}=  Set variable  status
   Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${status}
