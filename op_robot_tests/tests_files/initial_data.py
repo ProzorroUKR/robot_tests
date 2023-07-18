@@ -148,7 +148,7 @@ def prepare_data_for_changing_tender_period(tender, value):
 
 def subtraction(value1, value2):
     if "." in str(value1) or "." in str(value2):
-        return (float(value1) - float(value2))
+        return round((float(value1) - float(value2)), 2)
     else:
         return (int(value1) - int(value2))
 
