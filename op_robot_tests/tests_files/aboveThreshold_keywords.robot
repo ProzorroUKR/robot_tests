@@ -35,7 +35,7 @@ Resource           base_keywords.robot
 Можливість підтвердити цінову пропозицію учасником ${username}
   ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
   Log  ${procurementMethodType}
-  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU  closeFrameworkAgreementUA  esco
+  ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdUA  aboveThresholdEU  belowThreshold  closeFrameworkAgreementUA  esco  simple.defense
   ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
   Run As  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  status  ${status}
 
