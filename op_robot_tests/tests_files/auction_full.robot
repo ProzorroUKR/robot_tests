@@ -254,6 +254,7 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
 
 Дочекатись завершення періоду очікування перед початком аукціону
   Відкрити сторінку аукціону для ${viewer}
+  Register Keyword To Run On Failure	NONE
   Wait Until Keyword Succeeds  15 times  60 s  Page should not contain  до початку аукціону
 
 
