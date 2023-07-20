@@ -1974,7 +1974,7 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${complaintID}  ${field_name}  ${object_index}  ${object}
   openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
   ${info}=  Create Dictionary
-  ...      data=${USERS.users['${username}'].tender_data.data.${object}}
+  ...      data=${USERS.users['${username}'].tender_data.data}
 #  ${complaints}=  Get Variable Value  ${USERS.users['${username}'].tender_data.data.${object}[${object_index}].complaints}  ${USERS.users['${username}'].tender_data.data.complaints}
   ${complaints}=  Get Variable Value  ${info.data[${object_index}].complaints}  ${USERS.users['${username}'].tender_data.data.complaints}
   ${complaint_index}=  get_complaint_index_by_complaintID  ${complaints}  ${complaintID}
