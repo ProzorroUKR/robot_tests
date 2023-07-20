@@ -585,7 +585,8 @@ def test_payment_data(token, complaint_value, complaint_uaid):
 
 
 def generate_payment_description(token, complaint_uaid):
-    full_hash = hashlib.sha512(token).hexdigest()
+    bytes_string = token.encode('utf-8')
+    full_hash = hashlib.sha512(bytes_string).hexdigest()
     short_hash = full_hash[0:8]
     description = complaint_uaid + '-' + short_hash + ' [TESTING, ROBOT TESTS]'
     return description
