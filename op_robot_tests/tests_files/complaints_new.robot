@@ -1435,6 +1435,6 @@ ${first_reject_index}   ${0}
 
 Дочекатись дати кінця періоду оскарження скасування
   Дочекатись дати  ${USERS.users['${tender_owner}'].tender_data.data.complaintPeriod.endDate}
-  Sleep  30s
+  BuiltIn.Sleep  30s
   Оновити LAST_MODIFICATION_DATE
 
