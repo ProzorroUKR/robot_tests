@@ -2045,7 +2045,7 @@ Library  Collections
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].bid_access_token}
   ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
   ${methods}=  Create List  competitiveDialogueUA  competitiveDialogueEU  competitiveDialogueEU.stage2  aboveThresholdEU
-  ...  aboveThresholdUA  belowThreshold  closeFrameworkAgreementUA  esco  simple.defense  priceQuotation
+  ...  aboveThresholdUA  aboveThreshold  belowThreshold  closeFrameworkAgreementUA  esco  simple.defense  priceQuotation
   ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
   ${field}=  Set variable  status
   ${reply_active}=  Run as  ${username}  Змінити цінову пропозицію  ${tender_uaid}  ${field}  ${status}
