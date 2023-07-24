@@ -1062,7 +1062,8 @@ def test_tender_data_selection(procedure_intervals, params, submissionMethodDeta
         lot.pop('minimalStep', None)
         lot.pop('auctionPeriod', None)
         lot.pop('value', None)
-    return munchify({'data': data})
+    return munchify({'data': data,
+                     'config': test_tender_config_data(params)})
 
 
 def test_tender_data_simple_defense(params, submissionMethodDetails, plan_data):
