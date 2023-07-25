@@ -454,7 +454,7 @@ def test_tender_config_data(params):
                                "competitiveDialogueEU", "reporting", "priceQuotation"]
     hasValueRestriction_false_value = ["aboveThreshold"]
     hasPrequalification_false_value = ["belowThreshold", "aboveThreshold", "aboveThresholdUA", "negotiation",
-                                       "negotiation.quick", "simple.defense", "competitiveDialogueUA.stage2",
+                                       "negotiation.quick", "simple_defense", "competitiveDialogueUA.stage2",
                                        "reporting", "closeFrameworkAgreementSelectionUA", "priceQuоtation",
                                        "aboveThresholdUA.defense"]
     minBidsNumber_2 = ["aboveThresholdUA", "aboveThresholdEU", "competitiveDialogueUA.stage2", "competitiveDialogueEU.stage2",
@@ -470,6 +470,7 @@ def test_tender_config_data(params):
         "minBidsNumber": 1
     }
     mode = params.get("mode")
+
     if mode in hasAuction_false_value:
         data["hasAuction"] = False
     if mode in hasValueRestriction_false_value:
