@@ -451,7 +451,7 @@ def test_tender_data_planning(params):
 
 def test_tender_config_data(params):
     hasAuction_false_value = ["negotiation", "negotiation.quick", "competitiveDialogueUA",
-                               "competitiveDialogueEU", "reporting", "priceQuоtation"]
+                               "competitiveDialogueEU", "reporting", "priceQuotation"]
     hasValueRestriction_false_value = ["aboveThreshold"]
 
     data = {
