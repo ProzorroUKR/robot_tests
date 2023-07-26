@@ -456,7 +456,7 @@ def test_tender_config_data(params):
     hasPrequalification_false_value = ["belowThreshold", "aboveThreshold", "aboveThresholdUA", "negotiation",
                                        "negotiation.quick", "simple_defense", "competitiveDialogueUA.stage2",
                                        "reporting", "closeFrameworkAgreementSelectionUA", "priceQuotation",
-                                       "aboveThresholdUA.defense"]
+                                       "aboveThresholdUA.defense", "framework_selection"]
     minBidsNumber_2 = ["aboveThresholdUA", "aboveThresholdEU", "competitiveDialogueUA.stage2", "competitiveDialogueEU.stage2",
                        "esco"]
     minBidsNumber_3 = ["competitiveDialogueUA", "competitiveDialogueEU", "closeFrameworkAgreementUA"]
