@@ -42,6 +42,8 @@
 -i qualification_add_doc_to_second_award
 -i qualification_reject_second_award
 -i qualification_approve_second_participant
+-i qualification_add_doc_to_third_award
+-i qualification_approve_last_award
 
 -i contract_view
 -i modify_contract_amount_net

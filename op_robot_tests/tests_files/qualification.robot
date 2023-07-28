@@ -407,6 +407,18 @@ ${award_index}      ${0}
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
 
 
+Mожливість підтвердити останнього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_last_award
+  ...  critical
+  [Setup]  Дочекатись дати закінчення періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  ${index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
+  Log  ${index}
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  ${index}
+
+
 Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження третього постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
