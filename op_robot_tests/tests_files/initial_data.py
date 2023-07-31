@@ -845,9 +845,9 @@ def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, m
                      invalid_expected_value=False):
     bid = test_bid_data()
     if username == "Tender_User":
-        bid.data["tenderers"][0]["identifier"]["id"] = "2445606583"
+        bid.data["tenderers"][0]["identifier"]["id"] = "3155704500"
     if username == "Tender_User1":
-        bid.data["tenderers"][0]["identifier"]["id"] = "40813989"
+        bid.data["tenderers"][0]["identifier"]["id"] = "3040022159"
     if username == "Tender_User2":
         bid.data["tenderers"][0]["identifier"]["id"] = "1989909665"
     bid.data.requirementResponses = []
