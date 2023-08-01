@@ -845,11 +845,11 @@ def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, m
                      invalid_expected_value=False):
     bid = test_bid_data()
     if username == "Tender_User":
-        bid.data["tenderers"][0]["identifier"]["id"] = "3155704500"
+        bid.data["tenderers"][0]["identifier"]["id"] = "45678526"
     if username == "Tender_User1":
-        bid.data["tenderers"][0]["identifier"]["id"] = "3040022159"
+        bid.data["tenderers"][0]["identifier"]["id"] = "45678527"
     if username == "Tender_User2":
-        bid.data["tenderers"][0]["identifier"]["id"] = "1989909665"
+        bid.data["tenderers"][0]["identifier"]["id"] = "11111113"
     bid.data.requirementResponses = []
     amount = 0
     if 'criteria' in data:
