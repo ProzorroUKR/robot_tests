@@ -453,16 +453,34 @@ def test_tender_config_data(params):
     hasAuction_false_value = ["negotiation", "negotiation.quick", "competitiveDialogueUA",
                                "competitiveDialogueEU", "reporting", "priceQuotation"]
     hasValueRestriction_false_value = ["aboveThreshold"]
+    hasPrequalification_false_value = ["belowThreshold", "aboveThreshold", "aboveThresholdUA", "negotiation",
+                                       "negotiation.quick", "simple_defense", "competitiveDialogueUA.stage2",
+                                       "reporting", "closeFrameworkAgreementSelectionUA", "priceQuotation",
+                                       "aboveThresholdUA.defense", "framework_selection"]
+    minBidsNumber_2 = ["aboveThresholdUA", "aboveThresholdEU", "competitiveDialogueUA.stage2", "competitiveDialogueEU.stage2",
+                       "esco"]
+    minBidsNumber_3 = ["competitiveDialogueUA", "competitiveDialogueEU", "closeFrameworkAgreementUA"]
 
     data = {
         "hasAuction": True,
         "hasAwardingOrder": True,
-        "hasValueRestriction": True
+        "hasValueRestriction": True,
+        "valueCurrencyEquality": True,
+        "hasPrequalification": True,
+        "minBidsNumber": 1
     }
-    if params.get("mode") in hasAuction_false_value:
+    mode = params.get("mode")
+
+    if mode in hasAuction_false_value:
         data["hasAuction"] = False
-    if params.get("mode") in hasValueRestriction_false_value:
+    if mode in hasValueRestriction_false_value:
         data["hasValueRestriction"] = False
+    if mode in hasPrequalification_false_value:
+        data["hasPrequalification"] = False
+    if mode in minBidsNumber_2:
+        data["minBidsNumber"] = 2
+    if mode in minBidsNumber_3:
+        data["minBidsNumber"] = 3
     return munchify(data)
 
 
@@ -827,11 +845,11 @@ def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, m
                      invalid_expected_value=False):
     bid = test_bid_data()
     if username == "Tender_User":
-        bid.data["tenderers"][0]["identifier"]["id"] = "2445606583"
+        bid.data["tenderers"][0]["identifier"]["id"] = "45678526"
     if username == "Tender_User1":
-        bid.data["tenderers"][0]["identifier"]["id"] = "40813989"
+        bid.data["tenderers"][0]["identifier"]["id"] = "45678527"
     if username == "Tender_User2":
-        bid.data["tenderers"][0]["identifier"]["id"] = "1989909665"
+        bid.data["tenderers"][0]["identifier"]["id"] = "11111113"
     bid.data.requirementResponses = []
     amount = 0
     if 'criteria' in data:
