@@ -679,6 +679,72 @@
         "ZW-PVO",
         "ZW-ROD"
     ],
+    "procuringEntitiesUpdated": [
+        {
+            "contactPoint": {
+                "name": "Перший Тестовий Замовник",
+                "telephone": "+380771112233",
+                "email": "e_mail_test@bigmir.net"
+            },
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "13313462",
+                "legalName": "Київський Тестовий Ліцей"
+            },
+            "kind": "general",
+            "address": {
+                "countryName": "Україна",
+                "postalCode": "01111",
+                "region": "м. Київ",
+                "locality": "м. Київ",
+                "streetAddress": "вулиця Тестова, 220, 8"
+            },
+            "name": "Київський Тестовий Ліцей"
+        },
+        {
+           "contactPoint": {
+                "name": "Другий Тестовий Замовник",
+                "telephone": "+380664445566",
+                "email": "e_mail_test@ukr.net"
+            },
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "00037256",
+                "legalName": "Київська Тестова міська клінічна лікарня"
+            },
+            "kind": "general",
+            "address": {
+
+                "countryName": "Україна",
+                "postalCode": "04444",
+                "region": "м. Київ",
+                "locality": "м. Київ",
+                "streetAddress": "вулиця Тестова, 32"
+            },
+            "name": "Київська Тестова міська клінічна лікарня"
+        },
+        {
+            "contactPoint": {
+                "name": "Державне управління справами",
+                "telephone": "+0440000000",
+                "email": "aa@aa.com"
+            },
+            "identifier": {
+                "scheme": "UA-EDR",
+                "id": "00037256",
+                "legalName": "Київська Тестова міська клінічна лікарня"
+            },
+            "kind": "general",
+            "address": {
+                "countryName": "Україна",
+                "postalCode": "01220",
+                "region": "м. Київ",
+                "locality": "м. Київ",
+                "streetAddress": "вул. Банкова, 11, корпус 1"
+            },
+            "name": "Київська Тестова міська клінічна лікарня"
+        }
+    ],
     "procuringEntities": [
         {
             "contactPoint": {

@@ -15,6 +15,7 @@ import requests
 import urllib.request
 from openprocurement_client.resources.tenders import TenderCreateClient
 from openprocurement_client.resources.tenders import PaymentClient
+from src.openprocurement_client.openprocurement_client.resources.frameworks import FrameworksClient
 
 
 def retry_if_request_failed(exception):
@@ -234,3 +235,15 @@ class StableClientPayment(PaymentClient):
 
 def prepare_payment_wrapper(key, resource, host_url, api_version):
     return StableClientPayment(key, resource, host_url, api_version)
+
+
+class StableFrameworkClient(FrameworksClient):
+    @retry(stop_max_attempt_number=100, wait_random_min=500, wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    def request(self, *args, **kwargs):
+        return super(StableFrameworkClient, self).request(*args, **kwargs)
+
+
+def prepare_framework_wrapper(key, resource, host_url, api_version, ds_config=None):
+    return StableFrameworkClient(key, resource, host_url, api_version, ds_config=ds_config)
+
+

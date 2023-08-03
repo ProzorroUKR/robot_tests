@@ -336,6 +336,29 @@ def test_tender_data(params,
     return munchify(data)
 
 
+def test_qualification_data():
+    classification = fake.classification();
+    data = {
+            "frameworkType": "dynamicPurchasingSystem",
+            "procuringEntity": fake.procuringEntityUpdated(),
+            "additionalClassifications": classification["additionalClassifications"],
+            "classification": classification["classification"],
+            "title": fake.title(),
+            "description": fake.description(),
+            "qualificationPeriod": {
+                "endDate": get_now().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
+            }
+        }
+    return munchify(data)
+
+
+def test_qualification_config_data():
+    config = {
+        "restrictedDerivatives": False
+    }
+    return munchify(config)
+
+
 def test_tender_data_planning(params):
     data = {
         "budget": {

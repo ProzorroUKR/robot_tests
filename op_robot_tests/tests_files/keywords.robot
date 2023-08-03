@@ -39,6 +39,11 @@ Test Suite Teardown Plan
   Run Keyword And Ignore Error  Створити артефакт план
 
 
+Test Suite Teardown Framework
+  Close all browsers
+  Run Keyword And Ignore Error  Створити артефакт framework
+
+
 Test Case Teardown Plan
   Close all browsers
   Run Keyword And Ignore Error  Створити артефакт план
@@ -225,6 +230,23 @@ Get Broker Property By Username
   log_object_data  ${artifact}  file_name=artifact_plan  update=${True}  artifact=${True}
 
 
+Створити артефакт framework
+  ${artifact}=  Create Dictionary
+  ...      api_version=${API_VERSION}
+  ...      qualification_uaid=${QUALIFICATION['QUALIFICATION_UAID']}
+  ...      last_modification_date=${QUALIFICATION['LAST_MODIFICATION_DATE']}
+  ...      mode= "dynamicPurchasingSystem"
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
+  ...          qualification_owner=${USERS.users['${tender_owner}'].broker}
+  ...          access_token=${USERS.users['${tender_owner}'].access_token}
+  ...          qualification_id=${USERS.users['${tender_owner}'].qualification_data.data.id}
+  ...          qualificationowner_access_token=${USERS.users['${tender_owner}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
+  ...      qualification_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
+  Log   ${artifact}
+  log_object_data  ${artifact}  file_name=artifact_framework  update=${True}  artifact=${True}
+
+
 Завантажити дані про тендер
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
@@ -291,6 +313,17 @@ Get Broker Property By Username
   Set Global Variable  ${TENDER}
   Log  ${tender_data}
   [Return]  ${tender_data}
+
+
+Підготувати дані для створення кваліфікації
+  ${data}=  test_qualification_data
+  ${config}=  test_qualification_config_data
+  ${qualification_data}=  Create Dictionary  data=${data}
+  Set To Dictionary    ${qualification_data}  config=${config}
+  ${QUALIFICATION}=  Create Dictionary
+  Set Global Variable  ${QUALIFICATION}
+  Log  ${qualification_data}
+  [Return]  ${qualification_data}
 
 
 Підготувати дані для створення плану з buyers
@@ -615,6 +648,29 @@ Get Broker Property By Username
   END
   Log  ${adapted_data}
   Log  ${tender_data}
+  [Return]  ${adapted_data}
+
+
+Адаптувати дані для оголошення кваліфікації
+  [Arguments]  ${qualification_data}
+  # munchify is used to make deep copy of ${tender_data}
+  ${adapted_data}=  munchify  ${qualification_data}
+  FOR  ${username}  IN  @{USED_ROLES}
+  # munchify is used to make deep copy of ${adapted_data}
+    ${adapted_data_copy}=  munchify  ${adapted_data}
+    ${status}  ${adapted_data_from_broker}=  Run keyword and ignore error  Run As  ${${username}}  Підготувати дані для оголошення тендера  ${adapted_data_copy}  ${username}
+    Log  ${adapted_data_from_broker}
+  # Need this in case ``${${username}}`` doesn't have `Підготувати дані для оголошення
+  # тендера користувачем` keyword, so after `Run keyword and ignore error` call
+  # ``${adapted_data_from_broker}`` will be ``${None}``. Else - nothing changes.
+    ${adapted_data_from_broker}=  Set variable if  '${status}' == 'FAIL'  ${adapted_data}  ${adapted_data_from_broker}
+    Log differences between dicts  ${adapted_data.data}  ${adapted_data_from_broker.data}  ${username} has changed initial data!
+  # Update (or not, if nothing changed) ``${adapted_data}``.
+    ${adapted_data}=  munchify  ${adapted_data_from_broker}
+    Log  ${adapted_data}
+  END
+  Log  ${adapted_data}
+  Log  ${qualification_data}
   [Return]  ${adapted_data}
 
 
@@ -1538,6 +1594,17 @@ Require Failure
   ${LAST_MODIFICATION_DATE}=  Get Current TZdate
   ${status}=  Get Variable Value  ${TEST_STATUS}  PASS
   Run Keyword If  '${status}' == 'PASS'  Set To Dictionary  ${TENDER}  LAST_MODIFICATION_DATE=${LAST_MODIFICATION_DATE}
+
+
+Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  [Documentation]
+  ...      Variable ``${TEST_STATUS}`` is only available in test case teardown.
+  ...      When we call this keyword from elswere, we need to presume that
+  ...      test status is ``PASS`` (since previous keywords passed and this
+  ...      one was called).
+  ${LAST_MODIFICATION_DATE}=  Get Current TZdate
+  ${status}=  Get Variable Value  ${TEST_STATUS}  PASS
+  Run Keyword If  '${status}' == 'PASS'  Set To Dictionary  ${QUALIFICATION}  LAST_MODIFICATION_DATE=${LAST_MODIFICATION_DATE}
 
 
 Оновити DASU_LAST_MODIFICATION_DATE

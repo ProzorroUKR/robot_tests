@@ -35,6 +35,19 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}  ${tender_id}
   [return]  ${tender_id}
 
+//TODO
+Отримати internal id кваліфікаціi по UAid
+  [Arguments]  ${username}  ${qualification_uaid}
+  Log  ${username}
+  Log  ${qualification_uaid}
+  Log Many  ${USERS.users['${username}'].id_map}
+  ${status}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${USERS.users['${username}'].id_map}  ${qualification_uaid}
+  Run Keyword And Return If  ${status}  Get From Dictionary  ${USERS.users['${username}'].id_map}  ${qualification_uaid}
+  Call Method  ${USERS.users['${username}'].framework_client}  get_qualifications
+  ${qualification_id}=  Wait Until Keyword Succeeds  5x  30 sec  get_qualification_id_by_uaid  ${qualification_uaid}  ${USERS.users['${username}'].framework_client}
+  Set To Dictionary  ${USERS.users['${username}'].id_map}  ${qualification_uaid}  ${qualification_id}
+  [return]  ${qualification_id}
+
 
 Отримати internal id об'єкта моніторингу по UAid
   [Arguments]  ${username}  ${monitoring_uaid}
@@ -116,6 +129,12 @@ Library  Collections
   ...  PUSH
   ...  ${PAYMENT_API}
   ...  ${PAYMENT_API_VERSION}
+  ${framework_wrapper}=  prepare_framework_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  FRAMEWORKS
+  ...  ${API_HOST_URL}
+  ...  ${API_VERSION}
+  ...  ${ds_config}
   Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  plan_client=${plan_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  tender_create_client=${tender_create_wrapper}
@@ -124,6 +143,7 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}  access_token=${EMPTY}
   Set To Dictionary  ${USERS.users['${username}']}  amcu_client=${amcu_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  payment_client=${payment_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  framework_client=${framework_wrapper}
   ${id_map}=  Create Dictionary
   Set To Dictionary  ${USERS.users['${username}']}  id_map=${id_map}
   Log  ${EDR_HOST_URL}
@@ -498,6 +518,19 @@ Library  Collections
   [return]  ${tender.data.planID}
 
 
+Створити кваліфікацію
+  [Arguments]  ${username}  ${qualification_data}
+  ${qualification}=  Call Method  ${USERS.users['${username}'].framework_client}  create_qualification  ${qualification_data}
+  Log  ${qualification}
+  ${access_token}=  Get Variable Value  ${qualification.access.token}
+  Log  ${qualification}
+  Log  ${\n}${API_HOST_URL}/api/${API_VERSION}/frameworks/${qualification.data.id}${\n}  WARN
+  Set To Dictionary  ${USERS.users['${username}']}   access_token=${access_token}
+  Set To Dictionary  ${USERS.users['${username}']}   qualification_data=${qualification}
+  Log   ${USERS.users['${username}'].qualification_data}
+  [return]  ${qualification.data.prettyID}
+
+
 Отримати список тендерів
   [Arguments]  ${username}
   @{tenders_feed}=  get_tenders_feed  ${USERS.users['${username}'].client}
@@ -699,12 +732,30 @@ Library  Collections
   Log  ${tender}
   [return]   ${tender}
 
+//TODO
+Отримати кваліфікацію по внутрішньому ідентифікатору
+  [Arguments]  ${username}  ${internalid}  ${save_key}=qualification_data
+  ${qualification}=  Call Method  ${USERS.users['${username}'].framework_client}  get_qualification  ${internalid}
+  ${qualification}=  set_access_key  ${qualification}  ${USERS.users['${username}'].access_token}
+  Set To Dictionary  ${USERS.users['${username}']}  ${save_key}=${qualification}
+  ${qualification}=  munch_dict  arg=${qualification}
+  Log  ${qualification}
+  [return]   ${qualification}
+
 
 Пошук плану по ідентифікатору
   [Arguments]  ${username}  ${tender_uaid}  ${save_key}=tender_data
   ${internalid}=  openprocurement_client.Отримати internal id плану по UAid  ${username}  ${tender_uaid}
   ${tender}=  openprocurement_client.Отримати план по внутрішньому ідентифікатору  ${username}  ${internalid}  ${save_key}
   [return]  ${tender}
+
+
+Пошук кваліфікаціi по ідентифікатору
+  [Arguments]  ${username}  ${qualification_uaid}  ${save_key}=qualification_data
+  ${internalid}=  openprocurement_client.Отримати internal id кваліфікаціi по UAid  ${username}  ${qualification_uaid}
+  ${qualification}=  openprocurement_client.Отримати кваліфікацію по внутрішньому ідентифікатору  ${username}  ${internalid}  ${save_key}
+  [return]  ${qualification}
+
 
 
 Отримати тендер другого етапу та зберегти його
