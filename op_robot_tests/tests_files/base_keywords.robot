@@ -446,7 +446,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість створити кваліфікацію
-  ${qualification_data}=  Підготувати дані для створення кваліфікації
+   ${qualification_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ${qualification_data}=  Підготувати дані для створення кваліфікації  ${qualification_parameters}
   ${adapted_data}=  Адаптувати дані для оголошення кваліфікації  ${qualification_data}
   ${QUALIFICATION_UAID}=  Run As  ${tender_owner}  Створити кваліфікацію  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
@@ -551,12 +553,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   END
 
 
-Можливість знайти кваліфікацію по ідентифікатору
-  FOR  ${username}  IN  ${tender_owner}  ${viewer}
-    Можливість знайти кваліфікацію по ідентифікатору для користувача ${username}
-  END
-
-
 Можливість прочитати плани для користувача ${username}
   ${plans_feed}=  Run As  ${username}  Отримати список планів
   ${plans_len}=  Get Length  ${plans_feed}
@@ -600,11 +596,6 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 Можливість знайти план по ідентифікатору для користувача ${username}
   Дочекатись синхронізації з майданчиком  ${username}
   Run as  ${username}  Пошук плану по ідентифікатору  ${TENDER['TENDER_UAID']}
-
-
-Можливість знайти кваліфікацію по ідентифікатору для користувача ${username}
-  Дочекатись синхронізації з майданчиком  ${username}
-  Run as  ${username}  Пошук кваліфікаціi по ідентифікатору  ${QUALIFICATION['QUALIFICATION_UAID']}
 
 
 Можливість знайти об'єкт моніторингу по ідентифікатору для користувача ${username}

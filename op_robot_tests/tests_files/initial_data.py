@@ -336,10 +336,10 @@ def test_tender_data(params,
     return munchify(data)
 
 
-def test_qualification_data():
+def test_qualification_data(params):
     classification = fake.classification();
     data = {
-            "frameworkType": "dynamicPurchasingSystem",
+            "frameworkType": params.get("mode"),
             "procuringEntity": fake.procuringEntityUpdated(),
             "additionalClassifications": classification["additionalClassifications"],
             "classification": classification["classification"],

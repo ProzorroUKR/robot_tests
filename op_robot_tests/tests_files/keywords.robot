@@ -273,6 +273,24 @@ Get Broker Property By Username
   log_object_data  ${ARTIFACT}  file_name=artifact  update=${True}  artifact=${True}
 
 
+Завантажити дані про кваліфікацію
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_framework.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.access_token}
+  ${QUALIFICATION}=  Create Dictionary
+  ...      QUALIFICATION_UAID=${ARTIFACT.qualification_uaid}
+  ...      QUALIFICATION_ID=${ARTIFACT.qualification_id}
+  ...      LAST_MODIFICATION_DATE=${ARTIFACT.last_modification_date}
+  ${MODE}=  Get Variable Value  ${MODE}  ${ARTIFACT.mode}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.tender_owner_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider}']}  access_token=${ARTIFACT.provider_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  access_token=${ARTIFACT.provider1_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider2}']}  access_token=${ARTIFACT.provider2_access_token}
+  Set Suite Variable  ${MODE}
+  Set Suite Variable  ${QUALIFICATION}
+  log_object_data  ${ARTIFACT}  file_name=artifact_framework  update=${True}  artifact=${True}
+
+
 Підготувати дані для створення тендера
   [Arguments]  ${tender_parameters}  ${plan_data}
   ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
@@ -316,7 +334,8 @@ Get Broker Property By Username
 
 
 Підготувати дані для створення кваліфікації
-  ${data}=  test_qualification_data
+  [Arguments]    ${qualification_parameters}
+  ${data}=  test_qualification_data  ${qualification_parameters}
   ${config}=  test_qualification_config_data
   ${qualification_data}=  Create Dictionary  data=${data}
   Set To Dictionary    ${qualification_data}  config=${config}
@@ -792,6 +811,11 @@ Log differences between dicts
   [Arguments]  ${username}
   Run Keyword If  '${RESOURCE}' == 'plans'  Run As  ${username}  Оновити сторінку з планом  ${TENDER['TENDER_UAID']}
   ...      ELSE  Run As  ${username}  Оновити сторінку з тендером  ${TENDER['TENDER_UAID']}
+
+
+Оновити сторінку квалiфiкацii
+  [Arguments]  ${username}
+  Run As  ${username}  Оновити сторінку з тендером  ${QUALIFICATION['QUALIFICATION_UAID']}
 
 
 Звірити поле тендера

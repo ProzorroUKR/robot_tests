@@ -25,4 +25,14 @@ Suite Teardown  Test Suite Teardown Framework
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      find_qualification
   ...      critical
-  Можливість знайти кваліфікацію по ідентифікатору
+  Завантажити дані про кваліфікацію
+  FOR  ${username}  IN  @{USED_ROLES}
+    Run As  ${${username}}  Пошук кваліфікаціi по ідентифікатору  ${QUALIFICATION['QUALIFICATION_UAID']}
+  END
+
+
+Відображення заголовку кваліфікаціi
+
+
+
+Відображення опису кваліфікаціi

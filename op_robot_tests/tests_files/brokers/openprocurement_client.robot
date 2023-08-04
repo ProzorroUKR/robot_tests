@@ -44,7 +44,7 @@ Library  Collections
   ${status}=  Run Keyword And Return Status  Dictionary Should Contain Key  ${USERS.users['${username}'].id_map}  ${qualification_uaid}
   Run Keyword And Return If  ${status}  Get From Dictionary  ${USERS.users['${username}'].id_map}  ${qualification_uaid}
   Call Method  ${USERS.users['${username}'].framework_client}  get_qualifications
-  ${qualification_id}=  Wait Until Keyword Succeeds  5x  30 sec  get_qualification_id_by_uaid  ${qualification_uaid}  ${USERS.users['${username}'].framework_client}
+  ${qualification_id}=  Wait Until Keyword Succeeds  5x  30 sec  get_qualification_id_by_uaid   ${qualification_uaid}   ${USERS.users['${username}'].framework_client}
   Set To Dictionary  ${USERS.users['${username}'].id_map}  ${qualification_uaid}  ${qualification_id}
   [return]  ${qualification_id}
 
@@ -752,7 +752,9 @@ Library  Collections
 
 Пошук кваліфікаціi по ідентифікатору
   [Arguments]  ${username}  ${qualification_uaid}  ${save_key}=qualification_data
-  ${internalid}=  openprocurement_client.Отримати internal id кваліфікаціi по UAid  ${username}  ${qualification_uaid}
+#  ${internalid}=  openprocurement_client.Отримати internal id кваліфікаціi по UAid  ${username}  ${qualification_uaid}
+  ${internalid}=  Get Variable Value     ${QUALIFICATION['QUALIFICATION_ID']}
+  Log  ${internalid}
   ${qualification}=  openprocurement_client.Отримати кваліфікацію по внутрішньому ідентифікатору  ${username}  ${internalid}  ${save_key}
   [return]  ${qualification}
 
