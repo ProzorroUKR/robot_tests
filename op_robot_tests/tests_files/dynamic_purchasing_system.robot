@@ -15,8 +15,9 @@ Suite Teardown  Test Suite Teardown Framework
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_qualification
   ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Можливість створити кваліфікацію
+  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Створити артефакт framework
 
 
 Можливість знайти кваліфікацію по ідентифікатору
@@ -32,7 +33,13 @@ Suite Teardown  Test Suite Teardown Framework
 
 
 Відображення заголовку кваліфікаціi
-
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних кваліфікаціi
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      qualification_view  level1
+  ...      critical
+#  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Звірити відображення поля title кваліфікаціi для користувача ${viewer}
 
 
 Відображення опису кваліфікаціi

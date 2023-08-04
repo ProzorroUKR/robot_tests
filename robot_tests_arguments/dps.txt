@@ -3,3 +3,4 @@
 
 -i create_qualification
 -i find_qualification
+-i qualification_view

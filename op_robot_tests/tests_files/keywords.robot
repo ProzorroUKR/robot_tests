@@ -41,7 +41,6 @@ Test Suite Teardown Plan
 
 Test Suite Teardown Framework
   Close all browsers
-  Run Keyword And Ignore Error  Створити артефакт framework
 
 
 Test Case Teardown Plan
@@ -824,6 +823,12 @@ Log differences between dicts
   Звірити поле тендера із значенням  ${username}  ${tender_uaid}  ${left}  ${field}
 
 
+Звірити поле кваліфікаціi
+  [Arguments]  ${username}  ${qualification_uaid}  ${qualification_data}  ${field}
+  ${left}=  get_from_object  ${qualification_data.data}  ${field}
+  Звірити поле кваліфікаціi із значенням  ${username}  ${qualification_uaid}  ${left}  ${field}
+
+
 Звірити поле об'єкта моніторингу
   [Arguments]  ${username}  ${monitoring_uaid}  ${monitoring_data}  ${field}
   ${left}=  get_from_object  ${monitoring_data.data}  ${field}
@@ -845,6 +850,12 @@ Log differences between dicts
 Звірити поле тендера із значенням
   [Arguments]  ${username}  ${tender_uaid}  ${left}  ${field}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
   ${right}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${field}  ${object_id}  ${object_type}  ${object_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
+Звірити поле кваліфікаціi із значенням
+  [Arguments]  ${username}  ${qualification_uaid}  ${left}  ${field}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
+  ${right}=  Отримати дані із кваліфікаціi  ${username}  ${qualification_uaid}  ${field}  ${object_id}  ${object_type}  ${object_index}
   Порівняти об'єкти  ${left}  ${right}
 
 
@@ -1017,6 +1028,31 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].tender_data.data}
   Set To Dictionary  ${USERS.users['${username}'].tender_data}  data=${data}
   Log  ${USERS.users['${username}'].tender_data.data}
+  [Return]  ${field_value}
+
+
+Отримати дані із кваліфікаціi
+  [Arguments]  ${username}  ${qualification_uaid}  ${field_name}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
+  ${field}=  Run Keyword If  '${object_id}'  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
+  ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}\[${object_index}].${field_name}
+  ...             ELSE  Set Variable  ${field_name}
+  Log Many    ${USERS.users['${username}']}
+  Log Many    ${USERS.users['${viewer}'].qualification_data.data}
+  Log Many    ${USERS.users['${tender_owner}'].qualification_data.data}
+  ${status}  ${field_value}=  Run keyword and ignore error
+  ...      get_from_object
+  ...      ${USERS.users['${username}'].qualification_data.data}
+  ...      ${field}
+  # If field in cache, return its value
+  Run Keyword if  '${status}' == 'PASS'  Return from keyword   ${field_value}
+  # Else call broker to find field
+  ${field_value}=  Run Keyword IF  '${object_id}'  Отримати дані із об’єкта тендера  ${username}  ${qualification_uaid}  ${object_id}  ${field_name}
+  ...                          ELSE  Run As  ${username}  Отримати інформацію із тендера  ${tender_uaid}  ${field}
+  # And caching its value before return
+  Set_To_Object  ${USERS.users['${username}'].qualification_data.data}  ${field}  ${field_value}
+  ${data}=  munch_dict  arg=${USERS.users['${username}'].qualification_data.data}
+  Set To Dictionary  ${USERS.users['${username}'].qualification_data}  data=${data}
+  Log  ${USERS.users['${username}'].qualification_data.data}
   [Return]  ${field_value}
 
 

@@ -780,6 +780,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Звірити поле тендера із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${data}  ${field}
 
 
+Звірити відображення поля ${field} кваліфікаціi для користувача ${username}
+  Звірити поле кваліфікаціi  ${username}  ${QUALIFICATION['QUALIFICATION_UAID']}  ${USERS.users['${tender_owner}'].initial_data}  ${field}
+
+
 Звірити відображення поля ${field} тендера для користувача ${username}
   Звірити поле тендера  ${username}  ${TENDER['TENDER_UAID']}  ${USERS.users['${tender_owner}'].initial_data}  ${field}
 
