@@ -35,7 +35,7 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}'].id_map}  ${tender_uaid}  ${tender_id}
   [return]  ${tender_id}
 
-//TODO
+
 Отримати internal id кваліфікаціi по UAid
   [Arguments]  ${username}  ${qualification_uaid}
   Log  ${username}
@@ -732,7 +732,7 @@ Library  Collections
   Log  ${tender}
   [return]   ${tender}
 
-//TODO
+
 Отримати кваліфікацію по внутрішньому ідентифікатору
   [Arguments]  ${username}  ${internalid}  ${save_key}=qualification_data
   ${qualification}=  Call Method  ${USERS.users['${username}'].framework_client}  get_qualification  ${internalid}
