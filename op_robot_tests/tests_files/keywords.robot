@@ -1036,9 +1036,6 @@ Log differences between dicts
   ${field}=  Run Keyword If  '${object_id}'  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
   ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}\[${object_index}].${field_name}
   ...             ELSE  Set Variable  ${field_name}
-  Log Many    ${USERS.users['${username}']}
-  Log Many    ${USERS.users['${viewer}'].qualification_data.data}
-  Log Many    ${USERS.users['${tender_owner}'].qualification_data.data}
   ${status}  ${field_value}=  Run keyword and ignore error
   ...      get_from_object
   ...      ${USERS.users['${username}'].qualification_data.data}
