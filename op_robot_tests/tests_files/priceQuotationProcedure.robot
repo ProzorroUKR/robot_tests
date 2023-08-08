@@ -388,6 +388,8 @@ ${CRITERIA_LLC}     ${False}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider}
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+  Можливість активувати пропозицію користувачем ${provider}
 
 
 Можливість зменшити пропозицію на 5% першим учасником
@@ -429,6 +431,8 @@ ${CRITERIA_LLC}     ${False}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider1}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider1}
+  Можливість завантажити документ в пропозицію користувачем ${provider1}
+  Можливість активувати пропозицію користувачем ${provider1}
 
 
 Можливість подати пропозицію третім учасником
@@ -440,6 +444,8 @@ ${CRITERIA_LLC}     ${False}
   [Setup]  Дочекатись дати початку прийому пропозицій  ${provider2}  ${TENDER['TENDER_UAID']}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   Можливість подати цінову пропозицію priceQuotation користувачем ${provider2}
+  Можливість завантажити документ в пропозицію користувачем ${provider2}
+  Можливість активувати пропозицію користувачем ${provider2}
 
 
 Неможливість видалити пропозицію першим учасником під час прийому пропозицій
@@ -451,6 +457,17 @@ ${CRITERIA_LLC}     ${False}
   ${value}=  Run Keyword And Expect Error  *  Можливість скасувати цінову пропозицію користувачем ${provider}
   ${value}=  Convert To Lowercase  ${value}
   Should Contain  ${value}  can't delete bid in price quotation tender
+
+
+Можливість підтвердити цінову пропозицію після зміни умов тендера першим учасником
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      open_confirm_first_bid
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${status}=  Set Variable  pending
+  Run As  ${provider}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  status  ${status}
 
 
 Можливість дочекатись дати початку періоду кваліфікації
@@ -477,15 +494,53 @@ ${CRITERIA_LLC}     ${False}
   Порівняти об'єкти  ${min_bid_amount}  ${award.value.amount}
 
 
+Можливість підтвердити першого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_first_award
+  ...  critical
+  [Setup]  Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Run As  ${tender_owner}  Підтвердити постачальника без перевірки milestones  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість cкасування рішення кваліфікаційної комісії
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_1_award_qualification_by_customer
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість дискваліфікувати постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  disqualification_second_award
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  1
+
+
 Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_add_doc_to_first_award
+  ...  qualification_add_doc_to_third_award
   ...  critical
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
-  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії   ${file_path}   ${TENDER['TENDER_UAID']}   0
+  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії   ${file_path}   ${TENDER['TENDER_UAID']}   2
   Remove File  ${file_path}
+
+
+Можливість підтвердити постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_approve_third_award
+  ...  critical
+  [Setup]  Дочекатись дати початку періоду кваліфікації  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  Run As  ${tender_owner}  Підтвердити постачальника без перевірки milestones  ${TENDER['TENDER_UAID']}  2
 
 
 Неможливість кваліфікуватися замовником
