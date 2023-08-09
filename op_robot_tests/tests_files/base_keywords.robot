@@ -36,6 +36,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
   ...      criteria_lot=${${CRITERIA_LOT}}
   ...      criteria_llc=${${CRITERIA_LLC}}
+  ${ENV_NAME}=  Get Variable Value    ${ENV_NAME}  staging
+  Set to dictionary  ${tender_parameters}  env_name=${ENV_NAME}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -2478,7 +2480,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
   ${methods}=  Create List  aboveThreshold  aboveThresholdEU  aboveThresholdUA  belowThreshold  competitiveDialogueEU
   ...  competitiveDialogueUA  competitiveDialogueEU.stage2  competitiveDialogueUA.stage2  closeFrameworkAgreementUA
-  ...  esco  simple.defense
+  ...  esco  simple.defense  priceQuotation
   ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
   ${field}=  Set variable  status
   Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${status}

@@ -3342,6 +3342,15 @@ Library  Collections
   Log  ${contract}
 
 
+Редагувати вартість договору
+  [Arguments]  ${username}  ${contract_uaid}  ${change_amount_body}
+  ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
+  Set_To_Object  ${change_amount_body}  contractNumber   ${internalid}
+  Log  ${change_amount_body}
+  ${contract}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract  ${internalid}  ${USERS.users['${username}'].contract_access_token}  ${change_amount_body}
+  Log  ${contract}
+
+
 Одночасно Редагувати два поля договору
   [Arguments]  ${username}  ${contract_uaid}  ${first_fieldname}  ${first_fieldvalue}  ${second_fieldname}  ${second_fieldvalue}
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}

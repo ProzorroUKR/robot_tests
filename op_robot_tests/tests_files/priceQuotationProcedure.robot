@@ -800,6 +800,9 @@ ${CRITERIA_LLC}     ${False}
   ...      contract_view
   ...      non-critical
   [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${tender}=  Пошук тендера по ідентифікатору  ${tender_owner}  ${TENDER['TENDER_UAID']}
+  ${contracts}=  Get From Dictionary  ${tender.data}  contracts
+  Set to dictionary  ${USERS.users['${tender_owner}'].tender_data.data}  contracts=${contracts}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
   Log  ${award}
@@ -1126,8 +1129,12 @@ ${CRITERIA_LLC}     ${False}
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   ...      ${award.value.valueAddedTaxIncluded}
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
+  ${data}=  create_change_amount_body
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${amount_net}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
-  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amountNet  ${amount_net}
+#  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amountNet  ${amount_net}
+  Run As  ${tender_owner}  Редагувати вартість договору  ${CONTRACT_UAID}  ${data}
 
 
 Можливість редагувати вартість договору
@@ -1140,8 +1147,11 @@ ${CRITERIA_LLC}     ${False}
   Log  ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   ${number}=  Set Variable  ${5000}
   ${amount}=  Evaluate  ${number}+${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ${amount_net}=  Get From Dictionary  ${USERS.users['${tender_owner}'].contract_data.data.value}  amountNet
+  ${data}=  create_change_amount_body  ${amount}  ${amount_net}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
-  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
+#  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
+  Run As  ${tender_owner}  Редагувати вартість договору  ${CONTRACT_UAID}  ${data}
 
 
 Можливість застосувати зміну договору

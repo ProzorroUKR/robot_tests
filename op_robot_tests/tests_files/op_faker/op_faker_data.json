@@ -8240,6 +8240,12 @@
         "endDateOfTheReportingPeriod",
         "anotherEvent"
     ],
+     "agreement_id_sb": [
+        "c0b1ea45c2c04f479a4ce62aff594d1c"
+    ],
+     "valid_profile_ids_sb": [
+        "775445-30230000-820195-40996864"
+    ],
     "valid_profile_ids": [
         "163299-92000000-130002-40000777"
     ],

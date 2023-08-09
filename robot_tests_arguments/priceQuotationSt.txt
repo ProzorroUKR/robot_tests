@@ -1,5 +1,5 @@
 -v MODE:priceQuotation
--v IS_SANDBOX:True
+-v ENV_NAME:sandbox
 
 -v NUMBER_OF_ITEMS:1
 -v NUMBER_OF_LOTS:0

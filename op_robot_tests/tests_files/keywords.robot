@@ -466,12 +466,14 @@ Get Broker Property By Username
   ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}=  Get Variable Value  ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}  ${False}
   ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}=  Get Variable Value  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}  ${False}
   ${BID_INVALID_EXPECTED_VALUE}=  Get Variable Value  ${BID_INVALID_EXPECTED_VALUE}  ${False}
+  ${ENV_NAME}=  Get Variable Value  ${ENV_NAME}  staging
   ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}
   ...      ${username}
   ...      ${BID_OVER_LIMIT}
   ...      ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}
   ...      ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}
   ...      ${BID_INVALID_EXPECTED_VALUE}
+  ...      ${ENV_NAME}
   [Return]  ${bid}
 
 

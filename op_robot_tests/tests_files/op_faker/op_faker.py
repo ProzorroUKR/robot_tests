@@ -36,6 +36,7 @@ class OP_Provider(BaseProvider):
     title_of_milestones = _fake_data.title_of_milestones
     procuringTenderers = _fake_data.procuringTenderers
     valid_profile_ids = _fake_data.valid_profile_ids
+    valid_profile_ids_sb = _fake_data.valid_profile_ids_sb
     invalid_profile_ids = _fake_data.invalid_profile_ids
     tender_wrong_status = _fake_data.wrong_status_when_create_tender
     profiles_hidden_status = _fake_data.profiles_hidden_status
@@ -46,6 +47,7 @@ class OP_Provider(BaseProvider):
     criteria_llc = _fake_data.criteria_llc
     cpb = _fake_data.cpb
     valid_agreement_id = _fake_data.agreement_id
+    valid_agreement_id_sb = _fake_data.agreement_id_sb
 
 
 
@@ -260,7 +262,12 @@ class OP_Provider(BaseProvider):
 
     @classmethod
     def valid_profile(self):
-        return self.random_element(BaseProvider(Generator()),self.valid_profile_ids)
+         return self.random_element(BaseProvider(Generator()), self.valid_profile_ids)
+
+    @classmethod
+    def valid_profile_sb(self):
+         return self.random_element(BaseProvider(Generator()), self.valid_profile_ids_sb)
+
 
     @classmethod
     def invalid_profile(self):
@@ -300,4 +307,8 @@ class OP_Provider(BaseProvider):
 
     @classmethod
     def valid_agreement(self):
-        return self.random_element(BaseProvider(Generator()),self.valid_agreement_id)
+        return self.random_element(BaseProvider(Generator()), self.valid_agreement_id)
+
+    @classmethod
+    def valid_agreement_sb(self):
+        return self.random_element(BaseProvider(Generator()), self.valid_agreement_id_sb)

@@ -82,6 +82,16 @@ def create_fake_amount_net(award_amount, tender_value_added_tax_included, contra
         return round(random.uniform(half_min_amount_net, award_amount), 2)
 
 
+def create_change_amount_body(contract_amount, contract_amountNet):
+    data = {
+        "value": {
+            "amount": contract_amount,
+            "amountNet": contract_amountNet
+        }
+    }
+    return munchify({'data': data})
+
+
 def create_fake_amount_paid(contract_amount, contract_amountNet):
     minimum = contract_amountNet
     maximum = contract_amount
@@ -865,14 +875,20 @@ def test_bid_data_selection(data, index):
 
 
 def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, more_than_two_requirements=False,
-                     invalid_expected_value=False):
+                     invalid_expected_value=False, env_name='staging'):
     bid = test_bid_data()
+    sandbox_bids = ["4353452", "213412", "12312312"]
+    staging_bids = ["45678526", "45678527", "11111113"]
+    if env_name == 'sandbox':
+        current_bids = sandbox_bids
+    else:
+        current_bids = staging_bids
     if username == "Tender_User":
-        bid.data["tenderers"][0]["identifier"]["id"] = "45678526"
+        bid.data["tenderers"][0]["identifier"]["id"] = current_bids[0]
     if username == "Tender_User1":
-        bid.data["tenderers"][0]["identifier"]["id"] = "45678527"
+        bid.data["tenderers"][0]["identifier"]["id"] = current_bids[1]
     if username == "Tender_User2":
-        bid.data["tenderers"][0]["identifier"]["id"] = "11111113"
+        bid.data["tenderers"][0]["identifier"]["id"] = current_bids[2]
     bid.data.requirementResponses = []
     amount = 0
     if 'criteria' in data:
@@ -1281,10 +1297,16 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     del data["submissionMethodDetails"]
     data['procurementMethodType'] = 'priceQuotation'
     data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
-    data['agreement'] = test_agreement_id()
+    if params.get('env_name') == 'sandbox':
+        agreement = test_agreement_id_sb()
+        valid_profile = fake.valid_profile_sb()
+    else:
+        agreement = test_agreement_id()
+        valid_profile = fake.valid_profile()
+    data['agreement'] = agreement
     data['criteria'] = []
     for index in range(params['number_of_items']):
-        data['items'][index]['profile'] = fake.valid_profile()
+        data['items'][index]['profile'] = valid_profile
         data['items'][index]['id'] = uuid4().hex
         # item_id = data['items'][index]['id']
         # first_criteria = test_profile_first_criteria(item_id)
@@ -1864,6 +1886,12 @@ def edit_tender_data_for_buyers(tender_data, plan_1_data, plan_2_data, plan_3_da
 def test_agreement_id():
     return munchify({
         "id": fake.valid_agreement()
+    })
+
+
+def test_agreement_id_sb():
+    return munchify({
+        "id": fake.valid_agreement_sb()
     })
 
 
