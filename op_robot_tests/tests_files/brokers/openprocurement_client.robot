@@ -3322,11 +3322,16 @@ Library  Collections
   ...      ${document}
   ...      ${contract.data.id}
   ...      access_token=${contract.access.token}
-  ${change_document}=  test_change_document_data  ${reply_doc_create}  ${USERS.users['${username}'].changes[0].data.id}
+  ${change_document}=  test_change_document_data
+  ...      ${reply_doc_create}
+  ...      ${USERS.users['${username}'].changes[0].data.id}
+  ${document_id}=  Get From Dictionary  ${change_document.data}  id
+  ${env_name}=  Get From Dictionary  ${USERS.users['${username}']}  env_name
+  ${change_document}=  Run Keyword And Return If  '${env_name}' == 'sandbox'   delete_rogue_fields_in_document  ${change_document}
   ${reply_doc_patch}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_document
   ...      ${contract.data.id}
   ...      ${change_document}
-  ...      ${change_document.data.id}
+  ...      ${document_id}
   ...      access_token=${contract.access.token}
   Log  ${reply_doc_create}
   Log  ${reply_doc_patch}

@@ -1087,6 +1087,8 @@ ${CRITERIA_LLC}     ${False}
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      upload_change_document
   [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${ENV_NAME}=  Get Variable Value    ${ENV_NAME}  staging
+  Set to dictionary  ${USERS.users['${tender_owner}']}  env_name=${ENV_NAME}
   Додати документацію до зміни договору
 
 

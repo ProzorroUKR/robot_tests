@@ -1018,6 +1018,14 @@ def test_change_document_data(document, change_id):
     return munchify(document)
 
 
+def delete_rogue_fields_in_document(document):
+    del document.data['url']
+    del document.data['hash']
+    del document.data['datePublished']
+    del document.data['id']
+    return munchify(document)
+
+
 def test_tender_data_open(params, submissionMethodDetails, plan_data):
     """We should not provide any values for `enquiryPeriod` when creating
     an openUA, openEU open_simple_defense procedure. That field should not be present at all.
