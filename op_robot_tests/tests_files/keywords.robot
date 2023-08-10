@@ -39,6 +39,10 @@ Test Suite Teardown Plan
   Run Keyword And Ignore Error  Створити артефакт план
 
 
+Test Suite Teardown Framework
+  Close all browsers
+
+
 Test Case Teardown Plan
   Close all browsers
   Run Keyword And Ignore Error  Створити артефакт план
@@ -225,6 +229,23 @@ Get Broker Property By Username
   log_object_data  ${artifact}  file_name=artifact_plan  update=${True}  artifact=${True}
 
 
+Створити артефакт framework
+  ${artifact}=  Create Dictionary
+  ...      api_version=${API_VERSION}
+  ...      qualification_uaid=${QUALIFICATION['QUALIFICATION_UAID']}
+  ...      last_modification_date=${QUALIFICATION['LAST_MODIFICATION_DATE']}
+  ...      mode= "dynamicPurchasingSystem"
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
+  ...          qualification_owner=${USERS.users['${tender_owner}'].broker}
+  ...          access_token=${USERS.users['${tender_owner}'].access_token}
+  ...          qualification_id=${USERS.users['${tender_owner}'].qualification_data.data.id}
+  ...          qualificationowner_access_token=${USERS.users['${tender_owner}'].access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
+  ...      qualification_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
+  Log   ${artifact}
+  log_object_data  ${artifact}  file_name=artifact_framework  update=${True}  artifact=${True}
+
+
 Завантажити дані про тендер
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
@@ -249,6 +270,24 @@ Get Broker Property By Username
   Set Suite Variable  ${lot_index}
   Set Suite Variable  ${TENDER}
   log_object_data  ${ARTIFACT}  file_name=artifact  update=${True}  artifact=${True}
+
+
+Завантажити дані про кваліфікацію
+  ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_framework.yaml
+  ${ARTIFACT}=  load_data_from  ${file_path}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.access_token}
+  ${QUALIFICATION}=  Create Dictionary
+  ...      QUALIFICATION_UAID=${ARTIFACT.qualification_uaid}
+  ...      QUALIFICATION_ID=${ARTIFACT.qualification_id}
+  ...      LAST_MODIFICATION_DATE=${ARTIFACT.last_modification_date}
+  ${MODE}=  Get Variable Value  ${MODE}  ${ARTIFACT.mode}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.tender_owner_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider}']}  access_token=${ARTIFACT.provider_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  access_token=${ARTIFACT.provider1_access_token}
+  Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider2}']}  access_token=${ARTIFACT.provider2_access_token}
+  Set Suite Variable  ${MODE}
+  Set Suite Variable  ${QUALIFICATION}
+  log_object_data  ${ARTIFACT}  file_name=artifact_framework  update=${True}  artifact=${True}
 
 
 Підготувати дані для створення тендера
@@ -291,6 +330,18 @@ Get Broker Property By Username
   Set Global Variable  ${TENDER}
   Log  ${tender_data}
   [Return]  ${tender_data}
+
+
+Підготувати дані для створення кваліфікації
+  [Arguments]    ${qualification_parameters}
+  ${data}=  test_qualification_data  ${qualification_parameters}
+  ${config}=  test_qualification_config_data
+  ${qualification_data}=  Create Dictionary  data=${data}
+  Set To Dictionary    ${qualification_data}  config=${config}
+  ${QUALIFICATION}=  Create Dictionary
+  Set Global Variable  ${QUALIFICATION}
+  Log  ${qualification_data}
+  [Return]  ${qualification_data}
 
 
 Підготувати дані для створення плану з buyers
@@ -415,12 +466,14 @@ Get Broker Property By Username
   ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}=  Get Variable Value  ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}  ${False}
   ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}=  Get Variable Value  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}  ${False}
   ${BID_INVALID_EXPECTED_VALUE}=  Get Variable Value  ${BID_INVALID_EXPECTED_VALUE}  ${False}
+  ${ENV_NAME}=  Get Variable Value  ${ENV_NAME}  staging
   ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}
   ...      ${username}
   ...      ${BID_OVER_LIMIT}
   ...      ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}
   ...      ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}
   ...      ${BID_INVALID_EXPECTED_VALUE}
+  ...      ${ENV_NAME}
   [Return]  ${bid}
 
 
@@ -618,6 +671,29 @@ Get Broker Property By Username
   [Return]  ${adapted_data}
 
 
+Адаптувати дані для оголошення кваліфікації
+  [Arguments]  ${qualification_data}
+  # munchify is used to make deep copy of ${tender_data}
+  ${adapted_data}=  munchify  ${qualification_data}
+  FOR  ${username}  IN  @{USED_ROLES}
+  # munchify is used to make deep copy of ${adapted_data}
+    ${adapted_data_copy}=  munchify  ${adapted_data}
+    ${status}  ${adapted_data_from_broker}=  Run keyword and ignore error  Run As  ${${username}}  Підготувати дані для оголошення тендера  ${adapted_data_copy}  ${username}
+    Log  ${adapted_data_from_broker}
+  # Need this in case ``${${username}}`` doesn't have `Підготувати дані для оголошення
+  # тендера користувачем` keyword, so after `Run keyword and ignore error` call
+  # ``${adapted_data_from_broker}`` will be ``${None}``. Else - nothing changes.
+    ${adapted_data_from_broker}=  Set variable if  '${status}' == 'FAIL'  ${adapted_data}  ${adapted_data_from_broker}
+    Log differences between dicts  ${adapted_data.data}  ${adapted_data_from_broker.data}  ${username} has changed initial data!
+  # Update (or not, if nothing changed) ``${adapted_data}``.
+    ${adapted_data}=  munchify  ${adapted_data_from_broker}
+    Log  ${adapted_data}
+  END
+  Log  ${adapted_data}
+  Log  ${qualification_data}
+  [Return]  ${adapted_data}
+
+
 Log differences between dicts
   [Arguments]  ${left}  ${right}  ${begin}  ${end}=${Empty}
   ${diff_status}  ${diff_message}=  Run Keyword And Ignore Error  Dictionaries Should Be Equal  ${left}  ${right}
@@ -738,10 +814,21 @@ Log differences between dicts
   ...      ELSE  Run As  ${username}  Оновити сторінку з тендером  ${TENDER['TENDER_UAID']}
 
 
+Оновити сторінку квалiфiкацii
+  [Arguments]  ${username}
+  Run As  ${username}  Оновити сторінку з тендером  ${QUALIFICATION['QUALIFICATION_UAID']}
+
+
 Звірити поле тендера
   [Arguments]  ${username}  ${tender_uaid}  ${tender_data}  ${field}
   ${left}=  get_from_object  ${tender_data.data}  ${field}
   Звірити поле тендера із значенням  ${username}  ${tender_uaid}  ${left}  ${field}
+
+
+Звірити поле кваліфікаціi
+  [Arguments]  ${username}  ${qualification_uaid}  ${qualification_data}  ${field}
+  ${left}=  get_from_object  ${qualification_data.data}  ${field}
+  Звірити поле кваліфікаціi із значенням  ${username}  ${qualification_uaid}  ${left}  ${field}
 
 
 Звірити поле об'єкта моніторингу
@@ -765,6 +852,12 @@ Log differences between dicts
 Звірити поле тендера із значенням
   [Arguments]  ${username}  ${tender_uaid}  ${left}  ${field}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
   ${right}=  Отримати дані із тендера  ${username}  ${tender_uaid}  ${field}  ${object_id}  ${object_type}  ${object_index}
+  Порівняти об'єкти  ${left}  ${right}
+
+
+Звірити поле кваліфікаціi із значенням
+  [Arguments]  ${username}  ${qualification_uaid}  ${left}  ${field}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
+  ${right}=  Отримати дані із кваліфікаціi  ${username}  ${qualification_uaid}  ${field}  ${object_id}  ${object_type}  ${object_index}
   Порівняти об'єкти  ${left}  ${right}
 
 
@@ -937,6 +1030,28 @@ Log differences between dicts
   ${data}=  munch_dict  arg=${USERS.users['${username}'].tender_data.data}
   Set To Dictionary  ${USERS.users['${username}'].tender_data}  data=${data}
   Log  ${USERS.users['${username}'].tender_data.data}
+  [Return]  ${field_value}
+
+
+Отримати дані із кваліфікаціi
+  [Arguments]  ${username}  ${qualification_uaid}  ${field_name}  ${object_id}=${Empty}  ${object_type}=${Empty}  ${object_index}=${Empty}
+  ${field}=  Run Keyword If  '${object_id}'  Отримати шлях до поля об’єкта  ${username}  ${field_name}  ${object_id}
+  ...             ELSE IF  '${object_type}' and '${object_index}'  Set Variable  ${object_type}\[${object_index}].${field_name}
+  ...             ELSE  Set Variable  ${field_name}
+  ${status}  ${field_value}=  Run keyword and ignore error
+  ...      get_from_object
+  ...      ${USERS.users['${username}'].qualification_data.data}
+  ...      ${field}
+  # If field in cache, return its value
+  Run Keyword if  '${status}' == 'PASS'  Return from keyword   ${field_value}
+  # Else call broker to find field
+  ${field_value}=  Run Keyword IF  '${object_id}'  Отримати дані із об’єкта тендера  ${username}  ${qualification_uaid}  ${object_id}  ${field_name}
+  ...                          ELSE  Run As  ${username}  Отримати інформацію із тендера  ${tender_uaid}  ${field}
+  # And caching its value before return
+  Set_To_Object  ${USERS.users['${username}'].qualification_data.data}  ${field}  ${field_value}
+  ${data}=  munch_dict  arg=${USERS.users['${username}'].qualification_data.data}
+  Set To Dictionary  ${USERS.users['${username}'].qualification_data}  data=${data}
+  Log  ${USERS.users['${username}'].qualification_data.data}
   [Return]  ${field_value}
 
 
@@ -1538,6 +1653,17 @@ Require Failure
   ${LAST_MODIFICATION_DATE}=  Get Current TZdate
   ${status}=  Get Variable Value  ${TEST_STATUS}  PASS
   Run Keyword If  '${status}' == 'PASS'  Set To Dictionary  ${TENDER}  LAST_MODIFICATION_DATE=${LAST_MODIFICATION_DATE}
+
+
+Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  [Documentation]
+  ...      Variable ``${TEST_STATUS}`` is only available in test case teardown.
+  ...      When we call this keyword from elswere, we need to presume that
+  ...      test status is ``PASS`` (since previous keywords passed and this
+  ...      one was called).
+  ${LAST_MODIFICATION_DATE}=  Get Current TZdate
+  ${status}=  Get Variable Value  ${TEST_STATUS}  PASS
+  Run Keyword If  '${status}' == 'PASS'  Set To Dictionary  ${QUALIFICATION}  LAST_MODIFICATION_DATE=${LAST_MODIFICATION_DATE}
 
 
 Оновити DASU_LAST_MODIFICATION_DATE

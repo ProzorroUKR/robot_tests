@@ -36,6 +36,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
   ...      criteria_lot=${${CRITERIA_LOT}}
   ...      criteria_llc=${${CRITERIA_LLC}}
+  ${ENV_NAME}=  Get Variable Value    ${ENV_NAME}  staging
+  Set to dictionary  ${tender_parameters}  env_name=${ENV_NAME}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -445,6 +447,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 
+Можливість створити кваліфікацію
+   ${qualification_parameters}=  Create Dictionary
+  ...      mode=${MODE}
+  ${qualification_data}=  Підготувати дані для створення кваліфікації  ${qualification_parameters}
+  ${adapted_data}=  Адаптувати дані для оголошення кваліфікації  ${qualification_data}
+  ${QUALIFICATION_UAID}=  Run As  ${tender_owner}  Створити кваліфікацію  ${adapted_data}
+  Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
+  Set To Dictionary  ${QUALIFICATION}  QUALIFICATION_UAID=${QUALIFICATION_UAID}
+
+
 Підготувати збереження планів buyers
   ${BUYER_PLAN}=  Create Dictionary
   Set Global Variable  ${BUYER_PLAN}
@@ -768,6 +780,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Звірити відображення поля ${field} тендера із ${data} для користувача ${username}
   Звірити поле тендера із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${data}  ${field}
+
+
+Звірити відображення поля ${field} кваліфікаціi для користувача ${username}
+  Звірити поле кваліфікаціi  ${username}  ${QUALIFICATION['QUALIFICATION_UAID']}  ${USERS.users['${tender_owner}'].initial_data}  ${field}
 
 
 Звірити відображення поля ${field} тендера для користувача ${username}
@@ -2464,7 +2480,7 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${procurementMethodType}=  Get variable value  ${USERS.users['${username}'].tender_data.data.procurementMethodType}
   ${methods}=  Create List  aboveThreshold  aboveThresholdEU  aboveThresholdUA  belowThreshold  competitiveDialogueEU
   ...  competitiveDialogueUA  competitiveDialogueEU.stage2  competitiveDialogueUA.stage2  closeFrameworkAgreementUA
-  ...  esco  simple.defense
+  ...  esco  simple.defense  priceQuotation
   ${status}=  Set Variable If  '${procurementMethodType}' in ${methods}  pending  active
   ${field}=  Set variable  status
   Run as  ${username}  Змінити цінову пропозицію  ${TENDER['TENDER_UAID']}  ${field}  ${status}

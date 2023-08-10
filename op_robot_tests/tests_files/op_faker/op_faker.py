@@ -22,6 +22,7 @@ class OP_Provider(BaseProvider):
     _fake_data = load_data_from_file("op_faker_data.json")
     word_list = _fake_data.words
     procuringEntities = _fake_data.procuringEntities
+    procuringEntitiesUpdated = _fake_data.procuringEntitiesUpdated
     funders = _fake_data.funders
     funders_scheme_list = _fake_data.funders_scheme
     addresses = _fake_data.addresses_list
@@ -35,6 +36,7 @@ class OP_Provider(BaseProvider):
     title_of_milestones = _fake_data.title_of_milestones
     procuringTenderers = _fake_data.procuringTenderers
     valid_profile_ids = _fake_data.valid_profile_ids
+    valid_profile_ids_sb = _fake_data.valid_profile_ids_sb
     invalid_profile_ids = _fake_data.invalid_profile_ids
     tender_wrong_status = _fake_data.wrong_status_when_create_tender
     profiles_hidden_status = _fake_data.profiles_hidden_status
@@ -45,6 +47,7 @@ class OP_Provider(BaseProvider):
     criteria_llc = _fake_data.criteria_llc
     cpb = _fake_data.cpb
     valid_agreement_id = _fake_data.agreement_id
+    valid_agreement_id_sb = _fake_data.agreement_id_sb
 
 
 
@@ -110,6 +113,15 @@ class OP_Provider(BaseProvider):
     @classmethod
     def procuringEntity(self):
         return deepcopy(self.random_element(BaseProvider(Generator()),self.procuringEntities))
+
+    @classmethod
+    def procuringEntityUpdated(self):
+        return deepcopy(self.random_element(BaseProvider(Generator()), self.procuringEntitiesUpdated))
+
+    @classmethod
+    def classification(self):
+        return deepcopy(self.random_element(BaseProvider(Generator()), self.classifications))
+
 
     @classmethod
     def procuringTenderer(self):
@@ -250,7 +262,12 @@ class OP_Provider(BaseProvider):
 
     @classmethod
     def valid_profile(self):
-        return self.random_element(BaseProvider(Generator()),self.valid_profile_ids)
+         return self.random_element(BaseProvider(Generator()), self.valid_profile_ids)
+
+    @classmethod
+    def valid_profile_sb(self):
+         return self.random_element(BaseProvider(Generator()), self.valid_profile_ids_sb)
+
 
     @classmethod
     def invalid_profile(self):
@@ -290,4 +307,8 @@ class OP_Provider(BaseProvider):
 
     @classmethod
     def valid_agreement(self):
-        return self.random_element(BaseProvider(Generator()),self.valid_agreement_id)
+        return self.random_element(BaseProvider(Generator()), self.valid_agreement_id)
+
+    @classmethod
+    def valid_agreement_sb(self):
+        return self.random_element(BaseProvider(Generator()), self.valid_agreement_id_sb)
