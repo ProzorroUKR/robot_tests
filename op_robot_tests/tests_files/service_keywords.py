@@ -122,8 +122,7 @@ from initial_data import (
     test_tender_config_data,
     test_qualification_data,
     test_qualification_config_data,
-    create_change_amount_body,
-    delete_rogue_fields_in_document
+    create_change_amount_body
 )
 from barbecue import chef
 # End of non-pointless import

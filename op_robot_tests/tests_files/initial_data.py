@@ -1013,16 +1013,13 @@ def test_lot_document_data(lot_id):
         })
 
 
-def test_change_document_data(document, change_id):
+def test_change_document_data(document, change_id, env_name):
     document.data.update({"documentOf": "change", "relatedItem": change_id})
-    return munchify(document)
-
-
-def delete_rogue_fields_in_document(document):
-    del document.data['url']
-    del document.data['hash']
-    del document.data['datePublished']
-    del document.data['id']
+    if env_name == 'sandbox':
+        del document.data['url']
+        del document.data['hash']
+        del document.data['datePublished']
+        del document.data['id']
     return munchify(document)
 
 
