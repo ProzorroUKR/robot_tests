@@ -3322,15 +3322,15 @@ Library  Collections
   ...      ${document}
   ...      ${contract.data.id}
   ...      access_token=${contract.access.token}
+  ${temp_doc}=  Create Dictionary  data=${reply_doc_create.data}
   ${change_document}=  test_change_document_data
   ...      ${reply_doc_create}
   ...      ${USERS.users['${username}'].changes[0].data.id}
   ...      ${USERS.users['${username}'].env_name}
-  ${document_id}=  Get From Dictionary  ${reply_doc_create.data}  id
   ${reply_doc_patch}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_document
   ...      ${contract.data.id}
   ...      ${change_document}
-  ...      ${document_id}
+  ...      ${temp_doc.data.id}
   ...      access_token=${contract.access.token}
   Log  ${reply_doc_create}
   Log  ${reply_doc_patch}
