@@ -28,8 +28,8 @@ from optparse import OptionParser
 __version__ = '2015-07-01'
 # See zc.buildout's changelog if this version is up to date.
 
-if os.path.exists('src'):
-    shutil.rmtree('src')
+# if os.path.exists('src'):
+#     shutil.rmtree('src')
 
 tmpeggs = tempfile.mkdtemp(prefix='bootstrap-')
 eggsdir = os.path.join(os.path.dirname(__file__), 'eggs')
