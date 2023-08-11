@@ -36,8 +36,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
   ...      criteria_lot=${${CRITERIA_LOT}}
   ...      criteria_llc=${${CRITERIA_LLC}}
-  ${ENV_NAME}=  Get Variable Value    ${ENV_NAME}  staging
-  Set to dictionary  ${tender_parameters}  env_name=${ENV_NAME}
+  ${IS_STAGING}=  Get Variable Value  ${ARTIFACT.is_staging}
+  Set to dictionary  ${tender_parameters}  is_staging=${IS_STAGING}
+  Set Suite Variable  ${IS_STAGING}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}

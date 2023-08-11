@@ -3326,7 +3326,7 @@ Library  Collections
   ${change_document}=  test_change_document_data
   ...      ${reply_doc_create}
   ...      ${USERS.users['${username}'].changes[0].data.id}
-  ...      ${USERS.users['${username}'].env_name}
+  ...      ${IS_STAGING}
   ${reply_doc_patch}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_document
   ...      ${contract.data.id}
   ...      ${change_document}
