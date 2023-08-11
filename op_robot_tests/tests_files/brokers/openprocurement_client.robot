@@ -3341,6 +3341,7 @@ Library  Collections
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
   ${contract}=  openprocurement_client.Пошук договору по ідентифікатору  ${username}  ${contract_uaid}
   Set_To_Object  ${contract.data}   ${fieldname}   ${fieldvalue}
+  ${contract}=  Run Keyword   prepare_conract_for_patching  ${contract}  ${IS_STAGING}
   Log  ${contract}
   ${contract}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract  ${internalid}  ${USERS.users['${username}'].contract_access_token}  ${contract}
   Log  ${contract}

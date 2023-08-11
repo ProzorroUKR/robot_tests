@@ -908,3 +908,21 @@ def edit_tender_data_for_plan_tender(data, mode, data_version):
 
 def get_lowest_value_from_list(list_value):
     return min(list_value)
+
+
+def prepare_conract_for_patching(contract_data, is_staging):
+    if not is_staging:
+        del contract_data['tender_id']
+        del contract_data['id']
+        del contract_data['dateSigned']
+        del contract_data['awardID']
+        del contract_data['owner']
+        del contract_data['documents']
+        del contract_data['procuringEntity']
+        del contract_data['dateCreated']
+        del contract_data['dateModified']
+        del contract_data['changes']
+        del contract_data['mode']
+        del contract_data['contractID']
+        del contract_data['suppliers']
+    return munchify(contract_data)
