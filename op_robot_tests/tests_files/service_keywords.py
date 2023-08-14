@@ -925,4 +925,8 @@ def prepare_conract_for_patching(contract_data, is_staging):
         del contract_data['data']['mode']
         del contract_data['data']['contractID']
         del contract_data['data']['suppliers']
+        if 'contractNumber' in contract_data['data']:
+            del contract_data['data']['contractNumber']
+        if 'buyerID' in contract_data['data']:
+            del contract_data['data']['buyerID']
     return munchify(contract_data)
