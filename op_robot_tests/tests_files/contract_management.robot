@@ -483,7 +483,11 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amountNet}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amountPaid_amount=${amountPaid.amount}
-  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  amountPaid.amount  ${amountPaid.amount}
+  ${data}=  create_change_amount_body
+  ...      ${USERS.users['${tender_owner}'].new_amountPaid_amount}
+  ...      ${USERS.users['${tender_owner}'].new_amountPaid_amount}
+  Run As  ${tender_owner}  Редагувати вартість договору  ${CONTRACT_UAID}  ${data}
+#  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  amountPaid.amount  ${amountPaid.amount}
 
 
 Можливість одночасно редагувати обсяг дійсно оплаченої суми з/без ПДВ
