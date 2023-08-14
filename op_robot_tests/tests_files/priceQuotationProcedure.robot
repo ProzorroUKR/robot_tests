@@ -613,6 +613,17 @@ ${CRITERIA_LLC}     ${False}
   Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
 
 
+Можливість кваліфікувати замовником першої пропозиції
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  qualification_approve_first_award_by_tender_owner
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  0
+
+
+
 Можливість кваліфікувати постачальником другої пропозиції
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  provider
