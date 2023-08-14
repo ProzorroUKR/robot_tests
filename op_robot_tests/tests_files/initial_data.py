@@ -93,11 +93,21 @@ def create_change_amount_body(contract_amount, contract_amountNet):
 
 
 def create_fake_amount_paid(contract_amount, contract_amountNet):
+    digits_number = digits_number_after_point(contract_amount)
     minimum = contract_amountNet
     maximum = contract_amount
     range = maximum - minimum
     half_min_range = minimum + range / 2
-    return round(random.uniform(minimum, half_min_range), 2)
+    return round(random.uniform(minimum, half_min_range), digits_number)
+
+
+def digits_number_after_point(number):
+    number_str = str(number)
+    dot_position = number_str.find('.')
+    if dot_position == -1:
+        return 0
+    decimal_digits = len(number_str) - dot_position - 1
+    return decimal_digits
 
 
 def create_fake_number(min_number, max_number):
