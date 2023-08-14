@@ -3360,6 +3360,7 @@ Library  Collections
   [Arguments]  ${username}  ${contract_uaid}  ${first_fieldname}  ${first_fieldvalue}  ${second_fieldname}  ${second_fieldvalue}
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
   ${contract}=  openprocurement_client.Пошук договору по ідентифікатору  ${username}  ${contract_uaid}
+  ${contract}=  Run Keyword   prepare_conract_for_patching  ${contract}  ${IS_STAGING}
   Set_To_Object  ${contract.data}  ${first_fieldname}  ${first_fieldvalue}
   Set_To_Object  ${contract.data}  ${second_fieldname}  ${second_fieldvalue}
   Log  ${contract}
