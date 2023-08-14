@@ -331,7 +331,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      plan_tender=${${PLAN_TENDER}}
 #  ...      tender_wrong_status=${${TENDER_WRONG_STATUS}}
   ...      tender_draft_status="draft"
-  Log     ${tender_parameters}
+  ${IS_STAGING}=  Get Variable Value  ${ARTIFACT.is_staging}
+  Set to dictionary  ${tender_parameters}  is_staging=${IS_STAGING}
+  Set Suite Variable  ${IS_STAGING}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
