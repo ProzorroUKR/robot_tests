@@ -287,6 +287,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      profiles_shortlistedfirms_empty=${${PROFILES_SHORTLISTEDFIRMS_EMPTY}}
   ...      unknown_profile=${${UNKNOWN_PROFILE}}
   ...      wrong_awards_count=${${WRONG_AWARDS_COUNT}}
+  ${IS_STAGING}=  Get Variable Value  ${ARTIFACT.is_staging}
+  Set to dictionary  ${tender_parameters}  is_staging=${IS_STAGING}
+  Set Suite Variable  ${IS_STAGING}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
