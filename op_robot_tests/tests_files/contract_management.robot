@@ -201,7 +201,7 @@ Suite Teardown  Test Suite Teardown
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
   ${data}=  create_change_amount_body
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
-  ...      ${amount_net}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
   Run As  ${tender_owner}  Редагувати вартість договору  ${CONTRACT_UAID}  ${data}
 #  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
