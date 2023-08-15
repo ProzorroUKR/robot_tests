@@ -36,8 +36,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      criteria_guarantee=${${CRITERIA_GUARANTEE}}
   ...      criteria_lot=${${CRITERIA_LOT}}
   ...      criteria_llc=${${CRITERIA_LLC}}
-  ${ENV_NAME}=  Get Variable Value    ${ENV_NAME}  staging
-  Set to dictionary  ${tender_parameters}  env_name=${ENV_NAME}
+  ${IS_STAGING}=  Get Variable Value  ${ARTIFACT.is_staging}
+  Set to dictionary  ${tender_parameters}  is_staging=${IS_STAGING}
+  Set Suite Variable  ${IS_STAGING}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -286,6 +287,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      profiles_shortlistedfirms_empty=${${PROFILES_SHORTLISTEDFIRMS_EMPTY}}
   ...      unknown_profile=${${UNKNOWN_PROFILE}}
   ...      wrong_awards_count=${${WRONG_AWARDS_COUNT}}
+  ${IS_STAGING}=  Get Variable Value  ${ARTIFACT.is_staging}
+  Set to dictionary  ${tender_parameters}  is_staging=${IS_STAGING}
+  Set Suite Variable  ${IS_STAGING}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}
@@ -327,7 +331,9 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...      plan_tender=${${PLAN_TENDER}}
 #  ...      tender_wrong_status=${${TENDER_WRONG_STATUS}}
   ...      tender_draft_status="draft"
-  Log     ${tender_parameters}
+  ${IS_STAGING}=  Get Variable Value  ${ARTIFACT.is_staging}
+  Set to dictionary  ${tender_parameters}  is_staging=${IS_STAGING}
+  Set Suite Variable  ${IS_STAGING}
   ${DIALOGUE_TYPE}=  Get Variable Value  ${DIALOGUE_TYPE}
   ${FUNDING_KIND}=  Get Variable Value  ${FUNDING_KIND}
   Run keyword if  '${DIALOGUE_TYPE}' != '${None}'  Set to dictionary  ${tender_parameters}  dialogue_type=${DIALOGUE_TYPE}

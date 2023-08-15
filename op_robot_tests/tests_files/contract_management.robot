@@ -103,8 +103,6 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      upload_change_document
   [Teardown]  Оновити LAST_MODIFICATION_DATE
-  ${ENV_NAME}=  Get Variable Value    ${ENV_NAME}  staging
-  Set to dictionary  ${USERS.users['${tender_owner}']}  env_name=${ENV_NAME}
   Додати документацію до зміни договору
 
 
@@ -178,11 +176,16 @@ Suite Teardown  Test Suite Teardown
   ...      ${award.value.valueAddedTaxIncluded}
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.valueAddedTaxIncluded}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
+  ${data}=  create_change_amount_body
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${amount_net}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
+  Run As  ${tender_owner}  Редагувати вартість договору  ${CONTRACT_UAID}  ${data}
 #  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amountNet  ${amount_net}
-  Run As  ${tender_owner}  Одночасно Редагувати два поля договору
-  ...     ${CONTRACT_UAID}
-  ...     value.amount  ${amount_net}
-  ...     value.amountNet  ${amount_net}
+#  Run As  ${tender_owner}  Одночасно Редагувати два поля договору
+#  ...     ${CONTRACT_UAID}
+#  ...     value.amount  ${amount_net}
+#  ...     value.amountNet  ${amount_net}
 
 
 Можливість редагувати вартість договору
@@ -196,11 +199,16 @@ Suite Teardown  Test Suite Teardown
   ${number}=  Set Variable  ${5000}
   ${amount}=  Evaluate  ${number}+${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
+  ${data}=  create_change_amount_body
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount}
+  Run As  ${tender_owner}  Редагувати вартість договору  ${CONTRACT_UAID}  ${data}
 #  Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  value.amount  ${amount}
-  Run As  ${tender_owner}  Одночасно Редагувати два поля договору
-  ...     ${CONTRACT_UAID}
-  ...     value.amount  ${amount}
-  ...     value.amountNet  ${amount}
+#  Run As  ${tender_owner}  Одночасно Редагувати два поля договору
+#  ...     ${CONTRACT_UAID}
+#  ...     value.amount  ${amount}
+#  ...     value.amountNet  ${amount}
 
 
 Можливість одночасно редагувати вартість договору з/без ПДВ
@@ -475,6 +483,8 @@ Suite Teardown  Test Suite Teardown
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amount}
   ...      ${USERS.users['${tender_owner}'].contract_data.data.value.amountNet}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amountPaid_amount=${amountPaid.amount}
+  Log   ${amountPaid.amount}
+  Log   ${USERS.users['${tender_owner}'].contract_data}
   Run As  ${tender_owner}  Редагувати поле договору  ${CONTRACT_UAID}  amountPaid.amount  ${amountPaid.amount}
 
 

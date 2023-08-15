@@ -93,11 +93,21 @@ def create_change_amount_body(contract_amount, contract_amountNet):
 
 
 def create_fake_amount_paid(contract_amount, contract_amountNet):
+    digits_number = digits_number_after_point(contract_amount)
     minimum = contract_amountNet
     maximum = contract_amount
     range = maximum - minimum
     half_min_range = minimum + range / 2
-    return round(random.uniform(minimum, half_min_range), 2)
+    return round(random.uniform(minimum, half_min_range), digits_number)
+
+
+def digits_number_after_point(number):
+    number_str = str(number)
+    dot_position = number_str.find('.')
+    if dot_position == -1:
+        return 0
+    decimal_digits = len(number_str) - dot_position - 1
+    return decimal_digits
 
 
 def create_fake_number(min_number, max_number):
@@ -875,11 +885,11 @@ def test_bid_data_selection(data, index):
 
 
 def test_bid_data_pq(data, username, over_limit=False, missing_criteria=False, more_than_two_requirements=False,
-                     invalid_expected_value=False, env_name='staging'):
+                     invalid_expected_value=False, is_staging=True):
     bid = test_bid_data()
     sandbox_bids = ["4353452", "213412", "12312312"]
     staging_bids = ["45678526", "45678527", "11111113"]
-    if env_name == 'sandbox':
+    if not is_staging:
         current_bids = sandbox_bids
     else:
         current_bids = staging_bids
@@ -1013,9 +1023,9 @@ def test_lot_document_data(lot_id):
         })
 
 
-def test_change_document_data(document, change_id, env_name):
+def test_change_document_data(document, change_id, is_staging):
     document.data.update({"documentOf": "change", "relatedItem": change_id})
-    if env_name == 'sandbox':
+    if not is_staging:
         del document.data['url']
         del document.data['hash']
         del document.data['datePublished']
@@ -1302,12 +1312,12 @@ def test_tender_data_pq(params, submissionMethodDetails, plan_data):
     del data["submissionMethodDetails"]
     data['procurementMethodType'] = 'priceQuotation'
     data["procuringEntity"]["kind"] = plan_data["data"]["procuringEntity"]["kind"]
-    if params.get('env_name') == 'sandbox':
-        agreement = test_agreement_id_sb()
-        valid_profile = fake.valid_profile_sb()
-    else:
+    if params.get('is_staging'):
         agreement = test_agreement_id()
         valid_profile = fake.valid_profile()
+    else:
+        agreement = test_agreement_id_sb()
+        valid_profile = fake.valid_profile_sb()
     data['agreement'] = agreement
     data['criteria'] = []
     for index in range(params['number_of_items']):

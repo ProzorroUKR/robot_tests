@@ -31,14 +31,14 @@ __version__ = '2015-07-01'
 if os.path.exists('src'):
     shutil.rmtree('src')
 
-if os.path.exists('bin'):
-    shutil.rmtree('bin')
+# if os.path.exists('bin'):
+#     shutil.rmtree('bin')
 
-if os.path.exists('develop-eggs'):
-    shutil.rmtree('develop-eggs')
+# if os.path.exists('develop-eggs'):
+#     shutil.rmtree('develop-eggs')
 
-if os.path.exists('eggs'):
-    shutil.rmtree('eggs')
+# if os.path.exists('eggs'):
+#     shutil.rmtree('eggs')
 
 tmpeggs = tempfile.mkdtemp(prefix='bootstrap-')
 eggsdir = os.path.join(os.path.dirname(__file__), 'eggs')

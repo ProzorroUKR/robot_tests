@@ -202,6 +202,7 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider_bid_id=${USERS.users['${provider}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider1_bid_id=${USERS.users['${provider1}'].bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  provider2_bid_id=${USERS.users['${provider2}'].bid_id}
+  Run Keyword And Ignore Error  Set To Dictionary  ${artifact}  is_staging  ${IS_STAGING}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...      tender_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
   ...      lot_file_properties=${USERS.users['${tender_owner}'].lots_documents[0].file_properties}
@@ -225,6 +226,10 @@ Get Broker Property By Username
   ...          tender_owner_access_token=${USERS.users['${tender_owner}'].access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${artifact}
   ...      tender_file_properties=${USERS.users['${tender_owner}'].tender_document.file_properties}
+  ${API_HOST}=  Get Variable Value    ${API_HOST_URL}
+  ${IS_STAGING}=  Run Keyword And Return Status
+  ...   Should Contain  ${API_HOST}   staging
+  Set to dictionary  ${artifact}  is_staging=${IS_STAGING}
   Log   ${artifact}
   log_object_data  ${artifact}  file_name=artifact_plan  update=${True}  artifact=${True}
 
@@ -257,6 +262,7 @@ Get Broker Property By Username
   ${lot_index}=  Get Variable Value  ${lot_index}  0
   Run Keyword And Ignore Error  Set To Dictionary  ${TENDER}  LOT_ID=${ARTIFACT.lots[${lot_index}]}
   ${MODE}=  Get Variable Value  ${MODE}  ${ARTIFACT.mode}
+  ${IS_STAGING}=  Get Variable Value  ${ARTIFACT.is_staging}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.tender_owner_access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  tender_file_properties=${ARTIFACT.tender_file_properties}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${viewer}']}  lot_file_properties=${ARTIFACT.lot_file_properties}
@@ -266,6 +272,7 @@ Get Broker Property By Username
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider1}']}  bid_id=${ARTIFACT.provider1_bid_id}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider2}']}  access_token=${ARTIFACT.provider2_access_token}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${provider2}']}  bid_id=${ARTIFACT.provider2_bid_id}
+  Set Suite Variable  ${IS_STAGING}
   Set Suite Variable  ${MODE}
   Set Suite Variable  ${lot_index}
   Set Suite Variable  ${TENDER}
@@ -466,14 +473,13 @@ Get Broker Property By Username
   ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}=  Get Variable Value  ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}  ${False}
   ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}=  Get Variable Value  ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}  ${False}
   ${BID_INVALID_EXPECTED_VALUE}=  Get Variable Value  ${BID_INVALID_EXPECTED_VALUE}  ${False}
-  ${ENV_NAME}=  Get Variable Value  ${ENV_NAME}  staging
   ${bid}=  test_bid_data_pq  ${USERS.users['${username}'].tender_data.data}
   ...      ${username}
   ...      ${BID_OVER_LIMIT}
   ...      ${BID_ONE_OF_THE_CRITERIAS_IS_MISSING}
   ...      ${BID_SAME_GROUPS_DIFFERENT_CRITERIA}
   ...      ${BID_INVALID_EXPECTED_VALUE}
-  ...      ${ENV_NAME}
+  ...      ${IS_STAGING}
   [Return]  ${bid}
 
 

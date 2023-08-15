@@ -3326,7 +3326,7 @@ Library  Collections
   ${change_document}=  test_change_document_data
   ...      ${reply_doc_create}
   ...      ${USERS.users['${username}'].changes[0].data.id}
-  ...      ${USERS.users['${username}'].env_name}
+  ...      ${IS_STAGING}
   ${reply_doc_patch}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_document
   ...      ${contract.data.id}
   ...      ${change_document}
@@ -3341,6 +3341,7 @@ Library  Collections
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
   ${contract}=  openprocurement_client.Пошук договору по ідентифікатору  ${username}  ${contract_uaid}
   Set_To_Object  ${contract.data}   ${fieldname}   ${fieldvalue}
+  ${contract}=  Run Keyword   prepare_conract_for_patching  ${contract}  ${IS_STAGING}
   Log  ${contract}
   ${contract}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract  ${internalid}  ${USERS.users['${username}'].contract_access_token}  ${contract}
   Log  ${contract}
@@ -3359,6 +3360,7 @@ Library  Collections
   [Arguments]  ${username}  ${contract_uaid}  ${first_fieldname}  ${first_fieldvalue}  ${second_fieldname}  ${second_fieldvalue}
   ${internalid}=  openprocurement_client.Отримати internal id по UAid для договору  ${username}  ${contract_uaid}
   ${contract}=  openprocurement_client.Пошук договору по ідентифікатору  ${username}  ${contract_uaid}
+  ${contract}=  Run Keyword   prepare_conract_for_patching  ${contract}  ${IS_STAGING}
   Set_To_Object  ${contract.data}  ${first_fieldname}  ${first_fieldvalue}
   Set_To_Object  ${contract.data}  ${second_fieldname}  ${second_fieldvalue}
   Log  ${contract}
