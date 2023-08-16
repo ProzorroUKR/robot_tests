@@ -1025,11 +1025,11 @@ def test_lot_document_data(lot_id):
 
 def test_change_document_data(document, change_id, is_staging):
     document.data.update({"documentOf": "change", "relatedItem": change_id})
-    if not is_staging:
-        del document.data['url']
-        del document.data['hash']
-        del document.data['datePublished']
-        del document.data['id']
+    # if not is_staging:
+    del document.data['url']
+    del document.data['hash']
+    del document.data['datePublished']
+    del document.data['id']
     return munchify(document)
 
 

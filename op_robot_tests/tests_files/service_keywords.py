@@ -911,22 +911,22 @@ def get_lowest_value_from_list(list_value):
 
 
 def prepare_conract_for_patching(contract_data, is_staging):
-    if not is_staging:
-        del contract_data['data']['tender_id']
-        del contract_data['data']['id']
-        del contract_data['data']['dateSigned']
-        del contract_data['data']['awardID']
-        del contract_data['data']['owner']
-        del contract_data['data']['documents']
-        del contract_data['data']['procuringEntity']
-        del contract_data['data']['dateCreated']
-        del contract_data['data']['dateModified']
-        del contract_data['data']['changes']
-        del contract_data['data']['mode']
-        del contract_data['data']['contractID']
-        del contract_data['data']['suppliers']
-        if 'contractNumber' in contract_data['data']:
-            del contract_data['data']['contractNumber']
-        if 'buyerID' in contract_data['data']:
-            del contract_data['data']['buyerID']
+    # if not is_staging:
+    del contract_data['data']['tender_id']
+    del contract_data['data']['id']
+    del contract_data['data']['dateSigned']
+    del contract_data['data']['awardID']
+    del contract_data['data']['owner']
+    del contract_data['data']['documents']
+    del contract_data['data']['procuringEntity']
+    del contract_data['data']['dateCreated']
+    del contract_data['data']['dateModified']
+    del contract_data['data']['changes']
+    del contract_data['data']['mode']
+    del contract_data['data']['contractID']
+    del contract_data['data']['suppliers']
+    if 'contractNumber' in contract_data['data']:
+        del contract_data['data']['contractNumber']
+    if 'buyerID' in contract_data['data']:
+        del contract_data['data']['buyerID']
     return munchify(contract_data)
