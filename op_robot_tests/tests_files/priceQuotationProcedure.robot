@@ -580,6 +580,17 @@ ${CRITERIA_LLC}     ${False}
   Run As  ${user}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
 
 
+Неможливість дискваліфікуватися постачальником
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  imposible_disqualification_first_award_by_provider
+  ...  critical
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  0
+  Run Keyword And Expect Error  *  ${user}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+
+
 Неможливість видалити пропозицію учасником після закінчення прийому пропозицій
   [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...      provider
@@ -598,6 +609,15 @@ ${CRITERIA_LLC}     ${False}
   ...  qualification_reject_second_award_after_2_days
   ...  critical
   Дочекатись зміни статусу рішення  ${tender_owner}  unsuccessful  1
+
+
+Можливість дискваліфікації постачальника, якщо 2 дні не було підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_first_award_after_2_days
+  ...  critical
+  Дочекатись зміни статусу рішення  ${tender_owner}  unsuccessful  0
 
 
 Можливість кваліфікувати постачальником першої пропозиції
@@ -650,6 +670,25 @@ ${CRITERIA_LLC}     ${False}
   Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  2
 
 
+Можливість відхилити постачальника замовником
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_1_award
+  ...  critical
+  Run As  ${tender_owner}  Дискваліфікувати постачальника  ${TENDER['TENDER_UAID']}  0
+
+
+Можливість кваліфікувати другого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  qualification_approve_second_award_by_tender_owner
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
+
+
 Неможливість відмовитися постачальником від третього підтвердження
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  provider
@@ -662,6 +701,18 @@ ${CRITERIA_LLC}     ${False}
   Run Keyword And Expect Error  *  Run As  ${user}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  2
 
 
+Неможливість відмовитися постачальником від другого підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  provider
+  ...  provider1
+  ...  provider2
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  impossible_cancel_2_award_qualification_by_provider
+  ...  critical
+  ${user}=  Пошук постачальника пропозиції з awards по індексу  1
+  Run Keyword And Expect Error  *  Run As  ${user}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  1
+
+
 Можливість відмовитися замовником від третього підтвердження
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
@@ -669,6 +720,15 @@ ${CRITERIA_LLC}     ${False}
   ...  qualification_cancel_3_award_qualification_by_customer
   ...  critical
   Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  2
+
+
+Можливість відмовитися замовником від другого підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_cancel_2_award_qualification_by_customer
+  ...  critical
+  Run As  ${tender_owner}  Скасування рішення кваліфікаційної комісії  ${TENDER['TENDER_UAID']}  1
 
 
 Неможливість повторно кваліфікувати постачальником четверте підтвердження
@@ -682,6 +742,16 @@ ${CRITERIA_LLC}     ${False}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${user}=  Пошук постачальника пропозиції з awards по індексу  3
   Run Keyword And Expect Error  *  Run As  ${user}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  3
+
+
+Неможливість повторно кваліфікувати замовником друге підтвердження
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  impossible_approve_second_award_by_tender_owner
+  ...  critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error  *  Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
 
 
 Можливість підтвердженя постачальника замовником

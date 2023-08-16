@@ -17,16 +17,22 @@
 -i make_bid_by_provider2
 
 -i awardPeriod_startDate
--i impossible_approve_first_award_by_customer
+#-i impossible_approve_first_award_by_customer
+-i imposible_disqualification_first_award_by_provider
 -i impossible_cancel_1_award_qualification_by_provider
--i disqualification_first_award_by_provider
+#-i disqualification_first_award_by_provider
 -i cancel_bid_after_tendering_period_by_provider
--i qualification_reject_second_award_after_2_days
-
--i qualification_approve_third_award_by_provider
--i impossible_cancel_3_award_qualification_by_provider
--i qualification_cancel_3_award_qualification_by_customer
--i impossible_approve_fourth_award_by_provider
--i qualification_reject_4_award
+-i qualification_reject_1_award
+#-i qualification_reject_first_award_after_2_days
+#-i qualification_reject_second_award_after_2_days
+-i qualification_approve_second_award_by_tender_owner
+#-i qualification_approve_third_award_by_provider
+-i impossible_cancel_2_award_qualification_by_provider
+#-i impossible_cancel_3_award_qualification_by_provider
+-i qualification_cancel_2_award_qualification_by_customer
+#-i qualification_cancel_3_award_qualification_by_customer
+-i impossible_approve_second_award_by_tender_owner
+#-i impossible_approve_fourth_award_by_provider
+#-i qualification_reject_4_award
 
 -i unsuccefully_tende
