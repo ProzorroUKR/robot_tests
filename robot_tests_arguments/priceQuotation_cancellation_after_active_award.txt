@@ -12,5 +12,5 @@
 -i successfully_tender_validation
 -i make_bid_by_provider
 -i awardPeriod_startDate
--i qualification_approve_first_award_by_provider
+-i qualification_approve_first_award_by_tender_owner
 -i tender_cancellation
