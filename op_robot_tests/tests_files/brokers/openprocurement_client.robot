@@ -750,7 +750,7 @@ Library  Collections
   [return]  ${tender}
 
 
-Пошук кваліфікаціi по ідентифікатору
+Пошук фреймворку по ідентифікатору
   [Arguments]  ${username}  ${qualification_uaid}  ${save_key}=qualification_data
 #  ${internalid}=  openprocurement_client.Отримати internal id кваліфікаціi по UAid  ${username}  ${qualification_uaid}
   ${internalid}=  Get Variable Value     ${QUALIFICATION['QUALIFICATION_ID']}

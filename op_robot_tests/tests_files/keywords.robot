@@ -279,7 +279,7 @@ Get Broker Property By Username
   log_object_data  ${ARTIFACT}  file_name=artifact  update=${True}  artifact=${True}
 
 
-Завантажити дані про кваліфікацію
+Завантажити дані про фреймворк
   ${file_path}=  Get Variable Value  ${ARTIFACT_FILE}  artifact_framework.yaml
   ${ARTIFACT}=  load_data_from  ${file_path}
   Run Keyword And Ignore Error  Set To Dictionary  ${USERS.users['${tender_owner}']}  access_token=${ARTIFACT.access_token}
@@ -339,7 +339,7 @@ Get Broker Property By Username
   [Return]  ${tender_data}
 
 
-Підготувати дані для створення кваліфікації
+Підготувати дані для створення фреймворку
   [Arguments]    ${qualification_parameters}
   ${data}=  test_qualification_data  ${qualification_parameters}
   ${config}=  test_qualification_config_data
@@ -677,7 +677,7 @@ Get Broker Property By Username
   [Return]  ${adapted_data}
 
 
-Адаптувати дані для оголошення кваліфікації
+Адаптувати дані для оголошення фреймворку
   [Arguments]  ${qualification_data}
   # munchify is used to make deep copy of ${tender_data}
   ${adapted_data}=  munchify  ${qualification_data}
@@ -833,6 +833,7 @@ Log differences between dicts
 
 Звірити поле кваліфікаціi
   [Arguments]  ${username}  ${qualification_uaid}  ${qualification_data}  ${field}
+  Log  ${qualification_data.data}
   ${left}=  get_from_object  ${qualification_data.data}  ${field}
   Звірити поле кваліфікаціi із значенням  ${username}  ${qualification_uaid}  ${left}  ${field}
 

@@ -1,6 +1,8 @@
 -v MODE:dynamicPurchasingSystem
 
 
--i create_qualification
--i find_qualification
--i qualification_view
+-i create_framework
+-i find_framework
+-i framework_view
+-i open_framework_view
+

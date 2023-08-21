@@ -453,11 +453,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${TENDER}  TENDER_UAID=${TENDER_UAID}
 
 
-Можливість створити кваліфікацію
+Можливість створити фреймворк
    ${qualification_parameters}=  Create Dictionary
   ...      mode=${MODE}
-  ${qualification_data}=  Підготувати дані для створення кваліфікації  ${qualification_parameters}
-  ${adapted_data}=  Адаптувати дані для оголошення кваліфікації  ${qualification_data}
+  ${qualification_data}=  Підготувати дані для створення фреймворку  ${qualification_parameters}
+  ${adapted_data}=  Адаптувати дані для оголошення фреймворку  ${qualification_data}
   ${QUALIFICATION_UAID}=  Run As  ${tender_owner}  Створити кваліфікацію  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${QUALIFICATION}  QUALIFICATION_UAID=${QUALIFICATION_UAID}
@@ -788,8 +788,14 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Звірити поле тендера із значенням  ${username}  ${TENDER['TENDER_UAID']}  ${data}  ${field}
 
 
-Звірити відображення поля ${field} кваліфікаціi для користувача ${username}
+Звірити відображення поля ${field} фреймворку для користувача ${username}
   Звірити поле кваліфікаціi  ${username}  ${QUALIFICATION['QUALIFICATION_UAID']}  ${USERS.users['${tender_owner}'].initial_data}  ${field}
+
+
+Звірити відображення поля ${field} фреймворку для усіх користувачів
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+    Звірити відображення поля ${field} фреймворку для користувача ${username}
+  END
 
 
 Звірити відображення поля ${field} тендера для користувача ${username}
