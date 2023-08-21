@@ -407,6 +407,17 @@ ${award_index}      ${0}
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  1
 
 
+Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження третього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_add_doc_to_third_award
+  ...  critical
+  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
+  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії   ${file_path}   ${TENDER['TENDER_UAID']}   2
+  Remove File  ${file_path}
+
+
 Mожливість підтвердити останнього постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
@@ -417,17 +428,6 @@ Mожливість підтвердити останнього постачал
   ${index}=  Отримати останній індекс  awards  ${tender_owner}  ${viewer}
   Log  ${index}
   Run As  ${tender_owner}  Підтвердити постачальника  ${TENDER['TENDER_UAID']}  ${index}
-
-
-Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження третього постачальника
-  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
-  ...  tender_owner
-  ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_add_doc_to_third_award
-  ...  critical
-  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
-  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії   ${file_path}   ${TENDER['TENDER_UAID']}   2
-  Remove File  ${file_path}
 
 
 Можливість відповісти на критерії Замовника у кваліфікацію третього постачальника
