@@ -103,3 +103,115 @@ Suite Teardown  Test Suite Teardown Framework
   ...      framework_view
   ...      non-critical
   Звірити відображення поля classification.description фреймворку для користувача ${viewer}
+
+
+Можливість завантажити документ у фреймворк
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_framework
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Run As  ${tender_owner}  Завантажити документ у фреймворк  ${file_path}
+   ${framework_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  framework_document=${framework_doc}
+   Remove File  ${file_path}
+
+
+Відображення вмісту документації до фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      add_doc_to_framework
+  Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
+
+
+Можливість активувати фреймворк
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      activate_framework  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Run As  ${tender_owner}  Aктивувати фреймворк
+
+
+Відображення початку періоду уточнення фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити наявність поля enquiryPeriod.startDate фреймворку для усіх користувачів
+
+
+Відображення закінчення періоду уточнення фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити наявність поля enquiryPeriod.endDate фреймворку для усіх користувачів
+
+
+Відображення дати початку періоду блокування перед початком кваліфікації:
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити наявність поля qualificationPeriod.startDate фреймворку для усіх користувачів
+
+
+Відображення дати закінчення періоду блокування кваліфікації:
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити наявність поля qualificationPeriod.endDate фреймворку для усіх користувачів
+
+
+Відображення дати початку періоду подання заявки
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити наявність поля period.startDate фреймворку для усіх користувачів
+
+
+Відображення дати закінчення періоду подання заявки
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити наявність поля period.endDate фреймворку для усіх користувачів
+
+
+Можливість змінити значеня поля телефон для замовника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_framework_contactPoint_phone
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${patch_data}=  generate_change_phone_payload
+  Log  ${patch_data}
+  Set to dictionary  ${USERS.users['${tender_owner}']}  new_phone=${patch_data.data.procuringEntity.contactPoint.telephone}
+  Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
+
+
+Можливість зареєструвати заявку
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Реєстрація заявки
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      registration_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Можливість зареєструвати заявку
+

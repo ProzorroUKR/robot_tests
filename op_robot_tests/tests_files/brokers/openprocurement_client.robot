@@ -135,6 +135,12 @@ Library  Collections
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
+  ${submission_wrapper}=  prepare_submission_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  SUBMISSIONS
+  ...  ${API_HOST_URL}
+  ...  ${API_VERSION}
+  ...  ${ds_config}
   Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  plan_client=${plan_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  tender_create_client=${tender_create_wrapper}
@@ -144,6 +150,7 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}  amcu_client=${amcu_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  payment_client=${payment_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  framework_client=${framework_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  submission_client=${submission_wrapper}
   ${id_map}=  Create Dictionary
   Set To Dictionary  ${USERS.users['${username}']}  id_map=${id_map}
   Log  ${EDR_HOST_URL}
@@ -529,6 +536,16 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}   qualification_data=${qualification}
   Log   ${USERS.users['${username}'].qualification_data}
   [return]  ${qualification.data.prettyID}
+
+
+Створити заявку
+  [Arguments]  ${username}  ${submission_data}
+  ${submission}=  Call Method  ${USERS.users['${username}'].submission_client}  create_submission  ${submission_data}
+  Log  ${submission}
+  ${access_token}=  Get Variable Value  ${submission.access.token}
+  Set To Dictionary  ${USERS.users['${username}']}   submission_access_token=${access_token}
+  Set To Dictionary  ${USERS.users['${username}']}   submission_data=${submission}
+  Log   ${USERS.users['${username}'].submission_data}
 
 
 Отримати список тендерів
@@ -2850,6 +2867,19 @@ Library  Collections
   Log  ${reply}
 
 
+Aктивувати фреймворк
+  [Arguments]  ${username}
+  ${framework}=  create_data_dict   data.status  active
+  ${reply}=  Call Method  ${USERS.users['${username}'].framework_client}  patch_framework
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${framework}
+  ...      ${USERS.users['${username}'].access_token}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+      Set To Dictionary    ${USERS.users['${username}']}  initial_data=${reply}
+  END
+  Log  ${reply}
+
+
 Відхилити кваліфікацію
   [Documentation]
   ...      [Arguments] Username, tender uaid and qualification number
@@ -2880,6 +2910,18 @@ Library  Collections
   ...      ${tender.data.qualifications[${qualification_num}].id}
   ...      access_token=${tender.access.token}
   Log  ${doc_reply}
+
+
+Завантажити документ у фреймворк
+  [Documentation]
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  upload_framework_document
+  ...      ${document}
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${doc_reply}
+  Set to Dictionary  ${USERS.users['${username}']}  documents=${doc_reply}
+  Log  ${USERS.users['${username}'].documents}
 
 
 Скасувати кваліфікацію
@@ -3451,6 +3493,12 @@ Library  Collections
   [return]  ${filename}
 
 
+Отримати документ до фреймворку
+  [Arguments]  ${username}  ${doc_url}  ${title}
+  ${filename}=  download_file_from_url  ${doc_url}  ${OUTPUT_DIR}${/}${title}
+  [return]  ${filename}
+
+
 Отримати доступ до угоди
   [Arguments]  ${username}  ${agreement_uaid}
   ${token}=  Set Variable  ${USERS.users['${username}'].access_token}
@@ -3636,3 +3684,12 @@ Library  Collections
   ...      access_token=${tender.access.token}
   Log  ${doc_list}
   [Return]  ${doc_list}
+
+
+Редагувати фреймворк
+  [Arguments]  ${username}  ${patch_data}
+  ${reply}=  Call Method  ${USERS.users['${username}'].framework_client}  patch_framework
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${patch_data}
+  ...      access_token=${USERS.users['${username}'].access_token}
+  Log  ${reply}

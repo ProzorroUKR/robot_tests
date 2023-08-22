@@ -342,13 +342,22 @@ Get Broker Property By Username
 Підготувати дані для створення фреймворку
   [Arguments]    ${qualification_parameters}
   ${data}=  test_qualification_data  ${qualification_parameters}
-  ${config}=  test_qualification_config_data
+  ${config}=  test_qualification_config_data  ${False}
   ${qualification_data}=  Create Dictionary  data=${data}
   Set To Dictionary    ${qualification_data}  config=${config}
   ${QUALIFICATION}=  Create Dictionary
   Set Global Variable  ${QUALIFICATION}
   Log  ${qualification_data}
   [Return]  ${qualification_data}
+
+
+Підготувати дані для регістрації заявки
+  ${data}=  test_submission_data  ${QUALIFICATION.QUALIFICATION_ID}
+  ${config}=  test_qualification_config_data  ${True}
+  ${submission_data}=  Create Dictionary  data=${data}
+  Set To Dictionary    ${submission_data}  config=${config}
+  Log  ${submission_data}
+  [Return]  ${submission_data}
 
 
 Підготувати дані для створення плану з buyers

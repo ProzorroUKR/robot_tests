@@ -5,4 +5,8 @@
 -i find_framework
 -i framework_view
 -i open_framework_view
+-i add_doc_to_framework
+-i activate_framework
+#-i modify_framework_contactPoint_phone
+-i registration_submission
 

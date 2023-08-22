@@ -463,6 +463,12 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${QUALIFICATION}  QUALIFICATION_UAID=${QUALIFICATION_UAID}
 
 
+Можливість зареєструвати заявку
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Log    ${submission_data}
+  Run As  ${tender_owner}  Створити заявку  ${submission_data}
+
+
 Підготувати збереження планів buyers
   ${BUYER_PLAN}=  Create Dictionary
   Set Global Variable  ${BUYER_PLAN}
@@ -795,6 +801,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 Звірити відображення поля ${field} фреймворку для усіх користувачів
   FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
     Звірити відображення поля ${field} фреймворку для користувача ${username}
+  END
+
+
+Звірити наявність поля ${field} фреймворку для усіх користувачів
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+    ${right}=  get_from_object  ${USERS.users['${username}'].initial_data.data}  ${field}
+    Run Keyword If    '${right}' == ''    Fail    Field is empty
   END
 
 
@@ -1280,6 +1293,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ${file_name}=  Run As  ${username}  Отримати документ до договору  ${CONTRACT_UAID}  ${doc_id}
   ${right}=  Get File  ${OUTPUT_DIR}${/}${file_name}
   Порівняти об'єкти  ${left}  ${right}
+
+
+Звірити відображення вмісту документа ${doc_data} до фреймворку з ${left} для користувача ${username}
+  ${file_name}=  Run As  ${username}  Отримати документ до фреймворку  ${doc_data.url}  ${doc_data.title}
+  ${right}=  Get File  ${OUTPUT_DIR}${/}${file_name}
+  Порівняти об'єкти   ${left}  ${right}
+  Remove File  ${OUTPUT_DIR}${/}${file_name}
 
 
 Звірити відображення причин зміни договору

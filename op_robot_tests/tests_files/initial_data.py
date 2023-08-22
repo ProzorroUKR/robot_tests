@@ -92,6 +92,17 @@ def create_change_amount_body(contract_amount, contract_amountNet):
     return munchify({'data': data})
 
 
+def generate_change_phone_payload():
+    data = {
+        "procuringEntity": {
+            "contactPoint": {
+                "telephone": f"+{random.randint(10 ** 9, (10 ** 10) - 1)}"
+            }
+        }
+    }
+    return munchify({'data': data})
+
+
 def create_fake_amount_paid(contract_amount, contract_amountNet):
     digits_number = digits_number_after_point(contract_amount)
     minimum = contract_amountNet
@@ -357,24 +368,38 @@ def test_tender_data(params,
 
 
 def test_qualification_data(params):
-    classification = fake.classification();
+    new_date = (get_now() + timedelta(days=30)).isoformat()
+    classification = fake.classification()
     data = {
-            "frameworkType": params.get("mode"),
-            "procuringEntity": fake.procuringEntityUpdated(),
-            "additionalClassifications": classification["additionalClassifications"],
-            "classification": classification["classification"],
-            "title": fake.title(),
-            "description": fake.description(),
-            "qualificationPeriod": {
-                "endDate": get_now().replace(hour=0, minute=0, second=0, microsecond=0).isoformat()
-            }
+        "frameworkType": params.get("mode"),
+        "procuringEntity": fake.procuringEntityUpdated(),
+        "additionalClassifications": classification["additionalClassifications"],
+        "classification": classification["classification"],
+        "title": fake.title(),
+        "description": fake.description(),
+        "qualificationPeriod": {
+            "endDate": new_date
         }
+    }
     return munchify(data)
 
 
-def test_qualification_config_data():
+def test_submission_data(framework_id):
+    data = {
+        "tenderers": [
+            fake.procuringTenderer()
+        ],
+        "frameworkID": framework_id
+    }
+    return munchify(data)
+
+
+def test_qualification_config_data(is_submission):
+    key = "restrictedDerivatives"
+    if is_submission:
+        key = "restricted"
     config = {
-        "restrictedDerivatives": False
+        key: False
     }
     return munchify(config)
 
