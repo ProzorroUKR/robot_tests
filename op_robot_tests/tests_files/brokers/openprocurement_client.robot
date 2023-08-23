@@ -3692,4 +3692,5 @@ Aктивувати фреймворк
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      ${patch_data}
   ...      access_token=${USERS.users['${username}'].access_token}
-  Log  ${reply}
+  Log object data   ${reply}  reply
+  Set To Dictionary  ${USERS.users['${username}']}   qualification_data=${reply}

@@ -200,10 +200,63 @@ Suite Teardown  Test Suite Teardown Framework
   ...      modify_framework_contactPoint_phone
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${patch_data}=  generate_change_phone_payload
-  Log  ${patch_data}
-  Set to dictionary  ${USERS.users['${tender_owner}']}  new_phone=${patch_data.data.procuringEntity.contactPoint.telephone}
+  ${field_name}=  Set Variable    telephone
+  ${patch_data}=  get_payload_for_patching_framework  ${field_name}
+  Set to dictionary  ${USERS.users['${tender_owner}'].initial_data.data.procuringEntity.contactPoint}  telephone=${patch_data.data.procuringEntity.contactPoint.telephone}
   Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
+
+
+Відображення змінене поле телефон у фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      open_framework_view  level2
+  ...      non-critical
+  Звірити відображення поля procuringEntity.contactPoint.telephone фреймворку для користувача ${tender_owner}
+
+
+Можливість змінити значеня поля назва для замовника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_framework_contactPoint_name
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field_name}=  Set Variable    name
+  ${patch_data}=  get_payload_for_patching_framework  ${field_name}
+  Set to dictionary  ${USERS.users['${tender_owner}'].initial_data.data.procuringEntity.contactPoint}  name=${patch_data.data.procuringEntity.contactPoint.name}
+  Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
+
+
+Відображення змінене поле назва у фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      open_framework_view  level2
+  ...      non-critical
+  Звірити відображення поля procuringEntity.contactPoint.name фреймворку для користувача ${tender_owner}
+
+
+Можливість змінити значеня поля пошта для замовника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_framework_contactPoint_email
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field_name}=  Set Variable    email
+  ${patch_data}=  get_payload_for_patching_framework  ${field_name}
+  Set to dictionary  ${USERS.users['${tender_owner}'].initial_data.data.procuringEntity.contactPoint}  email=${patch_data.data.procuringEntity.contactPoint.email}
+  Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
+
+
+Відображення змінене поле пошта у фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      open_framework_view  level2
+  ...      non-critical
+  Звірити відображення поля procuringEntity.contactPoint.email фреймворку для користувача ${tender_owner}
 
 
 Можливість зареєструвати заявку

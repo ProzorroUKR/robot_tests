@@ -841,9 +841,8 @@ Log differences between dicts
 
 
 Звірити поле кваліфікаціi
-  [Arguments]  ${username}  ${qualification_uaid}  ${qualification_data}  ${field}
-  Log  ${qualification_data.data}
-  ${left}=  get_from_object  ${qualification_data.data}  ${field}
+  [Arguments]  ${username}  ${qualification_uaid}  ${initial_data}  ${field}
+  ${left}=  get_from_object  ${initial_data.data}  ${field}
   Звірити поле кваліфікаціi із значенням  ${username}  ${qualification_uaid}  ${left}  ${field}
 
 

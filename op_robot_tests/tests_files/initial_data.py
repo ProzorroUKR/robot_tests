@@ -92,11 +92,21 @@ def create_change_amount_body(contract_amount, contract_amountNet):
     return munchify({'data': data})
 
 
-def generate_change_phone_payload():
+def get_payload_for_patching_framework(field_name):
+    params = {}
+    if field_name == 'telephone':
+        params["telephone"] = f"+{random.randint(10 ** 9, (10 ** 10) - 1)}"
+    if field_name == 'name':
+        params["name"] = fake.sentence(nb_words=10, variable_nb_words=True)
+    if field_name == 'email':
+        params["email"] = fake.email()
+
+    key = next(iter(params))
+    value = params[key]
     data = {
         "procuringEntity": {
             "contactPoint": {
-                "telephone": f"+{random.randint(10 ** 9, (10 ** 10) - 1)}"
+                key: value
             }
         }
     }
@@ -368,7 +378,7 @@ def test_tender_data(params,
 
 
 def test_qualification_data(params):
-    new_date = (get_now() + timedelta(days=30)).isoformat()
+    new_date = (get_now() + timedelta(days=31)).isoformat()
     classification = fake.classification()
     data = {
         "frameworkType": params.get("mode"),

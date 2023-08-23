@@ -123,7 +123,7 @@ from initial_data import (
     test_qualification_data,
     test_qualification_config_data,
     create_change_amount_body,
-    generate_change_phone_payload,
+    get_payload_for_patching_framework,
     test_submission_data
 )
 from barbecue import chef

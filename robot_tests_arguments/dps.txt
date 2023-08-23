@@ -7,6 +7,8 @@
 -i open_framework_view
 -i add_doc_to_framework
 -i activate_framework
-#-i modify_framework_contactPoint_phone
+-i modify_framework_contactPoint_phone
+-i modify_framework_contactPoint_name
+-i modify_framework_contactPoint_email
 -i registration_submission
 
