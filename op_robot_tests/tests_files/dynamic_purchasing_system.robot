@@ -302,14 +302,14 @@ Suite Teardown  Test Suite Teardown Framework
    ${submission_doc}=  Create Dictionary
    ...    doc_name=${file_name}
    ...    doc_content=${file_content}
-   Set To Dictionary   ${USERS.users['${tender_owner}']}  submission_document=${submission_doc}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  submission_init_document=${submission_doc}
    Remove File  ${file_path}
 
 
-Відображення вмісту документації до фреймворку
+Відображення вмісту документації по заявці
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      add_doc_to_submission1
-  Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['submission_document']['doc_content']} для користувача ${viewer}
+  ...      add_doc_to_submission
+  Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['submission_document']['data']} до фреймворку з ${USERS.users['${tender_owner}']['submission_init_document']['doc_content']} для користувача ${viewer}
 
