@@ -541,11 +541,8 @@ Library  Collections
 Створити заявку
   [Arguments]  ${username}  ${submission_data}
   ${submission}=  Call Method  ${USERS.users['${username}'].submission_client}  create_submission  ${submission_data}
-  Log  ${submission}
   ${access_token}=  Get Variable Value  ${submission.access.token}
-  Set To Dictionary  ${USERS.users['${username}']}   submission_access_token=${access_token}
   Set To Dictionary  ${USERS.users['${username}']}   submission_data=${submission}
-  Log   ${USERS.users['${username}'].submission_data}
 
 
 Отримати список тендерів
@@ -2922,6 +2919,20 @@ Aктивувати фреймворк
   Log  ${doc_reply}
   Set to Dictionary  ${USERS.users['${username}']}  documents=${doc_reply}
   Log  ${USERS.users['${username}'].documents}
+
+
+Завантажити документ по заявці
+  [Documentation]
+  [Arguments]  ${username}  ${document}
+  Log  ${USERS.users['${username}'].submission_data}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].submission_client}  upload_submission_document
+  ...      ${document}
+  ...      ${USERS.users['${username}'].submission_data.data.id}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+  Log  ${doc_reply}
+  Set to Dictionary  ${USERS.users['${username}']}  documents=${doc_reply}
+  Log  ${USERS.users['${username}'].documents}
+
 
 
 Скасувати кваліфікацію

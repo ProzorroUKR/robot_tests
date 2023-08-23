@@ -124,6 +124,7 @@ from initial_data import (
     test_qualification_config_data,
     create_change_amount_body,
     get_payload_for_patching_framework,
+    get_description_for_patching_framework,
     test_submission_data
 )
 from barbecue import chef

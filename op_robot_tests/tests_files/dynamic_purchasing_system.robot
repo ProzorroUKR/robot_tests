@@ -259,6 +259,27 @@ Suite Teardown  Test Suite Teardown Framework
   Звірити відображення поля procuringEntity.contactPoint.email фреймворку для користувача ${tender_owner}
 
 
+Можливість змінити значеня поля опис для замовника
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      modify_framework_description
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${patch_data}=  get_description_for_patching_framework
+  Set to dictionary  ${USERS.users['${tender_owner}'].initial_data.data}  description=${patch_data.data.description}
+  Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
+
+
+Відображення змінене поле опис у фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      open_framework_view  level2
+  ...      non-critical
+  Звірити відображення поля description фреймворку для користувача ${tender_owner}
+
+
 Можливість зареєструвати заявку
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Реєстрація заявки
   ...      tender_owner
@@ -267,4 +288,28 @@ Suite Teardown  Test Suite Teardown Framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Можливість зареєструвати заявку
+
+
+Можливість завантажити документ по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у заявці
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Run As  ${tender_owner}  Завантажити документ по заявці  ${file_path}
+   ${submission_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  submission_document=${submission_doc}
+   Remove File  ${file_path}
+
+
+Відображення вмісту документації до фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      add_doc_to_submission1
+  Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['submission_document']['doc_content']} для користувача ${viewer}
 

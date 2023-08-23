@@ -10,5 +10,7 @@
 -i modify_framework_contactPoint_phone
 -i modify_framework_contactPoint_name
 -i modify_framework_contactPoint_email
+-i modify_framework_description
 -i registration_submission
+-i add_doc_to_submission
 
