@@ -13,4 +13,8 @@
 -i modify_framework_description
 -i registration_submission
 -i add_doc_to_submission
-
+-i delete_submission
+-i update_submission
+-i activate_submission
+-i find_submission
+-i view_qualification

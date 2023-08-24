@@ -141,6 +141,12 @@ Library  Collections
   ...  ${API_HOST_URL}
   ...  ${API_VERSION}
   ...  ${ds_config}
+  ${qualification_wrapper}=  prepare_qualification_wrapper
+  ...  ${USERS.users['${username}'].api_key}
+  ...  QUALIFICATIONS
+  ...  ${API_HOST_URL}
+  ...  ${API_VERSION}
+  ...  ${ds_config}
   Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  plan_client=${plan_api_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  tender_create_client=${tender_create_wrapper}
@@ -151,6 +157,7 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}  payment_client=${payment_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  framework_client=${framework_wrapper}
   Set To Dictionary  ${USERS.users['${username}']}  submission_client=${submission_wrapper}
+  Set To Dictionary  ${USERS.users['${username}']}  qualification_client=${qualification_wrapper}
   ${id_map}=  Create Dictionary
   Set To Dictionary  ${USERS.users['${username}']}  id_map=${id_map}
   Log  ${EDR_HOST_URL}
@@ -757,6 +764,13 @@ Library  Collections
   [return]   ${qualification}
 
 
+Отримати заявку по внутрішньому ідентифікатору
+  [Arguments]  ${username}  ${internalid}  ${save_key}=qualification_data
+  ${submission}=  Call Method  ${USERS.users['${username}'].submission_client}  get_submission  ${internalid}
+  Set_to_object  ${USERS.users['${username}']}  submission_data  ${submission}
+  [return]   ${submission}
+
+
 Пошук плану по ідентифікатору
   [Arguments]  ${username}  ${tender_uaid}  ${save_key}=tender_data
   ${internalid}=  openprocurement_client.Отримати internal id плану по UAid  ${username}  ${tender_uaid}
@@ -772,6 +786,11 @@ Library  Collections
   ${qualification}=  openprocurement_client.Отримати кваліфікацію по внутрішньому ідентифікатору  ${username}  ${internalid}  ${save_key}
   [return]  ${qualification}
 
+
+Пошук заявки по ідентифікатору
+  [Arguments]  ${username}  ${submission_id}  ${save_key}=qualification_data
+  ${submission}=  openprocurement_client.Отримати заявку по внутрішньому ідентифікатору  ${username}  ${submission_id}  ${save_key}
+  [return]  ${submission}
 
 
 Отримати тендер другого етапу та зберегти його
@@ -1198,6 +1217,29 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${features_data}
   ...      access_token=${tender.access.token}
+
+
+Редагувати заявку
+  [Arguments]  ${username}  ${status}
+  ${submission_payload}=  Run Keyword If    '${status}' != 'update'
+  ...    create_data_dict  data.status  ${status}
+  ...    ELSE
+  ...    get_payload_for_patching_submission
+  Log  ${submission_payload}
+  ${submission_responce}=  Call Method  ${USERS.users['${username}'].submission_client}  patch_submission
+  ...      ${USERS.users['${username}'].submission_data.data.id}
+  ...      ${submission_payload}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+  Run Keyword If    '${status}' == 'active'
+  ...    Set_to_object  ${USERS.users['${username}']}  submission_data  ${submission_responce}
+
+
+Можливість перевірити статус об’єкта рішення по заявці
+  [Arguments]    ${username}  ${status_exp}
+  ${submission_responce}=  Call Method  ${USERS.users['${username}'].qualification_client}  get_qualification
+  ...    ${USERS.users['${username}'].submission_data.data.qualificationID}
+  ${status_act}=  Get From Dictionary  ${submission_responce.data}  status
+  Порівняти об'єкти  ${status_exp}  ${status_act}
 
 
 ##############################################################################

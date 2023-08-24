@@ -1268,6 +1268,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   END
 
 
+Можливість редагувати заявку
+  [Arguments]    ${status}
+  Run As  ${tender_owner}  Редагувати заявку  ${status}
+
+
+Неможливість редагувати заявку
+  [Arguments]    ${status}
+  Run Keyword And Expect Error  *  Редагувати заявку  ${tender_owner}  ${status}
+
+
 ##############################################################################################
 #             CONTRACTS
 ##############################################################################################

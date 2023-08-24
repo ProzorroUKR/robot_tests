@@ -17,6 +17,7 @@ from openprocurement_client.resources.tenders import TenderCreateClient
 from openprocurement_client.resources.tenders import PaymentClient
 from openprocurement_client.resources.frameworks import FrameworksClient
 from openprocurement_client.resources.submissions import SubmissionsClient
+from openprocurement_client.resources.qualifications import QualificationClient
 
 
 def retry_if_request_failed(exception):
@@ -256,6 +257,16 @@ class StableSubmissionClient(SubmissionsClient):
 
 def prepare_submission_wrapper(key, resource, host_url, api_version, ds_config=None):
     return StableSubmissionClient(key, resource, host_url, api_version, ds_config=ds_config)
+
+
+class StableQualificationClient(QualificationClient):
+    @retry(stop_max_attempt_number=100, wait_random_min=500, wait_random_max=4000, retry_on_exception=retry_if_request_failed)
+    def request(self, *args, **kwargs):
+        return super(StableQualificationClient, self).request(*args, **kwargs)
+
+
+def prepare_qualification_wrapper(key, resource, host_url, api_version, ds_config=None):
+    return StableQualificationClient(key, resource, host_url, api_version, ds_config=ds_config)
 
 
 

@@ -120,6 +120,17 @@ def get_description_for_patching_framework():
     return munchify({'data': data})
 
 
+def get_payload_for_patching_submission():
+    data = {
+        "tenderers": [
+            {
+                "name": fake.word()
+            }
+        ]
+    }
+    return munchify({'data': data})
+
+
 def create_fake_amount_paid(contract_amount, contract_amountNet):
     digits_number = digits_number_after_point(contract_amount)
     minimum = contract_amountNet

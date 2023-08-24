@@ -313,3 +313,85 @@ Suite Teardown  Test Suite Teardown Framework
   ...      add_doc_to_submission
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['submission_document']['data']} до фреймворку з ${USERS.users['${tender_owner}']['submission_init_document']['doc_content']} для користувача ${viewer}
 
+
+Можливість видалити заявку з кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування заявки
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      delete_submission
+  ...      critical
+  Можливість редагувати заявку  deleted
+
+
+Неможливість редагувати заявку у статусі draft
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування заявки
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_submission
+  ...      critical
+  Неможливість редагувати заявку  update
+
+
+Можливість зареєструвати другу заявку
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Реєстрація заявки
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      registration_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Можливість зареєструвати заявку
+
+
+Можливість завантажити документ по другій заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у заявці
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Run As  ${tender_owner}  Завантажити документ по заявці  ${file_path}
+   ${submission_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  submission_init_document=${submission_doc}
+   Remove File  ${file_path}
+
+
+Можливість оновити заявку у кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування заявки
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_submission
+  ...      critical
+  Можливість редагувати заявку  update
+
+
+Можливість активувати заявку у кваліфікації
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування заявки
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      activate_submission
+  ...      critical
+  Можливість редагувати заявку  active
+
+
+Можливість знайти заявку по ідентифікатору
+  [Tags]   ${USERS.users['${viewer}'].broker}: Пошук заявки
+  ...      viewer  tender_owner
+  ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
+  ...      find_submission
+  ...      critical
+  ${submission_id}=  Set Variable    ${USERS.users['${tender_owner}'].submission_data.data.id}
+  FOR  ${username}  IN  @{USED_ROLES}
+    Run As  ${${username}}  Пошук заявки по ідентифікатору  ${submission_id}
+  END
+
+
+Перевірити статус об’єкта рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Відображення кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      view_qualification
+  ...      critical
+  Run As  ${tender_owner}  Можливість перевірити статус об’єкта рішення по заявці  pending
