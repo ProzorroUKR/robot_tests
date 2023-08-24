@@ -464,9 +464,10 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість зареєструвати заявку
+  [Arguments]    ${username}
   ${submission_data}=  Підготувати дані для регістрації заявки
   Log    ${submission_data}
-  Run As  ${tender_owner}  Створити заявку  ${submission_data}
+  Run As  ${username}  Створити заявку  ${submission_data}
 
 
 Підготувати збереження планів buyers
@@ -1269,13 +1270,13 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість редагувати заявку
-  [Arguments]    ${status}
-  Run As  ${tender_owner}  Редагувати заявку  ${status}
+  [Arguments]    ${username}  ${status}
+  Run As    ${username}  Редагувати заявку  ${status}
 
 
 Неможливість редагувати заявку
-  [Arguments]    ${status}
-  Run Keyword And Expect Error  *  Редагувати заявку  ${tender_owner}  ${status}
+  [Arguments]    ${username}  ${status}
+  Run Keyword And Expect Error  *  Редагувати заявку  ${username}  ${status}
 
 
 ##############################################################################################

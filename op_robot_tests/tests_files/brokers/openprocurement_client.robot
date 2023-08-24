@@ -2973,7 +2973,7 @@ Aктивувати фреймворк
   ...      access_token=${USERS.users['${username}'].submission_data.access.token}
   Log  ${doc_reply}
   Set to Dictionary  ${USERS.users['${username}']}  submission_document=${doc_reply}
-  Log  ${USERS.users['${username}'].documents}
+  Log  ${USERS.users['${username}'].submission_document}
 
 
 

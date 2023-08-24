@@ -11,8 +11,10 @@
 -i modify_framework_contactPoint_name
 -i modify_framework_contactPoint_email
 -i modify_framework_description
--i registration_submission
--i add_doc_to_submission
+-i registration_submission_provider
+-i registration_submission_provider1
+-i add_doc_to_first_submission
+-i add_doc_to_second_submission
 -i delete_submission
 -i update_submission
 -i activate_submission
