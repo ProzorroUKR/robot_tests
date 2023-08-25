@@ -1231,7 +1231,7 @@ Library  Collections
   ...      ${submission_payload}
   ...      access_token=${USERS.users['${username}'].submission_data.access.token}
   Run Keyword If    '${status}' == 'active'
-  ...    Set_to_object  ${USERS.users['${username}']}  submission_data  ${submission_responce}
+  ...    Set_to_object  ${USERS.users['${username}'].submission_data.data}  qualificationID  ${submission_responce.data.qualificationID}
 
 
 Можливість перевірити статус об’єкта рішення по заявці
@@ -2548,6 +2548,16 @@ Library  Collections
   ...      ${tender.data.id}
   ...      ${tender.data.awards[${award_num}].id}
   ...      access_token=${tender.access.token}
+  Log  ${doc}
+
+
+Завантажити документ рішення кваліфікаційної комісії по заявці
+  [Arguments]  ${username}  ${document}  ${submission}
+  Log  ${submission}
+  ${doc}=  Call Method  ${USERS.users['${username}'].qualification_client}  upload_qualification_document
+  ...      ${document}
+  ...      ${submission.data.qualificationID}
+  ...      access_token=${USERS.users['${username}'].access_token}
   Log  ${doc}
 
 

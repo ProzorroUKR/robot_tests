@@ -5,7 +5,7 @@ Suite Teardown  Test Suite Teardown Framework
 
 
 *** Variables ***
-@{USED_ROLES}   tender_owner  viewer  provider  provider1
+@{USED_ROLES}   tender_owner  viewer  provider  provider1  provider2
 
 
 *** Test Cases ***
@@ -300,6 +300,16 @@ Suite Teardown  Test Suite Teardown Framework
   Можливість зареєструвати заявку  ${provider1}
 
 
+Можливість подати пропозицію третім учасником
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      registration_submission_provider2
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Можливість зареєструвати заявку  ${provider2}
+
+
 Можливість завантажити документ по першiй заявці
   [Tags]   ${USERS.users['${provider}'].broker}: Завантажити документ по заявці
   ...      provider
@@ -325,9 +335,9 @@ Suite Teardown  Test Suite Teardown Framework
 
 
 Можливість завантажити документ по другiй заявці
-  [Tags]   ${USERS.users['${provider!}'].broker}: Завантажити документ по заявці
-  ...      provider!
-  ...      ${USERS.users['${provider!}'].broker}
+  [Tags]   ${USERS.users['${provider1}'].broker}: Завантажити документ по заявці
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
   ...      add_doc_to_second_submission
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
@@ -346,6 +356,22 @@ Suite Teardown  Test Suite Teardown Framework
   ...      ${USERS.users['${provider1}'].broker}
   ...      add_doc_to_second_submission
   Звірити відображення вмісту документа ${USERS.users['${provider1}']['submission_document']['data']} до фреймворку з ${USERS.users['${provider1}']['submission_init_document']['doc_content']} для користувача ${provider1}
+
+
+Можливість завантажити документ по третiй заявці
+  [Tags]   ${USERS.users['${provider!}'].broker}: Завантажити документ по заявці
+  ...      provider2
+  ...      ${USERS.users['${provider!}'].broker}
+  ...      add_doc_to_third_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Run As  ${provider1}  Завантажити документ по заявці  ${file_path}
+   ${submission_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${provider1}']}  submission_init_document=${submission_doc}
+   Remove File  ${file_path}
 
 
 Можливість видалити першу заявку з кваліфікації
@@ -391,9 +417,10 @@ Suite Teardown  Test Suite Teardown Framework
   ...      find_submission
   ...      critical
   ${submission_id}=  Set Variable    ${USERS.users['${provider1}'].submission_data.data.id}
-  FOR  ${username}  IN  @{USED_ROLES}
-    Run As  ${${username}}  Пошук заявки по ідентифікатору  ${submission_id}
-  END
+  Run As  ${viewer}  Пошук заявки по ідентифікатору  ${submission_id}
+#  FOR  ${username}  IN  @{USED_ROLES}
+#    Run As  ${${username}}  Пошук заявки по ідентифікатору  ${submission_id}
+#  END
 
 
 Перевірити статус об’єкта рішення по заявці
@@ -403,3 +430,25 @@ Suite Teardown  Test Suite Teardown Framework
   ...      view_qualification
   ...      critical
   Run As  ${viewer}  Можливість перевірити статус об’єкта рішення по заявці  pending
+
+
+Mожливість активувати другу заявку у кваліфікації
+  [Tags]   ${USERS.users['${provider2}'].broker}: Редагування заявки
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      activate_submission
+  ...      critical
+  Run Keyword  Можливість редагувати заявку  ${provider2}  active
+
+
+Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_add_doc_to_first_submission
+  ...  critical
+  ${submission}=  Set Variable    ${USERS.users['${provider1}'].submission_data}
+  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
+  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії по заявці   ${file_path}  ${submission}
+  Remove File  ${file_path}
+
