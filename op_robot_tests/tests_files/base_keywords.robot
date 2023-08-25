@@ -800,14 +800,15 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Звірити відображення поля ${field} фреймворку для усіх користувачів
-  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
     Звірити відображення поля ${field} фреймворку для користувача ${username}
   END
 
 
 Звірити наявність поля ${field} фреймворку для усіх користувачів
-  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
-    ${right}=  get_from_object  ${USERS.users['${username}'].initial_data.data}  ${field}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
+    Log  ${USERS.users['${username}'].qualification_data.data}
+    ${right}=  get_from_object  ${USERS.users['${username}'].qualification_data.data}  ${field}
     Run Keyword If    '${right}' == ''    Fail    Field is empty
   END
 

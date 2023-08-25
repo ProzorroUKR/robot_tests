@@ -29,3 +29,4 @@
 -i view_submissions
 -i qualification_add_doc_provider2
 -i qualification_confirm_submission_provider2
+-i view_agreementID

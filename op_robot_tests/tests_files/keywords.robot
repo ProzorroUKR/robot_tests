@@ -1061,7 +1061,7 @@ Log differences between dicts
   Run Keyword if  '${status}' == 'PASS'  Return from keyword   ${field_value}
   # Else call broker to find field
   ${field_value}=  Run Keyword IF  '${object_id}'  Отримати дані із об’єкта тендера  ${username}  ${qualification_uaid}  ${object_id}  ${field_name}
-  ...                          ELSE  Run As  ${username}  Отримати інформацію із тендера  ${tender_uaid}  ${field}
+  ...                          ELSE  Run As  ${username}  Отримати інформацію із кваліфікаціі  ${qualification_uaid}  ${field}
   # And caching its value before return
   Set_To_Object  ${USERS.users['${username}'].qualification_data.data}  ${field}  ${field_value}
   ${data}=  munch_dict  arg=${USERS.users['${username}'].qualification_data.data}

@@ -834,6 +834,21 @@ Library  Collections
   Fail  Field not found: ${field_name}
 
 
+Отримати інформацію із кваліфікаціі
+  [Arguments]  ${username}  ${qualification_id}  ${field_name}
+  Пошук фреймворку по ідентифікатору
+  ...      ${username}
+  ...      ${qualification_id}
+
+  ${status}  ${field_value}=  Run keyword and ignore error
+  ...      Get from object
+  ...      ${USERS.users['${username}'].qualification_data.data}
+  ...      ${field_name}
+  Run Keyword if  '${status}' == 'PASS'  Return from keyword   ${field_value}
+
+  Fail  Field not found: ${field_name}
+
+
 Отримати інформацію із плану
   [Arguments]  ${username}  ${tender_uaid}  ${field_name}
   openprocurement_client.Пошук плану по ідентифікатору
@@ -1249,9 +1264,6 @@ Library  Collections
   ...    ${USERS.users['${username}'].qualification_data.data.id}
   Log  ${submission_responce}
   ${submissions}=  Set Variable  ${submission_responce['data']}
-  FOR  ${submission}  IN  ${submissions}
-    Log  ${submission}
-  END
   ${status_act}=  Get From Dictionary  ${submission_responce.data[1]}  status
   Порівняти об'єкти  ${status_exp}  ${status_act}
 
@@ -2949,7 +2961,7 @@ Aктивувати фреймворк
   ...      ${framework}
   ...      ${USERS.users['${username}'].access_token}
   FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
-      Set To Dictionary    ${USERS.users['${username}']}  initial_data=${reply}
+      Set To Dictionary    ${USERS.users['${username}']}  qualification_data=${reply}
   END
   Log  ${reply}
 

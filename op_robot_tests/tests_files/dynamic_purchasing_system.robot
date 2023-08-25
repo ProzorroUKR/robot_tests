@@ -492,3 +492,19 @@ Mожливість активувати заявку третього пост�
   ...  critical
   ${submission}=  Set Variable    ${USERS.users['${provider2}'].submission_data}
   Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  active
+
+
+
+Перевірити наявність поля agreementID у квалiфiкацii після підтвердження рішення по заявці
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  view_agreementID
+  ...  critical
+  ${field}=  Set Variable    agreementID
+  FOR  ${username}  IN  @{USED_ROLES}
+    ${framework}=  Run As  ${${username}}  Пошук фреймворку по ідентифікатору  ${QUALIFICATION['QUALIFICATION_UAID']}
+  END
+  Звірити наявність поля agreementID фреймворку для усіх користувачів
+
+
