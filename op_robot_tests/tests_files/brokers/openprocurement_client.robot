@@ -784,6 +784,7 @@ Library  Collections
   ${internalid}=  Get Variable Value     ${QUALIFICATION['QUALIFICATION_ID']}
   Log  ${internalid}
   ${qualification}=  openprocurement_client.Отримати кваліфікацію по внутрішньому ідентифікатору  ${username}  ${internalid}  ${save_key}
+  Set To Dictionary  ${USERS.users['${username}']}  qualification_data=${qualification}
   [return]  ${qualification}
 
 
@@ -1239,6 +1240,19 @@ Library  Collections
   ${submission_responce}=  Call Method  ${USERS.users['${username}'].qualification_client}  get_qualification
   ...    ${USERS.users['${username}'].submission_data.data.qualificationID}
   ${status_act}=  Get From Dictionary  ${submission_responce.data}  status
+  Порівняти об'єкти  ${status_exp}  ${status_act}
+
+
+Можливість перевірити статус по заявці
+  [Arguments]    ${username}  ${status_exp}
+  ${submission_responce}=  Call Method  ${USERS.users['${username}'].framework_client}  get_submissions
+  ...    ${USERS.users['${username}'].qualification_data.data.id}
+  Log  ${submission_responce}
+  ${submissions}=  Set Variable  ${submission_responce['data']}
+  FOR  ${submission}  IN  ${submissions}
+    Log  ${submission}
+  END
+  ${status_act}=  Get From Dictionary  ${submission_responce.data[1]}  status
   Порівняти об'єкти  ${status_exp}  ${status_act}
 
 
@@ -2643,6 +2657,17 @@ Library  Collections
   [Return]  ${reply}
 
 
+Змiнити статус по заявці
+  [Arguments]  ${username}  ${submission}  ${status}
+  ${payload}=  create_data_dict   data.status  ${status}
+  ${reply}=  Call Method  ${USERS.users['${username}'].qualification_client}  patch_qualification
+  ...      ${submission.data.qualificationID}
+  ...      ${payload}
+  ...      access_token=${USERS.users['${username}'].access_token}
+  Log  ${reply}
+  [Return]  ${reply}
+
+
 Скасування рішення кваліфікаційної комісії
   [Documentation]
   ...      [Arguments] Username, tender uaid and award number
@@ -2923,7 +2948,7 @@ Aктивувати фреймворк
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      ${framework}
   ...      ${USERS.users['${username}'].access_token}
-  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}
+  FOR  ${username}  IN  ${viewer}  ${tender_owner}  ${provider}  ${provider1}  ${provider2}
       Set To Dictionary    ${USERS.users['${username}']}  initial_data=${reply}
   END
   Log  ${reply}

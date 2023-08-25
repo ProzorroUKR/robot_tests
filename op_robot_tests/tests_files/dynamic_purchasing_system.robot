@@ -314,7 +314,7 @@ Suite Teardown  Test Suite Teardown Framework
   [Tags]   ${USERS.users['${provider}'].broker}: Завантажити документ по заявці
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      add_doc_to_first_submission
+  ...      add_doc_to_submission_provider
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -330,7 +330,7 @@ Suite Teardown  Test Suite Teardown Framework
   [Tags]   ${USERS.users['${provider}'].broker}: Відображення документації
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      add_doc_to_first_submission
+  ...      add_doc_to_submission_provider
   Звірити відображення вмісту документа ${USERS.users['${provider}']['submission_document']['data']} до фреймворку з ${USERS.users['${provider}']['submission_init_document']['doc_content']} для користувача ${provider}
 
 
@@ -338,7 +338,7 @@ Suite Teardown  Test Suite Teardown Framework
   [Tags]   ${USERS.users['${provider1}'].broker}: Завантажити документ по заявці
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      add_doc_to_second_submission
+  ...      add_doc_to_submission_provider1
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -354,15 +354,15 @@ Suite Teardown  Test Suite Teardown Framework
   [Tags]   ${USERS.users['${provider1}'].broker}: Відображення документації
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      add_doc_to_second_submission
+  ...      add_doc_to_submission_provider1
   Звірити відображення вмісту документа ${USERS.users['${provider1}']['submission_document']['data']} до фреймворку з ${USERS.users['${provider1}']['submission_init_document']['doc_content']} для користувача ${provider1}
 
 
 Можливість завантажити документ по третiй заявці
-  [Tags]   ${USERS.users['${provider!}'].broker}: Завантажити документ по заявці
+  [Tags]   ${USERS.users['${provider2}'].broker}: Завантажити документ по заявці
   ...      provider2
-  ...      ${USERS.users['${provider!}'].broker}
-  ...      add_doc_to_third_submission
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      add_doc_to_submission_provider2
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -374,11 +374,11 @@ Suite Teardown  Test Suite Teardown Framework
    Remove File  ${file_path}
 
 
-Можливість видалити першу заявку з кваліфікації
+Можливість видалити заявку першого постачальника з кваліфікації
   [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
   ...      ${provider}
   ...      ${USERS.users['${provider}'].broker}
-  ...      delete_submission
+  ...      delete_submission_provider
   ...      critical
   Можливість редагувати заявку   ${provider}  deleted
 
@@ -387,25 +387,25 @@ Suite Teardown  Test Suite Teardown Framework
   [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
   ...      ${provider}
   ...      ${USERS.users['${provider}'].broker}
-  ...      update_submission
+  ...      update_submission_provider
   ...      critical
   Неможливість редагувати заявку  ${provider}  update
 
 
-Можливість оновити другу заявку у кваліфікації
+Можливість оновити заявку другого постачальника у кваліфікації
   [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      update_submission
+  ...      update_submission_provider1
   ...      critical
   Можливість редагувати заявку  ${provider1}  update
 
 
-Можливість активувати другу заявку у кваліфікації
+Можливість активувати заявку другого постачальника у кваліфікації
   [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      activate_submission
+  ...      activate_submission_provider1
   ...      critical
   Можливість редагувати заявку  ${provider1}  active
 
@@ -414,7 +414,7 @@ Suite Teardown  Test Suite Teardown Framework
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук заявки
   ...      viewer  tender_owner
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
-  ...      find_submission
+  ...      find_submission_provider1
   ...      critical
   ${submission_id}=  Set Variable    ${USERS.users['${provider1}'].submission_data.data.id}
   Run As  ${viewer}  Пошук заявки по ідентифікатору  ${submission_id}
@@ -423,7 +423,7 @@ Suite Teardown  Test Suite Teardown Framework
 #  END
 
 
-Перевірити статус об’єкта рішення по заявці
+Перевірити статус об’єкта рішення по заявці pending
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення кваліфікації
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
@@ -432,23 +432,63 @@ Suite Teardown  Test Suite Teardown Framework
   Run As  ${viewer}  Можливість перевірити статус об’єкта рішення по заявці  pending
 
 
-Mожливість активувати другу заявку у кваліфікації
+Mожливість активувати заявку третього постачальника у кваліфікації
   [Tags]   ${USERS.users['${provider2}'].broker}: Редагування заявки
   ...      provider2
   ...      ${USERS.users['${provider2}'].broker}
-  ...      activate_submission
+  ...      activate_submission_provider2
   ...      critical
   Run Keyword  Можливість редагувати заявку  ${provider2}  active
 
 
-Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження постачальника
+Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження другого постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_add_doc_to_first_submission
+  ...  qualification_add_doc_provider1
   ...  critical
   ${submission}=  Set Variable    ${USERS.users['${provider1}'].submission_data}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
   Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії по заявці   ${file_path}  ${submission}
   Remove File  ${file_path}
 
+
+Можливість відхилити другого постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_reject_submission_provider1
+  ...  critical
+  ${submission}=  Set Variable    ${USERS.users['${provider1}'].submission_data}
+  Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  unsuccessful
+
+
+Перевірити статус по заявці complete
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення кваліфікації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      view_submissions
+  ...      critical
+  Run As  ${viewer}  Можливість перевірити статус по заявці  complete
+
+
+Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження третього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_add_doc_provider2
+  ...  critical
+  ${submission}=  Set Variable    ${USERS.users['${provider2}'].submission_data}
+  ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
+  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії по заявці   ${file_path}  ${submission}
+  Remove File  ${file_path}
+
+
+Можливість підтвердження рішення по заявці для третього постачальника
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  qualification_confirm_submission_provider2
+  ...  critical
+  ${submission}=  Set Variable    ${USERS.users['${provider2}'].submission_data}
+  Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  active
