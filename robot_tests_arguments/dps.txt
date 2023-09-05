@@ -1,6 +1,5 @@
 -v MODE:dynamicPurchasingSystem
 
-
 -i create_framework
 -i find_framework
 -i framework_view
@@ -30,3 +29,10 @@
 -i qualification_add_doc_provider2
 -i qualification_confirm_submission_provider2
 -i view_agreementID
+-i view_registry
+-i add_doc_to_milestone
+-i ban_contract
+-i view_contract
+-i disqualify_contract
+-i create_framework_with_wrong_fields
+

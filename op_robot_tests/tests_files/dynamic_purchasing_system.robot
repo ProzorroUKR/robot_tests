@@ -9,13 +9,14 @@ Suite Teardown  Test Suite Teardown Framework
 
 
 *** Test Cases ***
+
 Можливість створити фреймворк
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_framework
   ...      critical
-  Можливість створити фреймворк
+  Можливість створити фреймворк  *
   Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Створити артефакт framework
 
@@ -506,5 +507,138 @@ Mожливість активувати заявку третього пост�
     ${framework}=  Run As  ${${username}}  Пошук фреймворку по ідентифікатору  ${QUALIFICATION['QUALIFICATION_UAID']}
   END
   Звірити наявність поля agreementID фреймворку для усіх користувачів
+
+
+Можливість oтримання реєстру
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення реєстру
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  view_registry
+  ...  critical
+  ${agreement_id}=  Set Variable    ${USERS.users['${tender_owner}'].qualification_data.data.agreementID}
+  ${agreement}=  Run As  ${tender_owner}  Oтримання реєстру  ${agreement_id}
+  Set to Dictionary  ${USERS.users['${tender_owner}']}  agreement_data=${agreement}
+  Log   ${agreement}
+
+
+Можливість завантажити документ у milestone
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у milestone
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_milestone
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Run As  ${tender_owner}  Завантажити документ у milestone  ${file_path}
+   ${milestone_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  milestone_document=${milestone_doc}
+   Remove File  ${file_path}
+
+
+Бан контракту
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Бан контракту
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      ban_contract
+  ...      critical
+  ${document}=  Set Variable   ${USERS.users['${tender_owner}'].documents}
+  ${data}=  test_ban_contract_data  ${document}
+  log  ${data}
+  ${reply}=  Call Method  ${USERS.users['${tender_owner}'].agreement_client}  ban_contract
+  ...      ${USERS.users['${tender_owner}'].qualification_data.data.agreementID}
+  ...      ${USERS.users['${tender_owner}'].agreement_data.data.contracts[0].id}
+  ...      ${data}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${reply}
+
+
+Перевірити статус по контракту пiсля бану
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу по контракту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      view_contract
+  ...      critical
+  Run As  ${viewer}  Можливість перевірити статус по контракту  suspended
+
+
+Можливість дискваліфікувати контракт
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Дискваліфікацiя контракту
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      disqualify_contract
+  ...      critical
+  ${data}=  test_status_data  met
+  ${reply}=  Call Method  ${USERS.users['${tender_owner}'].agreement_client}  disqualify_contract
+  ...      ${USERS.users['${tender_owner}'].qualification_data.data.agreementID}
+  ...      ${USERS.users['${tender_owner}'].agreement_data.data.contracts[0].id}
+  ...      ${USERS.users['${tender_owner}'].agreement_data.data.contracts[0].milestones[0].id}
+  ...      ${data}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${reply}
+
+
+Перевірити статус по контракту пiсля дискваліфікацii
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу по контракту
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      view_contract
+  ...      critical
+  Run As  ${viewer}  Можливість перевірити статус по контракту  terminated
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "Назва закупівлі"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Можливість створити фреймворк  title
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "Строк дії оголошення"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Можливість створити фреймворк  qualificationPeriod
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "Код предмета закупівлі"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Можливість створити фреймворк  classification.scheme
+
+
+Неможливість оголосити фреймворк, не вказавши інформацію про контактну особу
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Можливість створити фреймворк  procuringEntity.contactPoint
+
+
+Неможливість оголосити фреймворк, “Строк дії оголошення” більше ніж 3 роки
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Можливість створити фреймворк  1095
+
+
+Неможливість оголосити фреймворк, “Строк дії оголошення" менше ніж 30 календарних днів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Можливість створити фреймворк  25
 
 

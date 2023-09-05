@@ -1268,6 +1268,15 @@ Library  Collections
   Порівняти об'єкти  ${status_exp}  ${status_act}
 
 
+Можливість перевірити статус по контракту
+  [Arguments]    ${username}  ${status_exp}
+  ${responce}=  Call Method  ${USERS.users['${username}'].agreement_client}  get_agreement
+  ...     ${USERS.users['${username}'].qualification_data.data.agreementID}
+  Log  ${responce}
+  ${agreement}=  Set Variable  ${responce['data']}
+  ${status_act}=  Get From Dictionary  ${agreement.contracts[0]}  status
+  Порівняти об'єкти  ${status_exp}  ${status_act}
+
 ##############################################################################
 #             Questions
 ##############################################################################
@@ -2680,6 +2689,14 @@ Library  Collections
   [Return]  ${reply}
 
 
+Oтримання реєстру
+  [Arguments]  ${username}  ${agreement_id}
+  ${reply}=  Call Method  ${USERS.users['${username}'].agreement_client}  get_agreement
+  ...      ${agreement_id}
+  Log  ${reply}
+  [Return]  ${reply}
+
+
 Скасування рішення кваліфікаційної комісії
   [Documentation]
   ...      [Arguments] Username, tender uaid and award number
@@ -3004,6 +3021,21 @@ Aктивувати фреймворк
   ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  upload_framework_document
   ...      ${document}
   ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${doc_reply}
+  Set to Dictionary  ${USERS.users['${username}']}  documents=${doc_reply}
+  Log  ${USERS.users['${username}'].documents}
+
+
+Завантажити документ у milestone
+  [Documentation]
+  [Arguments]  ${username}  ${document}
+  Log  ${USERS.users['${username}'].agreement_data}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].agreement_client}  upload_document_in_milestone
+  ...      ${document}
+  ...      ${USERS.users['${username}'].qualification_data.data.agreementID}
+  ...      ${USERS.users['${username}'].agreement_data.data.contracts[0].id}
+  ...      ${USERS.users['${username}'].agreement_data.data.contracts[0].milestones[0].id}
   ...      access_token=${USERS.users['${tender_owner}'].access_token}
   Log  ${doc_reply}
   Set to Dictionary  ${USERS.users['${username}']}  documents=${doc_reply}

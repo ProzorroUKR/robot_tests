@@ -454,11 +454,16 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Можливість створити фреймворк
+   [Arguments]  ${wrong_field}
    ${qualification_parameters}=  Create Dictionary
   ...      mode=${MODE}
+  ...      wrong_param=${wrong_field}
   ${qualification_data}=  Підготувати дані для створення фреймворку  ${qualification_parameters}
   ${adapted_data}=  Адаптувати дані для оголошення фреймворку  ${qualification_data}
-  ${QUALIFICATION_UAID}=  Run As  ${tender_owner}  Створити кваліфікацію  ${adapted_data}
+  ${QUALIFICATION_UAID}=  Run Keyword If    '${wrong_field}' == '*'
+  ...    Run As  ${tender_owner}  Створити кваліфікацію  ${adapted_data}
+  ...    ELSE    Run Keyword And Expect Error    *  Створити кваліфікацію  ${tender_owner}  ${adapted_data}
+#  ${QUALIFICATION_UAID}=  Run As  ${tender_owner}  Створити кваліфікацію  ${adapted_data}
   Set To Dictionary  ${USERS.users['${tender_owner}']}  initial_data=${adapted_data}
   Set To Dictionary  ${QUALIFICATION}  QUALIFICATION_UAID=${QUALIFICATION_UAID}
 

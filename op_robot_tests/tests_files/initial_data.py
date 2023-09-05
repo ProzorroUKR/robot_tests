@@ -396,7 +396,12 @@ def test_tender_data(params,
 
 
 def test_qualification_data(params):
+    isDeleted = False
     new_date = (get_now() + timedelta(days=31)).isoformat()
+    if params.get('wrong_param').isdigit():
+         new_date = params.get('wrong_param')
+         isDeleted = True
+
     classification = fake.classification()
     data = {
         "frameworkType": params.get("mode"),
@@ -409,6 +414,13 @@ def test_qualification_data(params):
             "endDate": new_date
         }
     }
+
+    if not isDeleted and params.get('wrong_param') != '*':
+        try:
+            parts = params.get('wrong_param').split('.')
+            del data[parts[0]][parts[1]]
+        except Exception as e:
+            del data[params.get('wrong_param')]
     return munchify(data)
 
 
@@ -1810,6 +1822,15 @@ def test_contract_price_amount_buyer(amount):
                 "amount": amount,
                 "amountNet": amount * 0.85
             }
+        }
+    })
+
+
+def test_ban_contract_data(document):
+    return munchify({
+        "data": {
+            "type": "ban",
+            # "documents": [document]
         }
     })
 
