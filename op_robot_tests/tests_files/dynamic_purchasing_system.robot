@@ -33,7 +33,7 @@ Suite Teardown  Test Suite Teardown Framework
   END
 
 
-Відображення заголовку фреймворку
+Відображення поля title фреймворку
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
@@ -43,7 +43,7 @@ Suite Teardown  Test Suite Teardown Framework
   Звірити відображення поля title фреймворку для користувача ${viewer}
 
 
-Відображення опису фреймворку
+Відображення поля description фреймворку
     [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
@@ -52,7 +52,7 @@ Suite Teardown  Test Suite Teardown Framework
   Звірити відображення поля description фреймворку для користувача ${viewer}
 
 
-Відображення імені замовника фреймворку
+Відображення поля name замовника y фреймворку
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
@@ -70,7 +70,7 @@ Suite Teardown  Test Suite Teardown Framework
   Звірити відображення поля frameworkType фреймворку для усіх користувачів
 
 
-Відображення закінчення періоду фреймворку
+Відображення закінчення термiну дii оголошеня
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
@@ -207,7 +207,7 @@ Suite Teardown  Test Suite Teardown Framework
   Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
 
 
-Відображення змінене поле телефон у фреймворку
+Відображення зміненого поля телефон у фреймворку
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
@@ -216,7 +216,7 @@ Suite Teardown  Test Suite Teardown Framework
   Звірити відображення поля procuringEntity.contactPoint.telephone фреймворку для користувача ${tender_owner}
 
 
-Можливість змінити значеня поля назва для замовника
+Можливість змінити значеня поля name для замовника
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -229,7 +229,7 @@ Suite Teardown  Test Suite Teardown Framework
   Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
 
 
-Відображення змінене поле назва у фреймворку
+Відображення зміненого поля name у фреймворку
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
@@ -251,7 +251,7 @@ Suite Teardown  Test Suite Teardown Framework
   Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
 
 
-Відображення змінене поле пошта у фреймворку
+Відображення зміненого поля пошта у фреймворку
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
@@ -272,7 +272,7 @@ Suite Teardown  Test Suite Teardown Framework
   Run As  ${tender_owner}  Редагувати фреймворк  ${patch_data}
 
 
-Відображення змінене поле опис у фреймворку
+Відображення зміненого поля опис у фреймворку
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
@@ -281,7 +281,7 @@ Suite Teardown  Test Suite Teardown Framework
   Звірити відображення поля description фреймворку для користувача ${tender_owner}
 
 
-Можливість подати пропозицію першим учасником
+Можливість подати заявку першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
@@ -291,7 +291,7 @@ Suite Teardown  Test Suite Teardown Framework
   Можливість зареєструвати заявку  ${provider}
 
 
-Можливість подати пропозицію другим учасником
+Можливість подати заявку другим учасником
   [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
@@ -301,7 +301,7 @@ Suite Teardown  Test Suite Teardown Framework
   Можливість зареєструвати заявку  ${provider1}
 
 
-Можливість подати пропозицію третім учасником
+Можливість подати заявку третім учасником
   [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
   ...      provider2
   ...      ${USERS.users['${provider2}'].broker}
@@ -384,7 +384,7 @@ Suite Teardown  Test Suite Teardown Framework
   Можливість редагувати заявку   ${provider}  deleted
 
 
-Неможливість редагувати заявку у статусі draft
+Неможливість оновити статус заявки на update зi статусу delete
   [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
   ...      ${provider}
   ...      ${USERS.users['${provider}'].broker}
