@@ -1277,6 +1277,13 @@ Library  Collections
   ${status_act}=  Get From Dictionary  ${agreement.contracts[0]}  status
   Порівняти об'єкти  ${status_exp}  ${status_act}
 
+
+Можливість перевірити статус об’єкта кваліфікації
+  [Arguments]    ${username}  ${internalid}  ${status_exp}
+  ${qualification}=  Call Method  ${USERS.users['${username}'].framework_client}  get_qualification  ${internalid}
+  ${status_act}=  Get From Dictionary  ${qualification.data}  status
+  Порівняти об'єкти  ${status_exp}  ${status_act}
+
 ##############################################################################
 #             Questions
 ##############################################################################

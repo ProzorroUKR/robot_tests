@@ -690,6 +690,21 @@ Mожливість активувати заявку третього пост�
   Run Keyword And Expect Error    *  Можливість створити фреймворк  procuringEntity.contactPoint
 
 
+Зміна статусу кваліфікації на unsuccessful за відсутності активних заявок
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення кваліфікації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      view_submissions_unsuccessful
+  ...      critical
+  Wait until keyword succeeds
+  ...      10 min 15 sec
+  ...      15 sec
+  ...      Можливість перевірити статус об’єкта кваліфікації
+  ...      ${viewer}
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      unsuccessful
+
+
 
 
 

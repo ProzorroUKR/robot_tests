@@ -1,0 +1,10 @@
+-v MODE:dynamicPurchasingSystem
+-v accelerator:23040
+
+-i create_framework
+-i find_framework
+-i framework_view
+-i open_framework_view
+-i add_doc_to_framework
+-i activate_framework
+-i view_submissions_unsuccessful
