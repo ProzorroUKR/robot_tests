@@ -1,5 +1,5 @@
 -v MODE:dynamicPurchasingSystem
--v ENQUIRED_PERIOD:1095
+-v ENQUIRED_PERIOD:1106
 
 -i create_framework
 -i find_framework
