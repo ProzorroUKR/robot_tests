@@ -106,6 +106,10 @@ Quinta:
         simple.defense:
             accelerator: 1440
             tender:  [0, 10]
+        dynamicPurchasingSystem:
+            accelerator: 1440
+            enquiry:   [0, 10]
+            framework: [ 0, 31]
     keywords_file: openprocurement_client
     roles:
         provider:       Tender_User

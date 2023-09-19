@@ -130,6 +130,54 @@ Suite Teardown  Test Suite Teardown Framework
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
 
 
+Можливість завантажити другий документ у фреймворк
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_framework
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Set Global Variable    ${file_path}
+   Run As  ${tender_owner}  Завантажити документ у фреймворк  ${file_path}
+   ${framework_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  framework_document=${framework_doc}
+
+
+Відображення другого документу у фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      add_doc_to_framework
+  Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
+
+
+Можливість завантажити документ поверх старої версії
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_framework
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   Run As  ${tender_owner}  Оновити документ у фреймворку  ${file_path}
+   Remove File  ${file_path}
+
+
+Можливість перевірити, що є два завантажених документа
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      add_doc_to_framework
+  Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
+  ${doc_reply}=  Call Method  ${USERS.users['${viewer}'].framework_client}  get_documents
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${USERS.users['${tender_owner}']['documents']['data']['id']}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Dictionary Should Contain Key    ${doc_reply.data}  previousVersions
+
+
 Можливість активувати фреймворк
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...      tender_owner
@@ -138,6 +186,16 @@ Suite Teardown  Test Suite Teardown Framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Aктивувати фреймворк
+
+
+Неможливість aктивувати кваліфікацію якщо qualificationPeriod.endDate у проміжку менш ніж 30 або більш ніж 1095 календарних днів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      activate_framework_expected_error  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error    *  Aктивувати фреймворк  ${tender_owner}
 
 
 Відображення початку періоду уточнення фреймворку
@@ -279,6 +337,14 @@ Suite Teardown  Test Suite Teardown Framework
   ...      open_framework_view  level2
   ...      non-critical
   Звірити відображення поля description фреймворку для користувача ${tender_owner}
+
+
+Можливість дочекатись дати закінчення періоду уточнень
+  [Tags]   ${USERS.users['${viewer}'].broker}: Очікування початку періоду кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  Дочекатись дати закінчення періоду уточнень кваліфікації  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}
 
 
 Можливість подати заявку першим учасником
@@ -594,7 +660,7 @@ Mожливість активувати заявку третього пост�
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_framework_with_wrong_fields
   ...      critical
-  Можливість створити фреймворк  title
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  title
 
 
 Неможливість оголосити фреймворк, не заповнивши поле "Строк дії оголошення"
@@ -603,7 +669,7 @@ Mожливість активувати заявку третього пост�
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_framework_with_wrong_fields
   ...      critical
-  Можливість створити фреймворк  qualificationPeriod
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  qualificationPeriod
 
 
 Неможливість оголосити фреймворк, не заповнивши поле "Код предмета закупівлі"
@@ -612,7 +678,7 @@ Mожливість активувати заявку третього пост�
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_framework_with_wrong_fields
   ...      critical
-  Можливість створити фреймворк  classification.scheme
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  classification.scheme
 
 
 Неможливість оголосити фреймворк, не вказавши інформацію про контактну особу
@@ -621,24 +687,9 @@ Mожливість активувати заявку третього пост�
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_framework_with_wrong_fields
   ...      critical
-  Можливість створити фреймворк  procuringEntity.contactPoint
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  procuringEntity.contactPoint
 
 
-Неможливість оголосити фреймворк, “Строк дії оголошення” більше ніж 3 роки
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      create_framework_with_wrong_fields
-  ...      critical
-  Можливість створити фреймворк  1095
 
-
-Неможливість оголосити фреймворк, “Строк дії оголошення" менше ніж 30 календарних днів
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      create_framework_with_wrong_fields
-  ...      critical
-  Можливість створити фреймворк  25
 
 

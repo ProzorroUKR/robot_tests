@@ -3027,6 +3027,17 @@ Aктивувати фреймворк
   Log  ${USERS.users['${username}'].documents}
 
 
+Оновити документ у фреймворку
+  [Documentation]
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  update_framework_document
+  ...      ${document}
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${USERS.users['${username}']['documents']['data']['id']}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${doc_reply}
+
+
 Завантажити документ у milestone
   [Documentation]
   [Arguments]  ${username}  ${document}

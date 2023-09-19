@@ -341,7 +341,11 @@ Get Broker Property By Username
 
 Підготувати дані для створення фреймворку
   [Arguments]    ${qualification_parameters}
-  ${data}=  test_qualification_data  ${qualification_parameters}
+  ${period_intervals}=  compute_intrs  ${BROKERS}  ${used_brokers}
+  ${accelerator}=  Get Variable Value  ${accelerator}
+  ${accelerator}=  Set Variable If  '${accelerator}' != '${None}'  ${accelerator}  ${period_intervals.${MODE}.accelerator}
+  ${intervals}=  Set Variable    ${period_intervals.${MODE}}
+  ${data}=  test_qualification_data  ${qualification_parameters}  ${accelerator}  ${intervals}
   ${config}=  test_qualification_config_data  ${False}
   ${qualification_data}=  Create Dictionary  data=${data}
   Set To Dictionary    ${qualification_data}  config=${config}
@@ -1500,6 +1504,12 @@ Require Failure
   ...      ${username}
   ...      ${tender_uaid}
   ...      active.pre-qualification.stand-still
+
+
+Дочекатись дати закінчення періоду уточнень кваліфікації
+  [Arguments]  ${username}  ${qualification_uaid}
+  Дочекатись дати   ${USERS.users['${username}'].qualification_data.data.enquiryPeriod.endDate}
+  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
 
 
 Дочекатися створення нового етапу мостом

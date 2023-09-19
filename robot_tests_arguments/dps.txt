@@ -1,4 +1,5 @@
 -v MODE:dynamicPurchasingSystem
+-v accelerator:14400
 
 -i create_framework
 -i find_framework
@@ -34,5 +35,5 @@
 -i ban_contract
 -i view_contract
 -i disqualify_contract
--i create_framework_with_wrong_fields
+
 

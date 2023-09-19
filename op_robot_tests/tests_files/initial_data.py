@@ -395,12 +395,16 @@ def test_tender_data(params,
     return munchify(data)
 
 
-def test_qualification_data(params):
-    isDeleted = False
-    new_date = (get_now() + timedelta(days=31)).isoformat()
-    if params.get('wrong_param').isdigit():
-         new_date = params.get('wrong_param')
-         isDeleted = True
+def test_qualification_data(params, accelerator, intervals):
+    periods = ("enquiry", "framework")
+    now = get_now()
+
+    if params.get('enquired_period') is not None:
+        now += timedelta(minutes=int(params.get('enquired_period')))
+        isDeleted = True
+    else:
+        for period in periods:
+            now += timedelta(minutes=intervals[period][1])
 
     classification = fake.classification()
     data = {
@@ -410,12 +414,13 @@ def test_qualification_data(params):
         "classification": classification["classification"],
         "title": fake.title(),
         "description": fake.description(),
+        'frameworkDetails': 'quick, accelerator={}'.format(accelerator),
         "qualificationPeriod": {
-            "endDate": new_date
+            "endDate": now.astimezone(TZ).isoformat()
         }
     }
 
-    if not isDeleted and params.get('wrong_param') != '*':
+    if params.get('wrong_param') != '*':
         try:
             parts = params.get('wrong_param').split('.')
             del data[parts[0]][parts[1]]
