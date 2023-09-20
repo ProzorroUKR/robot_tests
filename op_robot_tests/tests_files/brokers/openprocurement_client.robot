@@ -1702,7 +1702,7 @@ Library  Collections
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+#  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
@@ -1722,7 +1722,7 @@ Library  Collections
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+#  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_qualification_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
@@ -1743,7 +1743,7 @@ Library  Collections
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+#  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_award_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
@@ -1764,7 +1764,7 @@ Library  Collections
   ...  ELSE IF  '${username}' == 'Amcu_User'  set_access_key  ${tender}  ${None}
   ...  ELSE  set_access_key  ${tender}  ${USERS.users['${username}'].complaint_access_token}
   ${complaint_internal_id}=  openprocurement_client.Отримати internal id по UAid для скарги  ${tender}  ${complaintID}
-  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
+#  Set To Dictionary  ${confirmation_data.data}  id=${complaint_internal_id}
   ${reply}=  Call Method  ${USERS.users['${username}'].client}  patch_cancellation_complaint
   ...      ${tender.data.id}
   ...      ${confirmation_data}
