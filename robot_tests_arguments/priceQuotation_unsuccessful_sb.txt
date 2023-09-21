@@ -10,7 +10,7 @@
 -i create_tender
 
 -i successfully_tender_validation
-#-i impossible_make_bid
+-i impossible_make_bid
 -i make_bid_by_provider
 -i make_bid_by_provider1
 -i delete_bid_while_tendering_period_by_provider
