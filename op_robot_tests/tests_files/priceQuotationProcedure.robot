@@ -392,6 +392,170 @@ ${CRITERIA_LLC}     ${False}
   Можливість активувати пропозицію користувачем ${provider}
 
 
+Можливість подати пропозицію першим учасником у статусi draft
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_by_provider_draft  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію priceQuotation у статусi draft користувачем ${provider}
+
+
+Відображення статусу 'draft' пропозицій
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення пропозиції
+  ...     provider
+  ...     ${USERS.users['${viewer}'].broker}
+  ...     tender_bid_view_draft_status
+  ...     non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log    ${bid}
+  Should Be Equal  ${bid.data.status}  draft
+
+
+Редагувати value пропозиції у статусі draft
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      modify_bid_by_provider_draft
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість зменшити пропозицію у статусi draft до 95 відсотків користувачем ${provider}
+
+
+Неможливicть редагувати valueAddedTaxIncluded у статусі draft
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      modify_bid_by_provider_draft
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  ${currency}=  Get Variable Value    ${bid.data.value.currency}
+  ${amount}=  Get Variable Value    ${bid.data.value.amount}
+  ${patch_bid_data}=  test_bid_change_data  ${amount}  ${currency}  ${True}
+  Run Keyword And Expect Error    *  Змінити вартість в ціновії пропозиції  ${provider}  ${TENDER['TENDER_UAID']}  ${patch_bid_data}
+
+
+Неможливicть редагувати currency у статусі draft
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      modify_bid_by_provider_draft
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  ${amount}=  Get Variable Value    ${bid.data.value.amount}
+  ${valueAddedTaxIncluded}=  Get Variable Value    ${bid.data.value.valueAddedTaxIncluded}
+  ${patch_bid_data}=  test_bid_change_data  ${amount}  USD  ${valueAddedTaxIncluded}
+  Run Keyword And Expect Error    *  Змінити вартість в ціновії пропозиції  ${provider}  ${TENDER['TENDER_UAID']}  ${patch_bid_data}
+
+
+Можливість додати документ до пропозиції у статусі draft
+  [Tags]  ${USERS.users['${provider}'].broker}: Процес оскарження
+  ...     provider
+  ...     ${USERS.users['${provider}'].broker}
+  ...     tender_bid_add_doc_draft
+  ...     critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість завантажити документ в пропозицію користувачем ${provider}
+
+
+Mожливість видалити пропозицію у статусі draft
+  [Tags]   ${USERS.users['${provider1}'].broker}: Скасування пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      delete_bid_by_provider_draft_status
+  ...      non-critical
+  Run Keyword  Можливість скасувати цінову пропозицію користувачем ${provider}
+
+
+Отримати видалену пропозицію
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
+  ...     provider
+  ...     ${USERS.users['${viewer}'].broker}
+  ...     tender_bid_view_draft
+  ...     non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log    ${bid}
+  Should Be Equal  ${bid.data.status}  deleted
+
+
+Неможливicть перевести пропозицію з deleted в active
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
+  ...     provider
+  ...     ${USERS.users['${viewer}'].broker}
+  ...     tender_bid_view_draft
+  ...     non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Run Keyword And Expect Error    *  Змінити цінову пропозицію  ${provider}  ${TENDER['TENDER_UAID']}  status  active
+
+
+Неможливicть перевести пропозицію з deleted в draft
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення оскарження
+  ...     provider
+  ...     ${USERS.users['${viewer}'].broker}
+  ...     tender_bid_view_draft
+  ...     non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  Run Keyword And Expect Error    *  Змінити цінову пропозицію  ${provider}  ${TENDER['TENDER_UAID']}  status  draft
+
+
+Можливість повторно подати пропозицію у статусi draft
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_by_provider_additional_draft  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість подати цінову пропозицію priceQuotation у статусi draft користувачем ${provider}
+
+
+Відображення статусу 'draft' другoi пропозицій
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення пропозиції
+  ...     provider
+  ...     ${USERS.users['${viewer}'].broker}
+  ...     tender_bid_view_draft_status
+  ...     non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log    ${bid}
+  Should Be Equal  ${bid.data.status}  draft
+
+
+Подати пропозицію з draft в pending
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      make_bid_by_provider_additional_draft  level1
+  ...      critical
+  [Teardown]  Оновити LAST_MODIFICATION_DATE
+  Можливість активувати пропозицію користувачем ${provider}
+
+
+Відображення статусу 'pending' другoi пропозицій
+  [Tags]  ${USERS.users['${viewer}'].broker}: Відображення пропозиції
+  ...     provider1
+  ...     ${USERS.users['${viewer}'].broker}
+  ...     tender_bid_view_pending_status
+  ...     non-critical
+  [Setup]  Дочекатись синхронізації з майданчиком  ${viewer}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${provider}  ${TENDER['TENDER_UAID']}
+  Log    ${bid}
+  Should Be Equal  ${bid.data.status}  pending
+
+
+Видалити пропозицію в pending
+  [Tags]   ${USERS.users['${provider}'].broker}: Скасування пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider}'].broker}
+  ...      delete_additional_bid_by_provider_draft_status
+  ...      non-critical
+  Run Keyword  Можливість скасувати цінову пропозицію користувачем ${provider}
+
+
 Можливість зменшити пропозицію на 5% першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
@@ -448,15 +612,16 @@ ${CRITERIA_LLC}     ${False}
   Можливість активувати пропозицію користувачем ${provider2}
 
 
-Неможливість видалити пропозицію першим учасником під час прийому пропозицій
+Mожливість видалити пропозицію першим учасником під час прийому пропозицій
   [Tags]   ${USERS.users['${provider1}'].broker}: Скасування пропозиції
   ...      provider
   ...      ${USERS.users['${provider1}'].broker}
   ...      delete_bid_while_tendering_period_by_provider
   ...      non-critical
-  ${value}=  Run Keyword And Expect Error  *  Можливість скасувати цінову пропозицію користувачем ${provider}
-  ${value}=  Convert To Lowercase  ${value}
-  Should Contain  ${value}  can't delete bid in price quotation tender
+  Run Keyword  Можливість скасувати цінову пропозицію користувачем ${provider}
+#  ${value}=  Run Keyword And Expect Error  *  Можливість скасувати цінову пропозицію користувачем ${provider}
+#  ${value}=  Convert To Lowercase  ${value}
+#  Should Contain  ${value}  can't delete bid in price quotation tender
 
 
 Можливість підтвердити цінову пропозицію після зміни умов тендера першим учасником

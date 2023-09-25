@@ -2571,6 +2571,20 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${username}  Подати цінову пропозицію без перевірки учасника за ЄДРПОУ   ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}
 
 
+Можливість подати цінову пропозицію priceQuotation у статусi draft користувачем ${username}
+  ${bid}=  Підготувати дані для подання пропозиції priceQuotation  ${username}
+  ${bidresponses}=  Create Dictionary  bid=${bid}
+  Set To Dictionary  ${USERS.users['${username}']}  bidresponses=${bidresponses}
+  ${lots}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.lots}  ${None}
+  ${lots_ids}=  Run Keyword IF  ${lots}
+  ...     Отримати ідентифікатори об’єктів  ${username}  lots
+  ...     ELSE  Set Variable  ${None}
+  ${features}=  Get Variable Value  ${USERS.users['${tender_owner}'].initial_data.data.features}  ${None}
+  ${features_ids}=  Run Keyword IF  ${features}
+  ...     Отримати ідентифікатори об’єктів  ${username}  features
+  ...     ELSE  Set Variable  ${None}
+  Run As  ${username}  Подати цінову пропозицію в статусі draft без перевірки учасника за ЄДРПОУ  ${TENDER['TENDER_UAID']}  ${bid}  ${lots_ids}  ${features_ids}
+
 ##############################################################################################
 #             BIDDING NEGATIVE TEST
 ##############################################################################################
@@ -2604,6 +2618,20 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   ...  Підготувати дані про зміну цінової пропозиції в без лотовій процедурі  ${value}
   ...  ELSE  Підготувати дані про зміну цінової пропозиції в лотовій процедурі  ${value}  ${bid.data.lotValues[0].relatedLot}
   Log  ${patch_bid_data}
+  Run as  ${username}  Змінити вартість в ціновії пропозиції  ${TENDER['TENDER_UAID']}   ${patch_bid_data}
+
+
+Можливість зменшити пропозицію у статусi draft до ${percent} відсотків користувачем ${username}
+  ${percent}=  Convert To Number  ${percent}
+  ${divider}=  Convert To Number  0.01
+  ${field}=  Set variable if  ${NUMBER_OF_LOTS} == 0  value.amount  lotValues[0].value.amount
+  ${value}=  Run As  ${username}  Отримати інформацію із пропозиції  ${TENDER['TENDER_UAID']}  ${field}
+  ${value}=  mult_and_round  ${value}  ${percent}  ${divider}  precision=${2}
+  ${bid}=  openprocurement_client.Отримати пропозицію  ${username}  ${TENDER['TENDER_UAID']}
+  ${currency}=  Get Variable Value    ${bid.data.value.currency}
+  ${valueAddedTaxIncluded}=  Get Variable Value    ${bid.data.value.valueAddedTaxIncluded}
+  ${patch_bid_data}=  test_bid_change_data  ${value}  ${currency}  ${valueAddedTaxIncluded}
+  Log    ${patch_bid_data}
   Run as  ${username}  Змінити вартість в ціновії пропозиції  ${TENDER['TENDER_UAID']}   ${patch_bid_data}
 
 ##############################################################################################
