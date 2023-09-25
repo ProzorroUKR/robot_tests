@@ -2166,6 +2166,31 @@ Library  Collections
   Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
 
 
+Подати цінову пропозицію в статусі draft без перевірки учасника за ЄДРПОУ
+  [Arguments]  ${username}  ${tender_uaid}  ${bid}  ${lots_ids}=${None}  ${features_ids}=${None}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${lots_ids}=  Run Keyword IF  ${lots_ids}  Set Variable  ${lots_ids}
+  ...     ELSE  Create List
+  FOR    ${index}    ${lot_id}    IN ENUMERATE    @{lots_ids}
+      ${lot_index}=  get_object_index_by_id  ${tender.data.lots}  ${lot_id}
+      ${lot_id}=  Get Variable Value  ${tender.data.lots[${lot_index}].id}
+      Set To Dictionary  ${bid.data.lotValues[${index}]}  relatedLot=${lot_id}
+  END
+  ${features_ids}=  Run Keyword IF  ${features_ids}  Set Variable  ${features_ids}
+  ...     ELSE  Create List
+  FOR    ${index}    ${feature_id}    IN ENUMERATE    @{features_ids}
+      ${feature_index}=  get_object_index_by_id  ${tender.data.features}  ${feature_id}
+      ${code}=  Get Variable Value  ${tender.data.features[${feature_index}].code}
+      Set To Dictionary  ${bid.data.parameters[${index}]}  code=${code}
+  END
+  ${reply}=  Call Method  ${USERS.users['${username}'].client}  create_bid  ${tender.data.id}  ${bid}
+  Log  ${reply}
+  Set To Dictionary  ${USERS.users['${username}']}  access_token=${reply.access.token}
+  ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
+  Set To Dictionary   ${USERS.users['${username}'].bidresponses['bid'].data}  id=${reply['data']['id']}
+  Set To Dictionary  ${USERS.users['${username}']}  bid_id=${reply['data']['id']}
+
+
 Змінити цінову пропозицію
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}

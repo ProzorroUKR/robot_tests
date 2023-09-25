@@ -1703,6 +1703,18 @@ def test_price_change_data(value):
     })
 
 
+def test_bid_change_data(value, currency, valueAddedTaxIncluded):
+    return munchify({
+        "data": {
+            "value": {
+                "amount": value,
+                "currency": currency,
+                "valueAddedTaxIncluded": valueAddedTaxIncluded
+            }
+        }
+    })
+
+
 def test_price_change_lot_data(value, related_lot):
     return munchify({
         "data": {

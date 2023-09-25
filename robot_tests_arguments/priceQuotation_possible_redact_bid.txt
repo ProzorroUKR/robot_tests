@@ -1,0 +1,29 @@
+-v MODE:priceQuotation
+
+
+-v NUMBER_OF_ITEMS:1
+-v NUMBER_OF_LOTS:0
+
+-v TENDER_MEAT:False
+-v ITEM_MEAT:False
+-v LOT_MEAT:False
+
+-v VAT_INCLUDED: False
+
+-i create_tender
+-i find_tender
+-i make_bid_by_provider_draft
+-i tender_bid_view_draft_status
+-i modify_bid_by_provider_draft
+-i tender_bid_add_doc_draft
+-i delete_bid_by_provider_draft_status
+-i tender_bid_view_draft
+-i tender_bid_view_draft_status
+-i tender_bid_delete_pending
+-i make_bid_by_provider_additional_draft
+-i delete_bid_by_provider1_draft_status
+-i tender_bid_view_pending_status
+-i delete_additional_bid_by_provider_draft_status
+
+
+

@@ -122,7 +122,8 @@ from initial_data import (
     test_tender_config_data,
     test_qualification_data,
     test_qualification_config_data,
-    create_change_amount_body
+    create_change_amount_body,
+    test_bid_change_data
 )
 from barbecue import chef
 # End of non-pointless import
