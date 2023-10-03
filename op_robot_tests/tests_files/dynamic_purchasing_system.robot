@@ -450,7 +450,7 @@ Suite Teardown  Test Suite Teardown Framework
   Можливість редагувати заявку   ${provider}  deleted
 
 
-Неможливість оновити статус заявки на update зi статусу delete
+Неможливість змiнити статус заявки зi статусу delete
   [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
   ...      ${provider}
   ...      ${USERS.users['${provider}'].broker}
