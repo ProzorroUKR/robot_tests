@@ -654,6 +654,60 @@ Mожливість активувати заявку третього пост�
   Run As  ${viewer}  Можливість перевірити статус по контракту  terminated
 
 
+Неможливість оголосити фреймворк, не заповнивши поле "procuringEntity"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  procuringEntity
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "procuringEntity.contactPoint"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  contactPoint
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "email"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  email
+
+
+Неможливість оголосити фреймворк, якщо поле "email" не відповідає формату
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  bad_format_email
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "name"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  name
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "identifier"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  identifier
+
+
 Неможливість оголосити фреймворк, не заповнивши поле "Назва закупівлі"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
   ...      tender_owner
@@ -678,16 +732,143 @@ Mожливість активувати заявку третього пост�
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_framework_with_wrong_fields
   ...      critical
-  Run Keyword And Expect Error    *  Можливість створити фреймворк  classification.scheme
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  scheme
 
 
-Неможливість оголосити фреймворк, не вказавши інформацію про контактну особу
+Неможливість оголосити фреймворк, якщо поле "Код предмета закупівлі" не відповідає формату
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      create_framework_with_wrong_fields
   ...      critical
-  Run Keyword And Expect Error    *  Можливість створити фреймворк  procuringEntity.contactPoint
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  bad_format_scheme
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "id"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  id
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "legalName"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  legalName
+
+
+Mожливість оголосити фреймворк, не заповнивши поле "kind"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword  Можливість створити фреймворк  kind
+  Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   general  procuringEntity.kind
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "address"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  address
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "countryName"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  countryName
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "postalCode"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  postalCode
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "region"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  region
+
+
+Неможливість оголосити фреймворк, якщо поле "region" не відповідає формату
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  bad_format_region
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "streetAddress"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  streetAddress
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "locality"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  locality
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "classification"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  classification
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "description"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  description
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "title"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  title
+
+
+Неможливість оголосити фреймворк, не заповнивши поле "qualificationPeriod"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      create_framework_with_wrong_fields
+  ...      critical
+  Run Keyword And Expect Error    *  Можливість створити фреймворк  qualificationPeriod
 
 
 Зміна статусу кваліфікації на unsuccessful за відсутності активних заявок

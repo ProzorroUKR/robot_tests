@@ -420,13 +420,31 @@ def test_qualification_data(params, accelerator, intervals):
         }
     }
 
-    if params.get('wrong_param') != '*':
-        try:
-            parts = params.get('wrong_param').split('.')
-            del data[parts[0]][parts[1]]
-        except Exception as e:
-            del data[params.get('wrong_param')]
+    key_to_remove = params.get('wrong_param')
+    if key_to_remove != '*':
+        if key_to_remove == 'bad_format_email':
+            data['procuringEntity']['contactPoint']['email'] = 'аал@фф.com'
+        elif key_to_remove == 'bad_format_scheme':
+            data['procuringEntity']['identifier']['scheme'] = 'UA-EDR1'
+        elif key_to_remove == 'bad_format_region':
+            data['procuringEntity']['address']['region'] = 'м.Кiiвп1'
+        else:
+            try:
+                # parts = params.get('wrong_param').split('.')
+                # del data[parts[0]][parts[1]]
+                remove_keys(data, key_to_remove)
+            except Exception as e:
+                del data[key_to_remove]
     return munchify(data)
+
+
+def remove_keys(dictionary, key_to_remove):
+    if isinstance(dictionary, dict):
+        for key in list(dictionary.keys()):
+            if key == key_to_remove:
+                del dictionary[key]
+            elif isinstance(dictionary[key], dict):
+                remove_keys(dictionary[key], key_to_remove)
 
 
 def test_submission_data(framework_id):
@@ -564,13 +582,14 @@ def test_tender_data_planning(params):
 
 def test_tender_config_data(params):
     hasAuction_false_value = ["negotiation", "negotiation.quick", "competitiveDialogueUA",
-                               "competitiveDialogueEU", "reporting", "priceQuotation"]
+                              "competitiveDialogueEU", "reporting", "priceQuotation"]
     hasValueRestriction_false_value = ["aboveThreshold"]
     hasPrequalification_false_value = ["belowThreshold", "aboveThreshold", "aboveThresholdUA", "negotiation",
                                        "negotiation.quick", "simple_defense", "competitiveDialogueUA.stage2",
                                        "reporting", "closeFrameworkAgreementSelectionUA", "priceQuotation",
                                        "aboveThresholdUA.defense", "framework_selection"]
-    minBidsNumber_2 = ["aboveThresholdUA", "aboveThresholdEU", "competitiveDialogueUA.stage2", "competitiveDialogueEU.stage2",
+    minBidsNumber_2 = ["aboveThresholdUA", "aboveThresholdEU", "competitiveDialogueUA.stage2",
+                       "competitiveDialogueEU.stage2",
                        "esco"]
     minBidsNumber_3 = ["competitiveDialogueUA", "competitiveDialogueEU", "closeFrameworkAgreementUA"]
 
