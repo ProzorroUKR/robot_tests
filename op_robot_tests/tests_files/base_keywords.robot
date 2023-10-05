@@ -466,6 +466,14 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Set To Dictionary  ${QUALIFICATION}  QUALIFICATION_UAID=${QUALIFICATION_UAID}
 
 
+Неможливість оновити кваліфікаціi
+  [Arguments]  ${username}   ${field_name}  ${field_value}
+  ${qualification_data}=  openprocurement_client.Отримати кваліфікацію по внутрішньому ідентифікатору  ${username}  ${QUALIFICATION['QUALIFICATION_ID']}
+  Set_To_Object  ${qualification_data.data}  ${field_name}  ${field_value}
+  Log    ${qualification_data}
+  Оновити кваліфікацію  ${username}  ${qualification_data}
+
+
 Можливість зареєструвати заявку
   [Arguments]    ${username}
   ${submission_data}=  Підготувати дані для регістрації заявки

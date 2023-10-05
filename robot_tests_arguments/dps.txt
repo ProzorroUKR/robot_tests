@@ -4,6 +4,7 @@
 -i create_framework
 -i find_framework
 -i framework_view
+-i update_framework
 -i open_framework_view
 -i add_doc_to_framework
 -i activate_framework

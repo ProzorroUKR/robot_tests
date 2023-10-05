@@ -2990,6 +2990,15 @@ Aктивувати фреймворк
   Log  ${reply}
 
 
+Оновити кваліфікацію
+  [Arguments]   ${username}  ${qualification_data}
+  ${reply}=  Call Method  ${USERS.users['${username}'].framework_client}  patch_framework
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${qualification_data}
+  ...      ${USERS.users['${username}'].access_token}
+  Log  ${reply}
+
+
 Відхилити кваліфікацію
   [Documentation]
   ...      [Arguments] Username, tender uaid and qualification number
