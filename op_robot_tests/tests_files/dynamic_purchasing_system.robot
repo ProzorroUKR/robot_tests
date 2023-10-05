@@ -33,7 +33,7 @@ Suite Teardown  Test Suite Teardown Framework
   END
 
 
-Неможливість оновити фреймворк, якщо поле "procuringEntity.contactPoint.email" не відповідає формату
+Неможливість оновити фреймворк, якщо поле "procuringEntity.contactPoint.email" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -44,7 +44,7 @@ Suite Teardown  Test Suite Teardown Framework
   Should Contain    ${error_message}  "Not a well formed email address."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -55,7 +55,7 @@ Suite Teardown  Test Suite Teardown Framework
   Should Contain    ${error_message}  "This field is required."
 
 
-Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.telephone"
+Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.telephone", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -64,7 +64,7 @@ Mожливість оновити фреймворк, не заповнивши
   Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.telephone  ${Null}
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.name"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.name", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -75,7 +75,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.email"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.email", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -86,7 +86,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -97,7 +97,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.scheme"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.scheme", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -108,7 +108,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.id"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.id", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -119,7 +119,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.legalName"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.legalName", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -130,7 +130,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, якщо поле "procuringEntity.identifier.scheme" не відповідає формату
+Неможливість оновити фреймворк, якщо поле "procuringEntity.identifier.scheme" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -141,7 +141,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "Value must be one of ['AE-ACCI', 'AE-ADCD', 'AE-AFZ', 'AE-DCCI', 'AE-DFSA', 'AE-DIFC', 'AE-FFZ', 'AE-FUJCCI', 'AE-HFZA', 'AE-RAKIA', 'AE-SAIF', 'AE-SCCI', 'AE-UAQCCI', 'AF-CBR', 'AF-MOE', 'AM-SRLE', 'AR-CENOC', 'AR-CUIT', 'AT-FN', 'AU-ABN', 'AU-ACNC', 'AZ-IVI', 'BD-NAB', 'BE-BCE_KBO', 'BE-GTCF', 'BG-EIK', 'BR-CNPJ', 'BY-UNP', 'CA-CRA_ACR', 'CH-ZEFIX', 'CL-RUT', 'CN-SAIC', 'CO-CCB', 'CY-DRCOR', 'CZ-ICO', 'DE-CRP', 'DK-CVR', 'EE-RIK', 'EG-MOSS', 'ES-DIR3', 'ES-RMS', 'ET-MFA', 'FI-PRO', 'FR-INSEE', 'FR-RCS', 'GB-CHC', 'GB-COH', 'GB-EDU', 'GB-GOV', 'GB-GOVUK', 'GB-NIC', 'GB-REV', 'GB-SC', 'GB-UKPRN', 'GE-NAPR', 'GG-RCE', 'GH-DSW', 'GR-GECR', 'HR-MBS', 'HR-OIB', 'HU-VAT', 'ID-KDN', 'ID-KHH', 'ID-KLN', 'ID-PRO', 'IE-CHY', 'IE-CRO', 'IL-ROC', 'IM-CR', 'IM-GR', 'IN-MCA', 'IT-RI', 'JE-CR', 'JE-OAC', 'JO-CCD', 'JO-MSD', 'JP-JCN', 'KE-NCB', 'KE-RCO', 'KE-RSO', 'KG-ID', 'KR-BIZID', 'KZ-BIN', 'LS-LCN', 'LT-PVM', 'LT-RC', 'LV-RE', 'MD-IDNO', 'MM-MHA', 'MT-MFSA', 'MW-CNM', 'MW-MRA', 'MW-NBM', 'MW-RG', 'MY-SSM', 'MZ-MOJ', 'NG-CAC', 'NL-KVK', 'NO-BRC', 'NP-CRO', 'NP-SWC', 'PA-RPP', 'PK-PCP', 'PK-VSWA', 'PL-KRS', 'PL-NIP', 'PL-REGON', 'PT-NIPPC', 'RO-CUI', 'RS-APR', 'RU-INN', 'RU-OGRN', 'SA-CRS', 'SE-BLV', 'SG-ACRA', 'SI-PRS', 'SI-TIN', 'SK-ZRSR', 'TR-MERSIS', 'TR-MOI', 'TR-VAT', 'TZ-BRLA', 'UA-EDR', 'UA-FIN', 'UA-IPN', 'UG-NGB', 'UG-RSB', 'US-DOS', 'US-EIN', 'US-USAGOV', 'UZ-KTUT', 'XI-IATI', 'XI-PB', 'XM-DAC', 'XM-EORI', 'XM-OCHA', 'ZA-CIP', 'ZA-NPO', 'ZA-PBO', 'ZM-NRB', 'ZM-PCR', 'ZW-PVO', 'ZW-ROD', 'MK-CR', 'MX-RFC', 'LUX', 'UY-DGR']."
 
 
-Неможливість оновити фреймворк, якщо поле "procuringEntity.kind" не відповідає формату
+Неможливість оновити фреймворк, якщо поле "procuringEntity.kind" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -152,7 +152,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "Value must be one of ('authority', 'central', 'defense', 'general', 'other', 'social', 'special')."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -163,7 +163,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.countryName"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.countryName", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -174,7 +174,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.postalCode"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.postalCode", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -185,7 +185,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.region"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.region", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -196,7 +196,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.streetAddress"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.streetAddress", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -207,7 +207,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.locality"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.locality", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -218,7 +218,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, якщо поле "procuringEntity.address.countryName" не відповідає формату
+Неможливість оновити фреймворк, якщо поле "procuringEntity.address.countryName" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -229,7 +229,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "field address:countryName not exist in countries catalog"
 
 
-Неможливість оновити фреймворк, якщо поле "procuringEntity.address.region" не відповідає формату
+Неможливість оновити фреймворк, якщо поле "procuringEntity.address.region" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -240,7 +240,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "field address:region not exist in ua_regions catalog"
 
 
-Неможливість оновити фреймворк, якщо поле "classification.id" не відповідає формату
+Неможливість оновити фреймворк, якщо поле "classification.id" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -250,7 +250,7 @@ Mожливість оновити фреймворк, не заповнивши
   ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.id  '42000000-66'
 
 
-Неможливість оновити фреймворк, не заповнивши поле "classification.id"
+Неможливість оновити фреймворк, не заповнивши поле "classification.id", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -261,7 +261,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, якщо поле "classification.scheme" не відповідає формату
+Неможливість оновити фреймворк, якщо поле "classification.scheme" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -271,7 +271,7 @@ Mожливість оновити фреймворк, не заповнивши
   ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.scheme  'ДК0211'
 
 
-Неможливість оновити фреймворк, не заповнивши поле "classification.scheme"
+Неможливість оновити фреймворк, не заповнивши поле "classification.scheme", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -282,7 +282,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "classification.description"
+Неможливість оновити фреймворк, не заповнивши поле "classification.description", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -293,7 +293,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "qualificationPeriod.endDate"
+Неможливість оновити фреймворк, не заповнивши поле "qualificationPeriod.endDate", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -304,7 +304,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.name"
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.name", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -315,7 +315,7 @@ Mожливість оновити фреймворк, не заповнивши
   Should Contain    ${error_message}  "This field is required."
 
 
-Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.kind"
+Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.kind", статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -478,6 +478,308 @@ Mожливість оновити фреймворк, не заповнивши
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Aктивувати фреймворк
+
+
+Mожливість оновити фреймворк, не заповнивши поле "frameworkType"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  frameworkType  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   dynamicPurchasingSystem  frameworkType
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.contactPoint.email" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.email  'аал@aa.com'
+  Should Contain    ${error_message}  "Not a well formed email address."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.telephone", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.telephone  ${Null}
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.name", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.name  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.email", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.email  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.scheme", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.scheme  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.id", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.id  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.legalName", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.legalName  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.identifier.scheme" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.scheme  'UA-EDR1'
+  Should Contain    ${error_message}  "Value must be one of ['AE-ACCI', 'AE-ADCD', 'AE-AFZ', 'AE-DCCI', 'AE-DFSA', 'AE-DIFC', 'AE-FFZ', 'AE-FUJCCI', 'AE-HFZA', 'AE-RAKIA', 'AE-SAIF', 'AE-SCCI', 'AE-UAQCCI', 'AF-CBR', 'AF-MOE', 'AM-SRLE', 'AR-CENOC', 'AR-CUIT', 'AT-FN', 'AU-ABN', 'AU-ACNC', 'AZ-IVI', 'BD-NAB', 'BE-BCE_KBO', 'BE-GTCF', 'BG-EIK', 'BR-CNPJ', 'BY-UNP', 'CA-CRA_ACR', 'CH-ZEFIX', 'CL-RUT', 'CN-SAIC', 'CO-CCB', 'CY-DRCOR', 'CZ-ICO', 'DE-CRP', 'DK-CVR', 'EE-RIK', 'EG-MOSS', 'ES-DIR3', 'ES-RMS', 'ET-MFA', 'FI-PRO', 'FR-INSEE', 'FR-RCS', 'GB-CHC', 'GB-COH', 'GB-EDU', 'GB-GOV', 'GB-GOVUK', 'GB-NIC', 'GB-REV', 'GB-SC', 'GB-UKPRN', 'GE-NAPR', 'GG-RCE', 'GH-DSW', 'GR-GECR', 'HR-MBS', 'HR-OIB', 'HU-VAT', 'ID-KDN', 'ID-KHH', 'ID-KLN', 'ID-PRO', 'IE-CHY', 'IE-CRO', 'IL-ROC', 'IM-CR', 'IM-GR', 'IN-MCA', 'IT-RI', 'JE-CR', 'JE-OAC', 'JO-CCD', 'JO-MSD', 'JP-JCN', 'KE-NCB', 'KE-RCO', 'KE-RSO', 'KG-ID', 'KR-BIZID', 'KZ-BIN', 'LS-LCN', 'LT-PVM', 'LT-RC', 'LV-RE', 'MD-IDNO', 'MM-MHA', 'MT-MFSA', 'MW-CNM', 'MW-MRA', 'MW-NBM', 'MW-RG', 'MY-SSM', 'MZ-MOJ', 'NG-CAC', 'NL-KVK', 'NO-BRC', 'NP-CRO', 'NP-SWC', 'PA-RPP', 'PK-PCP', 'PK-VSWA', 'PL-KRS', 'PL-NIP', 'PL-REGON', 'PT-NIPPC', 'RO-CUI', 'RS-APR', 'RU-INN', 'RU-OGRN', 'SA-CRS', 'SE-BLV', 'SG-ACRA', 'SI-PRS', 'SI-TIN', 'SK-ZRSR', 'TR-MERSIS', 'TR-MOI', 'TR-VAT', 'TZ-BRLA', 'UA-EDR', 'UA-FIN', 'UA-IPN', 'UG-NGB', 'UG-RSB', 'US-DOS', 'US-EIN', 'US-USAGOV', 'UZ-KTUT', 'XI-IATI', 'XI-PB', 'XM-DAC', 'XM-EORI', 'XM-OCHA', 'ZA-CIP', 'ZA-NPO', 'ZA-PBO', 'ZM-NRB', 'ZM-PCR', 'ZW-PVO', 'ZW-ROD', 'MK-CR', 'MX-RFC', 'LUX', 'UY-DGR']."
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.kind" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.kind  'defense1'
+  Should Contain    ${error_message}  "Value must be one of ('authority', 'central', 'defense', 'general', 'other', 'social', 'special')."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.countryName", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.countryName  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.postalCode", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.postalCode  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.region", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.region  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.streetAddress", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.streetAddress  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.locality", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.locality  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.address.countryName" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.countryName  'Украина1'
+  Should Contain    ${error_message}  "field address:countryName not exist in countries catalog"
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.address.region" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.region  'м. Киiв1'
+  Should Contain    ${error_message}  "field address:region not exist in ua_regions catalog"
+
+
+Неможливість оновити фреймворк, якщо поле "classification.id" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.id  '42000000-66'
+
+
+Неможливість оновити фреймворк, не заповнивши поле "classification.id", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.id  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, якщо поле "classification.scheme" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.scheme  'ДК0211'
+
+
+Неможливість оновити фреймворк, не заповнивши поле "classification.scheme", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.scheme  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "classification.description", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.description  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "qualificationPeriod.endDate", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  qualificationPeriod.endDate  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.name", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.name  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.kind", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.kind  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   general  procuringEntity.kind
 
 
 Неможливість aктивувати кваліфікацію якщо qualificationPeriod.endDate у проміжку менш ніж 30 або більш ніж 1095 календарних днів
