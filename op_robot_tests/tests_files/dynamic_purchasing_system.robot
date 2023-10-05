@@ -782,6 +782,28 @@ Mожливість оновити фреймворк, не заповнивши
   Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   general  procuringEntity.kind
 
 
+Mожливість оновити фреймворк, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${field}=  Set Variable    ${USERS.users['${tender_owner}'].initial_data.data.title}
+  Run Keyword  Неможливість оновити кваліфікаціi  ${tender_owner}  title  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${tender_owner}  ${QUALIFICATION['QUALIFICATION_UAID']}   ${field}  title
+
+
+Mожливість оновити фреймворк, не заповнивши поле "description", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework_active_status
+  ...      critical
+  ${field}=  Set Variable    ${USERS.users['${tender_owner}'].initial_data.data.description}
+  Run Keyword  Неможливість оновити кваліфікаціi  ${tender_owner}  title  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${tender_owner}  ${QUALIFICATION['QUALIFICATION_UAID']}   ${field}  description
+
+
 Неможливість aктивувати кваліфікацію якщо qualificationPeriod.endDate у проміжку менш ніж 30 або більш ніж 1095 календарних днів
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...      tender_owner
