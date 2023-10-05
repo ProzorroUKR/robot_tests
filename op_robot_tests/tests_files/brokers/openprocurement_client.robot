@@ -3043,6 +3043,15 @@ Aктивувати фреймворк
   Log  ${USERS.users['${username}'].documents}
 
 
+Оновити документ у фреймворк за допомогою POST
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  updated_registered_document
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${document}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${doc_reply}
+
+
 Оновити документ у фреймворку
   [Documentation]
   [Arguments]  ${username}  ${document}
