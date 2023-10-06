@@ -3043,13 +3043,14 @@ Aктивувати фреймворк
   Log  ${USERS.users['${username}'].documents}
 
 
-Оновити документ у фреймворк за допомогою POST
+Додати зареєстрований документ у фреймворк
   [Arguments]  ${username}  ${document}
   ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  updated_registered_document
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      ${document}
   ...      access_token=${USERS.users['${tender_owner}'].access_token}
   Log  ${doc_reply}
+  [Return]   ${doc_reply}
 
 
 Оновити документ у фреймворку
@@ -3090,6 +3091,22 @@ Aктивувати фреймворк
   Set to Dictionary  ${USERS.users['${username}']}  submission_document=${doc_reply}
   Log  ${USERS.users['${username}'].submission_document}
 
+
+Oтримати документ з фреймворку
+  [Arguments]  ${user}  ${document_id}
+  ${doc_reply}=  Call Method  ${USERS.users['${user}'].framework_client}  get_document
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${document_id}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  [Return]    ${doc_reply}
+
+
+Oтримати документи з фреймворку
+  [Arguments]  ${user}
+  ${reply}=  Call Method  ${USERS.users['${user}'].framework_client}  get_documents
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  [Return]    ${reply}
 
 
 Скасувати кваліфікацію

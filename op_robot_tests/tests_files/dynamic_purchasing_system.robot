@@ -352,7 +352,7 @@ Mожливість завантажити документ у фреймвор�
   ${lot}=  Set Variable    lot
   Set To Dictionary    ${document.data}  documentOf=${lot}
   ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити документ у фреймворк за допомогою POST  ${tender_owner}  ${document}
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
   Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
   Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
 
@@ -367,8 +367,9 @@ Mожливість завантажити документ у фреймвор�
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  documentType=lot
   ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити документ у фреймворк за допомогою POST  ${tender_owner}  ${document}
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
   Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
 
 
 Заборонено передавати "confidentiality", статус "draft"
@@ -380,10 +381,46 @@ Mожливість завантажити документ у фреймвор�
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  confidentiality=buyerOnly
-  Log   ${document}
   ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити документ у фреймворк за допомогою POST  ${tender_owner}  ${document}
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
   Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
+
+
+Неможливість додати документ, не заповнивши поле "title", статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Log  ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Mожливість отримати документ з фреймворку, використовуючи "document_id"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      get_document_status_draft
+  ...      critical
+  ${document_id}=  Set Variable    ${USERS.users['${tender_owner}']['documents']['data']['id']}
+  ${reply}=  Oтримати документ з фреймворку  ${tender_owner}  ${document_id}
+  Log      ${reply}
+  Should Be Equal    ${document_id}  ${reply.data.id}
+
+
+Mожливість отримати усi наявнi документи з фреймворку
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      get_document_status_draft
+  ...      critical
+  ${reply}=  Oтримати документи з фреймворку  ${tender_owner}
+  Log      ${reply}
 
 
 Відображення поля title фреймворку
@@ -523,7 +560,7 @@ Mожливість завантажити документ у фреймвор�
   ...      ${USERS.users['${viewer}'].broker}
   ...      add_doc_to_framework
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
-  ${doc_reply}=  Call Method  ${USERS.users['${viewer}'].framework_client}  get_documents
+  ${doc_reply}=  Call Method  ${USERS.users['${viewer}'].framework_client}  get_document
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      ${USERS.users['${tender_owner}']['documents']['data']['id']}
   ...      access_token=${USERS.users['${tender_owner}'].access_token}
