@@ -5,6 +5,9 @@
 -i find_framework
 -i framework_view
 -i update_framework
+-i upload_document_status_draft
+-i update_document_status_draft
+-i get_document_status_draft
 -i open_framework_view
 -i add_doc_to_framework
 -i activate_framework
