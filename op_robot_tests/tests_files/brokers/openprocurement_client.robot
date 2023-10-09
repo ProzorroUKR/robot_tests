@@ -3053,6 +3053,17 @@ Aктивувати фреймворк
   [Return]   ${doc_reply}
 
 
+Оновити зареєстрований документ у фреймворку
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  put_document
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${document}
+  ...      ${USERS.users['${username}']['documents']['data']['id']}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
 Оновити документ у фреймворку
   [Documentation]
   [Arguments]  ${username}  ${document}
@@ -3061,6 +3072,7 @@ Aктивувати фреймворк
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      ${USERS.users['${username}']['documents']['data']['id']}
   ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Set to Dictionary  ${USERS.users['${username}']}  documents=${doc_reply}
   Log  ${doc_reply}
 
 

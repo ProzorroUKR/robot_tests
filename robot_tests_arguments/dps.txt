@@ -12,8 +12,10 @@
 -i open_framework_view
 -i add_doc_to_framework
 -i activate_framework
--i add_doc_to_framework_status_active
 -i update_framework_active_status
+-i upload_document_status_active
+-i update_document_status_active
+-i get_document_status_active
 -i modify_framework_contactPoint_phone
 -i modify_framework_contactPoint_name
 -i modify_framework_contactPoint_email

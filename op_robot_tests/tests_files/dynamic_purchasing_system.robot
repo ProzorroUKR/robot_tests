@@ -33,6 +33,8 @@ Suite Teardown  Test Suite Teardown Framework
   END
 
 
+#===== PATCH_frameworks{id} draft =====
+
 Неможливість оновити фреймворк, якщо поле "procuringEntity.contactPoint.email" не відповідає формату, статус "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
@@ -325,6 +327,8 @@ Mожливість оновити фреймворк, не заповнивши
   Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   general  procuringEntity.kind
 
 
+#===== POST_frameworks{id}/documents draft=====
+
 Mожливість завантажити документ у фреймворк, у статусi "draft"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
@@ -543,6 +547,8 @@ Mожливість отримати усi наявнi документи з ф�
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
 
 
+# ===== PUT_frameworks{id}/documents{id} draft =====
+
 Можливість завантажити документ поверх старої версії
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
@@ -567,6 +573,66 @@ Mожливість отримати усi наявнi документи з ф�
   Dictionary Should Contain Key    ${doc_reply.data}  previousVersions
 
 
+Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentOf", статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
+
+
+Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentType", статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  documentType=lot
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
+
+
+Заборонено передавати "confidentiality" під час оновлення, статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
+
+
+Неможливість оновити документ, не заповнивши поле "title", статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Log  ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
 Можливість активувати фреймворк
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...      tender_owner
@@ -576,6 +642,8 @@ Mожливість отримати усi наявнi документи з ф�
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Aктивувати фреймворк
 
+
+#===== PATCH_frameworks{id} active =====
 
 Mожливість оновити фреймворк, не заповнивши поле "frameworkType"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
@@ -899,6 +967,179 @@ Mожливість оновити фреймворк, не заповнивши
   ${field}=  Set Variable    ${USERS.users['${tender_owner}'].initial_data.data.description}
   Run Keyword  Неможливість оновити кваліфікаціi  ${tender_owner}  title  ${Null}
   Звірити поле кваліфікаціi із значенням  ${tender_owner}  ${QUALIFICATION['QUALIFICATION_UAID']}   ${field}  description
+
+
+#===== POST_frameworks{id}/documents active =====
+
+Mожливість завантажити документ у фреймворк, у статусi "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      upload_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Run As  ${tender_owner}  Завантажити документ у фреймворк  ${file_path}
+   ${framework_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  framework_document=${framework_doc}
+   Remove File  ${file_path}
+
+
+Неможливість додати документ, якщо запит не відповідає формату "documentOf", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
+
+
+Неможливість додати документ, якщо запит не відповідає формату "documentType", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  documentType=lot
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
+
+
+Заборонено передавати "confidentiality", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
+
+
+Неможливість додати документ, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Log  ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Mожливість отримати документ з фреймворку, використовуючи "document_id", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      get_document_status_active
+  ...      critical
+  ${document_id}=  Set Variable    ${USERS.users['${tender_owner}']['documents']['data']['id']}
+  ${reply}=  Oтримати документ з фреймворку  ${tender_owner}  ${document_id}
+  Log      ${reply}
+  Should Be Equal    ${document_id}  ${reply.data.id}
+
+
+Mожливість отримати усi наявнi документи з фреймворку, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      get_document_status_active
+  ...      critical
+  ${reply}=  Oтримати документи з фреймворку  ${tender_owner}
+  Log      ${reply}
+
+
+# ===== PUT_frameworks{id}/documents{id} active =====
+
+Можливість завантажити документ поверх старої версії, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_doc_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   Run As  ${tender_owner}  Оновити документ у фреймворку  ${file_path}
+   Remove File  ${file_path}
+
+
+Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentOf", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
+
+
+Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentType", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  documentType=lot
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
+
+
+Заборонено передавати "confidentiality" під час оновлення, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
+
+
+Неможливість оновити документ, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Log  ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
 
 
 Неможливість aктивувати кваліфікацію якщо qualificationPeriod.endDate у проміжку менш ніж 30 або більш ніж 1095 календарних днів
@@ -1274,7 +1515,6 @@ Mожливість активувати заявку третього пост�
   Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  active
 
 
-
 Перевірити наявність поля agreementID у квалiфiкацii після підтвердження рішення по заявці
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
@@ -1366,6 +1606,8 @@ Mожливість активувати заявку третього пост�
   ...      critical
   Run As  ${viewer}  Можливість перевірити статус по контракту  terminated
 
+
+#===== POST =====
 
 Неможливість оголосити фреймворк, не заповнивши поле "procuringEntity"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
