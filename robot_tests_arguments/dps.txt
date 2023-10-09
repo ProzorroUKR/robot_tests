@@ -11,6 +11,7 @@
 -i add_doc_to_framework
 -i open_framework_view
 -i add_doc_to_framework
+-i change_status_from_draft
 -i activate_framework
 -i update_framework_active_status
 -i upload_document_status_active
@@ -44,5 +45,8 @@
 -i ban_contract
 -i view_contract
 -i disqualify_contract
+-i wait_framework_end_date
+-i status_complete
+-i doc_manage_in_framework
 
 

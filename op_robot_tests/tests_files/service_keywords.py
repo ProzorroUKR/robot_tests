@@ -127,7 +127,8 @@ from initial_data import (
     get_description_for_patching_framework,
     get_payload_for_patching_submission,
     test_submission_data,
-    test_ban_contract_data
+    test_ban_contract_data,
+    change_field_value_in_document
 )
 from barbecue import chef
 # End of non-pointless import

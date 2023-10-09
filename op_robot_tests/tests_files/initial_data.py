@@ -1974,6 +1974,14 @@ def test_aggregate_plans_data(plan_id):
     })
 
 
+def change_field_value_in_document(field, value):
+    return munchify({
+        "data": {
+            field: value
+        }
+    })
+
+
 def edit_tender_data_for_buyers(tender_data, plan_1_data, plan_2_data, plan_3_data):
     tender_data = unmunchify(tender_data)
     tender_data['data']['buyers'] = []

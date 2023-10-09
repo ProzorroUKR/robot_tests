@@ -1512,6 +1512,12 @@ Require Failure
   Оновити QUALIFICATION_LAST_MODIFICATION_DATE
 
 
+Дочекатись дати завершення кваліфікації
+  [Arguments]  ${username}  ${qualification_uaid}
+  Дочекатись дати   ${USERS.users['${username}'].qualification_data.data.qualificationPeriod.endDate}
+  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+
+
 Дочекатися створення нового етапу мостом
   [Arguments]  ${username}  ${tender_uaid}
   Оновити LAST_MODIFICATION_DATE

@@ -553,7 +553,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      add_doc_to_framework
+  ...      update_doc_draft
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    Run As  ${tender_owner}  Оновити документ у фреймворку  ${file_path}
@@ -620,7 +620,7 @@ Mожливість отримати усi наявнi документи з ф�
 
 
 Неможливість оновити документ, не заповнивши поле "title", статус "draft"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
   ...      update_document_status_draft
@@ -633,6 +633,128 @@ Mожливість отримати усi наявнi документи з ф�
   Should Contain    ${error}    "name": "title", "description": ["This field is required."
 
 
+#===== PATCH_frameworks{id}/documents{id} draft =====
+
+Mожливість змiнити значеня поля "title" у документi, статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    new title patch
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${reply}=  Run Keyword  Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Be Equal    ${value}  ${reply.data.title}
+
+
+Неможливість змiнити значеня поля "title", передавши Null, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  ${field}=  Set Variable    title
+  ${document}=  change_field_value_in_document  ${field}  ${Null}
+  Log   ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}     "name": "title", "description": ["This field is required."]
+
+
+Неможливість змiнити значеня поля "documentType", якщо значеня не вiдповiдае формату, статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentType
+  ${value}=  Set Variable    patch
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
+
+
+Неможливість змiнити значеня поля "documentOf" у документi, статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentOf
+  ${value}=  Set Variable    lot
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
+
+
+Неможливість змiнити значеня поля "confidentiality" у документi, статус "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_draft
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    confidentiality
+  ${value}=  Set Variable    buyerOnly
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}     "name": "confidentiality", "description": "Rogue field"
+
+
+Неможливість змінити статус фреймворку, якщо значеня поля "data.status" не відповідає дозволеним
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status_from_draft  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  activee
+  Should Contain    ${error_message}  "name": "status", "description": ["Value must be one of ['draft', 'active', 'complete', 'unsuccessful']
+
+
+Неможливість змінити статус фреймворку з "draft" на "unsuccessful"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status_from_draft  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  unsuccessful
+  Should Contain    ${error_message}  "Can't switch to unsuccessful status"
+
+
+Неможливість змінити статус фреймворку з "draft" на "deleted"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status_from_draft  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  deleted
+  Should Contain    ${error_message}  "name": "status", "description": ["Value must be one of ['draft', 'active', 'complete', 'unsuccessful']
+
+
+Неможливість змінити статус фреймворку з "draft" на "complete"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status_from_draft  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  complete
+  Should Contain    ${error_message}  "Can't switch to complete status"
+
+
 Можливість активувати фреймворк
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...      tender_owner
@@ -641,7 +763,6 @@ Mожливість отримати усi наявнi документи з ф�
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Aктивувати фреймворк
-
 
 #===== PATCH_frameworks{id} active =====
 
@@ -1142,6 +1263,80 @@ Mожливість отримати усi наявнi документи з ф�
   Should Contain    ${error}    "name": "title", "description": ["This field is required."
 
 
+#===== PATCH_frameworks{id}/documents{id} active =====
+
+Mожливість змiнити значеня поля "title" у документi, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    new title patch
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${reply}=  Run Keyword  Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Be Equal    ${value}  ${reply.data.title}
+
+
+Неможливість змiнити значеня поля "title" у документi, передавши Null, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  ${field}=  Set Variable    title
+  ${document}=  change_field_value_in_document  ${field}  ${Null}
+  Log   ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}     "name": "title", "description": ["This field is required."]
+
+
+Неможливість змiнити значеня поля "documentType", якщо значеня не вiдповiдае формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentType
+  ${value}=  Set Variable    patch
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
+
+
+Неможливість змiнити значеня поля "documentOf" у документi, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentOf
+  ${value}=  Set Variable    lot
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
+
+
+Неможливість змiнити значеня поля "confidentiality" у документi, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_document_status_active
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    confidentiality
+  ${value}=  Set Variable    buyerOnly
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}     "name": "confidentiality", "description": "Rogue field"
+
+
 Неможливість aктивувати кваліфікацію якщо qualificationPeriod.endDate у проміжку менш ніж 30 або більш ніж 1095 календарних днів
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...      tender_owner
@@ -1439,9 +1634,6 @@ Mожливість отримати усi наявнi документи з ф�
   ...      critical
   ${submission_id}=  Set Variable    ${USERS.users['${provider1}'].submission_data.data.id}
   Run As  ${viewer}  Пошук заявки по ідентифікатору  ${submission_id}
-#  FOR  ${username}  IN  @{USED_ROLES}
-#    Run As  ${${username}}  Пошук заявки по ідентифікатору  ${submission_id}
-#  END
 
 
 Перевірити статус об’єкта рішення по заявці pending
@@ -1839,6 +2031,77 @@ Mожливість оголосити фреймворк, не заповнив
   ...      ${viewer}
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      unsuccessful
+
+
+Можливість дочекатись дати закінчення кваліфікації
+  [Tags]   ${USERS.users['${viewer}'].broker}: Очікування дати закінчення кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      wait_framework_end_date
+  Дочекатись дати завершення кваліфікації  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}
+
+
+Зміна статусу кваліфікації на complete, після настання дати "qualificationPeriod.endDate"
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення кваліфікації
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      status_complete
+  ...      critical
+  Wait until keyword succeeds
+  ...      10 min 15 sec
+  ...      15 sec
+  ...      Можливість перевірити статус об’єкта кваліфікації
+  ...      ${viewer}
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      complete
+
+
+Неможливість зaмiнити документ у фреймворк у статусi "unsuccessful" або "complite"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      doc_manage_in_framework
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити документ у фреймворку  ${tender_owner}  ${file_path}
+  Should Contain    ${error}    "Can't update document in current (unsuccessful) framework status"
+  Remove File  ${file_path}
+
+
+Неможливість завантажити документ у фреймворк у статусi "unsuccessful" або "complite"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      doc_manage_in_framework
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   ${error_message}=  Run Keyword And Expect Error    *
+   ...     Завантажити документ у фреймворк  ${tender_owner}  ${file_path}
+   Should Contain    ${error_message}  "Can't add document in current (unsuccessful) framework status"
+   Remove File  ${file_path}
+
+
+Неможливість змiнити документ у фреймворк у статусi "unsuccessful" або "complite"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      doc_manage_in_framework
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=New title
+  Log  ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "Can't update document in current (unsuccessful) framework status"
+
+
+
+
+
+
 
 
 

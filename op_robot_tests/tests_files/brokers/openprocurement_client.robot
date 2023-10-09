@@ -2990,6 +2990,16 @@ Aктивувати фреймворк
   Log  ${reply}
 
 
+Змiнити статус фреймворка на
+  [Arguments]  ${username}  ${status}
+  ${framework}=  create_data_dict   data.status  ${status}
+  ${reply}=  Call Method  ${USERS.users['${username}'].framework_client}  patch_framework
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${framework}
+  ...      ${USERS.users['${username}'].access_token}
+  Log  ${reply}
+
+
 Оновити кваліфікацію
   [Arguments]   ${username}  ${qualification_data}
   ${reply}=  Call Method  ${USERS.users['${username}'].framework_client}  patch_framework
@@ -3056,6 +3066,17 @@ Aктивувати фреймворк
 Оновити зареєстрований документ у фреймворку
   [Arguments]  ${username}  ${document}
   ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  put_document
+  ...      ${QUALIFICATION.QUALIFICATION_ID}
+  ...      ${document}
+  ...      ${USERS.users['${username}']['documents']['data']['id']}
+  ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
+Оновити значеня поля у документi
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  patch_document
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      ${document}
   ...      ${USERS.users['${username}']['documents']['data']['id']}
