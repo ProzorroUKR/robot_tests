@@ -47,6 +47,6 @@
 -i disqualify_contract
 -i wait_framework_end_date
 -i status_complete
--i doc_manage_in_framework
+-i doc_manage_in_framework_complete
 
 

@@ -2056,7 +2056,7 @@ Mожливість оголосити фреймворк, не заповнив
   ...      complete
 
 
-Неможливість зaмiнити документ у фреймворк у статусi "unsuccessful" або "complite"
+Неможливість зaмiнити документ у фреймворк у статусi "unsuccessful"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -2069,7 +2069,7 @@ Mожливість оголосити фреймворк, не заповнив
   Remove File  ${file_path}
 
 
-Неможливість завантажити документ у фреймворк у статусi "unsuccessful" або "complite"
+Неможливість завантажити документ у фреймворк у статусi "unsuccessful"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -2083,7 +2083,7 @@ Mожливість оголосити фреймворк, не заповнив
    Remove File  ${file_path}
 
 
-Неможливість змiнити документ у фреймворк у статусi "unsuccessful" або "complite"
+Неможливість змiнити документ у фреймворк у статусi "unsuccessful"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
@@ -2096,6 +2096,53 @@ Mожливість оголосити фреймворк, не заповнив
   ${error}=  Run Keyword And Expect Error  *
   ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
   Should Contain    ${error}    "Can't update document in current (unsuccessful) framework status"
+
+
+Неможливість зaмiнити документ у фреймворк у статусi "complete"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      doc_manage_in_framework_complete
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${documents}=  Oтримати документи з фреймворку  ${tender_owner}
+  Log  ${documents.data[0]}
+  Set To Dictionary    ${USERS.users['${tender_owner}']['documents']}  data=${documents.data[0]}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити документ у фреймворку  ${tender_owner}  ${file_path}
+  Should Contain    ${error}    "Can't update document in current (complete) framework status"
+  Remove File  ${file_path}
+
+
+Неможливість завантажити документ у фреймворк у статусi "complete"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      doc_manage_in_framework_complete
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   ${error_message}=  Run Keyword And Expect Error    *
+   ...     Завантажити документ у фреймворк  ${tender_owner}  ${file_path}
+   Should Contain    ${error_message}  "Can't add document in current (complete) framework status"
+   Remove File  ${file_path}
+
+
+Неможливість змiнити документ у фреймворк у статусi "complete"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      doc_manage_in_framework_complete
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${documents}=  Oтримати документи з фреймворку  ${tender_owner}
+  Set To Dictionary    ${USERS.users['${tender_owner}']['documents']}  data=${documents.data[0]}
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=New title
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "Can't update document in current (complete) framework status"
 
 
 
