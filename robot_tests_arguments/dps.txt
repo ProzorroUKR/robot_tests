@@ -1,5 +1,6 @@
 -v MODE:dynamicPurchasingSystem
--v accelerator:14400
+-v accelerator:21600
+
 
 -i create_framework
 -i find_framework
@@ -11,8 +12,9 @@
 -i add_doc_to_framework
 -i open_framework_view
 -i add_doc_to_framework
--i change_status_from_draft
+-i change_status
 -i activate_framework
+-i change_status
 -i update_framework_active_status
 -i upload_document_status_active
 -i update_document_status_active

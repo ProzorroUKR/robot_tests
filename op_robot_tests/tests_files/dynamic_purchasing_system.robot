@@ -355,7 +355,7 @@ Mожливість завантажити документ у фреймвор�
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   ${lot}=  Set Variable    lot
   Set To Dictionary    ${document.data}  documentOf=${lot}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
   Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
   Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
@@ -370,7 +370,7 @@ Mожливість завантажити документ у фреймвор�
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  documentType=lot
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
   Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
   Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
@@ -385,7 +385,7 @@ Mожливість завантажити документ у фреймвор�
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  confidentiality=buyerOnly
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
   Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
   Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
@@ -400,7 +400,7 @@ Mожливість завантажити документ у фреймвор�
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  title=${Null}
   Log  ${document}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
   Should Contain    ${error}    "name": "title", "description": ["This field is required."
 
@@ -583,7 +583,7 @@ Mожливість отримати усi наявнi документи з ф�
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   ${lot}=  Set Variable    lot
   Set To Dictionary    ${document.data}  documentOf=${lot}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
   Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
   Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
@@ -598,7 +598,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  documentType=lot
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
   Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
   Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
@@ -613,7 +613,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  confidentiality=buyerOnly
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
   Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
   Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
@@ -628,7 +628,7 @@ Mожливість отримати усi наявнi документи з ф�
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  title=${Null}
   Log  ${document}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
   Should Contain    ${error}    "name": "title", "description": ["This field is required."
 
@@ -657,7 +657,7 @@ Mожливість змiнити значеня поля "title" у докум�
   ${field}=  Set Variable    title
   ${document}=  change_field_value_in_document  ${field}  ${Null}
   Log   ${document}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
   Should Contain    ${error}     "name": "title", "description": ["This field is required."]
 
@@ -672,7 +672,7 @@ Mожливість змiнити значеня поля "title" у докум�
   ${field}=  Set Variable    documentType
   ${value}=  Set Variable    patch
   ${document}=  change_field_value_in_document  ${field}  ${value}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
   Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
 
@@ -687,7 +687,7 @@ Mожливість змiнити значеня поля "title" у докум�
   ${field}=  Set Variable    documentOf
   ${value}=  Set Variable    lot
   ${document}=  change_field_value_in_document  ${field}  ${value}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
   Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
 
@@ -702,7 +702,7 @@ Mожливість змiнити значеня поля "title" у докум�
   ${field}=  Set Variable    confidentiality
   ${value}=  Set Variable    buyerOnly
   ${document}=  change_field_value_in_document  ${field}  ${value}
-  ${error}=  Run Keyword And Expect Error  *
+  ${error}  Run Keyword And Expect Error  *
   ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
   Should Contain    ${error}     "name": "confidentiality", "description": "Rogue field"
 
@@ -711,10 +711,10 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status_from_draft  level1
+  ...      change_status  level1
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${error_message}=  Run Keyword And Expect Error  *
+  ${error_message}  Run Keyword And Expect Error  *
   ...      Змiнити статус фреймворка на  ${tender_owner}  activee
   Should Contain    ${error_message}  "name": "status", "description": ["Value must be one of ['draft', 'active', 'complete', 'unsuccessful']
 
@@ -723,7 +723,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status_from_draft  level1
+  ...      change_status  level1
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${error_message}=  Run Keyword And Expect Error  *
@@ -735,7 +735,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status_from_draft  level1
+  ...      change_status  level1
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${error_message}=  Run Keyword And Expect Error  *
@@ -747,7 +747,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status_from_draft  level1
+  ...      change_status  level1
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${error_message}=  Run Keyword And Expect Error  *
@@ -763,6 +763,53 @@ Mожливість змiнити значеня поля "title" у докум�
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Aктивувати фреймворк
+
+
+Mожливість змінити статус фреймворку з "active" на "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Run Keyword    Змiнити статус фреймворка на  ${tender_owner}  draft
+
+
+Неможливість змінити статус фреймворку з "active" на "deleted"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  deleted
+  Should Contain    ${error_message}  "name": "status", "description": ["Value must be one of ['draft', 'active', 'complete', 'unsuccessful']
+
+
+Неможливість змінити статус фреймворку з "active" на "complete"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  complete
+  Should Contain    ${error_message}  "Can't switch to complete status"
+
+
+Неможливість змінити статус фреймворку з "active" на "unsuccessful"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  unsuccessful
+  Should Contain    ${error_message}  "Can't switch to unsuccessful status"
+
 
 #===== PATCH_frameworks{id} active =====
 
