@@ -23,6 +23,7 @@
 -i modify_framework_contactPoint_name
 -i modify_framework_contactPoint_email
 -i modify_framework_description
+-i registration_submission_provider_negative
 -i registration_submission_provider
 -i registration_submission_provider1
 -i registration_submission_provider2
@@ -33,6 +34,7 @@
 -i update_submission_provider
 -i update_submission_provider1
 -i activate_submission_provider1
+-i activate_submission_provider1_negative
 -i find_submission_provider1
 -i view_qualification
 -i activate_submission_provider2

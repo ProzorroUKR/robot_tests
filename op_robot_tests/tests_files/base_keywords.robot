@@ -481,6 +481,11 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
   Run As  ${username}  Створити заявку  ${submission_data}
 
 
+Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату
+  [Arguments]    ${username}  ${submission_data}
+  Run As  ${username}  Створити заявку  ${submission_data}
+
+
 Підготувати збереження планів buyers
   ${BUYER_PLAN}=  Create Dictionary
   Set Global Variable  ${BUYER_PLAN}

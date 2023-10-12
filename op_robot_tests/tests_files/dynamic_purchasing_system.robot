@@ -1543,6 +1543,556 @@ Mожливість змiнити значеня поля "title" у докум�
   Дочекатись дати закінчення періоду уточнень кваліфікації  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}
 
 
+#===== POST_submissions =====
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data}  tenderers
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}  "name": "tenderers", "description": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers" не вiдповiдае формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${list}=  Create List  ${null}
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary     ${submission_data.data}  tenderers=${list}
+  Log    ${submission_data}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "name": "tenderers", "description": [["This field is required."]]}
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.name"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  name
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"name": ["This field is required."]}]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.name" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  name=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"name": ["This field is required."]}]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  identifier
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": ["This field is required."
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  identifier=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"identifier": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.legalName"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  legalName
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"identifier": {"legalName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.legalName" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  legalName=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"legalName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.scheme"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"scheme": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.scheme" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"scheme": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.scheme" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme=AE-ACC13
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"identifier": {"scheme": ["Value must be one of ['AE-ACCI',
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.id"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  id
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"identifier": {"id": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.id" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  id=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"id": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  address
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  address=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.countryName"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  countryName
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"countryName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.countryName" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  countryName=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"countryName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.countryName" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  countryName=Украiна4
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"countryName": ["field address:countryName not exist in countries catalog"]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.postalCode"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  postalCode
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}      "description": [{"address": {"postalCode": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.postalCode" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  postalCode=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"postalCode": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.region"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  region
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"region": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.region" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  region=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"region": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.locality"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  locality
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"locality": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.locality" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  locality=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"locality": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.streetAddress"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  streetAddress
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"streetAddress": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.streetAddress" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  streetAddress=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"streetAddress": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  contactPoint
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}      "description": [{"contactPoint": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  contactPoint=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint.name"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].contactPoint}  name
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}      "description": [{"contactPoint": {"name": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.name" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  name=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": {"name": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint.email"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.email" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"contactPoint": {"email": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.email" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email=aap#1aa1.com
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["Not a well formed email address."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.scale"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  scale
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"scale": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.scale" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"scale": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.scale" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=micro6
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"scale": ["Value must be one of ['micro', 'sme', 'mid', 'large', 'not specified']
+
+
+Неможливість подати заявку учасником, якщо не вказати "frameworkID"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data}  frameworkID
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
+
+
+Неможливість подати заявку учасником, якщо вказати неіснуючий "frameworkID"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data}  frameworkID=123456789
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
+
+
+Неможливість подати заявку учасником, якщо вказати "frameworkID" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      registration_submission_provider_negative
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data}  frameworkID=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
+
+
 Можливість подати заявку першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
@@ -1637,6 +2187,8 @@ Mожливість змiнити значеня поля "title" у докум�
    Remove File  ${file_path}
 
 
+#===== PATCH_submissions{id} =====
+
 Можливість видалити заявку першого постачальника з кваліфікації
   [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
   ...      ${provider}
@@ -1669,6 +2221,15 @@ Mожливість змiнити значеня поля "title" у докум�
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
   ...      activate_submission_provider1
+  ...      critical
+  Можливість редагувати заявку  ${provider1}  active
+
+
+Неможливість повторно активувати заявку другого постачальника у кваліфікації
+  [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      activate_submission_provider1_negative
   ...      critical
   Можливість редагувати заявку  ${provider1}  active
 
@@ -1846,7 +2407,7 @@ Mожливість активувати заявку третього пост�
   Run As  ${viewer}  Можливість перевірити статус по контракту  terminated
 
 
-#===== POST =====
+#===== POST_frameworks =====
 
 Неможливість оголосити фреймворк, не заповнивши поле "procuringEntity"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оголошення фреймворку
