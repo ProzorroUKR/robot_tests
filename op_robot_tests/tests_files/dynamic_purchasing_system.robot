@@ -2209,6 +2209,552 @@ Mожливість змiнити значеня поля "title" у докум�
   Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
 
 
+#===== POST_submissions{id}/documents =====
+
+Неможливість додати документ у заявку, якщо запит не відповідає формату "documentOf", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${provider}'].submission_document}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${provider}'].submission_document.data}    documentOf
+
+
+Неможливість додати документ у заявку, якщо запит не відповідає формату "documentOf", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${provider1}'].submission_document}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider1}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${provider1}'].submission_document.data}    documentOf
+
+
+Неможливість додати документ у заявку, якщо запит не відповідає формату "documentType", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable     ${USERS.users['${provider}'].submission_document}
+  Set To Dictionary    ${document.data}  documentType=lot
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${provider}'].submission_document.data}  documentType
+
+
+Неможливість додати документ у заявку, якщо запит не відповідає формату "documentType", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable     ${USERS.users['${provider1}'].submission_document}
+  Set To Dictionary    ${document.data}  documentType=lot
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider1}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${provider1}'].submission_document.data}  documentType
+
+
+Заборонено передавати "confidentiality", заявкa статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable     ${USERS.users['${provider}'].submission_document}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${provider}'].submission_document.data}  confidentiality
+
+
+Заборонено передавати "confidentiality", заявкa статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable     ${USERS.users['${provider1}'].submission_document}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${provider1}'].submission_document.data}  confidentiality
+
+
+Неможливість додати документ у заявку, не заповнивши поле "title", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}=  Set Variable     ${USERS.users['${provider}'].submission_document}
+  Remove From Dictionary    ${document.data}  title
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Неможливість додати документ у заявку, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}=  Set Variable     ${USERS.users['${provider1}'].submission_document}
+  Remove From Dictionary    ${document.data}  title
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Неможливість додати документ у заявку, якщо поле "title" Null, статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}=  Set Variable     ${USERS.users['${provider}'].submission_document}
+  Set To Dictionary    ${document.data}  title=${Null}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Неможливість додати документ у заявку, якщо поле "title" Null, статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}=  Set Variable     ${USERS.users['${provider1}'].submission_document}
+  Set To Dictionary    ${document.data}  title=${Null}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Передати системні поля (id/datePublished/dateModified), статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests1
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider}
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${dateModified}  Get Current TZdate
+  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  datePublished=${dateModified}
+  Set To Dictionary    ${document.data}  dateModified=${dateModified}
+  Log    ${document}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Передати системні поля (id/datePublished/dateModified), статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests1
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider1}
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${dateModified}  Get Current TZdate
+  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  datePublished=${dateModified}
+  Set To Dictionary    ${document.data}  dateModified=${dateModified}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у заявку  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+#===== PUT_submissions{id}/documents{id} =====
+
+Неможливість оновити документ у заявцi, якщо запит не відповідає формату "documentOf", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Oтримати документи з заявки  ${provider}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+
+
+Неможливість оновити документ у заявцi, якщо запит не відповідає формату "documentOf", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Oтримати документи з заявки  ${provider1}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+
+
+Неможливість оновити документ у заявцi, якщо запит не відповідає формату "documentType", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Oтримати документи з заявки  ${provider}
+  Set To Dictionary    ${document.data}  documentType=lot
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+
+
+Неможливість оновити документ у заявцi, якщо запит не відповідає формату "documentType", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Oтримати документи з заявки  ${provider1}
+  Set To Dictionary    ${document.data}  documentType=lot
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+
+
+Заборонено передавати "confidentiality" при оновленi документа, заявкa статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Oтримати документи з заявки  ${provider}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+
+
+Заборонено передавати "confidentiality" при оновленi документа, заявкa статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Oтримати документи з заявки  ${provider1}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+
+
+Неможливість оновити документ у заявцi, не заповнивши поле "title", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider}
+  Remove From Dictionary    ${document.data}  title
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Неможливість оновити документ у заявцi, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider1}
+  Remove From Dictionary    ${document.data}  title
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Неможливість оновити документ у заявцi, якщо поле "title" Null, статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Неможливість оновити документ у заявцi, якщо поле "title" Null, статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider1}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Передати системні поля (id/datePublished/dateModified), при оновленi документа, статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests1
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider}
+  Log  ${document}
+  ${dateModified}  Get Current TZdate
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  datePublished=${dateModified}
+  Set To Dictionary    ${document.data}  dateModified=${dateModified}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Передати системні поля (id/datePublished/dateModified), при оновленi документа, статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests1
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider1}
+  ${dateModified}  Get Current TZdate
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  datePublished=${dateModified}
+  Set To Dictionary    ${document.data}  dateModified=${dateModified}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+#===== PATCH_submissions{id}/documents{id} =====
+
+Неможливість oновити значеня поля документа у заявцi, якщо запит не відповідає формату "documentOf", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentOf
+  ${value}=  Set Variable    lot
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+
+
+Неможливість oновити значеня поля документа у заявцi, якщо запит не відповідає формату "documentOf", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentOf
+  ${value}=  Set Variable    lot
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+
+
+Неможливість oновити значеня поля документа у заявцi, якщо запит не відповідає формату "documentType", статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentType
+  ${value}=  Set Variable    lot
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+
+
+Неможливість oновити значеня поля документа у заявцi, якщо запит не відповідає формату "documentType", статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentType
+  ${value}=  Set Variable    lot
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+
+
+Заборонено передавати "confidentiality" при оновленi значеня поля документа, заявкa статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновити документ
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    confidentiality
+  ${value}=  Set Variable    buyerOnly
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+
+
+Заборонено передавати "confidentiality" при оновленi значеня поля документа, заявкa статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновити документ
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    confidentiality
+  ${value}=  Set Variable    buyerOnly
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+
+
+Mожливість oновити "title" документа у заявцi, статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    test
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  Run Keyword  Оновити значеня поля документа у заявцi  ${provider}  ${document}
+
+
+Mожливість oновити "title" документа у заявцi, статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    test
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  Run Keyword  Оновити значеня поля документа у заявцi  ${provider}  ${document}
+
+
+Неможливість oновити значеня поля документа у заявцi, якщо поле "title" Null, статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    ${Null}
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Неможливість oновити значеня поля документа у заявцi, якщо поле "title" Null, статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    ${Null}
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Передати системні поля (id/datePublished/dateModified), при оновленi значеня поля документа, статус "draft"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider}
+  ${dateModified}  Get Current TZdate
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${dateModified}
+  Set To Dictionary    ${document.data}  dateModified=${dateModified}
+  Run Keyword  Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  ${document}  Oтримати документи з заявки  ${provider}
+  Should Not Be Equal      ${document.data.id}  ${id}
+  Should Not Be Equal      ${document.data.datePublished}  ${dateModified}
+  Should Not Be Equal      ${document.data.dateModified}  ${dateModified}
+
+
+Передати системні поля (id/datePublished/dateModified), при оновленi значеня поля документа, статус "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}  Oтримати документи з заявки  ${provider1}
+  ${dateModified}  Get Current TZdate
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${dateModified}
+  Set To Dictionary    ${document.data}  dateModified=${dateModified}
+  Run Keyword  Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  ${document}  Oтримати документи з заявки  ${provider1}
+  Should Not Be Equal      ${document.data.id}  ${id}
+  Should Not Be Equal      ${document.data.datePublished}  ${dateModified}
+  Should Not Be Equal      ${document.data.dateModified}  ${dateModified}
+
+
 #===== PATCH_submissions{id} =====
 
 Неможливість перевести заявку з draft в complete
@@ -2249,8 +2795,8 @@ Mожливість змiнити значеня поля "title" у докум�
   Run Keyword And Expect Error    *  Можливість редагувати заявку  ${provider}  update
 
 
-Неможливість завантажити документ по заявці, якщо заявка у статусi "deleted"
-  [Tags]   ${USERS.users['${provider}'].broker}: Завантажити документ по заявці
+Неможливість завантажити документ, якщо заявка у статусi "deleted"
+  [Tags]   ${USERS.users['${provider}'].broker}: Завантажити документ у заявку
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
   ...      add_doc_to_submission
@@ -2262,7 +2808,7 @@ Mожливість змiнити значеня поля "title" у докум�
    Remove File  ${file_path}
 
 
-Неможливість оновити документ по заявці, якщо заявка у статусi "deleted"
+Неможливість оновити документ, якщо заявка у статусi "deleted"
   [Tags]   ${USERS.users['${provider}'].broker}: Оновленя документу
   ...      tender_owner
   ...      ${USERS.users['${provider}'].broker}
@@ -2424,10 +2970,6 @@ Mожливість змiнити значеня поля "title" у докум�
   Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["Not a well formed email address."]
 
 
-
-
-
-
 Перевірити статус об’єкта рішення по заявці pending
   [Tags]   ${USERS.users['${provider1}'].broker}: Відображення кваліфікації
   ...      provider1
@@ -2466,6 +3008,44 @@ Mожливість змiнити значеня поля "title" у докум�
   ...      view_submissions
   ...      critical
   Run As  ${viewer}  Можливість перевірити статус по заявці  complete
+
+
+Неможливість завантажити документ, якщо заявка у статусi "complete"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Завантажити документ по заявці
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   ${error_message}  Run Keyword And Expect Error    *  Завантажити документ по заявці  ${provider1}  ${file_path}
+   Should Contain    ${error_message}   "Can't add document in current (complete) submission status"
+   Remove File  ${file_path}
+
+
+Неможливість оновити документ, якщо заявка у статусi "complete"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя документу
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${file_path}
+  Should Contain    ${error}   "Can't update document in current (complete) submission status"
+
+
+Неможливість змiнити документ, якщо заявка у статусi "complete"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя документу
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${document}=  change_field_value_in_document  ${field}  title
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider1}  ${document}
+  Should Contain    ${error}     "Can't update document in current (complete) submission status"
 
 
 Mожливість активувати заявку третього постачальника у кваліфікації
@@ -2557,8 +3137,8 @@ Mожливість активувати заявку третього пост�
   Log  ${reply}
 
 
-Перевірити статус по контракту пiсля бану
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу по контракту
+Перевірити статус контракту пiсля бану
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу контракту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      framework_view
@@ -2582,8 +3162,8 @@ Mожливість активувати заявку третього пост�
   Log  ${reply}
 
 
-Перевірити статус по контракту пiсля дискваліфікацii
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу по контракту
+Перевірити статус контракту пiсля дискваліфікацii
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу контракту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
   ...      framework_view

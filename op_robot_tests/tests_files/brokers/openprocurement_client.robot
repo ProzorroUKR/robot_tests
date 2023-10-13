@@ -3071,6 +3071,16 @@ Aктивувати фреймворк
   [Return]   ${doc_reply}
 
 
+Додати зареєстрований документ у заявку
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].submission_client}  post_registered_submission_document
+  ...      ${USERS.users['${username}'].submission_data.data.id}
+  ...      ${document}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
 Оновити зареєстрований документ у фреймворку
   [Arguments]  ${username}  ${document}
   ${doc_reply}=  Call Method  ${USERS.users['${username}'].framework_client}  put_document
@@ -3168,6 +3178,15 @@ Oтримати документи з фреймворку
   ${reply}=  Call Method  ${USERS.users['${user}'].framework_client}  get_documents
   ...      ${QUALIFICATION.QUALIFICATION_ID}
   ...      access_token=${USERS.users['${tender_owner}'].access_token}
+  [Return]    ${reply}
+
+
+Oтримати документи з заявки
+  [Arguments]  ${username}
+  ${reply}=  Call Method  ${USERS.users['${username}'].submission_client}  get_submission_document
+  ...      ${USERS.users['${username}'].submission_data.data.id}
+  ...      ${USERS.users['${username}'].submission_document.data.id}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
   [Return]    ${reply}
 
 
