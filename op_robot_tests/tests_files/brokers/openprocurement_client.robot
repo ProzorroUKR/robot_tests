@@ -1250,6 +1250,14 @@ Library  Collections
   ...    Set_to_object  ${USERS.users['${username}'].submission_data.data}  qualificationID  ${submission_responce.data.qualificationID}
 
 
+Редагувати поле заявки
+  [Arguments]  ${username}  ${submission_payload}
+  ${submission_responce}=  Call Method  ${USERS.users['${username}'].submission_client}  patch_submission
+  ...      ${USERS.users['${username}'].submission_data.data.id}
+  ...      ${submission_payload}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+
+
 Можливість перевірити статус об’єкта рішення по заявці
   [Arguments]    ${username}  ${status_exp}
   ${submission_responce}=  Call Method  ${USERS.users['${username}'].qualification_client}  get_qualification
@@ -3071,6 +3079,27 @@ Aктивувати фреймворк
   ...      ${USERS.users['${username}']['documents']['data']['id']}
   ...      access_token=${USERS.users['${tender_owner}'].access_token}
   Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
+Оновити зареєстрований документ у заявцi
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].submission_client}  put_submission_document
+  ...      ${USERS.users['${username}']['submission_data']['data']['id']}
+  ...      ${document}
+  ...      ${USERS.users['${username}']['submission_document']['data']['id']}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
+Оновити значеня поля документа у заявцi
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].submission_client}  patch_submission_document
+  ...      ${USERS.users['${username}']['submission_data']['data']['id']}
+  ...      ${document}
+  ...      ${USERS.users['${username}']['submission_document']['data']['id']}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
   [Return]   ${doc_reply}
 
 

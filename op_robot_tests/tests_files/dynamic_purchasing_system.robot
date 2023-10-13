@@ -33,6 +33,78 @@ Suite Teardown  Test Suite Teardown Framework
   END
 
 
+Відображення поля title фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view  level1
+  ...      critical
+  Звірити відображення поля title фреймворку для користувача ${viewer}
+
+
+Відображення поля description фреймворку
+    [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view  level2
+  ...      non-critical
+  Звірити відображення поля description фреймворку для користувача ${viewer}
+
+
+Відображення поля name замовника y фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view  level2
+  ...      critical
+  Звірити відображення поля procuringEntity.name фреймворку для користувача ${viewer}
+
+
+Відображення типу оголошеного фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view  level2
+  ...      non-critical
+  Звірити відображення поля frameworkType фреймворку для усіх користувачів
+
+
+Відображення закінчення термiну дii оголошеня
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view  level2
+  ...      critical
+  Звірити відображення поля qualificationPeriod.endDate фреймворку для усіх користувачів
+
+
+Відображення схеми класифікації номенклатур фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити відображення поля classification.scheme фреймворку для користувача ${viewer}
+
+
+Відображення ідентифікатора класифікації номенклатур фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити відображення поля classification.id фреймворку для користувача ${viewer}
+
+
+Відображення опису класифікації номенклатур фреймворку
+  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
+  ...      viewer
+  ...      ${USERS.users['${viewer}'].broker}
+  ...      framework_view
+  ...      non-critical
+  Звірити відображення поля classification.description фреймворку для користувача ${viewer}
+
+
 #===== PATCH_frameworks{id} draft =====
 
 Неможливість оновити фреймворк, якщо поле "procuringEntity.contactPoint.email" не відповідає формату, статус "draft"
@@ -333,7 +405,7 @@ Mожливість завантажити документ у фреймвор�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      upload_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -349,7 +421,7 @@ Mожливість завантажити документ у фреймвор�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
@@ -365,7 +437,7 @@ Mожливість завантажити документ у фреймвор�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
@@ -380,7 +452,7 @@ Mожливість завантажити документ у фреймвор�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
@@ -395,7 +467,7 @@ Mожливість завантажити документ у фреймвор�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  title=${Null}
@@ -409,7 +481,7 @@ Mожливість отримати документ з фреймворку, �
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      get_document_status_draft
+  ...      document_view
   ...      critical
   ${document_id}=  Set Variable    ${USERS.users['${tender_owner}']['documents']['data']['id']}
   ${reply}=  Oтримати документ з фреймворку  ${tender_owner}  ${document_id}
@@ -421,82 +493,10 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      get_document_status_draft
+  ...      document_view
   ...      critical
   ${reply}=  Oтримати документи з фреймворку  ${tender_owner}
   Log      ${reply}
-
-
-Відображення поля title фреймворку
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view  level1
-  ...      critical
-  Звірити відображення поля title фреймворку для користувача ${viewer}
-
-
-Відображення поля description фреймворку
-    [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view  level2
-  ...      non-critical
-  Звірити відображення поля description фреймворку для користувача ${viewer}
-
-
-Відображення поля name замовника y фреймворку
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view  level2
-  ...      critical
-  Звірити відображення поля procuringEntity.name фреймворку для користувача ${viewer}
-
-
-Відображення типу оголошеного фреймворку
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      open_framework_view  level2
-  ...      non-critical
-  Звірити відображення поля frameworkType фреймворку для усіх користувачів
-
-
-Відображення закінчення термiну дii оголошеня
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view  level2
-  ...      critical
-  Звірити відображення поля qualificationPeriod.endDate фреймворку для усіх користувачів
-
-
-Відображення схеми класифікації номенклатур фреймворку
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view
-  ...      non-critical
-  Звірити відображення поля classification.scheme фреймворку для користувача ${viewer}
-
-
-Відображення ідентифікатора класифікації номенклатур фреймворку
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view
-  ...      non-critical
-  Звірити відображення поля classification.id фреймворку для користувача ${viewer}
-
-
-Відображення опису класифікації номенклатур фреймворку
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення номенклатури фреймворку
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view
-  ...      non-critical
-  Звірити відображення поля classification.description фреймворку для користувача ${viewer}
 
 
 Можливість завантажити документ у фреймворк
@@ -519,7 +519,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      add_doc_to_framework
+  ...      document_view
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
 
 
@@ -543,28 +543,28 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      add_doc_to_framework
+  ...       document_view
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
 
 
 # ===== PUT_frameworks{id}/documents{id} draft =====
 
 Можливість завантажити документ поверх старої версії
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_doc_draft
+  ...      add_doc_to_framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-   Run As  ${tender_owner}  Оновити документ у фреймворку  ${file_path}
-   Remove File  ${file_path}
+  Run As  ${tender_owner}  Оновити документ у фреймворку  ${file_path}
+  Remove File  ${file_path}
 
 
 Можливість перевірити, що є два завантажених документа
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення документації
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      add_doc_to_framework
+  ...      document_view
   Звірити відображення вмісту документа ${USERS.users['${tender_owner}']['documents']['data']} до фреймворку з ${USERS.users['${tender_owner}']['framework_document']['doc_content']} для користувача ${viewer}
   ${doc_reply}=  Call Method  ${USERS.users['${viewer}'].framework_client}  get_document
   ...      ${QUALIFICATION.QUALIFICATION_ID}
@@ -577,7 +577,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
@@ -593,7 +593,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
@@ -608,7 +608,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
@@ -623,7 +623,7 @@ Mожливість отримати усi наявнi документи з ф�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
   Set To Dictionary    ${document.data}  title=${Null}
@@ -639,7 +639,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   ${field}=  Set Variable    title
   ${value}=  Set Variable    new title patch
@@ -652,7 +652,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   ${field}=  Set Variable    title
   ${document}=  change_field_value_in_document  ${field}  ${Null}
@@ -666,7 +666,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${field}=  Set Variable    documentType
@@ -681,7 +681,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${field}=  Set Variable    documentOf
@@ -696,7 +696,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_draft
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${field}=  Set Variable    confidentiality
@@ -755,6 +755,18 @@ Mожливість змiнити значеня поля "title" у докум�
   Should Contain    ${error_message}  "Can't switch to complete status"
 
 
+Неможливість подати заявку yчасником, якщо фреймворк у статусі draft
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість зареєструвати заявку  ${provider}
+  Should Contain    ${error_message}  "description": "Submission cannot be add without framework enquiryPeriod or period"
+
+
 Можливість активувати фреймворк
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...      tender_owner
@@ -763,635 +775,6 @@ Mожливість змiнити значеня поля "title" у докум�
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Run As  ${tender_owner}  Aктивувати фреймворк
-
-
-Mожливість змінити статус фреймворку з "active" на "draft"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status  level1
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  Run Keyword    Змiнити статус фреймворка на  ${tender_owner}  draft
-
-
-Неможливість змінити статус фреймворку з "active" на "deleted"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status  level1
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${error_message}=  Run Keyword And Expect Error  *
-  ...      Змiнити статус фреймворка на  ${tender_owner}  deleted
-  Should Contain    ${error_message}  "name": "status", "description": ["Value must be one of ['draft', 'active', 'complete', 'unsuccessful']
-
-
-Неможливість змінити статус фреймворку з "active" на "complete"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status  level1
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${error_message}=  Run Keyword And Expect Error  *
-  ...      Змiнити статус фреймворка на  ${tender_owner}  complete
-  Should Contain    ${error_message}  "Can't switch to complete status"
-
-
-Неможливість змінити статус фреймворку з "active" на "unsuccessful"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status  level1
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${error_message}=  Run Keyword And Expect Error  *
-  ...      Змiнити статус фреймворка на  ${tender_owner}  unsuccessful
-  Should Contain    ${error_message}  "Can't switch to unsuccessful status"
-
-
-#===== PATCH_frameworks{id} active =====
-
-Mожливість оновити фреймворк, не заповнивши поле "frameworkType"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  frameworkType  ${Null}
-  Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   dynamicPurchasingSystem  frameworkType
-
-
-Неможливість оновити фреймворк, якщо поле "procuringEntity.contactPoint.email" не відповідає формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.email  'аал@aa.com'
-  Should Contain    ${error_message}  "Not a well formed email address."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.telephone", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.telephone  ${Null}
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.name", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.name  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.email", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.email  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.scheme", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.scheme  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.id", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.id  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.legalName", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.legalName  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, якщо поле "procuringEntity.identifier.scheme" не відповідає формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.scheme  'UA-EDR1'
-  Should Contain    ${error_message}  "Value must be one of ['AE-ACCI', 'AE-ADCD', 'AE-AFZ', 'AE-DCCI', 'AE-DFSA', 'AE-DIFC', 'AE-FFZ', 'AE-FUJCCI', 'AE-HFZA', 'AE-RAKIA', 'AE-SAIF', 'AE-SCCI', 'AE-UAQCCI', 'AF-CBR', 'AF-MOE', 'AM-SRLE', 'AR-CENOC', 'AR-CUIT', 'AT-FN', 'AU-ABN', 'AU-ACNC', 'AZ-IVI', 'BD-NAB', 'BE-BCE_KBO', 'BE-GTCF', 'BG-EIK', 'BR-CNPJ', 'BY-UNP', 'CA-CRA_ACR', 'CH-ZEFIX', 'CL-RUT', 'CN-SAIC', 'CO-CCB', 'CY-DRCOR', 'CZ-ICO', 'DE-CRP', 'DK-CVR', 'EE-RIK', 'EG-MOSS', 'ES-DIR3', 'ES-RMS', 'ET-MFA', 'FI-PRO', 'FR-INSEE', 'FR-RCS', 'GB-CHC', 'GB-COH', 'GB-EDU', 'GB-GOV', 'GB-GOVUK', 'GB-NIC', 'GB-REV', 'GB-SC', 'GB-UKPRN', 'GE-NAPR', 'GG-RCE', 'GH-DSW', 'GR-GECR', 'HR-MBS', 'HR-OIB', 'HU-VAT', 'ID-KDN', 'ID-KHH', 'ID-KLN', 'ID-PRO', 'IE-CHY', 'IE-CRO', 'IL-ROC', 'IM-CR', 'IM-GR', 'IN-MCA', 'IT-RI', 'JE-CR', 'JE-OAC', 'JO-CCD', 'JO-MSD', 'JP-JCN', 'KE-NCB', 'KE-RCO', 'KE-RSO', 'KG-ID', 'KR-BIZID', 'KZ-BIN', 'LS-LCN', 'LT-PVM', 'LT-RC', 'LV-RE', 'MD-IDNO', 'MM-MHA', 'MT-MFSA', 'MW-CNM', 'MW-MRA', 'MW-NBM', 'MW-RG', 'MY-SSM', 'MZ-MOJ', 'NG-CAC', 'NL-KVK', 'NO-BRC', 'NP-CRO', 'NP-SWC', 'PA-RPP', 'PK-PCP', 'PK-VSWA', 'PL-KRS', 'PL-NIP', 'PL-REGON', 'PT-NIPPC', 'RO-CUI', 'RS-APR', 'RU-INN', 'RU-OGRN', 'SA-CRS', 'SE-BLV', 'SG-ACRA', 'SI-PRS', 'SI-TIN', 'SK-ZRSR', 'TR-MERSIS', 'TR-MOI', 'TR-VAT', 'TZ-BRLA', 'UA-EDR', 'UA-FIN', 'UA-IPN', 'UG-NGB', 'UG-RSB', 'US-DOS', 'US-EIN', 'US-USAGOV', 'UZ-KTUT', 'XI-IATI', 'XI-PB', 'XM-DAC', 'XM-EORI', 'XM-OCHA', 'ZA-CIP', 'ZA-NPO', 'ZA-PBO', 'ZM-NRB', 'ZM-PCR', 'ZW-PVO', 'ZW-ROD', 'MK-CR', 'MX-RFC', 'LUX', 'UY-DGR']."
-
-
-Неможливість оновити фреймворк, якщо поле "procuringEntity.kind" не відповідає формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.kind  'defense1'
-  Should Contain    ${error_message}  "Value must be one of ('authority', 'central', 'defense', 'general', 'other', 'social', 'special')."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.countryName", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.countryName  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.postalCode", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.postalCode  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.region", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.region  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.streetAddress", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.streetAddress  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.locality", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.locality  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, якщо поле "procuringEntity.address.countryName" не відповідає формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.countryName  'Украина1'
-  Should Contain    ${error_message}  "field address:countryName not exist in countries catalog"
-
-
-Неможливість оновити фреймворк, якщо поле "procuringEntity.address.region" не відповідає формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.region  'м. Киiв1'
-  Should Contain    ${error_message}  "field address:region not exist in ua_regions catalog"
-
-
-Неможливість оновити фреймворк, якщо поле "classification.id" не відповідає формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.id  '42000000-66'
-
-
-Неможливість оновити фреймворк, не заповнивши поле "classification.id", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.id  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, якщо поле "classification.scheme" не відповідає формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.scheme  'ДК0211'
-
-
-Неможливість оновити фреймворк, не заповнивши поле "classification.scheme", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.scheme  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "classification.description", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.description  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "qualificationPeriod.endDate", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  qualificationPeriod.endDate  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.name", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${error_message}  Run Keyword And Expect Error    *
-  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.name  ${Null}
-  Should Contain    ${error_message}  "This field is required."
-
-
-Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.kind", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.kind  ${Null}
-  Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   general  procuringEntity.kind
-
-
-Mожливість оновити фреймворк, не заповнивши поле "title", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${field}=  Set Variable    ${USERS.users['${tender_owner}'].initial_data.data.title}
-  Run Keyword  Неможливість оновити кваліфікаціi  ${tender_owner}  title  ${Null}
-  Звірити поле кваліфікаціi із значенням  ${tender_owner}  ${QUALIFICATION['QUALIFICATION_UAID']}   ${field}  title
-
-
-Mожливість оновити фреймворк, не заповнивши поле "description", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_framework_active_status
-  ...      critical
-  ${field}=  Set Variable    ${USERS.users['${tender_owner}'].initial_data.data.description}
-  Run Keyword  Неможливість оновити кваліфікаціi  ${tender_owner}  title  ${Null}
-  Звірити поле кваліфікаціi із значенням  ${tender_owner}  ${QUALIFICATION['QUALIFICATION_UAID']}   ${field}  description
-
-
-#===== POST_frameworks{id}/documents active =====
-
-Mожливість завантажити документ у фреймворк, у статусi "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      upload_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
-   Run As  ${tender_owner}  Завантажити документ у фреймворк  ${file_path}
-   ${framework_doc}=  Create Dictionary
-   ...    doc_name=${file_name}
-   ...    doc_content=${file_content}
-   Set To Dictionary   ${USERS.users['${tender_owner}']}  framework_document=${framework_doc}
-   Remove File  ${file_path}
-
-
-Неможливість додати документ, якщо запит не відповідає формату "documentOf", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  ${lot}=  Set Variable    lot
-  Set To Dictionary    ${document.data}  documentOf=${lot}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
-  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
-  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
-
-
-Неможливість додати документ, якщо запит не відповідає формату "documentType", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  Set To Dictionary    ${document.data}  documentType=lot
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
-  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
-  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
-
-
-Заборонено передавати "confidentiality", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
-  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
-  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
-
-
-Неможливість додати документ, не заповнивши поле "title", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  Set To Dictionary    ${document.data}  title=${Null}
-  Log  ${document}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
-  Should Contain    ${error}    "name": "title", "description": ["This field is required."
-
-
-Mожливість отримати документ з фреймворку, використовуючи "document_id", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      get_document_status_active
-  ...      critical
-  ${document_id}=  Set Variable    ${USERS.users['${tender_owner}']['documents']['data']['id']}
-  ${reply}=  Oтримати документ з фреймворку  ${tender_owner}  ${document_id}
-  Log      ${reply}
-  Should Be Equal    ${document_id}  ${reply.data.id}
-
-
-Mожливість отримати усi наявнi документи з фреймворку, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      get_document_status_active
-  ...      critical
-  ${reply}=  Oтримати документи з фреймворку  ${tender_owner}
-  Log      ${reply}
-
-
-# ===== PUT_frameworks{id}/documents{id} active =====
-
-Можливість завантажити документ поверх старої версії, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_doc_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-   Run As  ${tender_owner}  Оновити документ у фреймворку  ${file_path}
-   Remove File  ${file_path}
-
-
-Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentOf", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  ${lot}=  Set Variable    lot
-  Set To Dictionary    ${document.data}  documentOf=${lot}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
-  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
-  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
-
-
-Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentType", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  Set To Dictionary    ${document.data}  documentType=lot
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
-  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
-  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
-
-
-Заборонено передавати "confidentiality" під час оновлення, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
-  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
-  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
-
-
-Неможливість оновити документ, не заповнивши поле "title", статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
-  Set To Dictionary    ${document.data}  title=${Null}
-  Log  ${document}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
-  Should Contain    ${error}    "name": "title", "description": ["This field is required."
-
-
-#===== PATCH_frameworks{id}/documents{id} active =====
-
-Mожливість змiнити значеня поля "title" у документi, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  ${field}=  Set Variable    title
-  ${value}=  Set Variable    new title patch
-  ${document}=  change_field_value_in_document  ${field}  ${value}
-  ${reply}=  Run Keyword  Оновити значеня поля у документi  ${tender_owner}  ${document}
-  Should Be Equal    ${value}  ${reply.data.title}
-
-
-Неможливість змiнити значеня поля "title" у документi, передавши Null, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  ${field}=  Set Variable    title
-  ${document}=  change_field_value_in_document  ${field}  ${Null}
-  Log   ${document}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
-  Should Contain    ${error}     "name": "title", "description": ["This field is required."]
-
-
-Неможливість змiнити значеня поля "documentType", якщо значеня не вiдповiдае формату, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${field}=  Set Variable    documentType
-  ${value}=  Set Variable    patch
-  ${document}=  change_field_value_in_document  ${field}  ${value}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
-  Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
-
-
-Неможливість змiнити значеня поля "documentOf" у документi, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${field}=  Set Variable    documentOf
-  ${value}=  Set Variable    lot
-  ${document}=  change_field_value_in_document  ${field}  ${value}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
-  Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
-
-
-Неможливість змiнити значеня поля "confidentiality" у документi, статус "active"
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      update_document_status_active
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${field}=  Set Variable    confidentiality
-  ${value}=  Set Variable    buyerOnly
-  ${document}=  change_field_value_in_document  ${field}  ${value}
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
-  Should Contain    ${error}     "name": "confidentiality", "description": "Rogue field"
-
-
-Неможливість aктивувати кваліфікацію якщо qualificationPeriod.endDate у проміжку менш ніж 30 або більш ніж 1095 календарних днів
-  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
-  ...      tender_owner
-  ...      ${USERS.users['${tender_owner}'].broker}
-  ...      activate_framework_expected_error  level1
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  Run Keyword And Expect Error    *  Aктивувати фреймворк  ${tender_owner}
 
 
 Відображення початку періоду уточнення фреймворку
@@ -1448,11 +831,641 @@ Mожливість змiнити значеня поля "title" у докум�
   Звірити наявність поля period.endDate фреймворку для усіх користувачів
 
 
+Mожливість змінити статус фреймворку з "active" на "draft"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Run Keyword    Змiнити статус фреймворка на  ${tender_owner}  draft
+
+
+Неможливість змінити статус фреймворку з "active" на "deleted"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  deleted
+  Should Contain    ${error_message}  "name": "status", "description": ["Value must be one of ['draft', 'active', 'complete', 'unsuccessful']
+
+
+Неможливість змінити статус фреймворку з "active" на "complete"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  complete
+  Should Contain    ${error_message}  "Can't switch to complete status"
+
+
+Неможливість змінити статус фреймворку з "active" на "unsuccessful"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      change_status  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}=  Run Keyword And Expect Error  *
+  ...      Змiнити статус фреймворка на  ${tender_owner}  unsuccessful
+  Should Contain    ${error_message}  "Can't switch to unsuccessful status"
+
+
+#===== PATCH_frameworks{id} active =====
+
+Mожливість оновити фреймворк, не заповнивши поле "frameworkType"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  frameworkType  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   dynamicPurchasingSystem  frameworkType
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.contactPoint.email" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.email  'аал@aa.com'
+  Should Contain    ${error_message}  "Not a well formed email address."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.telephone", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.telephone  ${Null}
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.name", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.name  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.contactPoint.email", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.contactPoint.email  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.scheme", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.scheme  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.id", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.id  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.identifier.legalName", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.legalName  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.identifier.scheme" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.identifier.scheme  'UA-EDR1'
+  Should Contain    ${error_message}  "Value must be one of ['AE-ACCI', 'AE-ADCD', 'AE-AFZ', 'AE-DCCI', 'AE-DFSA', 'AE-DIFC', 'AE-FFZ', 'AE-FUJCCI', 'AE-HFZA', 'AE-RAKIA', 'AE-SAIF', 'AE-SCCI', 'AE-UAQCCI', 'AF-CBR', 'AF-MOE', 'AM-SRLE', 'AR-CENOC', 'AR-CUIT', 'AT-FN', 'AU-ABN', 'AU-ACNC', 'AZ-IVI', 'BD-NAB', 'BE-BCE_KBO', 'BE-GTCF', 'BG-EIK', 'BR-CNPJ', 'BY-UNP', 'CA-CRA_ACR', 'CH-ZEFIX', 'CL-RUT', 'CN-SAIC', 'CO-CCB', 'CY-DRCOR', 'CZ-ICO', 'DE-CRP', 'DK-CVR', 'EE-RIK', 'EG-MOSS', 'ES-DIR3', 'ES-RMS', 'ET-MFA', 'FI-PRO', 'FR-INSEE', 'FR-RCS', 'GB-CHC', 'GB-COH', 'GB-EDU', 'GB-GOV', 'GB-GOVUK', 'GB-NIC', 'GB-REV', 'GB-SC', 'GB-UKPRN', 'GE-NAPR', 'GG-RCE', 'GH-DSW', 'GR-GECR', 'HR-MBS', 'HR-OIB', 'HU-VAT', 'ID-KDN', 'ID-KHH', 'ID-KLN', 'ID-PRO', 'IE-CHY', 'IE-CRO', 'IL-ROC', 'IM-CR', 'IM-GR', 'IN-MCA', 'IT-RI', 'JE-CR', 'JE-OAC', 'JO-CCD', 'JO-MSD', 'JP-JCN', 'KE-NCB', 'KE-RCO', 'KE-RSO', 'KG-ID', 'KR-BIZID', 'KZ-BIN', 'LS-LCN', 'LT-PVM', 'LT-RC', 'LV-RE', 'MD-IDNO', 'MM-MHA', 'MT-MFSA', 'MW-CNM', 'MW-MRA', 'MW-NBM', 'MW-RG', 'MY-SSM', 'MZ-MOJ', 'NG-CAC', 'NL-KVK', 'NO-BRC', 'NP-CRO', 'NP-SWC', 'PA-RPP', 'PK-PCP', 'PK-VSWA', 'PL-KRS', 'PL-NIP', 'PL-REGON', 'PT-NIPPC', 'RO-CUI', 'RS-APR', 'RU-INN', 'RU-OGRN', 'SA-CRS', 'SE-BLV', 'SG-ACRA', 'SI-PRS', 'SI-TIN', 'SK-ZRSR', 'TR-MERSIS', 'TR-MOI', 'TR-VAT', 'TZ-BRLA', 'UA-EDR', 'UA-FIN', 'UA-IPN', 'UG-NGB', 'UG-RSB', 'US-DOS', 'US-EIN', 'US-USAGOV', 'UZ-KTUT', 'XI-IATI', 'XI-PB', 'XM-DAC', 'XM-EORI', 'XM-OCHA', 'ZA-CIP', 'ZA-NPO', 'ZA-PBO', 'ZM-NRB', 'ZM-PCR', 'ZW-PVO', 'ZW-ROD', 'MK-CR', 'MX-RFC', 'LUX', 'UY-DGR']."
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.kind" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.kind  'defense1'
+  Should Contain    ${error_message}  "Value must be one of ('authority', 'central', 'defense', 'general', 'other', 'social', 'special')."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.countryName", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.countryName  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.postalCode", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.postalCode  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.region", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.region  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.streetAddress", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.streetAddress  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.address.locality", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.locality  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.address.countryName" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.countryName  'Украина1'
+  Should Contain    ${error_message}  "field address:countryName not exist in countries catalog"
+
+
+Неможливість оновити фреймворк, якщо поле "procuringEntity.address.region" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.address.region  'м. Киiв1'
+  Should Contain    ${error_message}  "field address:region not exist in ua_regions catalog"
+
+
+Неможливість оновити фреймворк, якщо поле "classification.id" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.id  '42000000-66'
+
+
+Неможливість оновити фреймворк, не заповнивши поле "classification.id", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.id  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, якщо поле "classification.scheme" не відповідає формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.scheme  'ДК0211'
+
+
+Неможливість оновити фреймворк, не заповнивши поле "classification.scheme", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.scheme  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "classification.description", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  classification.description  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "qualificationPeriod.endDate", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  qualificationPeriod.endDate  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Неможливість оновити фреймворк, не заповнивши поле "procuringEntity.name", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...    Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.name  ${Null}
+  Should Contain    ${error_message}  "This field is required."
+
+
+Mожливість оновити фреймворк, не заповнивши поле "procuringEntity.kind", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  Run Keyword   Неможливість оновити кваліфікаціi  ${tender_owner}  procuringEntity.kind  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}   general  procuringEntity.kind
+
+
+Mожливість оновити фреймворк, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${field}=  Set Variable    ${USERS.users['${tender_owner}'].initial_data.data.title}
+  Run Keyword  Неможливість оновити кваліфікаціi  ${tender_owner}  title  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${tender_owner}  ${QUALIFICATION['QUALIFICATION_UAID']}   ${field}  title
+
+
+Mожливість оновити фреймворк, не заповнивши поле "description", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      update_framework
+  ...      critical
+  ${field}=  Set Variable    ${USERS.users['${tender_owner}'].initial_data.data.description}
+  Run Keyword  Неможливість оновити кваліфікаціi  ${tender_owner}  title  ${Null}
+  Звірити поле кваліфікаціi із значенням  ${tender_owner}  ${QUALIFICATION['QUALIFICATION_UAID']}   ${field}  description
+
+
+#===== POST_frameworks{id}/documents active =====
+
+Mожливість завантажити документ у фреймворк, у статусi "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   Run As  ${tender_owner}  Завантажити документ у фреймворк  ${file_path}
+   ${framework_doc}=  Create Dictionary
+   ...    doc_name=${file_name}
+   ...    doc_content=${file_content}
+   Set To Dictionary   ${USERS.users['${tender_owner}']}  framework_document=${framework_doc}
+   Remove File  ${file_path}
+
+
+Неможливість додати документ, якщо запит не відповідає формату "documentOf", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
+
+
+Неможливість додати документ, якщо запит не відповідає формату "documentType", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  documentType=lot
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
+
+
+Заборонено передавати "confidentiality", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
+
+
+Неможливість додати документ, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Log  ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Додати зареєстрований документ у фреймворк  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+Mожливість отримати документ з фреймворку, використовуючи "document_id", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_view
+  ...      critical
+  ${document_id}=  Set Variable    ${USERS.users['${tender_owner}']['documents']['data']['id']}
+  ${reply}=  Oтримати документ з фреймворку  ${tender_owner}  ${document_id}
+  Log      ${reply}
+  Should Be Equal    ${document_id}  ${reply.data.id}
+
+
+Mожливість отримати усi наявнi документи з фреймворку, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Отримати документ з фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_view
+  ...      critical
+  ${reply}=  Oтримати документи з фреймворку  ${tender_owner}
+  Log      ${reply}
+
+
+# ===== PUT_frameworks{id}/documents{id} active =====
+
+Можливість завантажити документ поверх старої версії, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      add_doc_to_framework
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  Run As  ${tender_owner}  Оновити документ у фреймворку  ${file_path}
+  Remove File  ${file_path}
+
+
+Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentOf", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  ${lot}=  Set Variable    lot
+  Set To Dictionary    ${document.data}  documentOf=${lot}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}   "name": "documentOf", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}    documentOf
+
+
+Неможливість оновити завантажений документ, якщо запит не відповідає формату "documentType", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  documentType=lot
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}   "Value must be one of ['tenderNotice', 'awardNotice',
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  documentType
+
+
+Заборонено передавати "confidentiality" під час оновлення, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  confidentiality=buyerOnly
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+  Remove From Dictionary    ${USERS.users['${tender_owner}'].documents.data}  confidentiality
+
+
+Неможливість оновити документ, не заповнивши поле "title", статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя фреймворку
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document}=  Set Variable    ${USERS.users['${tender_owner}'].documents}
+  Set To Dictionary    ${document.data}  title=${Null}
+  Log  ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+
+
+#===== PATCH_frameworks{id}/documents{id} active =====
+
+Mожливість змiнити значеня поля "title" у документi, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    new title patch
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${reply}=  Run Keyword  Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Be Equal    ${value}  ${reply.data.title}
+
+
+Неможливість змiнити значеня поля "title" у документi, передавши Null, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${document}=  change_field_value_in_document  ${field}  ${Null}
+  Log   ${document}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}     "name": "title", "description": ["This field is required."]
+
+
+Неможливість змiнити значеня поля "documentType", якщо значеня не вiдповiдае формату, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentType
+  ${value}=  Set Variable    patch
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
+
+
+Неможливість змiнити значеня поля "documentOf" у документi, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentOf
+  ${value}=  Set Variable    lot
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
+
+
+Неможливість змiнити значеня поля "confidentiality" у документi, статус "active"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    confidentiality
+  ${value}=  Set Variable    buyerOnly
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля у документi  ${tender_owner}  ${document}
+  Should Contain    ${error}     "name": "confidentiality", "description": "Rogue field"
+
+
+Неможливість aктивувати кваліфікацію якщо qualificationPeriod.endDate у проміжку менш ніж 30 або більш ніж 1095 календарних днів
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      activate_framework_expected_error  level1
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Run Keyword And Expect Error    *  Aктивувати фреймворк  ${tender_owner}
+
+
 Можливість змінити значеня поля телефон для замовника
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      modify_framework_contactPoint_phone
+  ...      update_framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${field_name}=  Set Variable    telephone
@@ -1465,7 +1478,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      open_framework_view  level2
+  ...      framework_view  level2
   ...      non-critical
   Звірити відображення поля procuringEntity.contactPoint.telephone фреймворку для користувача ${tender_owner}
 
@@ -1474,7 +1487,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      modify_framework_contactPoint_name
+  ...      update_framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${field_name}=  Set Variable    name
@@ -1487,7 +1500,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      open_framework_view  level2
+  ...      framework_view  level2
   ...      non-critical
   Звірити відображення поля procuringEntity.contactPoint.name фреймворку для користувача ${tender_owner}
 
@@ -1496,7 +1509,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      modify_framework_contactPoint_email
+  ...      update_framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${field_name}=  Set Variable    email
@@ -1509,7 +1522,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      open_framework_view  level2
+  ...      framework_view  level2
   ...      non-critical
   Звірити відображення поля procuringEntity.contactPoint.email фреймворку для користувача ${tender_owner}
 
@@ -1518,7 +1531,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Редагування фреймворку
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      modify_framework_description
+  ...      update_framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${patch_data}=  get_description_for_patching_framework
@@ -1530,7 +1543,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення основних даних фреймворку
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      open_framework_view  level2
+  ...      framework_view  level2
   ...      non-critical
   Звірити відображення поля description фреймворку для користувача ${tender_owner}
 
@@ -1539,565 +1552,15 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${viewer}'].broker}: Очікування початку періоду кваліфікації
   ...      tender_owner
   ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view
+  ...      wait_enquiryPeriod_endDate
   Дочекатись дати закінчення періоду уточнень кваліфікації  ${viewer}  ${QUALIFICATION['QUALIFICATION_UAID']}
-
-
-#===== POST_submissions =====
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data}  tenderers
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}  "name": "tenderers", "description": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers" не вiдповiдае формату
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${list}=  Create List  ${null}
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary     ${submission_data.data}  tenderers=${list}
-  Log    ${submission_data}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}   "name": "tenderers", "description": [["This field is required."]]}
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.name"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0]}  name
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}   "description": [{"name": ["This field is required."]}]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.name" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0]}  name=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}   "description": [{"name": ["This field is required."]}]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0]}  identifier
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"identifier": ["This field is required."
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.identifier" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0]}  identifier=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}   "description": [{"identifier": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.legalName"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  legalName
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"identifier": {"legalName": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.identifier.legalName" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  legalName=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"identifier": {"legalName": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.scheme"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"identifier": {"scheme": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.identifier.scheme" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"identifier": {"scheme": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.identifier.scheme" не відповідає формату
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme=AE-ACC13
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}   "description": [{"identifier": {"scheme": ["Value must be one of ['AE-ACCI',
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.id"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  id
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"identifier": {"id": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.identifier.id" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  id=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"identifier": {"id": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0]}  address
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.address" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0]}  address=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.countryName"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  countryName
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"address": {"countryName": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.address.countryName" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].address}  countryName=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": {"countryName": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.address.countryName" не відповідає формату
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].address}  countryName=Украiна4
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": {"countryName": ["field address:countryName not exist in countries catalog"]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.postalCode"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  postalCode
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}      "description": [{"address": {"postalCode": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.address.postalCode" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].address}  postalCode=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": {"postalCode": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.region"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  region
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"address": {"region": ["This field is required."]}
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.address.region" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].address}  region=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": {"region": ["This field is required."]}
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.locality"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  locality
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"address": {"locality": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.address.locality" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].address}  locality=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": {"locality": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.streetAddress"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  streetAddress
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"address": {"streetAddress": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.address.streetAddress" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].address}  streetAddress=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"address": {"streetAddress": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0]}  contactPoint
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}      "description": [{"contactPoint": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0]}  contactPoint=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"contactPoint": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint.name"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].contactPoint}  name
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}      "description": [{"contactPoint": {"name": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.name" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  name=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"contactPoint": {"name": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint.email"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["This field is required."]}
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.email" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"contactPoint": {"email": ["This field is required."]}
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.email" не відповідає формату
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email=aap#1aa1.com
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["Not a well formed email address."]
-
-
-Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.scale"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data.tenderers[0]}  scale
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"scale": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.scale" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}    "description": [{"scale": ["This field is required."]
-
-
-Неможливість подати заявку учасником, якщо поле "tenderers.scale" не відповідає формату
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=micro6
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": [{"scale": ["Value must be one of ['micro', 'sme', 'mid', 'large', 'not specified']
-
-
-Неможливість подати заявку учасником, якщо не вказати "frameworkID"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Delete From Dictionary    ${submission_data.data}  frameworkID
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
-
-
-Неможливість подати заявку учасником, якщо вказати неіснуючий "frameworkID"
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data}  frameworkID=123456789
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
-
-
-Неможливість подати заявку учасником, якщо вказати "frameworkID" null
-  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
-  ...      provider
-  ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider_negative
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data}  frameworkID=${Null}
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
-  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
 
 
 Можливість подати заявку першим учасником
   [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      registration_submission_provider
+  ...      add_submission
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Можливість зареєструвати заявку  ${provider}
@@ -2107,7 +1570,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      registration_submission_provider1
+  ...      add_submission
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Можливість зареєструвати заявку  ${provider1}
@@ -2117,7 +1580,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
   ...      provider2
   ...      ${USERS.users['${provider2}'].broker}
-  ...      registration_submission_provider2
+  ...      add_submission
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Можливість зареєструвати заявку  ${provider2}
@@ -2127,7 +1590,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider}'].broker}: Завантажити документ по заявці
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      add_doc_to_submission_provider
+  ...      add_doc_to_submission
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -2143,7 +1606,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider}'].broker}: Відображення документації
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      add_doc_to_submission_provider
+  ...      document_view
   Звірити відображення вмісту документа ${USERS.users['${provider}']['submission_document']['data']} до фреймворку з ${USERS.users['${provider}']['submission_init_document']['doc_content']} для користувача ${provider}
 
 
@@ -2151,7 +1614,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider1}'].broker}: Завантажити документ по заявці
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      add_doc_to_submission_provider1
+  ...      add_doc_to_submission
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -2167,7 +1630,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider1}'].broker}: Відображення документації
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      add_doc_to_submission_provider1
+  ...      document_view
   Звірити відображення вмісту документа ${USERS.users['${provider1}']['submission_document']['data']} до фреймворку з ${USERS.users['${provider1}']['submission_init_document']['doc_content']} для користувача ${provider1}
 
 
@@ -2175,7 +1638,7 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider2}'].broker}: Завантажити документ по заявці
   ...      provider2
   ...      ${USERS.users['${provider2}'].broker}
-  ...      add_doc_to_submission_provider2
+  ...      add_doc_to_submission
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -2187,13 +1650,592 @@ Mожливість змiнити значеня поля "title" у докум�
    Remove File  ${file_path}
 
 
+Можливість активувати заявку другого постачальника у кваліфікації
+  [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      activate_submission
+  ...      critical
+  Можливість редагувати заявку  ${provider1}  active
+
+
+#===== POST_submissions =====
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data}  tenderers
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}  "name": "tenderers", "description": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers" не вiдповiдае формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${list}=  Create List  ${null}
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary     ${submission_data.data}  tenderers=${list}
+  Log    ${submission_data}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "name": "tenderers", "description": [["This field is required."]]}
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.name"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  name
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"name": ["This field is required."]}]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.name" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  name=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"name": ["This field is required."]}]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  identifier
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": ["This field is required."
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  identifier=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"identifier": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.legalName"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  legalName
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"identifier": {"legalName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.legalName" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  legalName=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"legalName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.scheme"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"scheme": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.scheme" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"scheme": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.scheme" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme=AE-ACC13
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"identifier": {"scheme": ["Value must be one of ['AE-ACCI',
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.identifier.id"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].identifier}  id
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"identifier": {"id": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.identifier.id" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  id=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"identifier": {"id": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  address
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  address=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.countryName"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  countryName
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"countryName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.countryName" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  countryName=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"countryName": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.countryName" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  countryName=Украiна4
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"countryName": ["field address:countryName not exist in countries catalog"]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.postalCode"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  postalCode
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}      "description": [{"address": {"postalCode": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.postalCode" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  postalCode=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"postalCode": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.region"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  region
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"region": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.region" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  region=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"region": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.locality"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  locality
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"locality": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.locality" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  locality=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"locality": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.address.streetAddress"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].address}  streetAddress
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"address": {"streetAddress": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.address.streetAddress" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  streetAddress=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"streetAddress": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  contactPoint
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}      "description": [{"contactPoint": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  contactPoint=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint.name"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].contactPoint}  name
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}      "description": [{"contactPoint": {"name": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.name" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  name=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": {"name": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.contactPoint.email"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.email" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"contactPoint": {"email": ["This field is required."]}
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.contactPoint.email" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email=aap#1aa1.com
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["Not a well formed email address."]
+
+
+Неможливість подати заявку учасником, якщо відсутнє поле "tenderers.scale"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data.tenderers[0]}  scale
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"scale": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.scale" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"scale": ["This field is required."]
+
+
+Неможливість подати заявку учасником, якщо поле "tenderers.scale" не відповідає формату
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=micro6
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"scale": ["Value must be one of ['micro', 'sme', 'mid', 'large', 'not specified']
+
+
+Неможливість подати заявку учасником, якщо не вказати "frameworkID"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Delete From Dictionary    ${submission_data.data}  frameworkID
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
+
+
+Неможливість подати заявку учасником, якщо вказати неіснуючий "frameworkID"
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data}  frameworkID=123456789
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
+
+
+Неможливість подати заявку учасником, якщо вказати "frameworkID" null
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data}  frameworkID=${Null}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість зареєструвати заявку, якщо запит не вiдповiдае формату  ${provider}  ${submission_data}
+  Should Contain    ${error_message}     "description": "frameworkID must be one of exists frameworks"}
+
+
 #===== PATCH_submissions{id} =====
+
+Неможливість перевести заявку з draft в complete
+  [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
+  ...      ${provider}
+  ...      ${USERS.users['${provider}'].broker}
+  ...      change_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість редагувати заявку   ${provider}  complete
+  Should Contain    ${error_message}  "description": "Can't update submission from current (draft) to new (complete) status"}
+
+
+Можливість перевести заявку з draft в update
+  [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
+  ...      provider1
+  ...      ${USERS.users['${provider}'].broker}
+  ...      change_status
+  ...      critical
+  Можливість редагувати заявку  ${provider}  update
+
 
 Можливість видалити заявку першого постачальника з кваліфікації
   [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
   ...      ${provider}
   ...      ${USERS.users['${provider}'].broker}
-  ...      delete_submission_provider
+  ...      delete_submission
   ...      critical
   Можливість редагувати заявку   ${provider}  deleted
 
@@ -2202,71 +2244,204 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider}'].broker}: Редагування заявки
   ...      ${provider}
   ...      ${USERS.users['${provider}'].broker}
-  ...      update_submission_provider
+  ...      change_status
   ...      critical
-  Неможливість редагувати заявку  ${provider}  update
+  Run Keyword And Expect Error    *  Можливість редагувати заявку  ${provider}  update
 
 
-Можливість оновити заявку другого постачальника у кваліфікації
-  [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
-  ...      provider1
-  ...      ${USERS.users['${provider1}'].broker}
-  ...      update_submission_provider1
+Неможливість завантажити документ по заявці, якщо заявка у статусi "deleted"
+  [Tags]   ${USERS.users['${provider}'].broker}: Завантажити документ по заявці
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_doc_to_submission
   ...      critical
-  Можливість редагувати заявку  ${provider1}  update
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+   ${error_message}  Run Keyword And Expect Error    *  Завантажити документ по заявці  ${provider}  ${file_path}
+   Should Contain    ${error_message}   "Can't add document in current (deleted) submission status"
+   Remove File  ${file_path}
 
 
-Можливість активувати заявку другого постачальника у кваліфікації
-  [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
-  ...      provider1
-  ...      ${USERS.users['${provider1}'].broker}
-  ...      activate_submission_provider1
+Неможливість оновити документ по заявці, якщо заявка у статусi "deleted"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
   ...      critical
-  Можливість редагувати заявку  ${provider1}  active
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${file_path}
+  Should Contain    ${error}   "Can't update document in current (deleted) submission status"
+
+
+Неможливість змiнити документ, якщо заявка у статусi "deleted"
+  [Tags]   ${USERS.users['${provider}'].broker}: Оновленя документу
+  ...      tender_owner
+  ...      ${USERS.users['${provider}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${document}=  change_field_value_in_document  ${field}  title
+  ${error}=  Run Keyword And Expect Error  *
+  ...    Оновити значеня поля документа у заявцi  ${provider}  ${document}
+  Should Contain    ${error}     "Can't update document in current (deleted) submission status"
 
 
 Неможливість повторно активувати заявку другого постачальника у кваліфікації
   [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      activate_submission_provider1_negative
+  ...      submission_negative_tests
   ...      critical
-  Можливість редагувати заявку  ${provider1}  active
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість редагувати заявку  ${provider1}  active
+  Should Contain    ${error_message}  "description": "Can't update submission in current (active) status"
+
+
+Неможливість перевести заявку з active в deleted
+  [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      change_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість редагувати заявку  ${provider1}  deleted
+  Should Contain    ${error_message}  "description": "Can't update submission in current (active) status"
+
+
+Неможливість перевести заявку з active в complete
+  [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      change_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість редагувати заявку  ${provider1}  complete
+  Should Contain    ${error_message}  "description": "Can't update submission in current (active) status"
+
+
+Неможливість повторно подати заявку, якщо у учасника вже е заявка у стаусi "active"
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      change_status
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  Можливість зареєструвати заявку  ${provider1}
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість редагувати заявку  ${provider1}  active
+  Should Contain    ${error_message}   "description": "Tenderer already have active submission for framework
+
+
+Неможливість активувати заявку постачальника, aкщо статус не відповідає формату
+  [Tags]   ${USERS.users['${provider1}'].broker}: Редагування заявки
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      change_status
+  ...      critical
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість редагувати заявку  ${provider1}  active3
+  Should Contain    ${error_message}  "description": ["Value must be one of ['draft', 'active', 'deleted', 'complete']
 
 
 Можливість знайти заявку по ідентифікатору
   [Tags]   ${USERS.users['${viewer}'].broker}: Пошук заявки
   ...      viewer  tender_owner
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
-  ...      find_submission_provider1
+  ...      find_submission
   ...      critical
   ${submission_id}=  Set Variable    ${USERS.users['${provider1}'].submission_data.data.id}
   Run As  ${viewer}  Пошук заявки по ідентифікатору  ${submission_id}
 
 
-Перевірити статус об’єкта рішення по заявці pending
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення кваліфікації
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
-  ...      view_qualification
+Неможливість змiнити заявку учасником у статусі active
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      submission_negative_tests
   ...      critical
-  Run As  ${viewer}  Можливість перевірити статус об’єкта рішення по заявці  pending
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=micro
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість редагувати заявку  ${provider1}  ${submission_data}
+  Should Contain    ${error_message}     "Can't update submission in current (active) status"
 
 
-Mожливість активувати заявку третього постачальника у кваліфікації
-  [Tags]   ${USERS.users['${provider2}'].broker}: Редагування заявки
+Неможливість змiнити заявку учасником, якщо поле "tenderers.scale" не відповідає формату
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
   ...      provider2
   ...      ${USERS.users['${provider2}'].broker}
-  ...      activate_submission_provider2
+  ...      submission_negative_tests
   ...      critical
-  Run Keyword  Можливість редагувати заявку  ${provider2}  active
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=micro6
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість редагувати заявку  ${provider2}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"scale": ["Value must be one of ['micro', 'sme', 'mid', 'large', 'not specified']
+
+
+Неможливість змiнити заявку учасником, якщо поле "tenderers.identifier.scheme" не відповідає формату
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].identifier}  scheme=AE-ACC13
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість редагувати заявку  ${provider2}  ${submission_data}
+  Should Contain    ${error_message}   "description": [{"identifier": {"scheme": ["Value must be one of ['AE-ACCI',
+
+
+Неможливість змiнити заявку учасником, якщо поле "tenderers.address.countryName" не відповідає формату
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].address}  countryName=Украiна4
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість редагувати заявку  ${provider2}  ${submission_data}
+  Should Contain    ${error_message}    "description": [{"address": {"countryName": ["field address:countryName not exist in countries catalog"]
+
+
+Неможливість змiнити заявку учасником, якщо поле "tenderers.contactPoint.email" не відповідає формату
+  [Tags]   ${USERS.users['${provider2}'].broker}: Подання пропозиції
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0].contactPoint}  email=aap#1aa1.com
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість редагувати заявку  ${provider2}  ${submission_data}
+  Should Contain    ${error_message}     "description": [{"contactPoint": {"email": ["Not a well formed email address."]
+
+
+
+
+
+
+Перевірити статус об’єкта рішення по заявці pending
+  [Tags]   ${USERS.users['${provider1}'].broker}: Відображення кваліфікації
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      framework_view
+  ...      critical
+  Run As  ${provider1}  Можливість перевірити статус об’єкта рішення по заявці  pending
 
 
 Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження другого постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_add_doc_provider1
+  ...  add_doc_to_framework
   ...  critical
   ${submission}=  Set Variable    ${USERS.users['${provider1}'].submission_data}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
@@ -2278,7 +2453,7 @@ Mожливість активувати заявку третього пост�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_reject_submission_provider1
+  ...  delete_submission
   ...  critical
   ${submission}=  Set Variable    ${USERS.users['${provider1}'].submission_data}
   Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  unsuccessful
@@ -2293,11 +2468,20 @@ Mожливість активувати заявку третього пост�
   Run As  ${viewer}  Можливість перевірити статус по заявці  complete
 
 
+Mожливість активувати заявку третього постачальника у кваліфікації
+  [Tags]   ${USERS.users['${provider2}'].broker}: Редагування заявки
+  ...      provider2
+  ...      ${USERS.users['${provider2}'].broker}
+  ...      activate_submission
+  ...      critical
+  Run Keyword  Можливість редагувати заявку  ${provider2}  active
+
+
 Можливість завантажити документ рішення кваліфікаційної комісії для підтвердження третього постачальника
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_add_doc_provider2
+  ...  add_doc_to_framework
   ...  critical
   ${submission}=  Set Variable    ${USERS.users['${provider2}'].submission_data}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
@@ -2309,7 +2493,7 @@ Mожливість активувати заявку третього пост�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  qualification_confirm_submission_provider2
+  ...  confirm_submission
   ...  critical
   ${submission}=  Set Variable    ${USERS.users['${provider2}'].submission_data}
   Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  active
@@ -2319,7 +2503,7 @@ Mожливість активувати заявку третього пост�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  view_agreementID
+  ...  framework_view
   ...  critical
   ${field}=  Set Variable    agreementID
   FOR  ${username}  IN  @{USED_ROLES}
@@ -2332,7 +2516,7 @@ Mожливість активувати заявку третього пост�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення реєстру
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  view_registry
+  ...  framework_view
   ...  critical
   ${agreement_id}=  Set Variable    ${USERS.users['${tender_owner}'].qualification_data.data.agreementID}
   ${agreement}=  Run As  ${tender_owner}  Oтримання реєстру  ${agreement_id}
@@ -2344,7 +2528,7 @@ Mожливість активувати заявку третього пост�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у milestone
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      add_doc_to_milestone
+  ...      add_doc_to_framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -2377,7 +2561,7 @@ Mожливість активувати заявку третього пост�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу по контракту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      view_contract
+  ...      framework_view
   ...      critical
   Run As  ${viewer}  Можливість перевірити статус по контракту  suspended
 
@@ -2402,7 +2586,7 @@ Mожливість активувати заявку третього пост�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу по контракту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      view_contract
+  ...      framework_view
   ...      critical
   Run As  ${viewer}  Можливість перевірити статус по контракту  terminated
 
@@ -2710,7 +2894,7 @@ Mожливість оголосити фреймворк, не заповнив
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      doc_manage_in_framework_complete
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${documents}=  Oтримати документи з фреймворку  ${tender_owner}
@@ -2727,7 +2911,7 @@ Mожливість оголосити фреймворк, не заповнив
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      doc_manage_in_framework_complete
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -2741,7 +2925,7 @@ Mожливість оголосити фреймворк, не заповнив
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у кваліфікацію
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      doc_manage_in_framework_complete
+  ...      document_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   ${documents}=  Oтримати документи з фреймворку  ${tender_owner}
@@ -2751,6 +2935,18 @@ Mожливість оголосити фреймворк, не заповнив
   ${error}=  Run Keyword And Expect Error  *
   ...    Оновити зареєстрований документ у фреймворку  ${tender_owner}  ${document}
   Should Contain    ${error}    "Can't update document in current (complete) framework status"
+
+
+Неможливість подати заявку yчасником, якщо фреймворк у статусі complete
+  [Tags]   ${USERS.users['${provider}'].broker}: Подання пропозиції
+  ...      provider
+  ...      ${USERS.users['${provider}'].broker}
+  ...      add_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Можливість зареєструвати заявку  ${provider}
+  Should Contain    ${error_message}  "Submission can be add only during the period: from
 
 
 

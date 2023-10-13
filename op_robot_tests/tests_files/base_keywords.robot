@@ -1292,8 +1292,8 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 
 Неможливість редагувати заявку
-  [Arguments]    ${username}  ${status}
-  Run Keyword And Expect Error  *  Редагувати заявку  ${username}  ${status}
+  [Arguments]    ${username}  ${payload}
+  Run As    ${username}  Редагувати поле заявки  ${payload}
 
 
 ##############################################################################################
