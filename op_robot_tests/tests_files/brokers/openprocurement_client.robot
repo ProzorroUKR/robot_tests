@@ -49,6 +49,13 @@ Library  Collections
   [return]  ${qualification_id}
 
 
+Отримати yci наявнi кваліфікаціi
+  [Arguments]  ${username}
+  ${reply}  Call Method  ${USERS.users['${username}'].framework_client}  get_qualifications
+  ...      ${QUALIFICATION['QUALIFICATION_ID']}
+  [return]  ${reply}
+
+
 Отримати internal id об'єкта моніторингу по UAid
   [Arguments]  ${username}  ${monitoring_uaid}
   Log  ${username}
@@ -1247,7 +1254,7 @@ Library  Collections
   ...      ${submission_payload}
   ...      access_token=${USERS.users['${username}'].submission_data.access.token}
   Run Keyword If    '${status}' == 'active'
-  ...    Set_to_object  ${USERS.users['${username}'].submission_data.data}  qualificationID  ${submission_responce.data.qualificationID}
+  ...    Set_to_object  ${USERS.users['${username}']}  qualificationID  ${submission_responce.data.qualificationID}
 
 
 Редагувати поле заявки
@@ -1261,7 +1268,7 @@ Library  Collections
 Можливість перевірити статус об’єкта рішення по заявці
   [Arguments]    ${username}  ${status_exp}
   ${submission_responce}=  Call Method  ${USERS.users['${username}'].qualification_client}  get_qualification
-  ...    ${USERS.users['${username}'].submission_data.data.qualificationID}
+  ...    ${USERS.users['${username}'].qualificationID}
   ${status_act}=  Get From Dictionary  ${submission_responce.data}  status
   Порівняти об'єкти  ${status_exp}  ${status_act}
 
@@ -1272,8 +1279,9 @@ Library  Collections
   ...    ${USERS.users['${username}'].qualification_data.data.id}
   Log  ${submission_responce}
   ${submissions}=  Set Variable  ${submission_responce['data']}
-  ${status_act}=  Get From Dictionary  ${submission_responce.data[1]}  status
+  ${status_act}=  Get From Dictionary  ${submission_responce.data[0]}  status
   Порівняти об'єкти  ${status_exp}  ${status_act}
+  Set To Dictionary  ${USERS.users['${username}']}   completed_submission=${submissions}
 
 
 Можливість перевірити статус по контракту
@@ -2602,12 +2610,13 @@ Library  Collections
 
 
 Завантажити документ рішення кваліфікаційної комісії по заявці
-  [Arguments]  ${username}  ${document}  ${submission}
-  Log  ${submission}
+  [Arguments]  ${username}  ${document}  ${qualification_id}
+  Log  ${qualification_id}
   ${doc}=  Call Method  ${USERS.users['${username}'].qualification_client}  upload_qualification_document
   ...      ${document}
-  ...      ${submission.data.qualificationID}
+  ...      ${qualification_id}
   ...      access_token=${USERS.users['${username}'].access_token}
+  Set To Dictionary    ${USERS.users['${username}']}  qualification_document=${doc}
   Log  ${doc}
 
 
@@ -2694,10 +2703,10 @@ Library  Collections
 
 
 Змiнити статус по заявці
-  [Arguments]  ${username}  ${submission}  ${status}
+  [Arguments]  ${username}  ${qualification_id}  ${status}
   ${payload}=  create_data_dict   data.status  ${status}
   ${reply}=  Call Method  ${USERS.users['${username}'].qualification_client}  patch_qualification
-  ...      ${submission.data.qualificationID}
+  ...      ${qualification_id}
   ...      ${payload}
   ...      access_token=${USERS.users['${username}'].access_token}
   Log  ${reply}
@@ -3078,7 +3087,47 @@ Aктивувати фреймворк
   ...      ${document}
   ...      access_token=${USERS.users['${username}'].submission_data.access.token}
   Log  ${doc_reply}
+  Set to Dictionary  ${USERS.users['${username}']}  submission_document=${doc_reply}
   [Return]   ${doc_reply}
+
+
+Додати другий документ до заявки
+  [Arguments]  ${username}  ${document}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].submission_client}  post_registered_submission_document
+  ...      ${USERS.users['${username}'].submission_data.data.id}
+  ...      ${document}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
+Додати документ до рішення по заявці
+  [Arguments]  ${username}  ${document}  ${qualification_id}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].qualification_client}  post_qualification_document
+  ...      ${qualification_id}
+  ...      ${document}
+  ...      access_token=${USERS.users['${username}'].access_token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
+Змiнити документ рішення по заявці
+  [Arguments]  ${username}  ${document}  ${qualification_id}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].qualification_client}  patch_qualification_document
+  ...      ${qualification_id}
+  ...      ${document}
+  ...      ${USERS.users['${username}'].qualification_document.data.id}
+  ...      access_token=${USERS.users['${username}'].access_token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
+Зареєструвати завантаження документа в Document Service
+  [Arguments]  ${username}
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+  ${document} =  Call Method  ${USERS.users['${tender_owner}'].dasu_client}  upload_obj_document  ${file_path}
+  Remove File  ${file_path}
+  [Return]  ${document}
 
 
 Оновити зареєстрований документ у фреймворку
@@ -3099,6 +3148,17 @@ Aктивувати фреймворк
   ...      ${document}
   ...      ${USERS.users['${username}']['submission_document']['data']['id']}
   ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+  Log  ${doc_reply}
+  [Return]   ${doc_reply}
+
+
+Оновити зареєстрований документ у рішення по заявці
+  [Arguments]  ${username}  ${document}  ${qualification_id}
+  ${doc_reply}=  Call Method  ${USERS.users['${username}'].qualification_client}  put_qualification_document
+  ...      ${qualification_id}
+  ...      ${document}
+  ...      ${USERS.users['${username}'].qualification_document.data.id}
+  ...      access_token=${USERS.users['${username}'].access_token}
   Log  ${doc_reply}
   [Return]   ${doc_reply}
 
@@ -3152,7 +3212,6 @@ Aктивувати фреймворк
 
 
 Завантажити документ по заявці
-  [Documentation]
   [Arguments]  ${username}  ${document}
   Log  ${USERS.users['${username}'].submission_data}
   ${doc_reply}=  Call Method  ${USERS.users['${username}'].submission_client}  upload_submission_document
@@ -3186,6 +3245,14 @@ Oтримати документи з заявки
   ${reply}=  Call Method  ${USERS.users['${username}'].submission_client}  get_submission_document
   ...      ${USERS.users['${username}'].submission_data.data.id}
   ...      ${USERS.users['${username}'].submission_document.data.id}
+  ...      access_token=${USERS.users['${username}'].submission_data.access.token}
+  [Return]    ${reply}
+
+
+Oтримати усi наявнi документи з заявки
+  [Arguments]  ${username}
+  ${reply}=  Call Method  ${USERS.users['${username}'].submission_client}  get_submission_documents
+  ...      ${USERS.users['${username}'].submission_data.data.id}
   ...      access_token=${USERS.users['${username}'].submission_data.access.token}
   [Return]    ${reply}
 

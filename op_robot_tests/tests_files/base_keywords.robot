@@ -476,7 +476,15 @@ ${ERROR_PLAN_MESSAGE}=  Calling method 'get_plan' failed: ResourceGone: {"status
 
 Можливість зареєструвати заявку
   [Arguments]    ${username}
-  ${submission_data}=  Підготувати дані для регістрації заявки
+  ${submission_data}  Підготувати дані для регістрації заявки
+  Log    ${submission_data}
+  Set To Dictionary  ${USERS.users['${username}']}   init_submission_data=${submission_data}
+  Run As  ${username}  Створити заявку  ${submission_data}
+
+
+Можливість зареєструвати ще одну заявку
+  [Arguments]    ${username}
+  ${submission_data}  Set Variable    ${USERS.users['${username}'].init_submission_data}
   Log    ${submission_data}
   Run As  ${username}  Створити заявку  ${submission_data}
 

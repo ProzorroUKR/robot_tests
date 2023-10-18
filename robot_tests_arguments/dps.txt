@@ -4,26 +4,27 @@
 
 -i create_framework
 -i find_framework
-#-i framework_view
-#-i update_framework
--i document_negative_tests1
-#-i document_view
+-i framework_view
+-i update_framework
+-i document_negative_tests
+-i document_view
 -i add_doc_to_framework
-#-i change_status
+-i change_status
 -i add_submission
 -i activate_framework
 -i wait_enquiryPeriod_endDate
 -i add_doc_to_submission
 -i activate_submission
-#-i submission_negative_tests
+-i submission_negative_tests
 -i delete_submission
 -i find_submission
 -i view_submissions
 -i confirm_submission
-#-i ban_contract
-#-i disqualify_contract
-#-i wait_framework_end_date
-#-i status_complete
+-i get_qualifications
+-i ban_contract
+-i disqualify_contract
+-i wait_framework_end_date
+-i status_complete
 
 
 

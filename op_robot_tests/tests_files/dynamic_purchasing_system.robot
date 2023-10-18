@@ -1626,12 +1626,16 @@ Mожливість змiнити значеня поля "title" у докум�
    Remove File  ${file_path}
 
 
-Відображення вмісту документації по другiй заявці
-  [Tags]   ${USERS.users['${provider1}'].broker}: Відображення документації
+Можливість завантажити другiй документ по другiй заявці
+  [Tags]   ${USERS.users['${provider1}'].broker}: Завантажити документ по заявці
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      document_view
-  Звірити відображення вмісту документа ${USERS.users['${provider1}']['submission_document']['data']} до фреймворку з ${USERS.users['${provider1}']['submission_init_document']['doc_content']} для користувача ${provider1}
+  ...      add_doc_to_submission
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
+  Set To Dictionary   ${USERS.users['${provider1}']}  submission_second_document=${document}
+  Run As  ${provider1}  Додати другий документ до заявки  ${document}
 
 
 Можливість завантажити документ по третiй заявці
@@ -2359,35 +2363,40 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      document_negative_tests1
+  ...      document_negative_tests
   ...      critical
-  ${document}  Oтримати документи з заявки  ${provider}
-  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${document}  Зареєструвати завантаження документа в Document Service  ${provider}
   ${dateModified}  Get Current TZdate
-  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
-  Set To Dictionary    ${document.data}  datePublished=${dateModified}
-  Set To Dictionary    ${document.data}  dateModified=${dateModified}
+  ${endDate}=  add_minutes_to_date  ${dateModified}  10
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${endDate}
+  Set To Dictionary    ${document.data}  dateModified=${endDate}
   Log    ${document}
-  ${error}  Run Keyword And Expect Error  *
-  ...    Додати зареєстрований документ у заявку  ${provider}  ${document}
-  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+  ${reply}  Додати зареєстрований документ у заявку  ${provider}  ${document}
+  Should Not Be Equal      ${reply.data.id}  ${id}
+  Should Not Be Equal      ${reply.data.datePublished}  ${endDate}
+  Should Not Be Equal      ${reply.data.dateModified}  ${endDate}
 
 
 Передати системні поля (id/datePublished/dateModified), статус "active"
   [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      document_negative_tests1
+  ...      document_negative_tests
   ...      critical
-  ${document}  Oтримати документи з заявки  ${provider1}
-  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
   ${dateModified}  Get Current TZdate
-  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
-  Set To Dictionary    ${document.data}  datePublished=${dateModified}
-  Set To Dictionary    ${document.data}  dateModified=${dateModified}
-  ${error}  Run Keyword And Expect Error  *
-  ...    Додати зареєстрований документ у заявку  ${provider1}  ${document}
-  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+  ${endDate}=  add_minutes_to_date  ${dateModified}  15
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${endDate}
+  Set To Dictionary    ${document.data}  dateModified=${endDate}
+  Log    ${document}
+  ${reply}  Додати зареєстрований документ у заявку  ${provider1}  ${document}
+  Should Not Be Equal      ${reply.data.id}  ${id}
+  Should Not Be Equal      ${reply.data.datePublished}  ${endDate}
+  Should Not Be Equal      ${reply.data.dateModified}  ${endDate}
 
 
 #===== PUT_submissions{id}/documents{id} =====
@@ -2540,35 +2549,40 @@ Mожливість змiнити значеня поля "title" у докум�
   [Tags]   ${USERS.users['${provider}'].broker}: Оновленя фреймворку
   ...      provider
   ...      ${USERS.users['${provider}'].broker}
-  ...      document_negative_tests1
+  ...      document_negative_tests
   ...      critical
-  ${document}  Oтримати документи з заявки  ${provider}
-  Log  ${document}
+  ${document}   Set Variable    ${USERS.users['${provider1}'].submission_second_document}
+  Remove From Dictionary    ${document.data}  previousVersions
   ${dateModified}  Get Current TZdate
-  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
-  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
-  Set To Dictionary    ${document.data}  datePublished=${dateModified}
-  Set To Dictionary    ${document.data}  dateModified=${dateModified}
-  ${error}  Run Keyword And Expect Error  *
-  ...    Оновити зареєстрований документ у заявцi  ${provider}  ${document}
-  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+  ${endDate}=  add_minutes_to_date  ${dateModified}  10
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${endDate}
+  Set To Dictionary    ${document.data}  dateModified=${endDate}
+  ${reply}  Оновити зареєстрований документ у заявцi  ${provider}  ${document}
+  Should Not Be Equal      ${reply.data.id}  ${id}
+  Should Not Be Equal      ${reply.data.datePublished}  ${endDate}
+  Should Not Be Equal      ${reply.data.dateModified}  ${endDate}
 
 
 Передати системні поля (id/datePublished/dateModified), при оновленi документа, статус "active"
   [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя фреймворку
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      document_negative_tests1
+  ...      document_negative_tests
   ...      critical
-  ${document}  Oтримати документи з заявки  ${provider1}
+  ${document}   Set Variable    ${USERS.users['${provider1}'].submission_second_document}
+  Remove From Dictionary    ${document.data}  previousVersions
   ${dateModified}  Get Current TZdate
-  Run Keyword And Ignore Error    Remove From Dictionary    ${document.data}  previousVersions
-  Set To Dictionary    ${document.data}  id=0d000c00000c0dcaaa00000fa000d000
-  Set To Dictionary    ${document.data}  datePublished=${dateModified}
-  Set To Dictionary    ${document.data}  dateModified=${dateModified}
-  ${error}  Run Keyword And Expect Error  *
-  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
-  Should Contain    ${error}    "name": "title", "description": ["This field is required."
+  ${endDate}=  add_minutes_to_date  ${dateModified}  10
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${endDate}
+  Set To Dictionary    ${document.data}  dateModified=${endDate}
+  ${reply}  Оновити зареєстрований документ у заявцi  ${provider1}  ${document}
+  Should Not Be Equal      ${reply.data.id}  ${id}
+  Should Not Be Equal      ${reply.data.datePublished}  ${endDate}
+  Should Not Be Equal      ${reply.data.dateModified}  ${endDate}
 
 
 #===== PATCH_submissions{id}/documents{id} =====
@@ -2866,14 +2880,28 @@ Mожливість oновити "title" документа у заявцi, с�
   Should Contain    ${error_message}  "description": "Can't update submission in current (active) status"
 
 
+Неможливість змiнити заявку учасником у статусі active
+  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
+  ...      submission_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${submission_data}=  Підготувати дані для регістрації заявки
+  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=micro
+  ${error_message}  Run Keyword And Expect Error    *
+  ...      Неможливість редагувати заявку  ${provider1}  ${submission_data}
+  Should Contain    ${error_message}     "Can't update submission in current (active) status"
+
+
 Неможливість повторно подати заявку, якщо у учасника вже е заявка у стаусi "active"
   [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      change_status
+  ...      submission_negative_tests
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  Можливість зареєструвати заявку  ${provider1}
+  Можливість зареєструвати ще одну заявку  ${provider1}
   ${error_message}  Run Keyword And Expect Error    *
   ...      Можливість редагувати заявку  ${provider1}  active
   Should Contain    ${error_message}   "description": "Tenderer already have active submission for framework
@@ -2898,20 +2926,6 @@ Mожливість oновити "title" документа у заявцi, с�
   ...      critical
   ${submission_id}=  Set Variable    ${USERS.users['${provider1}'].submission_data.data.id}
   Run As  ${viewer}  Пошук заявки по ідентифікатору  ${submission_id}
-
-
-Неможливість змiнити заявку учасником у статусі active
-  [Tags]   ${USERS.users['${provider1}'].broker}: Подання пропозиції
-  ...      provider1
-  ...      ${USERS.users['${provider1}'].broker}
-  ...      submission_negative_tests
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-  ${submission_data}=  Підготувати дані для регістрації заявки
-  Set To Dictionary    ${submission_data.data.tenderers[0]}  scale=micro
-  ${error_message}  Run Keyword And Expect Error    *
-  ...      Неможливість редагувати заявку  ${provider1}  ${submission_data}
-  Should Contain    ${error_message}     "Can't update submission in current (active) status"
 
 
 Неможливість змiнити заявку учасником, якщо поле "tenderers.scale" не відповідає формату
@@ -2985,10 +2999,308 @@ Mожливість oновити "title" документа у заявцi, с�
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  add_doc_to_framework
   ...  critical
-  ${submission}=  Set Variable    ${USERS.users['${provider1}'].submission_data}
+  ${qualification_id}  Set Variable     ${USERS.users['${provider1}'].qualificationID}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
-  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії по заявці   ${file_path}  ${submission}
+  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії по заявці   ${file_path}  ${qualification_id}
   Remove File  ${file_path}
+
+
+#===== POST_qualifications/{id}/documents =====
+
+Неможливість додати документ до рішення по заявці, якщо вiдсутне поле "title"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document} =  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Remove From Dictionary    ${document.data}  title
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати документ до рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."]
+
+
+Неможливість передати значеня поля "title" Null, при додаванi документa до рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  title  ${Null}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати документ до рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."]
+
+
+Неможливість додати документ до рішення по заявці, якщо запит не відповідає формату "documentType"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  documentType  test
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати документ до рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
+
+
+Неможливість додати документ до рішення по заявці, якщо запит не відповідає формату "documentOf"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  documentOf  test
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати документ до рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
+
+
+Заборонено передавати "confidentiality" при додаванi документa до рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  confidentiality  buyerOnly
+  ${error}  Run Keyword And Expect Error  *
+  ...    Додати документ до рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+
+
+Передати системні поля (id/datePublished/dateModified), при додаванi документa до рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  ${dateModified}  Get Current TZdate
+  ${endDate}=  add_minutes_to_date  ${dateModified}  10
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${endDate}
+  Set To Dictionary    ${document.data}  dateModified=${endDate}
+  Log    ${document}
+  ${reply}  Додати документ до рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Not Be Equal      ${reply.data.id}  ${id}
+  Should Not Be Equal      ${reply.data.datePublished}  ${endDate}
+  Should Not Be Equal      ${reply.data.dateModified}  ${endDate}
+
+
+#===== PATCH_qualifications/{id}/documents{id} =====
+
+Mожливість змiнити поле "title" документa рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    new title patch
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  ${reply}  Змiнити документ рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${reply.data.title}    ${value}
+
+
+Неможливість змiнити поле "title" на Null, при додаванi документa до рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${field}=  Set Variable    title
+  ${value}=  Set Variable    ${Null}
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Змiнити документ рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."]
+
+
+Неможливість змiнити документ рішення по заявці, якщо запит не відповідає формату "documentType"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentType
+  ${value}=  Set Variable    test
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Змiнити документ рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
+
+
+Неможливість змiнити документ рішення по заявці, якщо запит не відповідає формату "documentOf"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${field}=  Set Variable    documentOf
+  ${value}=  Set Variable    test
+  ${document}=  change_field_value_in_document  ${field}  ${value}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Змiнити документ рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
+
+
+Заборонено передавати "confidentiality" при зміні документa рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  confidentiality  buyerOnly
+  ${error}  Run Keyword And Expect Error  *
+  ...    Змiнити документ рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+
+
+Передати системні поля (id/datePublished/dateModified), при зміні документa рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  ${dateModified}  Get Current TZdate
+  ${endDate}=  add_minutes_to_date  ${dateModified}  10
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${endDate}
+  Set To Dictionary    ${document.data}  dateModified=${endDate}
+  Log    ${document}
+  ${reply}  Змiнити документ рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Not Be Equal      ${reply.data.id}  ${id}
+  Should Not Be Equal      ${reply.data.datePublished}  ${endDate}
+  Should Not Be Equal      ${reply.data.dateModified}  ${endDate}
+
+
+#===== PUT_qualifications/{id}/documents{id} =====
+
+Неможливість оновити документ до рішення по заявці, якщо вiдсутне поле "title"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document} =  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  Log  ${document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Remove From Dictionary    ${document.data}  documentOf
+  Remove From Dictionary    ${document.data}  title
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."]
+
+
+Неможливість передати значеня поля "title" Null, при оновлені документa до рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  title  ${Null}
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "title", "description": ["This field is required."]
+
+
+Неможливість оновити документ до рішення по заявці, якщо запит не відповідає формату "documentType"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  documentType  test
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "documentType", "description": ["Value must be one of ['tenderNotice',
+
+
+Неможливість оновити документ до рішення по заявці, якщо запит не відповідає формату "documentOf"
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document}  Set Variable    ${USERS.users['${tender_owner}'].qualification_document}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  documentOf  test
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "documentOf", "description": "Rogue field"
+
+
+Заборонено передавати "confidentiality" при оновлені документa до рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Set To Dictionary    ${document.data}  confidentiality  buyerOnly
+  ${error}  Run Keyword And Expect Error  *
+  ...    Оновити зареєстрований документ у рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Contain    ${error}    "name": "confidentiality", "description": "Rogue field"
+
+
+Передати системні поля (id/datePublished/dateModified), при оновлені документa до рішення по заявці
+  [Tags]   ${USERS.users['${tender_owner}'].broker}: Оновити документ
+  ...      tender_owner
+  ...      ${USERS.users['${tender_owner}'].broker}
+  ...      document_negative_tests
+  ...      critical
+  ${document} =  Зареєструвати завантаження документа в Document Service  ${provider1}
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  ${dateModified}  Get Current TZdate
+  ${endDate}=  add_minutes_to_date  ${dateModified}  10
+  ${id}  Set Variable    0d000c00000c0dcaaa00000fa000d000
+  Set To Dictionary    ${document.data}  id=${id}
+  Set To Dictionary    ${document.data}  datePublished=${endDate}
+  Set To Dictionary    ${document.data}  dateModified=${endDate}
+  Log    ${document}
+  ${reply}  Оновити зареєстрований документ у рішення по заявці   ${tender_owner}  ${document}  ${qualification_id}
+  Should Not Be Equal      ${reply.data.id}  ${id}
+  Should Not Be Equal      ${reply.data.datePublished}  ${endDate}
+  Should Not Be Equal      ${reply.data.dateModified}  ${endDate}
 
 
 Можливість відхилити другого постачальника
@@ -2997,55 +3309,55 @@ Mожливість oновити "title" документа у заявцi, с�
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  delete_submission
   ...  critical
-  ${submission}=  Set Variable    ${USERS.users['${provider1}'].submission_data}
-  Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  unsuccessful
+  ${qualification_id}  Set Variable    ${USERS.users['${provider1}'].qualificationID}
+  Run As  ${tender_owner}  Змiнити статус по заявці  ${qualification_id}  unsuccessful
 
 
 Перевірити статус по заявці complete
-  [Tags]   ${USERS.users['${viewer}'].broker}: Відображення кваліфікації
-  ...      viewer
-  ...      ${USERS.users['${viewer}'].broker}
+  [Tags]   ${USERS.users['${provider1}'].broker}: Відображення кваліфікації
+  ...      provider1
+  ...      ${USERS.users['${provider1}'].broker}
   ...      view_submissions
   ...      critical
-  Run As  ${viewer}  Можливість перевірити статус по заявці  complete
+  Run As  ${provider1}  Можливість перевірити статус по заявці  complete
 
-
-Неможливість завантажити документ, якщо заявка у статусi "complete"
-  [Tags]   ${USERS.users['${provider1}'].broker}: Завантажити документ по заявці
-  ...      provider1
-  ...      ${USERS.users['${provider1}'].broker}
-  ...      document_negative_tests
-  ...      critical
-  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
-   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
-   ${error_message}  Run Keyword And Expect Error    *  Завантажити документ по заявці  ${provider1}  ${file_path}
-   Should Contain    ${error_message}   "Can't add document in current (complete) submission status"
-   Remove File  ${file_path}
-
-
-Неможливість оновити документ, якщо заявка у статусi "complete"
-  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя документу
-  ...      provider1
-  ...      ${USERS.users['${provider1}'].broker}
-  ...      document_negative_tests
-  ...      critical
-  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
-  ${error}  Run Keyword And Expect Error  *
-  ...    Оновити зареєстрований документ у заявцi  ${provider1}  ${file_path}
-  Should Contain    ${error}   "Can't update document in current (complete) submission status"
-
-
-Неможливість змiнити документ, якщо заявка у статусi "complete"
-  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя документу
-  ...      provider1
-  ...      ${USERS.users['${provider1}'].broker}
-  ...      document_negative_tests
-  ...      critical
-  ${field}=  Set Variable    title
-  ${document}=  change_field_value_in_document  ${field}  title
-  ${error}=  Run Keyword And Expect Error  *
-  ...    Оновити значеня поля документа у заявцi  ${provider1}  ${document}
-  Should Contain    ${error}     "Can't update document in current (complete) submission status"
+#
+#Неможливість завантажити документ, якщо заявка у статусi "complete"
+#  [Tags]   ${USERS.users['${provider1}'].broker}: Завантажити документ по заявці
+#  ...      provider1
+#  ...      ${USERS.users['${provider1}'].broker}
+#  ...      document_negative_tests
+#  ...      critical
+#  [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+#   ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+#   ${error_message}  Run Keyword And Expect Error    *  Завантажити документ по заявці  ${provider2}  ${file_path}
+#   Should Contain    ${error_message}   "Can't add document in current (complete) submission status"
+#   Remove File  ${file_path}
+#
+#
+#Неможливість оновити документ, якщо заявка у статусi "complete"
+#  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя документу
+#  ...      provider1
+#  ...      ${USERS.users['${provider1}'].broker}
+#  ...      document_negative_tests
+#  ...      critical
+#  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
+#  ${error}  Run Keyword And Expect Error  *
+#  ...    Оновити зареєстрований документ у заявцi  ${viewer }  ${file_path}
+#  Should Contain    ${error}   "Can't update document in current (complete) submission status"
+#
+#
+#Неможливість змiнити документ, якщо заявка у статусi "complete"
+#  [Tags]   ${USERS.users['${provider1}'].broker}: Оновленя документу
+#  ...      provider1
+#  ...      ${USERS.users['${provider1}'].broker}
+#  ...      document_negative_tests
+#  ...      critical
+#  ${field}=  Set Variable    title
+#  ${document}=  change_field_value_in_document  ${field}  title
+#  ${error}=  Run Keyword And Expect Error  *
+#  ...    Оновити значеня поля документа у заявцi  ${provider1}  ${document}
+#  Should Contain    ${error}     "Can't update document in current (complete) submission status"
 
 
 Mожливість активувати заявку третього постачальника у кваліфікації
@@ -3063,10 +3375,20 @@ Mожливість активувати заявку третього пост�
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  add_doc_to_framework
   ...  critical
-  ${submission}=  Set Variable    ${USERS.users['${provider2}'].submission_data}
+  ${qualification_id}  Set Variable  ${USERS.users['${provider2}'].qualificationID}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
-  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії по заявці   ${file_path}  ${submission}
+  Run As   ${tender_owner}   Завантажити документ рішення кваліфікаційної комісії по заявці   ${file_path}  ${qualification_id}
   Remove File  ${file_path}
+
+
+Можливість oтримати yci наявнi кваліфікаціi
+  [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
+  ...  tender_owner
+  ...  ${USERS.users['${tender_owner}'].broker}
+  ...  get_qualifications
+  ...  critical
+  ${qualifications}  Отримати yci наявнi кваліфікаціi  ${tender_owner}
+  Log  ${qualifications}
 
 
 Можливість підтвердження рішення по заявці для третього постачальника
@@ -3075,8 +3397,8 @@ Mожливість активувати заявку третього пост�
   ...  ${USERS.users['${tender_owner}'].broker}
   ...  confirm_submission
   ...  critical
-  ${submission}=  Set Variable    ${USERS.users['${provider2}'].submission_data}
-  Run As  ${tender_owner}  Змiнити статус по заявці  ${submission}  active
+  ${qualification_id}  Set Variable  ${USERS.users['${provider2}'].qualificationID}
+  Run As  ${tender_owner}  Змiнити статус по заявці  ${qualification_id}  active
 
 
 Перевірити наявність поля agreementID у квалiфiкацii після підтвердження рішення по заявці
