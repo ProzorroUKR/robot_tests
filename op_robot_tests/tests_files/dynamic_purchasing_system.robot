@@ -2988,7 +2988,7 @@ Mожливість oновити "title" документа у заявцi, с�
   [Tags]   ${USERS.users['${provider1}'].broker}: Відображення кваліфікації
   ...      provider1
   ...      ${USERS.users['${provider1}'].broker}
-  ...      framework_view
+  ...      qualification_view
   ...      critical
   Run As  ${provider1}  Можливість перевірити статус об’єкта рішення по заявці  pending
 
@@ -2997,7 +2997,7 @@ Mожливість oновити "title" документа у заявцi, с�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  add_doc_to_framework
+  ...  add_doc_to_qualification
   ...  critical
   ${qualification_id}  Set Variable     ${USERS.users['${provider1}'].qualificationID}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
@@ -3373,7 +3373,7 @@ Mожливість активувати заявку третього пост�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  add_doc_to_framework
+  ...  add_doc_to_framework_qualification
   ...  critical
   ${qualification_id}  Set Variable  ${USERS.users['${provider2}'].qualificationID}
   ${file_path}  ${file_name}  ${file_content}=   create_fake_doc
@@ -3405,7 +3405,7 @@ Mожливість активувати заявку третього пост�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Процес кваліфікації
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  framework_view
+  ...  qualification_view
   ...  critical
   ${field}=  Set Variable    agreementID
   FOR  ${username}  IN  @{USED_ROLES}
@@ -3418,7 +3418,7 @@ Mожливість активувати заявку третього пост�
   [Tags]  ${USERS.users['${tender_owner}'].broker}: Відображення реєстру
   ...  tender_owner
   ...  ${USERS.users['${tender_owner}'].broker}
-  ...  framework_view
+  ...  qualification_view
   ...  critical
   ${agreement_id}=  Set Variable    ${USERS.users['${tender_owner}'].qualification_data.data.agreementID}
   ${agreement}=  Run As  ${tender_owner}  Oтримання реєстру  ${agreement_id}
@@ -3430,7 +3430,7 @@ Mожливість активувати заявку третього пост�
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Завантажити документ у milestone
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      add_doc_to_framework
+  ...      add_doc_to_milestone
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
    ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
@@ -3463,7 +3463,7 @@ Mожливість активувати заявку третього пост�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу контракту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view
+  ...      qualification_view
   ...      critical
   Run As  ${viewer}  Можливість перевірити статус по контракту  suspended
 
@@ -3488,7 +3488,7 @@ Mожливість активувати заявку третього пост�
   [Tags]   ${USERS.users['${viewer}'].broker}: Відображення статусу контракту
   ...      viewer
   ...      ${USERS.users['${viewer}'].broker}
-  ...      framework_view
+  ...      qualification_view
   ...      critical
   Run As  ${viewer}  Можливість перевірити статус по контракту  terminated
 
@@ -3757,6 +3757,7 @@ Mожливість оголосити фреймворк, не заповнив
   ...      doc_manage_in_framework
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
+  ${file_path}  ${file_name}  ${file_content}=  create_fake_doc
   ${error}=  Run Keyword And Expect Error  *
   ...    Оновити документ у фреймворку  ${tender_owner}  ${file_path}
   Should Contain    ${error}    "Can't update document in current (unsuccessful) framework status"

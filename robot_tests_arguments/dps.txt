@@ -16,9 +16,12 @@
 -i add_doc_to_submission
 -i activate_submission
 -i submission_negative_tests
+-i qualification_view
 -i delete_submission
 -i find_submission
 -i view_submissions
+-i add_doc_to_qualification
+-i add_doc_to_milestone
 -i confirm_submission
 -i get_qualifications
 -i ban_contract
