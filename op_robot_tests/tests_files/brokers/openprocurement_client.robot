@@ -110,6 +110,7 @@ Library  Collections
   ${payment_wrapper}=  prepare_payment_wrapper
   ...  ${USERS.users['${username}'].api_key}
   ...  PUSH
+  ...  ${API_HOST_URL}
   ...  ${PAYMENT_API}
   ...  ${PAYMENT_API_VERSION}
   Set To Dictionary  ${USERS.users['${username}']}  client=${tender_api_wrapper}
