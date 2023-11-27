@@ -1086,7 +1086,7 @@ Mожливість видалити пропозицію першим учас�
   ${award}=  Отримати останній элемент  awards  ${tender_owner}  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   ${invalid_amountNet}=  Evaluate  ${award.value.amount} / 2
-  ${value}=  Require Failure  ${tender_owner}  Редагувати угоду
+  ${value}=  Require Failure  ${tender_owner}  Редагувати e-угоду
   ...      ${TENDER['TENDER_UAID']}
   ...      ${contract_index}
   ...      value.amountNet
@@ -1107,7 +1107,7 @@ Mожливість видалити пропозицію першим учас�
   ${amount_net}=  create_fake_amount_net  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount_net=${amount_net}
-  Run As  ${tender_owner}  Редагувати угоду
+  Run As  ${tender_owner}  Редагувати e-угоду
   ...      ${TENDER['TENDER_UAID']}
   ...      ${contract_index}
   ...      value.amountNet

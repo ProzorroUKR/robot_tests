@@ -3024,6 +3024,18 @@ Library  Collections
   Log  ${reply}
 
 
+Редагувати e-угоду
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldname}  ${fieldvalue}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract}=  create_data_dict  data.value  ${tender.data.contracts[${contract_index}].value}
+  Set_to_object  ${contract.data}  ${fieldname}  ${fieldvalue}
+  ${reply}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract
+  ...      ${tender.data.contracts[${contract_index}].id}
+  ...      ${tender.access.token}
+  ...      ${contract}
+  Log  ${reply}
+
+
 Редагувати обидва поля вартості угоди
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${field_amount}  ${field_amountNet}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
