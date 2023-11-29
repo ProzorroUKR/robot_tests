@@ -3084,6 +3084,30 @@ Library  Collections
   Log  ${reply}
 
 
+Встановити ціну за одиницю товару в e-контракті
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_data}  ${contract_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract_id}=  Set Variable  ${tender['data']['contracts'][${contract_index}]['id']}
+  ${access_token}=  Set Variable  ${tender.access.token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract
+  ...      ${contract_id}
+  ...      ${access_token}
+  ...      ${contract_data}
+  Log  ${reply}
+
+
+Oтримати контракт по id
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract_id}=  Set Variable  ${tender['data']['contracts'][${contract_index}]['id']}
+  ${access_token}=  Set Variable  ${tender.access.token}
+  ${reply}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contracts
+  ...      ${contract_id}
+  ...      ${access_token}
+  Log  ${reply}
+  [Return]  ${reply}
+
+
 Встановити ціну за одиницю товару в контрактах buyers
   [Arguments]  ${username}  ${tender_uaid}  ${award_index}
   ${award_value}=  Set Variable  ${USERS.users['${username}'].tender_data.data.awards[${award_index}].value.amount}
@@ -3213,6 +3237,18 @@ Library  Collections
   Log  ${reply}
 
 
+Встановити дату підписання е-угоди
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${fieldvalue}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${contract}=  create_data_dict  data.value  ${tender.data.contracts[${contract_index}].value}
+  Set To Dictionary  ${contract.data}  dateSigned=${fieldvalue}
+  ${reply}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract
+  ...      ${tender.data.contracts[${contract_index}].id}
+  ...      ${tender.access.token}
+  ...      ${contract}
+  Log  ${reply}
+
+
 Вказати період дії угоди
   [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${startDate}  ${endDate}
   ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
@@ -3226,6 +3262,21 @@ Library  Collections
   ...      ${contract}
   ...      ${tender.data.contracts[${contract_index}].id}
   ...      access_token=${tender.access.token}
+  Log  ${reply}
+
+
+Вказати період дії е-угоди
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_index}  ${startDate}  ${endDate}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${period}=  Create Dictionary  startDate=${startDate}
+  Set to Dictionary  ${period}  endDate=${endDate}
+  ${contract}=  create_data_dict  data.value  ${tender.data.contracts[${contract_index}].value}
+  Set To Dictionary  ${contract.data}  period=${period}
+  Log  ${contract}
+  ${reply}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract
+  ...      ${tender.data.contracts[${contract_index}].id}
+  ...      ${tender.access.token}
+  ...      ${contract}
   Log  ${reply}
 
 
@@ -3259,6 +3310,23 @@ Library  Collections
   ...      ${data}
   ...      ${tender['data']['contracts'][${contract_num}]['id']}
   ...      access_token=${tender.access.token}
+  Log  ${reply}
+  [Return]  ${reply}
+
+
+Підтвердити підписання e-контракту
+  [Documentation]
+  ...      [Arguments] Username, tender uaid, contract number
+  ...      Find tender using uaid, get contract test_confirmation data and call patch_contract
+  ...      [Return] Nothing
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_num}
+  ${tender}=  openprocurement_client.Пошук тендера по ідентифікатору  ${username}  ${tender_uaid}
+  ${data}=  test_confirm_data  ${tender['data']['contracts'][${contract_num}]['id']}
+  Log  ${data}
+  ${reply}=  Call Method  ${USERS.users['${username}'].contracting_client}  patch_contract
+  ...      ${tender['data']['contracts'][${contract_num}]['id']}
+  ...      ${tender.access.token}
+  ...      ${data}
   Log  ${reply}
   [Return]  ${reply}
 

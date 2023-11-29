@@ -1142,7 +1142,7 @@ Mожливість видалити пропозицію першим учас�
   ${amount}=  create_fake_amount  ${award.value.amount}  ${award.value.valueAddedTaxIncluded}  ${contract.value.valueAddedTaxIncluded}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   Set to dictionary  ${USERS.users['${tender_owner}']}  new_amount=${amount}
-  Run As  ${tender_owner}  Редагувати угоду
+  Run As  ${tender_owner}  Редагувати e-угоду
   ...      ${TENDER['TENDER_UAID']}
   ...      ${contract_index}
   ...      value.amount
@@ -1177,7 +1177,7 @@ Mожливість видалити пропозицію першим учас�
   ${contract}=  Отримати останній элемент  contracts  ${tender_owner}  ${viewer}
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   ${amount}=  Evaluate  ${award.value.amount} * 2
-  ${value}=  Require Failure  ${tender_owner}  Редагувати угоду
+  ${value}=  Require Failure  ${tender_owner}  Редагувати e-угоду
   ...      ${TENDER['TENDER_UAID']}
   ...      ${contract_index}
   ...      value.amount
@@ -1185,7 +1185,7 @@ Mожливість видалити пропозицію першим учас�
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${True}' and '${MODE}' == 'open_esco'
   ...      Should Contain  ${value}  Can't update amount for contract value
   ...      ELSE
-  ...      Should Contain  ${value}  Amount should be less or equal to awarded amount
+  ...      Should Contain  ${value}  Amount should be equal or greater than amountNet and differ by no more than 20.0%
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${True}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'
   ...      Should Contain  ${value}  Amount should be less or equal to awarded amount
   Run Keyword IF  '${award.value.valueAddedTaxIncluded}' == '${False}' and '${contract.value.valueAddedTaxIncluded}' == '${False}'
@@ -1203,7 +1203,7 @@ Mожливість видалити пропозицію першим учас�
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
   ${dateSigned}=  create_fake_date
   Set to dictionary  ${USERS.users['${tender_owner}']}  dateSigned=${dateSigned}
-  Run As  ${tender_owner}  Встановити дату підписання угоди  ${TENDER['TENDER_UAID']}  ${contract_index}  ${dateSigned}
+  Run As  ${tender_owner}  Встановити дату підписання е-угоди  ${TENDER['TENDER_UAID']}  ${contract_index}  ${dateSigned}
 
 
 Можливість вказати період дії угоди
@@ -1218,7 +1218,7 @@ Mожливість видалити пропозицію першим учас�
   ${startDate}=  create_fake_date
   ${endDate}=  add_minutes_to_date  ${startDate}  10
   Set to dictionary  ${USERS.users['${tender_owner}']}  contract_startDate=${startDate}  contract_endDate=${endDate}
-  Run As  ${tender_owner}  Вказати період дії угоди  ${TENDER['TENDER_UAID']}  ${contract_index}  ${startDate}  ${endDate}
+  Run As  ${tender_owner}  Вказати період дії е-угоди  ${TENDER['TENDER_UAID']}  ${contract_index}  ${startDate}  ${endDate}
 
 
 Можливість вказати ціну за одиницю
@@ -1230,8 +1230,9 @@ Mожливість видалити пропозицію першим учас�
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${contract_data}=  Розрахувати ціну за одиницю товару  ${tender_owner}  ${TENDER['TENDER_UAID']}  ${contract_index}
-  Run As  ${tender_owner}  Встановити ціну за одиницю товару в контракті  ${TENDER['TENDER_UAID']}  ${contract_data}  ${contract_index}
+  ${contract_data}=  Oтримати контракт по id  ${tender_owner}  ${TENDER['TENDER_UAID']}  ${contract_index}
+  ${contract_items}=  Розрахувати ціну за одиницю товару e-контракт  ${tender_owner}  ${TENDER['TENDER_UAID']}  ${contract_data}  ${contract_index}
+  Run As  ${tender_owner}  Встановити ціну за одиницю товару в e-контракті  ${TENDER['TENDER_UAID']}  ${contract_items}  ${contract_index}
 
 
 Можливість укласти угоду для закупівлі
@@ -1243,7 +1244,7 @@ Mожливість видалити пропозицію першим учас�
   [Setup]  Дочекатись синхронізації з майданчиком  ${tender_owner}
   [Teardown]  Оновити LAST_MODIFICATION_DATE
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  Run As  ${tender_owner}  Підтвердити підписання контракту  ${TENDER['TENDER_UAID']}  ${contract_index}
+  Run As  ${tender_owner}  Підтвердити підписання e-контракту  ${TENDER['TENDER_UAID']}  ${contract_index}
 
 
 Відображення статусу підписаної угоди з постачальником закупівлі
@@ -1265,7 +1266,8 @@ Mожливість видалити пропозицію першим учас�
   ...      ${USERS.users['${viewer}'].broker}  ${USERS.users['${tender_owner}'].broker}
   ...      find_tender_contract
   ${contract_index}=  Отримати останній індекс  contracts  ${tender_owner}  ${viewer}
-  ${CONTRACT_UAID}=  Get variable value  ${USERS.users['${tender_owner}'].tender_data.data.contracts[${contract_index}].contractID}
+  ${contract_data}=  Oтримати контракт по id  ${tender_owner}  ${TENDER['TENDER_UAID']}  ${contract_index}
+  ${CONTRACT_UAID}=  Get variable value  ${contract_data.data.contractID}
   Set Suite Variable  ${CONTRACT_UAID}
 
 

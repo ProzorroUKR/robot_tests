@@ -1750,6 +1750,25 @@ Require Failure
   [Return]  ${contract_data}
 
 
+Розрахувати ціну за одиницю товару e-контракт
+  [Arguments]  ${username}  ${tender_uaid}  ${contract_data}  ${contract_index}
+  ${contract_number}=  Set Variable  ${contract_index}
+  ${quantity}=  Set Variable  ${0}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    ${quantity}=  Evaluate  ${quantity}+${USERS.users['${username}'].tender_data.data['items'][${index}]['quantity']}
+  END
+  ${value}=  Evaluate  ${USERS.users['${username}'].tender_data.data.contracts[${contract_number}].value.amount}/${quantity}
+  ${value}=  Convert To Integer  ${value}
+  Log  ${value}
+  ${amount}=  test_unit_price_amount  ${value}
+  FOR  ${index}  IN RANGE  ${NUMBER_OF_ITEMS}
+    Set To Dictionary  ${contract_data.data['items'][${index}]['unit']}  value=${amount}
+  END
+  ${items_data}=  create_data_dict  data.items  ${contract_data.data['items']}
+  ${contract_data}=  munch_dict  arg=${items_data}
+  [Return]  ${contract_data}
+
+
 Дочекатися припинення процесу
   [Arguments]  ${username}  ${tender_uaid}
   Оновити LAST_MODIFICATION_DATE
