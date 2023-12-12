@@ -835,7 +835,7 @@ Mожливість змінити статус фреймворку з "active"
   [Tags]   ${USERS.users['${tender_owner}'].broker}: Зміна статусу
   ...      tender_owner
   ...      ${USERS.users['${tender_owner}'].broker}
-  ...      change_status  level1
+  ...      change_status1  level1
   ...      critical
   [Teardown]  Оновити QUALIFICATION_LAST_MODIFICATION_DATE
   Run Keyword    Змiнити статус фреймворка на  ${tender_owner}  draft
