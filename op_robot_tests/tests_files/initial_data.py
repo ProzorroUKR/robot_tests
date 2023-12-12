@@ -1796,7 +1796,7 @@ def test_monitoring_liability_data():
 
 
 def log_webdriver_info():
-    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+    driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager(version="119.0.6045").install()))
     # driver = webdriver.Chrome()
     browser_version = "chrome version - " + driver.capabilities['browserVersion']
     driver_version = "chromedriver version - " + driver.capabilities['chrome']['chromedriverVersion'].split(' ')[0]
@@ -1804,7 +1804,7 @@ def log_webdriver_info():
 
 
 def get_chromedriver_path():
-    driver_path = ChromeDriverManager().install()
+    driver_path = ChromeDriverManager(version="119.0.6045").install()
     return driver_path
 
 
