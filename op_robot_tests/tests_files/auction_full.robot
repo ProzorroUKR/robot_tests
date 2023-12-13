@@ -270,16 +270,15 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
 
 Відкрити сторінку аукціону для ${username}
   ${url}=  Можливість вичитати посилання на аукціон для ${username}
-#  Open browser  ${url}  ${USERS.users['${username}'].browser}  ${username}  options=add_argument("--remote-debugging-port=9222"); add_argument("--no-sandbox"); add_argument("--headless=new")
+  ${driverpath}=    Evaluate    webdriver_manager.chrome.ChromeDriverManager().install()    modules=webdriver_manager.chrome
   ${chromeOptions}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
   Call Method    ${chromeOptions}    add_argument    --headless\=new
   Call Method    ${chromeOptions}    add_argument    --no-sandbox
-#  @{service_args} =    Create List    --remote-debugging-port=9222
   Open Browser    url=${url}
   ...    browser=${USERS.users['${username}'].browser}
   ...    alias=${username}
   ...    options=${chromeOptions}
-  ...    executable_path=get_chromedriver_path
+  ...    executable_path=${driverpath}
   Set Window Position  @{USERS['${username}']['position']}
   Set Window Size      @{USERS['${username}']['size']}
   Run Keyword If  '${username}' != '${viewer}'

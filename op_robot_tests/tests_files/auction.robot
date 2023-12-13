@@ -104,7 +104,7 @@ Suite Teardown  Test Suite Teardown
 
 Відкрити сторінку аукціону для ${username}
   ${url}=  Run as  ${username}  Отримати посилання на аукціон для глядача  ${TENDER['TENDER_UAID']}  ${TENDER['LOT_ID']}
-#  Open browser  ${url}  ${USERS.users['${username}'].browser}   options=add_argument("--remote-debugging-port=9222"); add_argument("--no-sandbox"); add_argument("--headless=new")
+  ${driverpath}=    Evaluate    webdriver_manager.chrome.ChromeDriverManager().install()    modules=webdriver_manager.chrome
   ${chromeOptions}=    Evaluate    sys.modules['selenium.webdriver'].ChromeOptions()    sys, selenium.webdriver
   Call Method    ${chromeOptions}    add_argument    --headless\=new
   Call Method    ${chromeOptions}    add_argument    --no-sandbox
@@ -112,7 +112,7 @@ Suite Teardown  Test Suite Teardown
   ...    browser=${USERS.users['${username}'].browser}
   ...    alias=${username}
   ...    options=${chromeOptions}
-  ...    executable_path=get_chromedriver_path
+  ...    executable_path=${driverpath}
 
 
 Дочекатись дати закінчення аукціону користувачем ${username}
