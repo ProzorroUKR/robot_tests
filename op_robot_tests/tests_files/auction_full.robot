@@ -278,7 +278,7 @@ ${xpath_max_bid_amount_no_meat}     xpath://*[@id='BidsForm']//span[@id='max_bid
   ...    browser=${USERS.users['${username}'].browser}
   ...    alias=${username}
   ...    options=${chromeOptions}
-  ...    executable_path=get_chromedriver_path
+  ...    executable_path=${driverpath}
   Set Window Position  @{USERS['${username}']['position']}
   Set Window Size      @{USERS['${username}']['size']}
   Run Keyword If  '${username}' != '${viewer}'
