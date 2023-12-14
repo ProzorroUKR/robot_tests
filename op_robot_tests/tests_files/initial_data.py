@@ -1803,7 +1803,7 @@ def get_chromedriver_path():
 
 
 def log_webdriver_info():
-    driver = webdriver.Chrome(get_chromedriver_path())
+    driver = webdriver.Chrome()
     # driver = webdriver.Chrome(executable_path=get_chromedriver_path())
     # driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
     browser_version = "chrome version - " + driver.capabilities['browserVersion']
