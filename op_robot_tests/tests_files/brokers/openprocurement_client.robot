@@ -3623,6 +3623,10 @@ Oтримати контракт по id
   ${document}=  openprocurement_client.Завантажити документ в рамкову угоду  ${username}  ${filepath}  ${agreement_uaid}
   Set to dictionary  ${document.data}  documentOf=change
   Set to dictionary  ${document.data}  relatedItem=${item_id}
+  Delete From Dictionary  ${document.data}  hash
+  Delete From Dictionary  ${document.data}  url
+  Delete From Dictionary  ${document.data}  id
+  Delete From Dictionary  ${document.data}  datePublished
   ${reply}=  Call Method  ${USERS.users['${username}'].agreement_client}  patch_document
   ...      ${agreement.data.id}
   ...      ${document}
