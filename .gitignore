@@ -2,6 +2,10 @@
 __pycache__/
 *.py[cod]
 
+.env
+artifact*.yaml
+reports/
+
 # Distribution / packaging / buildout
 /*.egg-info/
 /.installed.cfg

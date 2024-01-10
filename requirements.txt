@@ -1,0 +1,9 @@
+Faker>=18.9.0
+dpath==2.1.6
+robotframework-debuglibrary==2.3.0
+haversine==2.8.0
+jsonpath-rw==1.4.0
+munch==3.0.0
+webdriver-manager==3.8.6
+git+https://github.com/ProzorroUKR/barbecue.git@0.2#egg=barbecue
+git+https://github.com/ProzorroUKR/openprocurement.client.python.git@upstream#egg=openprocurement_client
