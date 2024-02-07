@@ -504,10 +504,17 @@ Library  Collections
 Створити план
   [Arguments]  ${username}  ${tender_data}
   ${tender}=  Call Method  ${USERS.users['${username}'].plan_client}  create_plan  ${tender_data}
+  ${tender_id}=  Set Variable    ${tender.data.id}
+  Delete From Dictionary    ${tender}    data.datePublished
+  Delete From Dictionary    ${tender}    data.dateModified
+  Delete From Dictionary    ${tender}    data.owner
+  Delete From Dictionary    ${tender}    data.dateCreated
+  Delete From Dictionary    ${tender}    data.planID
+  Delete From Dictionary    ${tender}    data.id
   Log  ${tender}
   ${access_token}=  Get Variable Value  ${tender.access.token}
   ${tender}=  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
-  ...      ${tender.data.id}
+  ...      ${tender_id}
   ...      ${tender}
   ...      access_token=${tender.access.token}
   Log  ${tender}
