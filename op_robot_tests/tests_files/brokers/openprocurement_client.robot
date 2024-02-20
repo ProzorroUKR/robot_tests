@@ -878,9 +878,16 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${fieldname}  ${fieldvalue}
   ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
   Set_To_Object  ${tender.data}   ${fieldname}   ${fieldvalue}
+  ${tender_id}=  Set Variable    ${tender.data.id}
+  Delete From Dictionary    ${tender}    data.datePublished
+  Delete From Dictionary    ${tender}    data.dateModified
+  Delete From Dictionary    ${tender}    data.owner
+  Delete From Dictionary    ${tender}    data.dateCreated
+  Delete From Dictionary    ${tender}    data.planID
+  Delete From Dictionary    ${tender}    data.id
   ${tender}=  set_access_key  ${tender}  ${USERS.users['${username}'].access_token}
   ${tender}=  Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
-  ...      ${tender.data.id}
+  ...      ${tender_id}
   ...      ${tender}
   ...      access_token=${tender.access.token}
   Set_To_Object   ${USERS.users['${username}'].tender_data}   ${fieldname}   ${fieldvalue}
@@ -904,8 +911,15 @@ Library  Collections
   [Arguments]  ${username}  ${tender_uaid}  ${item}
   ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
   Append To List  ${tender.data['items']}  ${item}
+  ${tender_id}=  Set Variable    ${tender.data.id}
+  Delete From Dictionary    ${tender}    data.datePublished
+  Delete From Dictionary    ${tender}    data.dateModified
+  Delete From Dictionary    ${tender}    data.owner
+  Delete From Dictionary    ${tender}    data.dateCreated
+  Delete From Dictionary    ${tender}    data.planID
+  Delete From Dictionary    ${tender}    data.id
   Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
-  ...      ${tender.data.id}
+  ...      ${tender_id}
   ...      ${tender}
   ...      access_token=${tender.access.token}
 
@@ -933,8 +947,15 @@ Library  Collections
   ${tender}=  openprocurement_client.Пошук плану по ідентифікатору  ${username}  ${tender_uaid}
   ${item_index}=  get_object_index_by_id  ${tender.data['items']}  ${item_id}
   Remove From List  ${tender.data['items']}  ${item_index}
+  ${tender_id}=  Set Variable    ${tender.data.id}
+  Delete From Dictionary    ${tender}    data.datePublished
+  Delete From Dictionary    ${tender}    data.dateModified
+  Delete From Dictionary    ${tender}    data.owner
+  Delete From Dictionary    ${tender}    data.dateCreated
+  Delete From Dictionary    ${tender}    data.planID
+  Delete From Dictionary    ${tender}    data.id
   Call Method  ${USERS.users['${username}'].plan_client}  patch_plan
-  ...      ${tender.data.id}
+  ...      ${tender_id}
   ...      ${tender}
   ...      access_token=${tender.access.token}
 
