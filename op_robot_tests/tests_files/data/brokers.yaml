@@ -75,8 +75,10 @@ Quinta:
             enquiry: [0, 10]
             tender:  [0, 10]
         aboveThreshold:
-            accelerator: 1440
-            tender: [ 1, 30 ]
+#            accelerator: 1440
+#            tender: [ 1, 30 ]
+            accelerator: 620
+            tender: [ 0, 40 ]
         aboveThresholdUA:
             accelerator: 1440
             tender:  [1, 30]
