@@ -31,7 +31,7 @@ Default:
             accelerator: 1440
         belowThreshold:
             accelerator: 1440
-            enquiry: [0, 10]
+            enquiry: [0, 15]
             tender:  [0, 10]
         aboveThresholdUA:
             accelerator: 1440
@@ -72,7 +72,7 @@ Quinta:
             tender:  [0, 20]
         belowThreshold:
             accelerator: 1440
-            enquiry: [0, 10]
+            enquiry: [0, 15]
             tender:  [0, 10]
         aboveThreshold:
 #            accelerator: 1440
