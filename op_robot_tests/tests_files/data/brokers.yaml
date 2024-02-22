@@ -78,10 +78,10 @@ Quinta:
             accelerator: 620
             tender: [ 1, 30 ]
         aboveThresholdUA:
-            accelerator: 1440
+            accelerator: 620
             tender:  [1, 30]
         aboveThresholdEU:
-            accelerator: 1440
+            accelerator: 620
             tender:  [1, 35]
         openua_defense:
             tender:  [0, 20]
