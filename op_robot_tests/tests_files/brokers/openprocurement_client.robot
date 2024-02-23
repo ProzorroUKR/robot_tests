@@ -3649,6 +3649,7 @@ Oтримати контракт по id
   Log  ${filepath}
   ${agreement}=  openprocurement_client.Пошук угоди по ідентифікатору  ${username}  ${agreement_uaid}
   ${document}=  openprocurement_client.Завантажити документ в рамкову угоду  ${username}  ${filepath}  ${agreement_uaid}
+  ${document_id}=    Set Variable    ${document.data.id}
   Set to dictionary  ${document.data}  documentOf=change
   Set to dictionary  ${document.data}  relatedItem=${item_id}
   Delete From Dictionary  ${document.data}  hash
@@ -3658,7 +3659,7 @@ Oтримати контракт по id
   ${reply}=  Call Method  ${USERS.users['${username}'].agreement_client}  patch_document
   ...      ${agreement.data.id}
   ...      ${document}
-  ...      ${document.data.id}
+  ...      ${document_id}
   ...      access_token=${USERS.users['${username}'].agreement_access_token}
   [return]  ${reply}
 
