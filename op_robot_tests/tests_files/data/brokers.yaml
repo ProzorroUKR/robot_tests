@@ -76,7 +76,7 @@ Quinta:
             tender:  [0, 10]
         aboveThreshold:
             accelerator: 620
-            tender: [ 1, 30 ]
+            tender: [ 1, 35 ]
         aboveThresholdUA:
             accelerator: 620
             tender:  [1, 35]
